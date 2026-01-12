@@ -1,0 +1,192 @@
+[29-Apr-2025 09:14:50 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:14:50 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:14:53 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:14:53 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:14:54 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:14:54 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:15:09 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:15:09 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:16:25 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:16:25 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:40:35 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:40:35 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:41:11 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:41:11 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:41:11 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:41:12 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:41:12 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:41:12 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:41:14 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:41:14 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:41:14 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:46:00 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:46:00 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:46:00 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:46:02 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:46:02 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:46:02 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:46:03 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:46:03 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:46:03 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:55:35 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:55:35 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:55:35 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:55:37 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:55:37 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:55:37 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:55:43 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:55:43 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:55:43 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:56:46 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:56:46 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:56:46 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:57:01 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:57:01 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:57:01 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:57:35 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:57:35 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:57:35 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:57:37 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:57:37 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:57:37 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php81/root/usr/share/pear') in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:57:55 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:57:55 UTC] PHP Warning:  require(/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[29-Apr-2025 09:57:55 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/albaseer/linkmoto-dev.fissionmonster.com/public/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home2/albaseer/linkmoto-dev.fissionmonster.com/public/index.php on line 34
+[06-May-2025 10:35:26 UTC] PHP Fatal error:  Cannot redeclare Modules\Vender\Entities\Booking::$appends in /home2/albaseer/linkmoto-dev.fissionmonster.com/Modules/Vender/Entities/Booking.php on line 147
+[06-May-2025 10:37:05 UTC] PHP Fatal error:  Cannot redeclare Modules\Vender\Entities\Booking::$appends in /home2/albaseer/linkmoto-dev.fissionmonster.com/Modules/Vender/Entities/Booking.php on line 147
+[06-May-2025 10:38:05 UTC] PHP Fatal error:  Cannot redeclare Modules\Vender\Entities\Booking::$appends in /home2/albaseer/linkmoto-dev.fissionmonster.com/Modules/Vender/Entities/Booking.php on line 138
+[06-May-2025 10:38:05 UTC] PHP Fatal error:  Cannot redeclare Modules\Vender\Entities\Booking::$appends in /home2/albaseer/linkmoto-dev.fissionmonster.com/Modules/Vender/Entities/Booking.php on line 138
+[15-Aug-2025 11:38:42 UTC] PHP Fatal error:  Cannot use empty array elements in arrays in /home2/albaseer/linkmoto-dev.fissionmonster.com/Modules/Vender/Http/Controllers/BookJobRequestController.php on line 116
+[15-Aug-2025 11:39:05 UTC] PHP Fatal error:  Cannot use empty array elements in arrays in /home2/albaseer/linkmoto-dev.fissionmonster.com/Modules/Vender/Http/Controllers/BookJobRequestController.php on line 116
+[22-Aug-2025 12:50:08 UTC] PHP Fatal error:  Cannot use App\Models\User as User because the name is already in use in /home2/albaseer/linkmoto-dev.fissionmonster.com/Modules/Vender/Http/Controllers/InvoiceController.php on line 18
+[22-Aug-2025 12:50:22 UTC] PHP Fatal error:  Cannot use App\Models\User as User because the name is already in use in /home2/albaseer/linkmoto-dev.fissionmonster.com/Modules/Vender/Http/Controllers/InvoiceController.php on line 18
+[22-Aug-2025 12:50:47 UTC] PHP Fatal error:  Cannot use App\Models\User as User because the name is already in use in /home2/albaseer/linkmoto-dev.fissionmonster.com/Modules/Vender/Http/Controllers/InvoiceController.php on line 18
+[22-Aug-2025 12:52:08 UTC] PHP Fatal error:  Cannot use App\Models\User as User because the name is already in use in /home2/albaseer/linkmoto-dev.fissionmonster.com/Modules/Vender/Http/Controllers/InvoiceController.php on line 17
+[22-Aug-2025 12:55:18 UTC] PHP Fatal error:  Cannot use App\Models\User as User because the name is already in use in /home2/albaseer/linkmoto-dev.fissionmonster.com/Modules/Vender/Http/Controllers/InvoiceController.php on line 17
+[22-Aug-2025 12:56:42 UTC] PHP Fatal error:  Cannot use App\Models\User as User because the name is already in use in /home2/albaseer/linkmoto-dev.fissionmonster.com/Modules/Vender/Http/Controllers/InvoiceController.php on line 17
+[18-Nov-2025 08:08:38 UTC] PHP Parse error:  syntax error, unexpected token "function" in /home2/albaseer/linkmoto-dev.fissionmonster.com/bootstrap/helpers.php on line 20
+[18-Nov-2025 08:08:40 UTC] PHP Parse error:  syntax error, unexpected token "function" in /home2/albaseer/linkmoto-dev.fissionmonster.com/bootstrap/helpers.php on line 20
+[18-Nov-2025 08:08:50 UTC] PHP Parse error:  syntax error, unexpected token "function" in /home2/albaseer/linkmoto-dev.fissionmonster.com/bootstrap/helpers.php on line 20
+[18-Nov-2025 08:08:55 UTC] PHP Parse error:  syntax error, unexpected token "function" in /home2/albaseer/linkmoto-dev.fissionmonster.com/bootstrap/helpers.php on line 20
+[18-Nov-2025 08:09:02 UTC] PHP Parse error:  syntax error, unexpected token "function" in /home2/albaseer/linkmoto-dev.fissionmonster.com/bootstrap/helpers.php on line 20
+[18-Nov-2025 08:09:04 UTC] PHP Parse error:  syntax error, unexpected token "function" in /home2/albaseer/linkmoto-dev.fissionmonster.com/bootstrap/helpers.php on line 20
+[18-Nov-2025 08:09:08 UTC] PHP Parse error:  syntax error, unexpected token "function" in /home2/albaseer/linkmoto-dev.fissionmonster.com/bootstrap/helpers.php on line 20
+[18-Nov-2025 08:09:31 UTC] PHP Parse error:  syntax error, unexpected token "function" in /home2/albaseer/linkmoto-dev.fissionmonster.com/bootstrap/helpers.php on line 20
+[15-Dec-2025 10:19:25 Europe/London] PHP Fatal error:  Cannot use Illuminate\Support\Facades\Log as Log because the name is already in use in /home2/albaseer/linkmoto-dev.fissionmonster.com/Modules/Vender/Http/Controllers/InvoiceController.php on line 19
+[15-Dec-2025 10:19:29 Europe/London] PHP Fatal error:  Cannot use Illuminate\Support\Facades\Log as Log because the name is already in use in /home2/albaseer/linkmoto-dev.fissionmonster.com/Modules/Vender/Http/Controllers/InvoiceController.php on line 19
+[30-Dec-2025 12:36:51 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.1.0". You are running 8.0.30. in /home/aifissionmonster/linkmoto.demo-fissionmonster.site/vendor/composer/platform_check.php:22
+Stack trace:
+#0 /home/aifissionmonster/linkmoto.demo-fissionmonster.site/vendor/composer/autoload_real.php(25): require()
+#1 /home/aifissionmonster/linkmoto.demo-fissionmonster.site/vendor/autoload.php(22): ComposerAutoloaderInita1c757afb486f46808be3360cf75956a::getLoader()
+#2 /home/aifissionmonster/linkmoto.demo-fissionmonster.site/public/index.php(34): require('/home/aifission...')
+#3 {main}
+  thrown in /home/aifissionmonster/linkmoto.demo-fissionmonster.site/vendor/composer/platform_check.php on line 22
+[30-Dec-2025 12:36:54 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.1.0". You are running 8.0.30. in /home/aifissionmonster/linkmoto.demo-fissionmonster.site/vendor/composer/platform_check.php:22
+Stack trace:
+#0 /home/aifissionmonster/linkmoto.demo-fissionmonster.site/vendor/composer/autoload_real.php(25): require()
+#1 /home/aifissionmonster/linkmoto.demo-fissionmonster.site/vendor/autoload.php(22): ComposerAutoloaderInita1c757afb486f46808be3360cf75956a::getLoader()
+#2 /home/aifissionmonster/linkmoto.demo-fissionmonster.site/public/index.php(34): require('/home/aifission...')
+#3 {main}
+  thrown in /home/aifissionmonster/linkmoto.demo-fissionmonster.site/vendor/composer/platform_check.php on line 22
+[30-Dec-2025 12:37:00 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.1.0". You are running 8.0.30. in /home/aifissionmonster/linkmoto.demo-fissionmonster.site/vendor/composer/platform_check.php:22
+Stack trace:
+#0 /home/aifissionmonster/linkmoto.demo-fissionmonster.site/vendor/composer/autoload_real.php(25): require()
+#1 /home/aifissionmonster/linkmoto.demo-fissionmonster.site/vendor/autoload.php(22): ComposerAutoloaderInita1c757afb486f46808be3360cf75956a::getLoader()
+#2 /home/aifissionmonster/linkmoto.demo-fissionmonster.site/public/index.php(34): require('/home/aifission...')
+#3 {main}
+  thrown in /home/aifissionmonster/linkmoto.demo-fissionmonster.site/vendor/composer/platform_check.php on line 22
+[30-Dec-2025 12:44:53 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.1.0". You are running 7.4.33. in /home/aifissionmonster/linkmoto.demo-fissionmonster.site/vendor/composer/platform_check.php:22
+Stack trace:
+#0 /home/aifissionmonster/linkmoto.demo-fissionmonster.site/vendor/composer/autoload_real.php(25): require()
+#1 /home/aifissionmonster/linkmoto.demo-fissionmonster.site/vendor/autoload.php(22): ComposerAutoloaderInita1c757afb486f46808be3360cf75956a::getLoader()
+#2 /home/aifissionmonster/linkmoto.demo-fissionmonster.site/public/index.php(34): require('/home/aifission...')
+#3 {main}
+  thrown in /home/aifissionmonster/linkmoto.demo-fissionmonster.site/vendor/composer/platform_check.php on line 22
+[30-Dec-2025 12:45:16 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.1.0". You are running 7.4.33. in /home/aifissionmonster/linkmoto.demo-fissionmonster.site/vendor/composer/platform_check.php:22
+Stack trace:
+#0 /home/aifissionmonster/linkmoto.demo-fissionmonster.site/vendor/composer/autoload_real.php(25): require()
+#1 /home/aifissionmonster/linkmoto.demo-fissionmonster.site/vendor/autoload.php(22): ComposerAutoloaderInita1c757afb486f46808be3360cf75956a::getLoader()
+#2 /home/aifissionmonster/linkmoto.demo-fissionmonster.site/public/index.php(34): require('/home/aifission...')
+#3 {main}
+  thrown in /home/aifissionmonster/linkmoto.demo-fissionmonster.site/vendor/composer/platform_check.php on line 22
+[30-Dec-2025 12:45:17 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.1.0". You are running 7.4.33. in /home/aifissionmonster/linkmoto.demo-fissionmonster.site/vendor/composer/platform_check.php:22
+Stack trace:
+#0 /home/aifissionmonster/linkmoto.demo-fissionmonster.site/vendor/composer/autoload_real.php(25): require()
+#1 /home/aifissionmonster/linkmoto.demo-fissionmonster.site/vendor/autoload.php(22): ComposerAutoloaderInita1c757afb486f46808be3360cf75956a::getLoader()
+#2 /home/aifissionmonster/linkmoto.demo-fissionmonster.site/public/index.php(34): require('/home/aifission...')
+#3 {main}
+  thrown in /home/aifissionmonster/linkmoto.demo-fissionmonster.site/vendor/composer/platform_check.php on line 22
+[30-Dec-2025 12:45:23 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.1.0". You are running 7.4.33. in /home/aifissionmonster/linkmoto.demo-fissionmonster.site/vendor/composer/platform_check.php:22
+Stack trace:
+#0 /home/aifissionmonster/linkmoto.demo-fissionmonster.site/vendor/composer/autoload_real.php(25): require()
+#1 /home/aifissionmonster/linkmoto.demo-fissionmonster.site/vendor/autoload.php(22): ComposerAutoloaderInita1c757afb486f46808be3360cf75956a::getLoader()
+#2 /home/aifissionmonster/linkmoto.demo-fissionmonster.site/public/index.php(34): require('/home/aifission...')
+#3 {main}
+  thrown in /home/aifissionmonster/linkmoto.demo-fissionmonster.site/vendor/composer/platform_check.php on line 22
+[30-Dec-2025 12:46:51 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.1.0". You are running 7.4.33. in /home/aifissionmonster/linkmoto.demo-fissionmonster.site/vendor/composer/platform_check.php:22
+Stack trace:
+#0 /home/aifissionmonster/linkmoto.demo-fissionmonster.site/vendor/composer/autoload_real.php(25): require()
+#1 /home/aifissionmonster/linkmoto.demo-fissionmonster.site/vendor/autoload.php(22): ComposerAutoloaderInita1c757afb486f46808be3360cf75956a::getLoader()
+#2 /home/aifissionmonster/linkmoto.demo-fissionmonster.site/public/index.php(34): require('/home/aifission...')
+#3 {main}
+  thrown in /home/aifissionmonster/linkmoto.demo-fissionmonster.site/vendor/composer/platform_check.php on line 22
