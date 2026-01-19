@@ -14,40 +14,38 @@ class LoginController extends Controller
     {
         return view('admin::admin.auth.login');
     }
+
     public function store(Request $request)
-    {
-      return   $user=Admin::where('email',$request['email'])->first();
-         
-         if(isset($user)){
-             
-         
-        
-        if($user['status']!=1){
-          $errors = 'User is Not Active!';
-            return redirect('/admin/login')->withErrors($errors);   
-        }
-        
-         }
-        
-        $user_auth = Auth::guard('admin')
-            ->attempt(
-                [
-                    'email' => $request->email,
-                    'password' => $request->password
-                ],
-                $request->remember
-            );
-        if ($user_auth) {
-            return redirect('admin/dashboard');
-        } else {
-            $errors = 'Please Enter Valid Email ID or Password.';
-            return redirect('/admin/login')->withErrors($errors);
-        }
-        if ($this->hasTooManyLoginAttempts($request)) {
-            $this->fireLockoutEvent($request);
-            return $this->sendLockoutResponse($request);
-        }
+{
+    $user = Admin::where('email', $request->email)->first();
+
+    // if user exists check status
+    if ($user && $user->status != 1) {
+        return redirect('/admin/login')->withErrors('User is Not Active!');
     }
+
+    // Optional: validate request
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
+
+    // Attempt login
+    $user_auth = Auth::guard('admin')->attempt(
+        [
+            'email' => $request->email,
+            'password' => $request->password
+        ],
+        $request->remember ?? false
+    );
+
+    if ($user_auth) {
+        return redirect('admin/dashboard');
+    }
+
+    return redirect('/admin/login')->withErrors('Please Enter Valid Email ID or Password.');
+}
+
 
     public function recover()
     {
