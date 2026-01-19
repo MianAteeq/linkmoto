@@ -450,7 +450,7 @@ height: auto!important;
             type="checkbox" 
             id="service_other" 
             name="service_id[]" 
-            value="other">
+            value="0">
         <label class="form-check-label" for="service_other">
             Other
         </label>
