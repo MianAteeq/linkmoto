@@ -11,8 +11,7 @@ use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
-     use ThrottlesLogins;
-
+   
     public function username()
     {
         return 'email';
