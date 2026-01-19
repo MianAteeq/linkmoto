@@ -16,7 +16,7 @@ class LoginController extends Controller
     }
     public function store(Request $request)
     {
-         $user=Admin::where('email',$request['email'])->first();
+      return   $user=Admin::where('email',$request['email'])->first();
          
          if(isset($user)){
              
