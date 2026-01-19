@@ -44,7 +44,7 @@ class LoginController extends Controller
         ],
         $request->boolean('remember')
     );
-    dd($user_auth);
+    
 
     if ($user_auth) {
         return redirect('admin/dashboard');
