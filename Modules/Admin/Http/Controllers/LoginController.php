@@ -24,7 +24,7 @@ class LoginController extends Controller
 
   
 
-   public function store(Request $request)
+ public function store(Request $request)
 {
     $request->validate([
         'email' => 'required|email',
@@ -33,25 +33,25 @@ class LoginController extends Controller
 
     $user = Admin::where('email', $request->email)->first();
 
-    if ($user && $user->status != 1) {
+    if (!$user) {
+        return redirect('/admin/login')->withErrors('Email not found.');
+    }
+
+    if ($user->status != 1) {
         return redirect('/admin/login')->withErrors('User is Not Active!');
     }
 
-    $user_auth = Auth::guard('admin')->attempt(
-        [
-            'email' => $request->email,
-            'password' => $request->password
-        ],
+    if (Auth::guard('admin')->attempt(
+        ['email' => $request->email, 'password' => $request->password],
         $request->boolean('remember')
-    );
-    
-
-    if ($user_auth) {
-        return redirect('admin/dashboard');
+    )) {
+        $request->session()->regenerate();
+        return redirect('/admin/dashboard');
     }
 
     return redirect('/admin/login')->withErrors('Please Enter Valid Email ID or Password.');
 }
+
 
 
 
