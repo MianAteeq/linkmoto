@@ -34,9 +34,13 @@ class AgreementController extends Controller
                 'agreement_type' => $agreement->type,
                 'agreement_version' => $agreement->version,
             ], [
-                'user_full_name' => $user->name . $user->middle_name . $user->last_name,
+                'user_full_name' => trim(
+                    $user->name . ' ' .
+                        ($user->middle_name ?? '') . ' ' .
+                        ($user->last_name ?? '')
+                ),
                 'user_email' => $user->email,
-                'user_role' => $user->role,
+                'user_role' => $user['provider_app']['group']['name'],
                 'service_provider_name' => 'Motonos Provider App',
                 'acceptance_method' => 'Service Provider App',
                 'ip_address' => $request->ip(),
