@@ -7,13 +7,14 @@ use App\Models\User;
 use App\Models\UserOtp;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use App\Models\AgreementAcceptance;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Modules\Vender\Entities\TradingUnit;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
@@ -22,174 +23,144 @@ class LoginController extends Controller
 
     /***************  Login Api For Service Provider  *************/
 
-    public function login(Request $request)
+  public function login(Request $request)
     {
-
-
         try {
-          $validator = \Validator::make($request->all(), [
-              'email'    => ['required', 'email', 'max:255'],
-              'password' => ['required', 'string', 'min:6'],
-              ]);
+
+            // ---------------- VALIDATION ----------------
+
+            $validator = \Validator::make($request->all(), [
+                'email'    => ['required', 'email'],
+                'password' => ['required', 'string', 'min:6'],
+            ]);
 
             if ($validator->fails()) {
-
-                $responseArr['message'] = $validator->errors()->first();
-                $responseArr['token'] = '';
-                return response()->json($responseArr);
+                return response()->json([
+                    'status' => false,
+                    'message' => $validator->errors()->first(),
+                    'token' => '',
+                ]);
             }
 
+            // ---------------- USER ----------------
 
+            $user = User::where('email', $request->email)
+                ->whereHas('trading_unit')
+                ->with('trading_unit')
+                ->first();
 
-            $credentials = request(['email', 'password']);
-
-
-
-            $user = User::where('email', $request->email)->wherehas('trading_unit')->with('trading_unit')->first();
-
-            if ($user==null) {
+            if (!$user) {
                 return response()->json([
                     'status' => false,
                     'message' => 'Record Not Found!',
-
                 ]);
             }
-            if ($user->status == "PENDING" || $user->status == "INACTIVE") {
+
+            if (in_array($user->status, ['PENDING', 'INACTIVE'])) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Your are not Active User',
-
+                    'message' => 'You are not an active user',
                 ]);
             }
+
+            // ---------------- TOKEN ----------------
 
             $tokenResult = $user->createToken('authToken')->plainTextToken;
 
-            if($user['vender_id']==0){
+            // ---------------- VENDOR / PROVIDER LOGIC ----------------
 
-                $vender_id=0;
+            if ($user->vender_id == 0) {
 
-                if($user['vender_id']==0){
+                $vender_id = $user->id;
 
-                    $vender_id=$user['id'];
-                }else{
-                    $vender_id=$user['vender_id'];
+                $trading_units = TradingUnit::where('vender_id', $vender_id)
+                    ->with('trading_name')
+                    ->get();
+            } else {
+
+                if (!isset($user->provider_app) || $user->provider_app['status'] == 0) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => "You don't have app access",
+                    ]);
                 }
 
+                $user_trading_id = collect($user['trading_units'])->pluck('trading_id');
 
-
-            $trading_units=TradingUnit::where('vender_id',$vender_id)->with('trading_name')->get();
-            $trading_unit=0;
-            if(count($trading_units)>0){
-                $trading_unit=$trading_units[0]['id'];
+                $trading_units = TradingUnit::whereIn('id', $user_trading_id)
+                    ->with('trading_name')
+                    ->get();
             }
 
+            $default_trading_unit = $trading_units->first()->id ?? 0;
 
-            if(isset($request['lat'])){
-                User::find($user['id'])->update([
-                    'lat'=>$request['lat'],
-                    'long'=>$request['lon'],
-                    'default_trading_unit'=>$user['default_trading_unit']==0?$trading_unit:$user['default_trading_unit'],
-                ]);
+            // ---------------- LOCATION + DEFAULT UNIT ----------------
 
+            User::where('id', $user->id)->update([
+                'lat' => $request->lat ?? $user->lat,
+                'long' => $request->lon ?? $user->long,
+                'default_trading_unit' => $user->default_trading_unit == 0
+                    ? $default_trading_unit
+                    : $user->default_trading_unit,
+            ]);
+
+            $user = User::where('email', $request->email)
+                ->with('trading_unit.trading_name')
+                ->first();
+
+            // ---------------- PERMISSIONS ----------------
+
+            if ($user->vender_id == 0) {
+                $permissions = Permission::where('group_type', 'APP')->pluck('name');
+            } else {
+
+                if ($user['provider_app']['status'] == 0) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => "You don't have app access",
+                    ]);
+                }
+
+                $permissions = collect($user['provider_app']['group']['permissions'])->pluck('name');
             }
 
-            if($user['default_trading_unit']==0){
-                User::find($user['id'])->update([
+            // ---------------- AGREEMENT STATUS ----------------
 
-                    'default_trading_unit'=>$user['default_trading_unit']==0?$trading_unit:$user['default_trading_unit'],
-                ]);
-            }
+            $accepted = AgreementAcceptance::where('user_id', $user->id)
+                ->pluck('agreement_type')
+                ->toArray();
 
+            $agreements = [
+                'nda' => in_array('NDA', $accepted),
+                'terms' => in_array('TERMS', $accepted),
+                'privacy' => in_array('PRIVACY', $accepted),
+            ];
 
+            $agreements['all_completed'] =
+                $agreements['nda'] &&
+                $agreements['terms'] &&
+                $agreements['privacy'];
 
+            // ---------------- RESPONSE ----------------
 
-
-            $user = User::where('email', $request->email)->with('trading_unit')->with('trading_unit.trading_name')->first();
-
-        }
-        else{
-            if(!isset($user['provider_app'])){
-                return response()->json([
-                    'status' => false,
-                    'message' => "You don't have app access",
-
-                ]);
-            }
-            if($user['provider_app']['status']==0){
-                return response()->json([
-                    'status' => false,
-                    'message' => "You don't have app access",
-
-                ]);
-            }
-            $user_trading_id=collect($user['trading_units'])->pluck('trading_id');
-            $trading_units=TradingUnit::whereIn('id',$user_trading_id)->with('trading_name')->get();
-            $trading_unit=0;
-            if(count($trading_units)>0){
-                $trading_unit=$trading_units[0]['id'];
-            }
-
-
-            if(isset($request['lat'])){
-                User::find($user['id'])->update([
-                    'lat'=>$request['lat'],
-                    'long'=>$request['lon'],
-                    'default_trading_unit'=>$user['default_trading_unit']==0?$trading_unit:$user['default_trading_unit'],
-                ]);
-
-            }
-            else{
-                User::find($user['id'])->update([
-
-                    'default_trading_unit'=>$user['default_trading_unit']==0?$trading_unit:$user['default_trading_unit'],
-                ]);
-            }
-
-
-            $user = User::where('email', $request->email)->with('trading_unit')->with('trading_unit.trading_name')->first();
-
-        }
-        if($user['vender_id']==0){
-            $permissions=Permission::where('group_type','APP')->pluck('name');
-        }else{
-
-
-            // return $user['provider_app'];
-
-            if($user['provider_app']['status']==0){
-                return response()->json([
-                    'status' => false,
-                    'message' => "You don't have app access",
-
-                ]);
-            }else{
-
-                $permissions=collect($user['provider_app']['group']['permissions'])->pluck('name');
-            }
-
-        }
             return response()->json([
                 'status' => true,
                 'access_token' => $tokenResult,
                 'token_type' => 'Bearer',
                 'user' => $user,
                 'permissions' => $permissions,
-                'trading_units'=>$trading_units
-
-
+                'trading_units' => $trading_units,
+                'agreements' => $agreements
             ]);
+        } catch (\Exception $e) {
 
-        } catch (Exception $e) {
-
-            // Log::info($e->getMessage());
             return response()->json([
                 'status' => false,
-                'error' => $e->getMessage(),
                 'message' => $e->getMessage(),
             ]);
-
         }
     }
+
     /***************  Login Api For Service Provider  *************/
 
     public function deleteAccount(Request $request)
@@ -202,19 +173,15 @@ class LoginController extends Controller
 
             $user = User::find($request->user()->id);
 
-            $user->status="INACTIVE";
+            $user->status = "INACTIVE";
             $user->update();
 
             return response()->json([
                 'status' => true,
-                'user'=>$user,
+                'user' => $user,
                 'message' => 'Account Delete Successfully',
 
             ]);
-
-
-
-
         } catch (Exception $e) {
 
             return response()->json([
@@ -226,49 +193,48 @@ class LoginController extends Controller
     }
 
 
-    public function fetchTradingUnit(Request $request) {
+    public function fetchTradingUnit(Request $request)
+    {
 
         $user = User::find($request->user()->id);
 
-        if($user['vender_id']==0 || $user['type']=="Manager"){
+        if ($user['vender_id'] == 0 || $user['type'] == "Manager") {
 
-            $vender_id=0;
+            $vender_id = 0;
 
-            if($user['vender_id']==0){
+            if ($user['vender_id'] == 0) {
 
-                $vender_id=$user['id'];
-            }else{
-                $vender_id=$user['vender_id'];
+                $vender_id = $user['id'];
+            } else {
+                $vender_id = $user['vender_id'];
             }
 
 
-             $user_trading_id=collect($user['trading_units'])->pluck('trading_id');
-            $trading_units=TradingUnit::whereIn('id',$user_trading_id)->with('trading_name')->get();
-        }else{
-            $user_trading_id=collect($user['trading_units'])->pluck('trading_id');
-            $trading_units=TradingUnit::whereIn('id',$user_trading_id)->with('trading_name')->get();
+            $user_trading_id = collect($user['trading_units'])->pluck('trading_id');
+            $trading_units = TradingUnit::whereIn('id', $user_trading_id)->with('trading_name')->get();
+        } else {
+            $user_trading_id = collect($user['trading_units'])->pluck('trading_id');
+            $trading_units = TradingUnit::whereIn('id', $user_trading_id)->with('trading_name')->get();
         }
 
 
-        if(count($trading_units)>0){
+        if (count($trading_units) > 0) {
             return response()->json([
                 'status' => true,
 
-                'trading_units'=>$trading_units
+                'trading_units' => $trading_units
             ]);
-
-        }
-        else{
+        } else {
 
             return response()->json([
                 'status' => true,
-                 'message'=>'Record Not Found',
-                'trading_units'=>$trading_units
+                'message' => 'Record Not Found',
+                'trading_units' => $trading_units
             ]);
         }
-
     }
-    public function setTradingUnit(Request $request) {
+    public function setTradingUnit(Request $request)
+    {
 
         $validator = \Validator::make($request->all(), [
 
@@ -282,14 +248,13 @@ class LoginController extends Controller
         }
 
         $user = User::find($request->user()->id)->update([
-            'default_trading_unit'=>$request['trading_id']
+            'default_trading_unit' => $request['trading_id']
         ]);
 
         return response()->json([
             'status' => true,
-            'message'=>'Default Trading Unit Set Successfully!'
+            'message' => 'Default Trading Unit Set Successfully!'
         ]);
-
     }
 
 

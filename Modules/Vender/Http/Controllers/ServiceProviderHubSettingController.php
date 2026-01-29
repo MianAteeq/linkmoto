@@ -25,271 +25,270 @@ use Modules\Vender\Entities\TradingUnitAccreditationScheme;
 
 class ServiceProviderHubSettingController extends Controller
 {
-    public function onlineStatus($id) {
+    public function onlineStatus($id)
+    {
 
 
-        $user=auth()->user();
-        $is_hub="on";
-        $is_advertise="off";
+        $user = auth()->user();
+        $is_hub = "on";
+        $is_advertise = "off";
 
 
-        if(isset($user->profile->package)){
+        if (isset($user->profile->package)) {
 
-           $package_name=$user->profile->package['name'];
+            $package_name = $user->profile->package['name'];
 
-           if($package_name=="MINI"){
-               $is_hub="off";
-           }
-           if($package_name=="HATCHBACK"){
-               $is_hub="on";
-               $is_advertise="on";
-           }
-           if($package_name=="Advertise only"){
-               $is_hub="on";
-               $is_advertise="on";
-
-           }
-
+            if ($package_name == "MINI") {
+                $is_hub = "off";
+            }
+            if ($package_name == "HATCHBACK") {
+                $is_hub = "on";
+                $is_advertise = "on";
+            }
+            if ($package_name == "Advertise only") {
+                $is_hub = "on";
+                $is_advertise = "on";
+            }
         }
 
 
-        $trading_unit=TradingUnit::find($id);
+        $trading_unit = TradingUnit::find($id);
 
 
 
-        return view('vender::service_provider.trading_unit.hub_setting.edit_online_status',get_defined_vars());
-
+        return view('vender::service_provider.trading_unit.hub_setting.edit_online_status', get_defined_vars());
     }
-    public function jobTypes($id) {
+    public function jobTypes($id)
+    {
 
 
-        $user=auth()->user();
+        $user = auth()->user();
 
 
-        $trading_unit=TradingUnit::find($id);
+        $trading_unit = TradingUnit::find($id);
 
-        $job_types=JobType::all()->groupBy('parent_id');
+        $job_types = JobType::all()->groupBy('parent_id');
 
 
 
-        return view('vender::service_provider.trading_unit.hub_setting.job_types',get_defined_vars());
-
+        return view('vender::service_provider.trading_unit.hub_setting.job_types', get_defined_vars());
     }
-    public function warrantyJob($id) {
+    public function warrantyJob($id)
+    {
 
 
-        $user=auth()->user();
+        $user = auth()->user();
 
 
-        $trading_unit=TradingUnit::find($id);
+        $trading_unit = TradingUnit::find($id);
 
-        $job_types=WarrantyJob::all();
+        $job_types = WarrantyJob::all();
 
 
 
-        return view('vender::service_provider.trading_unit.hub_setting.warrenty_job',get_defined_vars());
-
+        return view('vender::service_provider.trading_unit.hub_setting.warrenty_job', get_defined_vars());
     }
 
-    public function warrantyJobSubmit(Request $request) {
+    public function warrantyJobSubmit(Request $request)
+    {
 
 
         // return $request;
 
 
-        TradingUnitWarrentyJob::where('trading_id',$request['id'])->delete();
+        TradingUnitWarrentyJob::where('trading_id', $request['id'])->delete();
         foreach ($request['warrenty_id'] as $key => $warranty_id) {
             TradingUnitWarrentyJob::create([
-                'trading_id'=>$request['id'],
-                'warranty_id'=>$warranty_id
+                'trading_id' => $request['id'],
+                'warranty_id' => $warranty_id
             ]);
         }
 
-        return  redirect()->route('vender.service.provider.trading.unit.app.setting',$request['id']);
-
+        return  redirect()->route('vender.service.provider.trading.unit.app.setting', $request['id']);
     }
-    public function vehicleSpecialist($id) {
+    public function vehicleSpecialist($id)
+    {
 
 
-        $user=auth()->user();
+        $user = auth()->user();
 
 
-        $trading_unit=TradingUnit::find($id);
+        $trading_unit = TradingUnit::find($id);
 
-        $job_types=VehicleSpecialist::all();
+        $job_types = VehicleSpecialist::all();
 
 
 
-        return view('vender::service_provider.trading_unit.hub_setting.vehicle_specalist',get_defined_vars());
-
+        return view('vender::service_provider.trading_unit.hub_setting.vehicle_specalist', get_defined_vars());
     }
 
-    public function vehicleSpecialistSubmit(Request $request) {
+    public function vehicleSpecialistSubmit(Request $request)
+    {
 
 
         // return $request;
 
 
-        TradingUnitVehicleSpecialist::where('trading_id',$request['id'])->delete();
+        TradingUnitVehicleSpecialist::where('trading_id', $request['id'])->delete();
         foreach ($request['warrenty_id'] as $key => $warranty_id) {
             TradingUnitVehicleSpecialist::create([
-                'trading_id'=>$request['id'],
-                'vehicle_specialist_id'=>$warranty_id
+                'trading_id' => $request['id'],
+                'vehicle_specialist_id' => $warranty_id
             ]);
         }
 
-        return  redirect()->route('vender.service.provider.trading.unit.app.setting',$request['id']);
-
+        return  redirect()->route('vender.service.provider.trading.unit.app.setting', $request['id']);
     }
-    public function accreditationSubmit(Request $request) {
+    public function accreditationSubmit(Request $request)
+    {
 
 
         // return $request;
 
 
-        TradingUnitAccreditationScheme::where('trading_id',$request['id'])->delete();
+        TradingUnitAccreditationScheme::where('trading_id', $request['id'])->delete();
         foreach ($request['warrenty_id'] as $key => $warranty_id) {
             TradingUnitAccreditationScheme::create([
-                'trading_id'=>$request['id'],
-                'accreditation_scheme_id'=>$warranty_id
+                'trading_id' => $request['id'],
+                'accreditation_scheme_id' => $warranty_id
             ]);
         }
 
-        return  redirect()->route('vender.service.provider.trading.unit.app.setting',$request['id']);
-
+        return  redirect()->route('vender.service.provider.trading.unit.app.setting', $request['id']);
     }
-    public function accreditation($id) {
+    public function accreditation($id)
+    {
 
 
-        $user=auth()->user();
+        $user = auth()->user();
 
 
-        $trading_unit=TradingUnit::find($id);
+        $trading_unit = TradingUnit::find($id);
 
-        $job_types=AccreditationScheme::all();
+        $job_types = AccreditationScheme::all();
 
 
 
-        return view('vender::service_provider.trading_unit.hub_setting.accreditation',get_defined_vars());
-
+        return view('vender::service_provider.trading_unit.hub_setting.accreditation', get_defined_vars());
     }
-    public function productOffer($id) {
+    public function productOffer($id)
+    {
 
 
-        $user=auth()->user();
+        $user = auth()->user();
 
 
-        $trading_unit=TradingUnit::find($id);
+        $trading_unit = TradingUnit::find($id);
 
-        $job_types=PaymentMethod::all();
+        $job_types = PaymentMethod::all();
 
-        $services_array=JobType::all();
-        $price_types=PriceType::all();
+        $services_array = JobType::all();
+        $price_types = PriceType::all();
 
 
 
-        return view('vender::service_provider.trading_unit.hub_setting.products.add',get_defined_vars());
-
+        return view('vender::service_provider.trading_unit.hub_setting.products.add', get_defined_vars());
     }
-    public function editProductOffer($id,$trading_id) {
+    public function editProductOffer($id, $trading_id)
+    {
 
 
-        $user=auth()->user();
+        $user = auth()->user();
 
-      $product=QuickProduct::with('job_types','job_types.jobtype')->find($id);
-        $product_job_types=QuickProductJobType::where('quick_product_id',$id)->pluck('job_type_id')->toArray();
-        $product_what_includes=collect(json_decode($product['what_include']))->pluck('job_type_id')->toArray();
+        $product = QuickProduct::with('job_types', 'job_types.jobtype')->find($id);
+        $product_job_types = QuickProductJobType::where('quick_product_id', $id)->pluck('job_type_id')->toArray();
+        $product_what_includes = collect(json_decode($product['what_include']))->pluck('job_type_id')->toArray();
 
-        $product_what_include_id=0;
-          if($product['what_include']!=null){
-        if(count(json_decode($product['what_include']))>0){
-            $product_what_include_id=collect(json_decode($product['what_include']))[0]->id;
-        }
-        }
-
-        $jobstypes=JobType::whereIn('id',$product_job_types)->get();
-
-
-
-        $trading_unit=TradingUnit::find($trading_id);
-
-        $job_types=PaymentMethod::all();
-
-        $services_array=JobType::all();
-        $price_types=PriceType::all();
-
-
-
-        return view('vender::service_provider.trading_unit.hub_setting.products.edit',get_defined_vars());
-
-    }
-    public function viewProductOffer($id,$trading_id) {
-
-
-        $user=auth()->user();
-
-      $product=QuickProduct::with('job_types','job_types.jobtype')->find($id);
-        $product_job_types=QuickProductJobType::where('quick_product_id',$id)->pluck('job_type_id')->toArray();
-        $product_what_includes=collect(json_decode($product['what_include']))->pluck('job_type_id')->toArray();
-
-        $product_what_include_id=0;
-        if($product['what_include']!=null){
-
-        if(count(json_decode($product['what_include']))>0){
-            $product_what_include_id=collect(json_decode($product['what_include']))[0]->id;
-        }
+        $product_what_include_id = 0;
+        if ($product['what_include'] != null) {
+            if (count(json_decode($product['what_include'])) > 0) {
+                $product_what_include_id = collect(json_decode($product['what_include']))[0]->id;
+            }
         }
 
-        $jobstypes=JobType::whereIn('id',$product_job_types)->get();
+        $jobstypes = JobType::whereIn('id', $product_job_types)->get();
 
 
 
-        $trading_unit=TradingUnit::find($trading_id);
+        $trading_unit = TradingUnit::find($trading_id);
 
-        $job_types=PaymentMethod::all();
+        $job_types = PaymentMethod::all();
 
-        $services=JobType::all();
-        $price_types=PriceType::all();
+        $services_array = JobType::all();
+        $price_types = PriceType::all();
 
 
 
-        return view('vender::service_provider.trading_unit.hub_setting.products.view',get_defined_vars());
-
+        return view('vender::service_provider.trading_unit.hub_setting.products.edit', get_defined_vars());
     }
-    public function paymentMethod($id) {
+    public function viewProductOffer($id, $trading_id)
+    {
 
 
-        $user=auth()->user();
+        $user = auth()->user();
+
+        $product = QuickProduct::with('job_types', 'job_types.jobtype')->find($id);
+        $product_job_types = QuickProductJobType::where('quick_product_id', $id)->pluck('job_type_id')->toArray();
+        $product_what_includes = collect(json_decode($product['what_include']))->pluck('job_type_id')->toArray();
+
+        $product_what_include_id = 0;
+        if ($product['what_include'] != null) {
+
+            if (count(json_decode($product['what_include'])) > 0) {
+                $product_what_include_id = collect(json_decode($product['what_include']))[0]->id;
+            }
+        }
+
+        $jobstypes = JobType::whereIn('id', $product_job_types)->get();
 
 
-        $trading_unit=TradingUnit::find($id);
 
-        $job_types=PaymentMethod::all();
+        $trading_unit = TradingUnit::find($trading_id);
+
+        $job_types = PaymentMethod::all();
+
+        $services = JobType::all();
+        $price_types = PriceType::all();
 
 
 
-        return view('vender::service_provider.trading_unit.hub_setting.payment_methhod',get_defined_vars());
+        return view('vender::service_provider.trading_unit.hub_setting.products.view', get_defined_vars());
+    }
+    public function paymentMethod($id)
+    {
 
+
+        $user = auth()->user();
+
+
+        $trading_unit = TradingUnit::find($id);
+
+        $job_types = PaymentMethod::all();
+
+
+
+        return view('vender::service_provider.trading_unit.hub_setting.payment_methhod', get_defined_vars());
     }
 
-    public function paymentMethodSubmit(Request $request) {
+    public function paymentMethodSubmit(Request $request)
+    {
 
 
         // return $request;
 
 
-        TradingUnitPaymentMethod::where('trading_id',$request['id'])->delete();
+        TradingUnitPaymentMethod::where('trading_id', $request['id'])->delete();
         foreach ($request['warrenty_id'] as $key => $warranty_id) {
             TradingUnitPaymentMethod::create([
-                'trading_id'=>$request['id'],
-                'payment_method_id'=>$warranty_id
+                'trading_id' => $request['id'],
+                'payment_method_id' => $warranty_id
             ]);
         }
 
-        return  redirect()->route('vender.service.provider.trading.unit.app.setting',$request['id']);
-
+        return  redirect()->route('vender.service.provider.trading.unit.app.setting', $request['id']);
     }
-    public function addProductOffer(Request $request) {
+    public function addProductOffer(Request $request)
+    {
 
 
         // return $request;
@@ -307,23 +306,23 @@ class ServiceProviderHubSettingController extends Controller
         $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
         $latestOrder = QuickProduct::orderBy('created_at', 'DESC')->first();
 
-       if(!empty($request->what_include_id)){
-           
-        $what_include_id= json_decode($request->what_include_id);
-       }else{
-        $what_include_id=[];   
-       }
+        if (!empty($request->what_include_id)) {
 
-       $obj=QuickProduct::create([
+            $what_include_id = json_decode($request->what_include_id);
+        } else {
+            $what_include_id = [];
+        }
+
+        $obj = QuickProduct::create([
             "vender_id" => $vender_id,
             "trading_id" => $request['id'],
-            "product_no" => 'PRD-'."SVP".str_pad($vender_id, 5, "0", STR_PAD_LEFT)."-". str_pad($latestOrder?$latestOrder->id+1: 0 + 1, 5, "0", STR_PAD_LEFT),
-            "job_type_id" => count(json_decode($request->service_id))>0?json_decode($request->service_id)[0]:0,
+            "product_no" => 'PRD-' . "SVP" . str_pad($vender_id, 5, "0", STR_PAD_LEFT) . "-" . str_pad($latestOrder ? $latestOrder->id + 1 : 0 + 1, 5, "0", STR_PAD_LEFT),
+            "job_type_id" => count(json_decode($request->service_id)) > 0 ? json_decode($request->service_id)[0] : 0,
             "job_coverage_id" => $request->job_coverage_id,
             "product_name" => $request->product_name,
             "description" => $request->description,
             "price_type" => $request->price_type,
-            "what_include" => json_encode(JobType::whereIn('id',$what_include_id)->get()),
+            "what_include" => json_encode(JobType::whereIn('id', $what_include_id)->get()),
             "term_condition" => $request->term_condition,
             "price" => $request->price,
             "status" => $request->status,
@@ -335,8 +334,8 @@ class ServiceProviderHubSettingController extends Controller
 
             foreach (json_decode($request->service_id) as $key => $job_id) {
                 QuickProductJobType::create([
-                    "quick_product_id"=>$obj['id'],
-                    "job_type_id"=>$job_id,
+                    "quick_product_id" => $obj['id'],
+                    "job_type_id" => $job_id,
 
                 ]);
             }
@@ -347,10 +346,11 @@ class ServiceProviderHubSettingController extends Controller
 
 
 
-        return  redirect()->route('vender.service.provider.trading.unit.app.setting',$request['id']);
-
+        return  redirect()->route('vender.service.provider.trading.unit.app.setting', $request['id']);
     }
-    public function updateProductOffer(Request $request) {
+    public function updateProductOffer(Request $request)
+    {
+
 
 
 
@@ -366,24 +366,24 @@ class ServiceProviderHubSettingController extends Controller
 
         $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
         $latestOrder = QuickProduct::orderBy('created_at', 'DESC')->first();
- 
-       if(!empty($request->what_include_id)){
-           
-        $what_include_id= json_decode($request->what_include_id);
-       }else{
-        $what_include_id=[];   
-       }
-       $obj=QuickProduct::find($request['product_id'])->update([
 
-           "vender_id" => $vender_id,
+        if (!empty($request->what_include_id)) {
+
+            $what_include_id = json_decode($request->what_include_id);
+        } else {
+            $what_include_id = [];
+        }
+        $obj = QuickProduct::find($request['product_id'])->update([
+
+            "vender_id" => $vender_id,
             "trading_id" => $request['id'],
-            "product_no" => 'PRD-'."SVP".str_pad($vender_id, 5, "0", STR_PAD_LEFT)."-". str_pad($latestOrder?$latestOrder->id+1: 0 + 1, 5, "0", STR_PAD_LEFT),
-            "job_type_id" => count(json_decode($request->service_id))>0?json_decode($request->service_id)[0]:0,
+            "product_no" => 'PRD-' . "SVP" . str_pad($vender_id, 5, "0", STR_PAD_LEFT) . "-" . str_pad($latestOrder ? $latestOrder->id + 1 : 0 + 1, 5, "0", STR_PAD_LEFT),
+            "job_type_id" => count(json_decode($request->service_id)) > 0 ? json_decode($request->service_id)[0] : 0,
             "job_coverage_id" => $request->job_coverage_id,
             "product_name" => $request->product_name,
             "description" => $request->description,
             "price_type" => $request->price_type,
-            "what_include" => json_encode(JobType::whereIn('id',$what_include_id)->get()),
+            "what_include" => json_encode(JobType::whereIn('id', $what_include_id)->get()),
             "term_condition" => $request->term_condition,
             "price" => $request->price,
             "status" => $request->status,
@@ -392,12 +392,12 @@ class ServiceProviderHubSettingController extends Controller
         ]);
 
         if (isset($request->service_id)) {
-            QuickProductJobType::where('quick_product_id',$request['id'])->delete();
+            QuickProductJobType::where('quick_product_id', $request['product_id'])->delete();
 
             foreach (json_decode($request->service_id) as $key => $job_id) {
                 QuickProductJobType::create([
-                    "quick_product_id"=>$request['id'],
-                    "job_type_id"=>$job_id,
+                    "quick_product_id" => $request['product_id'],
+                    "job_type_id" => $job_id,
 
                 ]);
             }
@@ -408,57 +408,60 @@ class ServiceProviderHubSettingController extends Controller
 
 
 
-        return  redirect()->route('vender.service.provider.trading.unit.app.setting',$request['id']);
-
+        return redirect()->route(
+            'vender.service.provider.trading.unit.hub.setting.view.product.offer',
+            [$request->product_id, $request->id]
+        );
     }
 
-    public function jobTypesSubmit(Request $request) {
+    public function jobTypesSubmit(Request $request)
+    {
 
 
-        TradingUnitJobType::where('trading_id',$request['id'])->delete();
+        TradingUnitJobType::where('trading_id', $request['id'])->delete();
         foreach ($request['job_type_id'] as $key => $job_type_id) {
             TradingUnitJobType::create([
-                'trading_id'=>$request['id'],
-                'job_type_id'=>$job_type_id
+                'trading_id' => $request['id'],
+                'job_type_id' => $job_type_id
             ]);
         }
 
-        return  redirect()->route('vender.service.provider.trading.unit.app.setting',$request['id']);
-
+        return  redirect()->route('vender.service.provider.trading.unit.app.setting', $request['id']);
     }
 
-    public function socialMedia($id) {
+    public function socialMedia($id)
+    {
 
 
-        $user=auth()->user();
+        $user = auth()->user();
 
 
-        $trading_unit=TradingUnit::find($id);
+        $trading_unit = TradingUnit::find($id);
 
-        $hub_setting=TradingUnitHubProfile::where('trading_id',$id)->first();
+        $hub_setting = TradingUnitHubProfile::where('trading_id', $id)->first();
 
-        if(!isset($hub_setting)){
+        if (!isset($hub_setting)) {
             TradingUnitHubProfile::create([
-                'trading_id'=>$id
+                'trading_id' => $id
             ]);
         }
 
 
 
-        return view('vender::service_provider.trading_unit.hub_setting.social_media',get_defined_vars());
-
+        return view('vender::service_provider.trading_unit.hub_setting.social_media', get_defined_vars());
     }
 
-    public function openingHour($id) {
+    public function openingHour($id)
+    {
 
 
-        $user=auth()->user();
+        $user = auth()->user();
 
 
-        $trading_unit=TradingUnit::find($id);
+        $trading_unit = TradingUnit::find($id);
         $startPeriod = Carbon::parse('9:00');
         $endPeriod = Carbon::parse('18:00');
-        $period = CarbonPeriod::create($startPeriod, '15 minutes', $endPeriod );
+        $period = CarbonPeriod::create($startPeriod, '15 minutes', $endPeriod);
 
         $hours  = [];
 
@@ -468,114 +471,113 @@ class ServiceProviderHubSettingController extends Controller
 
 
 
-        return view('vender::service_provider.trading_unit.hub_setting.edit_opening_hour',get_defined_vars());
-
+        return view('vender::service_provider.trading_unit.hub_setting.edit_opening_hour', get_defined_vars());
     }
 
-    public function openingHourSubmit(Request $request) {
+    public function openingHourSubmit(Request $request)
+    {
 
 
 
-        $hub_setting=TradingUnitHubProfile::where('trading_id',$request['id'])->first();
+        $hub_setting = TradingUnitHubProfile::where('trading_id', $request['id'])->first();
 
-        if(isset($hub_setting)){
+        if (isset($hub_setting)) {
 
             TradingUnitHubProfile::find($hub_setting['id'])->update([
 
-                'trading_id'=>$request['id'],
-                'is_monday'=>$request['is_monday']?1:0,
-                'is_tuesday'=>$request['is_tuesday']?1:0,
-                'is_wednesday'=>$request['is_wednesday']?1:0,
-                'is_thursday'=>$request['is_thursday']?1:0,
-                'is_friday'=>$request['is_friday']?1:0,
-                'is_saturday'=>$request['is_saturday']?1:0,
-                'is_sunday'=>$request['is_sunday']?1:0,
-                ...$request->except('id','_token')
+                'trading_id' => $request['id'],
+                'is_monday' => $request['is_monday'] ? 1 : 0,
+                'is_tuesday' => $request['is_tuesday'] ? 1 : 0,
+                'is_wednesday' => $request['is_wednesday'] ? 1 : 0,
+                'is_thursday' => $request['is_thursday'] ? 1 : 0,
+                'is_friday' => $request['is_friday'] ? 1 : 0,
+                'is_saturday' => $request['is_saturday'] ? 1 : 0,
+                'is_sunday' => $request['is_sunday'] ? 1 : 0,
+                ...$request->except('id', '_token')
 
             ]);
-        }else{
+        } else {
 
             TradingUnitHubProfile::create([
 
-                'trading_id'=>$request['id'],
-                'is_monday'=>$request['is_monday']?1:0,
-                'is_tuesday'=>$request['is_tuesday']?1:0,
-                'is_wednesday'=>$request['is_wednesday']?1:0,
-                'is_thursday'=>$request['is_thursday']?1:0,
-                'is_friday'=>$request['is_friday']?1:0,
-                'is_saturday'=>$request['is_saturday']?1:0,
-                'is_sunday'=>$request['is_sunday']?1:0,
-                ...$request->except('id','_token')
+                'trading_id' => $request['id'],
+                'is_monday' => $request['is_monday'] ? 1 : 0,
+                'is_tuesday' => $request['is_tuesday'] ? 1 : 0,
+                'is_wednesday' => $request['is_wednesday'] ? 1 : 0,
+                'is_thursday' => $request['is_thursday'] ? 1 : 0,
+                'is_friday' => $request['is_friday'] ? 1 : 0,
+                'is_saturday' => $request['is_saturday'] ? 1 : 0,
+                'is_sunday' => $request['is_sunday'] ? 1 : 0,
+                ...$request->except('id', '_token')
 
             ]);
         }
 
 
 
-        return  redirect()->route('vender.service.provider.trading.unit.app.setting',$request['id']);
-
+        return  redirect()->route('vender.service.provider.trading.unit.app.setting', $request['id']);
     }
-    public function socialMediaSubmit(Request $request) {
+    public function socialMediaSubmit(Request $request)
+    {
 
 
 
-        $hub_setting=TradingUnitHubProfile::where('trading_id',$request['id'])->first();
+        $hub_setting = TradingUnitHubProfile::where('trading_id', $request['id'])->first();
 
-        if(isset($hub_setting)){
+        if (isset($hub_setting)) {
 
             TradingUnitHubProfile::find($hub_setting['id'])->update([
 
-                'trading_id'=>$request['id'],
+                'trading_id' => $request['id'],
 
-                ...$request->except('id','_token')
+                ...$request->except('id', '_token')
 
             ]);
-        }else{
+        } else {
 
             TradingUnitHubProfile::create([
 
-                'trading_id'=>$request['id'],
+                'trading_id' => $request['id'],
 
-                ...$request->except('id','_token')
+                ...$request->except('id', '_token')
 
             ]);
         }
 
 
 
-        return  redirect()->route('vender.service.provider.trading.unit.app.setting',$request['id']);
-
+        return  redirect()->route('vender.service.provider.trading.unit.app.setting', $request['id']);
     }
 
-    public function onlineStatusSubmit(Request $request) {
+    public function onlineStatusSubmit(Request $request)
+    {
 
-        $hub_setting=TradingUnitHubProfile::where('trading_id',$request['id'])->first();
+        $hub_setting = TradingUnitHubProfile::where('trading_id', $request['id'])->first();
 
-        if(isset($hub_setting)){
+        if (isset($hub_setting)) {
 
             TradingUnitHubProfile::find($hub_setting['id'])->update([
 
-                'trading_id'=>$request['id'],
-                'is_marketplace'=>$request['is_marketplace']?1:0,
-                'is_quote'=>$request['is_quote']?1:0,
-                'is_booking'=>$request['is_booking']?1:0,
+                'trading_id' => $request['id'],
+                'is_marketplace' => $request['is_marketplace'] ? 1 : 0,
+                'is_quote' => $request['is_quote'] ? 1 : 0,
+                'is_booking' => $request['is_booking'] ? 1 : 0,
 
             ]);
-        }else{
+        } else {
 
             TradingUnitHubProfile::create([
 
-                'trading_id'=>$request['id'],
-                'is_marketplace'=>$request['is_marketplace']?1:0,
-                'is_quote'=>$request['is_quote']?1:0,
-                'is_booking'=>$request['is_booking']?1:0,
+                'trading_id' => $request['id'],
+                'is_marketplace' => $request['is_marketplace'] ? 1 : 0,
+                'is_quote' => $request['is_quote'] ? 1 : 0,
+                'is_booking' => $request['is_booking'] ? 1 : 0,
 
             ]);
         }
 
 
 
-        return  redirect()->route('vender.service.provider.trading.unit.app.setting',$request['id']);
-
+        return  redirect()->route('vender.service.provider.trading.unit.app.setting', $request['id']);
     }
 }

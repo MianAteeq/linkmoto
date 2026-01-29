@@ -183,7 +183,7 @@ p{
     </div>
     <div class="col-md-9" id="contens" style="border-radius: 6px;margin-bottom: 10px;padding-bottom: 10px;margin-top: 0px;">
         <div class="row ">
-            <a href="{{redirect()->back()->getTargetUrl()}}"><h4 class="h3"  style="border-radius: 7px; border: 2px solid black; padding: 10px; font-weight: 600; font-size: 17px; color: white;margin-left: 15px;background-color:black"> < Back</h2></a>
+            <a href="{{redirect()->back()->getTargetUrl()}}"><h4 class="h3"  style="border-radius: 7px; border: 2px solid black; padding: 10px; font-weight: 600; font-size: 17px; color: white!important;margin-left: 15px;background-color:black"> < Back</h2></a>
 
         </div>
 
@@ -510,9 +510,10 @@ p{
     var job_types=[];
    function getSelectVal(sel)
    {
-    console.table();
+    
     let service_find=services.filter((item)=>item.id==sel.value);
     let job_type_find=job_types.filter((item)=>item.id==sel.value);
+    console.log(job_type_find);
     if(job_type_find.length==0){
         job_types.push(service_find[0]);
     }
@@ -529,7 +530,7 @@ p{
     html+=`</div>`;
 
     $('#content_job_type').html(html);
-    $('#description').text(text);
+    $('#description').val(text);
 
     const ids = job_types.map(user => user.id);
     $('#service_id').val(JSON.stringify(ids));
@@ -541,13 +542,17 @@ p{
 function removeTag(id){
     let job_type_find=job_types.filter((item)=>item.id==id);
     job_types=job_types.filter((item)=>item.id!=id);
+    console.log(job_types);
 let html=`<div class='tag-container mt-2'>`;
+ let text='';
   job_types.forEach((item)=>{
         html+=`<div class="tag">${item.name} <span class="close" onclick="removeTag(${item.id})">X</span></div>`;
+         text+=`${item.name} ,`;
     });
     html+=`</div>`;
 
     $('#content_job_type').html(html);
+    $('#description').val(text);
      const ids = job_types.map(user => user.id);
     $('#service_id').val(JSON.stringify(ids));
 }

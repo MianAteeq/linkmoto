@@ -3,50 +3,77 @@
 namespace Modules\Vender\Http\Controllers\Api;
 
 use File;
+use stdClass;
 use Exception;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Modules\Admin\Entities\FAQ;
 use Illuminate\Routing\Controller;
+use App\Models\AgreementAcceptance;
 use Modules\Admin\Entities\Setting;
 use Spatie\Permission\Models\Permission;
 use Modules\Vender\Entities\VendorProfile;
 use Illuminate\Contracts\Support\Renderable;
-use stdClass;
 
 class ProfileController extends Controller
 {
-   public function getProfile(Request $request)
-   {
+    public function getProfile(Request $request)
+    {
+        $auth_id = $request->user()->id;
 
-      $auth_id=$request->user()->id;
+        $user = User::with(
+            'payment_methods',
+            'quick_products',
+            'vender_services',
+            'vehicle_specialists',
+            'warranty_jobs',
+            'accreditation_schemes',
+            'profile',
+            'trading_unit',
+            'trading_unit.trading_name',
+            'trading_unit.app_setting'
+        )->find($auth_id);
 
-
-        $user = User::with('payment_methods', 'quick_products', 'vender_services', 'vehicle_specialists', 'warranty_jobs', 'accreditation_schemes', 'profile','trading_unit','trading_unit.trading_name','trading_unit.app_setting')->find($auth_id);
-
-
-
-        if($user['vender_id']==0 ){
-            $permissions=Permission::where('group_type','APP')->pluck('name');
-        }else{
-
-            $permissions=collect($user['provider_app']['group']['permissions'])->pluck('name');
+        if ($user['vender_id'] == 0) {
+            $permissions = Permission::where('group_type', 'APP')->pluck('name');
+        } else {
+            $permissions = collect($user['provider_app']['group']['permissions'])->pluck('name');
         }
 
+        // ---------------- AGREEMENT STATUS ----------------
+
+        $accepted = AgreementAcceptance::where('user_id', $auth_id)
+            ->pluck('agreement_type')
+            ->toArray();
+
+        $agreements = [
+            'nda' => in_array('NDA', $accepted),
+            'terms' => in_array('TERMS', $accepted),
+            'privacy' => in_array('PRIVACY', $accepted),
+        ];
+
+        $agreements['all_completed'] =
+            $agreements['nda'] &&
+            $agreements['terms'] &&
+            $agreements['privacy'];
+
+        // ---------------- RESPONSE ----------------
 
         return response()->json([
             'status' => true,
             'profile' => $user,
-            'permissions'=>$permissions,
+            'permissions' => $permissions,
+            'agreements' => $agreements,
             'message' => "Profile Fetch Successfully",
         ]);
-   }
-   public function getOtherSetting(Request $request)
-   {
+    }
+
+    public function getOtherSetting(Request $request)
+    {
 
 
-    $about=Setting::where('key', 'aboutDescription')->first()['value'];
-        $privacy_policy=Setting::where('key', 'privacy_policy')->first()['value'];
+        $about = Setting::where('key', 'aboutDescription')->first()['value'];
+        $privacy_policy = Setting::where('key', 'privacy_policy')->first()['value'];
 
         return response()->json([
             'status' => true,
@@ -54,22 +81,22 @@ class ProfileController extends Controller
             'privacy_policy' => $privacy_policy,
             'message' => "Privacy and About us Fetch Successfully",
         ]);
-   }
-   public function getFAQ(Request $request)
-   {
+    }
+    public function getFAQ(Request $request)
+    {
 
-      $faqs=FAQ::all();
+        $faqs = FAQ::all();
 
         return response()->json([
             'status' => true,
             'faqs' => $faqs,
             'message' => "FAQ Fetch Successfully",
         ]);
-   }
+    }
 
 
-   public function profileUpdate(Request $request)
-   {
+    public function profileUpdate(Request $request)
+    {
 
         $validator = \Validator::make($request->all(), [
             'name' =>  ['required'],
@@ -108,22 +135,22 @@ class ProfileController extends Controller
 
         User::find($request->user()->id)->update([
 
-            'name'=>$request['name'],
-            'last_name'=>$request['last_name'],
-            'email'=>$request['email'],
-            'profile_pic'=> $file,
+            'name' => $request['name'],
+            'last_name' => $request['last_name'],
+            'email' => $request['email'],
+            'profile_pic' => $file,
 
         ]);
 
         VendorProfile::where('vender_id', $request->user()->id)->update([
-            'phone_no'=>$request['phone_no'],
+            'phone_no' => $request['phone_no'],
         ]);
 
         $user = User::with('payment_methods', 'quick_products', 'vender_services', 'vehicle_specialists', 'warranty_jobs', 'accreditation_schemes', 'profile')->find($request->user()->id);
 
-        if($user['profile_pic']!=null){
+        if ($user['profile_pic'] != null) {
 
-            $user['profile_pic']=asset('/'). $user['profile_pic'];
+            $user['profile_pic'] = asset('/') . $user['profile_pic'];
         }
 
         return response()->json([
@@ -131,8 +158,7 @@ class ProfileController extends Controller
             'profile' => $user,
             'message' => "Profile Has Been Successfully",
         ]);
-
-   }
+    }
     public function updateToken(Request $request)
     {
 
