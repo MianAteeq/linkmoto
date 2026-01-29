@@ -26,6 +26,10 @@ class AgreementController extends Controller
         $agreements = Agreement::whereIn('type', $request->types)
             ->where('is_active', true)
             ->get();
+        $role = $user['provider_app']['group']['name'] ?? '';
+        if ($user->vender_id == 0) {
+            $role = 'Owner';
+        }
 
         foreach ($agreements as $agreement) {
 
@@ -40,7 +44,7 @@ class AgreementController extends Controller
                         ($user->last_name ?? '')
                 ),
                 'user_email' => $user->email,
-                'user_role' => $user['provider_app']['group']['name'],
+                'user_role' => $role,
                 'service_provider_name' => 'Motonos Provider App',
                 'acceptance_method' => 'Service Provider App',
                 'ip_address' => $request->ip(),
