@@ -76,7 +76,7 @@
     <!-- <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <h1 class="text-primary text-center">
-                <strong>Link Moto</strong>
+                <strong>Motonos</strong>
             </h1>
         </div>
     </div>

@@ -1,12 +1,13 @@
 <?php
- 
+
 namespace Database\Seeders;
- 
+
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Models\Admin;
+
 class AdminSeeder extends Seeder
 {
     /**
@@ -17,9 +18,9 @@ class AdminSeeder extends Seeder
     public function run()
     {
         Admin::create([
-            "name" => "Link Moto",
+            "name" => "Motonos",
             "email" => "admin@demo.com",
-            "password" =>Hash::make('12345678')
+            "password" => Hash::make('12345678')
         ]);
     }
 }

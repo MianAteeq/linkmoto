@@ -424,7 +424,7 @@
             <div class="footer_inner">
 
                 <div class="footer-left">
-                    <p>Thank You For Using <a href="#"> Link Moto </a></p>
+                    <p>Thank You For Using <a href="#"> Motonos </a></p>
                     <p><strong> Ph:</strong>+923426786629</p>
                     <p> <strong> Email:</strong>info@motonos.com</p>
                     <p> <strong> Address:</strong>189 CCA DHA Phase Lahore Pakistan</p>

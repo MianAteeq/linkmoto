@@ -3,8 +3,8 @@
 
 <head>
     @include('frontend::layout.header')
-    
-    <title>Home - Link Moto</title>
+
+    <title>Home - Motonos</title>
 </head>
 
 <!-- Preloader -->

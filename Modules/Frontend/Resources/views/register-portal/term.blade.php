@@ -96,7 +96,7 @@
                                             Updated:</strong> October 6, 2025</font>
                                 </p>
                                 <p data-start="248" data-end="494">
-                                    <font color="#000000" style="">At Link Moto, we value your privacy and are
+                                    <font color="#000000" style="">At Motonos, we value your privacy and are
                                         committed to protecting your personal data. This Privacy Policy explains how we
                                         collect, use, and protect the information you provide to us when you use our
                                         website, products, or services.</font>
