@@ -26,30 +26,30 @@
 
         <!-- <div id="identity">
 
-			<p id="address">Chris Coyier
-					123 Appleseed Street
-					Appleville, WI 53719
+   <p id="address">Chris Coyier
+     123 Appleseed Street
+     Appleville, WI 53719
 
- 					Phone: (555) 555-5555</p>
+ Phone: (555) 555-5555</p>
 
-			<div id="logo">
+   <div id="logo">
 
-				<div id="logoctr">
-					<a href="javascript:;" id="change-logo" title="Change logo">Change Logo</a>
-					<a href="javascript:;" id="save-logo" title="Save changes">Save</a>
-					|
-					<a href="javascript:;" id="delete-logo" title="Delete logo">Delete Logo</a>
-					<a href="javascript:;" id="cancel-logo" title="Cancel changes">Cancel</a>
-				</div>
+    <div id="logoctr">
+     <a href="javascript:;" id="change-logo" title="Change logo">Change Logo</a>
+     <a href="javascript:;" id="save-logo" title="Save changes">Save</a>
+     |
+     <a href="javascript:;" id="delete-logo" title="Delete logo">Delete Logo</a>
+     <a href="javascript:;" id="cancel-logo" title="Cancel changes">Cancel</a>
+    </div>
 
-				<div id="logohelp">
-					<input id="imageloc" type="text" size="50" value="" /><br />
-					(max width: 540px, max height: 100px)
-				</div>
-				<img id="image" src="images/logo.png" alt="logo" />
-			</div>
+    <div id="logohelp">
+     <input id="imageloc" type="text" size="50" value="" /><br />
+     (max width: 540px, max height: 100px)
+    </div>
+    <img id="image" src="images/logo.png" alt="logo" />
+   </div>
 
-		</div> -->
+  </div> -->
 
         <!-- <div style="clear:both"></div> -->
 
@@ -69,15 +69,15 @@
                     <tr>
                         <td class="meta-head">VRM</td>
                         <td>
-                            <p>{{ $invoice['booking']['vehicle']['vrm']??'' }}</p>
+                            <p>{{ $invoice['booking']['vehicle']['vrm'] ?? '' }}</p>
                         </td>
                     </tr>
                     <tr>
 
                         <td class="meta-head">Make/Model</td>
                         <td>
-                            <p id="date">{{ $invoice['booking']['vehicle']['vehicle_make']['name']??'' }} / {{
-                                $invoice['booking']['vehicle']['vehicle_model']['name']??'' }}</p>
+                            <p id="date">{{ $invoice['booking']['vehicle']['vehicle_make']['name'] ?? '' }} /
+                                {{ $invoice['booking']['vehicle']['vehicle_model']['name'] ?? '' }}</p>
                         </td>
                     </tr>
                     <tr>
@@ -89,7 +89,7 @@
                     <tr>
                         <td class="meta-head">Colour</td>
                         <td>
-                            <div class="due">{{ $invoice['booking']['vehicle']['color']['color']??'' }}</div>
+                            <div class="due">{{ $invoice['booking']['vehicle']['color']['color'] ?? '' }}</div>
                         </td>
                     </tr>
 
@@ -110,7 +110,8 @@
 
                         <td class="meta-head">Date</td>
                         <td>
-                            <p id="date">{{\Carbon\Carbon::parse($invoice['booking']->booking_date)->format('D m Y') }}</p>
+                            <p id="date">
+                                {{ \Carbon\Carbon::parse($invoice['booking']->booking_date)->format('D m Y') }}</p>
                         </td>
                     </tr>
                     <tr>
@@ -154,9 +155,9 @@
                     <tr>
                         <td class="meta-head">Address</td>
                         <td>
-                            <div class="due">{{ $invoice['booking']['contact_detail']['address'] }}, {{
-                                $invoice['booking']['contact_detail']['city'] }} {{ $invoice['booking']['contact_detail']['postal_code']
-                                }}</div>
+                            <div class="due">{{ $invoice['booking']['contact_detail']['address'] }},
+                                {{ $invoice['booking']['contact_detail']['city'] }}
+                                {{ $invoice['booking']['contact_detail']['postal_code'] }}</div>
                         </td>
                     </tr>
 
@@ -165,69 +166,69 @@
         </div>
         <!-- <table id="items">
 
-			<tr>
-				<th>Item</th>
-				<th>Description</th>
-				<th>Unit Cost</th>
-				<th>Quantity</th>
-				<th>Price</th>
-			</tr>
+   <tr>
+    <th>Item</th>
+    <th>Description</th>
+    <th>Unit Cost</th>
+    <th>Quantity</th>
+    <th>Price</th>
+   </tr>
 
-			<tr class="item-row">
-				<td class="item-name">
-					<div class="delete-wpr"><p>Web Updates</p><a class="delete" href="javascript:;" title="Remove row">X</a></div>
-				</td>
-				<td class="description"><p>Monthly web updates for http://widgetcorp.com (Nov. 1 - Nov. 30, 2009)</p></td>
-				<td><p class="cost">$650.00</p></td>
-				<td><p class="qty">1</p></td>
-				<td><span class="price">$650.00</span></td>
-			</tr>
+   <tr class="item-row">
+    <td class="item-name">
+     <div class="delete-wpr"><p>Web Updates</p><a class="delete" href="javascript:;" title="Remove row">X</a></div>
+    </td>
+    <td class="description"><p>Monthly web updates for http://widgetcorp.com (Nov. 1 - Nov. 30, 2009)</p></td>
+    <td><p class="cost">$650.00</p></td>
+    <td><p class="qty">1</p></td>
+    <td><span class="price">$650.00</span></td>
+   </tr>
 
-			<tr class="item-row">
-				<td class="item-name">
-					<div class="delete-wpr"><p>SSL Renewals</p><a class="delete" href="javascript:;" title="Remove row">X</a></div>
-				</td>
+   <tr class="item-row">
+    <td class="item-name">
+     <div class="delete-wpr"><p>SSL Renewals</p><a class="delete" href="javascript:;" title="Remove row">X</a></div>
+    </td>
 
-				<td class="description"><p>Yearly renewals of SSL certificates on main domain and several subdomains</p></td>
-				<td><p class="cost">$75.00</p></td>
-				<td><p class="qty">3</p></td>
-				<td><span class="price">$225.00</span></td>
-			</tr>
+    <td class="description"><p>Yearly renewals of SSL certificates on main domain and several subdomains</p></td>
+    <td><p class="cost">$75.00</p></td>
+    <td><p class="qty">3</p></td>
+    <td><span class="price">$225.00</span></td>
+   </tr>
 
-			<tr id="hiderow">
-				<td colspan="5"><a id="addrow" href="javascript:;" title="Add a row">Add a row</a></td>
-			</tr>
+   <tr id="hiderow">
+    <td colspan="5"><a id="addrow" href="javascript:;" title="Add a row">Add a row</a></td>
+   </tr>
 
-			<tr>
-				<td colspan="2" class="blank"> </td>
-				<td colspan="2" class="total-line">Subtotal</td>
-				<td class="total-value">
-					<div id="subtotal">$875.00</div>
-				</td>
-			</tr>
-			<tr>
+   <tr>
+    <td colspan="2" class="blank"> </td>
+    <td colspan="2" class="total-line">Subtotal</td>
+    <td class="total-value">
+     <div id="subtotal">$875.00</div>
+    </td>
+   </tr>
+   <tr>
 
-				<td colspan="2" class="blank"> </td>
-				<td colspan="2" class="total-line">Total</td>
-				<td class="total-value">
-					<div id="total">$875.00</div>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2" class="blank"> </td>
-				<td colspan="2" class="total-line">Amount Paid</td>
+    <td colspan="2" class="blank"> </td>
+    <td colspan="2" class="total-line">Total</td>
+    <td class="total-value">
+     <div id="total">$875.00</div>
+    </td>
+   </tr>
+   <tr>
+    <td colspan="2" class="blank"> </td>
+    <td colspan="2" class="total-line">Amount Paid</td>
 
-				<td class="total-value"><p id="paid">$0.00</p></td>
-			</tr>
-			<tr>
-				<td colspan="2" class="blank"> </td>
-				<td colspan="2" class="total-line balance">Balance Due</td>
-				<td class="total-value balance">
-					<div class="due">$875.00</div>
-				</td>
-			</tr>
+    <td class="total-value"><p id="paid">$0.00</p></td>
+   </tr>
+   <tr>
+    <td colspan="2" class="blank"> </td>
+    <td colspan="2" class="total-line balance">Balance Due</td>
+    <td class="total-value balance">
+     <div class="due">$875.00</div>
+    </td>
+   </tr>
 
-		</table> -->
+  </table> -->
 
         <table id="items">
             <tr>
@@ -243,18 +244,17 @@
             </tr>
 
             @foreach ($invoice['booking']['booking_items'] as $quotation_item)
-            <tr class="item-row">
-                <td style="color: black;">{{ $quotation_item['product'] }}</td>
-                <td>{{ $quotation_item['price_type']['name'] }}</td>
-                <td>{{ $quotation_item['qty'] }}</td>
-                <td>{{$quotation_item['unit_price']}}</td>
-                <td>{{ $quotation_item['discount'] }}</td>
-                <td>{{ $quotation_item['sub_total_ex_vat'] }}</td>
-                <td> 7 %</td>
-                <td>{{ $quotation_item['vat_price'] }}</td>
-                <td>{{ $quotation_item['total_price'] }}</td>
-            </tr>
-
+                <tr class="item-row">
+                    <td style="color: black;">{{ $quotation_item['product'] }}</td>
+                    <td>{{ $quotation_item['price_type']['name'] }}</td>
+                    <td>{{ $quotation_item['qty'] }}</td>
+                    <td>{{ $quotation_item['unit_price'] }}</td>
+                    <td>{{ $quotation_item['discount'] }}</td>
+                    <td>{{ $quotation_item['sub_total_ex_vat'] }}</td>
+                    <td> 7 %</td>
+                    <td>{{ $quotation_item['vat_price'] }}</td>
+                    <td>{{ $quotation_item['total_price'] }}</td>
+                </tr>
             @endforeach
 
 
@@ -267,84 +267,84 @@
         <!-- <table id="items"> -->
 
         <!-- <tr>
-				<th>Item</th>
-				<th>Description</th>
-				<th>Unit Cost</th>
-				<th>Quantity</th>
-				<th>Price</th>
-			</tr>
+    <th>Item</th>
+    <th>Description</th>
+    <th>Unit Cost</th>
+    <th>Quantity</th>
+    <th>Price</th>
+   </tr>
 
-			<tr class="item-row">
-				<td class="item-name">
-					<div class="delete-wpr">
-						<p>Web Updates</p><a class="delete" href="javascript:;" title="Remove row">X</a>
-					</div>
-				</td>
-				<td class="description">
-					<p>Monthly web updates for http://widgetcorp.com (Nov. 1 - Nov. 30, 2009)</p>
-				</td>
-				<td>
-					<p class="cost">$650.00</p>
-				</td>
-				<td>
-					<p class="qty">1</p>
-				</td>
-				<td><span class="price">$650.00</span></td>
-			</tr>
+   <tr class="item-row">
+    <td class="item-name">
+     <div class="delete-wpr">
+      <p>Web Updates</p><a class="delete" href="javascript:;" title="Remove row">X</a>
+     </div>
+    </td>
+    <td class="description">
+     <p>Monthly web updates for http://widgetcorp.com (Nov. 1 - Nov. 30, 2009)</p>
+    </td>
+    <td>
+     <p class="cost">$650.00</p>
+    </td>
+    <td>
+     <p class="qty">1</p>
+    </td>
+    <td><span class="price">$650.00</span></td>
+   </tr>
 
-			<tr class="item-row">
-				<td class="item-name">
-					<div class="delete-wpr">
-						<p>SSL Renewals</p><a class="delete" href="javascript:;" title="Remove row">X</a>
-					</div>
-				</td>
+   <tr class="item-row">
+    <td class="item-name">
+     <div class="delete-wpr">
+      <p>SSL Renewals</p><a class="delete" href="javascript:;" title="Remove row">X</a>
+     </div>
+    </td>
 
-				<td class="description">
-					<p>Yearly renewals of SSL certificates on main domain and several subdomains</p>
-				</td>
-				<td>
-					<p class="cost">$75.00</p>
-				</td>
-				<td>
-					<p class="qty">3</p>
-				</td>
-				<td><span class="price">$225.00</span></td>
-			</tr>
+    <td class="description">
+     <p>Yearly renewals of SSL certificates on main domain and several subdomains</p>
+    </td>
+    <td>
+     <p class="cost">$75.00</p>
+    </td>
+    <td>
+     <p class="qty">3</p>
+    </td>
+    <td><span class="price">$225.00</span></td>
+   </tr>
 
-			<tr id="hiderow">
-				<td colspan="5"><a id="addrow" href="javascript:;" title="Add a row">Add a row</a></td>
-			</tr> -->
+   <tr id="hiderow">
+    <td colspan="5"><a id="addrow" href="javascript:;" title="Add a row">Add a row</a></td>
+   </tr> -->
 
         <!-- <tr>
-				<td colspan="2" class="blank"> </td>
-				<td colspan="2" class="total-line">Subtotal</td>
-				<td class="total-value">
-					<div id="subtotal">$875.00</div>
-				</td>
-			</tr>
-			<tr>
+    <td colspan="2" class="blank"> </td>
+    <td colspan="2" class="total-line">Subtotal</td>
+    <td class="total-value">
+     <div id="subtotal">$875.00</div>
+    </td>
+   </tr>
+   <tr>
 
-				<td colspan="2" class="blank"> </td>
-				<td colspan="2" class="total-line">Total</td>
-				<td class="total-value">
-					<div id="total">$875.00</div>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2" class="blank"> </td>
-				<td colspan="2" class="total-line">Amount Paid</td>
+    <td colspan="2" class="blank"> </td>
+    <td colspan="2" class="total-line">Total</td>
+    <td class="total-value">
+     <div id="total">$875.00</div>
+    </td>
+   </tr>
+   <tr>
+    <td colspan="2" class="blank"> </td>
+    <td colspan="2" class="total-line">Amount Paid</td>
 
-				<td class="total-value">
-					<p id="paid">$0.00</p>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2" class="blank"> </td>
-				<td colspan="2" class="total-line balance">Balance Due</td>
-				<td class="total-value balance">
-					<div class="due">$875.00</div>
-				</td>
-			</tr> -->
+    <td class="total-value">
+     <p id="paid">$0.00</p>
+    </td>
+   </tr>
+   <tr>
+    <td colspan="2" class="blank"> </td>
+    <td colspan="2" class="total-line balance">Balance Due</td>
+    <td class="total-value balance">
+     <div class="due">$875.00</div>
+    </td>
+   </tr> -->
 
         <!-- </table> -->
         <div class="main">
@@ -408,12 +408,12 @@
                         </td>
                     </tr>
                     <!-- <tr>
-						<td colspan="2" class="blank"> </td>
-						<td colspan="2" class="total-line balance">Balance Due</td>
-						<td class="total-value balance">
-							<div class="due">$875.00</div>
-						</td>
-					</tr> -->
+      <td colspan="2" class="blank"> </td>
+      <td colspan="2" class="total-line balance">Balance Due</td>
+      <td class="total-value balance">
+       <div class="due">$875.00</div>
+      </td>
+     </tr> -->
                 </table>
 
             </div>
@@ -427,18 +427,18 @@
                 <div class="footer-left">
                     <p>Thank You For Using <a href="#"> Link Moto </a></p>
                     <p><strong> Ph:</strong>+923426786629</p>
-                    <p> <strong> Email:</strong>info@linkmoto.com</p>
+                    <p> <strong> Email:</strong>info@motonos.com</p>
                     <p> <strong> Address:</strong>189 CCA DHA Phase Lahore Pakistan</p>
 
                 </div>
                 <div class="footer-right">
                     <div class="flogo">
-                        <img src="{{ URL::to($setting['headerlogo']??'') }}" alt="logo" width="300px">
+                        <img src="{{ URL::to($setting['headerlogo'] ?? '') }}" alt="logo" width="300px">
                     </div>
                 </div>
             </div>
             <div class="footer_bottom">
-                <p>&copy; 2022 LinkMoto.com | All Right Reserved</p>
+                <p>&copy; 2026 motonos.com | All Right Reserved</p>
             </div>
 
         </div>

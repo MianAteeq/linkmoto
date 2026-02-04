@@ -30,7 +30,7 @@
                     </h4>
                     <p style="padding-left: 10px; padding-right: 10px;">Please provide bank details for
                         the purpose of receiving
-                        payments from LinkMoto (i.e.
+                        payments from Motonos (i.e.
                         when receiving refund
                         payments)
                         <br>
@@ -161,8 +161,8 @@
                                     placeholder="Document Upload ">
                                 <button class="btn btn-primary btn-sm view-btn"
                                     @if ($user['profile']['bank_proof'] == null) style="display: none" @endif> <a
-                                        href="{{ URL::to($user['profile']['proof_of_main_contact'] ?? '') }}" id="view_file"
-                                        target="_blank" style="color: white">View</a></button>
+                                        href="{{ URL::to($user['profile']['proof_of_main_contact'] ?? '') }}"
+                                        id="view_file" target="_blank" style="color: white">View</a></button>
                                 <br>
                                 <br>
                                 <p class="text-danger file_proof" style="padding-left: 10px;width:100%;display: none">

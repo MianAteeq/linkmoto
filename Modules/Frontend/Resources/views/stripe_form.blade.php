@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Laravel</title>
     <!-- Bootstrap core CSS -->
-    <link href="{{asset('modules/website/subscription_form.css')}}" rel="stylesheet">
+    <link href="{{ asset('modules/website/subscription_form.css') }}" rel="stylesheet">
 
     <style>
         .row-eq-height {
@@ -33,21 +32,21 @@
             <div class="col-lg-6 m-auto text-center pt-2">
                 <div>
                     <a href="javascript:void(0)" class="text-secondary"><i class="fa fa-arrow-left pr-1"></i>
-                        LinkMoto Inc.
+                        Motonos Inc.
                     </a>
                 </div>
                 <div class="mt-5 mb-5">
-                    <h5>Welcome LinkMoto Member!</h5>
+                    <h5>Welcome Motonos Member!</h5>
                     <h5>Kindly complete your Payment process</h5>
                 </div>
                 <a href="javascript:void(0)">
-                    <img src="{{asset('modules/website/assets/img/logo.png')}}" class="w-50" alt="logo" />
+                    <img src="{{ asset('modules/website/assets/img/logo.png') }}" class="w-50" alt="logo" />
                 </a>
             </div>
             <div class="col-lg-6 row-eq-height card card-payment">
                 <div class="row card-body">
                     <div class="col-md-8 offset-md-2 offset-sm-0 form-top m-auto customeStyle">
-                        <form method="POST" action="{{route('website.subscription.orderPost')}}" id="payment_form">
+                        <form method="POST" action="{{ route('website.subscription.orderPost') }}" id="payment_form">
                             @csrf
                             <div class="form-group">
                                 <label class="mb-1">Name</label>
@@ -57,8 +56,11 @@
                                 <label class="mb-1">Card</label>
                                 <div id="card-element" class="form-control"></div>
                             </div>
-                            <button type="button" class="btn btn-primary btn-block" style="font-weight: 800;">Total Amount ${{Modules\Admin\Entities\Packages::where('id',Session::get('package_id'))->first()->price}}</button>
-                            <button type="button" class="btn btn-success btn-block" style="font-weight: 800;" id="card-button" data-secret="{{ $intent->client_secret }}">
+                            <button type="button" class="btn btn-primary btn-block" style="font-weight: 800;">Total
+                                Amount
+                                ${{ Modules\Admin\Entities\Packages::where('id', Session::get('package_id'))->first()->price }}</button>
+                            <button type="button" class="btn btn-success btn-block" style="font-weight: 800;"
+                                id="card-button" data-secret="{{ $intent->client_secret }}">
                                 Pay
                             </button>
                         </form>
@@ -81,7 +83,7 @@
     <div class="row">
         <div class="col-md-6"></div>
         <div class="col-md-6">
-            <form method="POST" action="{{route('website.subscription.orderPost')}}" id="payment_form">
+            <form method="POST" action="{{ route('website.subscription.orderPost') }}" id="payment_form">
                 @csrf
                 <div class="row">
                     <div class="form-group">
@@ -101,7 +103,7 @@
 
     <script src="https://js.stripe.com/v3/"></script>
     <script>
-        const stripe = Stripe('<?php echo env('Publishable_key') ?>');
+        const stripe = Stripe('<?php echo env('Publishable_key'); ?>');
         const elements = stripe.elements();
         const cardElement = elements.create('card');
         cardElement.mount('#card-element');

@@ -54,9 +54,9 @@
                     <h4 class="h3" style="padding: 10px;font-weight: 600;font-size: 17px; "> <img src="/home.png"
                             style="width: 22px;margin-top: -5px;"> Main contact
                     </h4>
-                    <p style="padding-left: 10px; padding-right: 10px;">This is the main contact person that LinkMoto should
+                    <p style="padding-left: 10px; padding-right: 10px;">This is the main contact person that Motonos should
                         use for this account. This is the person who will receive the username and password to access
-                        LinkMoto and set up other users. <strong> This is a director, owner, or partner of the
+                        Motonos and set up other users. <strong> This is a director, owner, or partner of the
                             business.</strong> By providing
                         these details, you confirm that this person is <strong> authorised to act on behalf of the business
                         </strong> for

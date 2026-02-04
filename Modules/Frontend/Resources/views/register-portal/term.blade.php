@@ -80,7 +80,7 @@
                     <div class="link-body" style="padding: 10px">
                         <div class="form-group">
                             <p style="font-size:15px; font-weight:500;">
-                                To complete your registration for the LinkMoto closed beta, you must review and agree to the
+                                To complete your registration for the Motonos closed beta, you must review and agree to the
                                 following agreement.
                                 Please read carefully before confirming
                             </p>

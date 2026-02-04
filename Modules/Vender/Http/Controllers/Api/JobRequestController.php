@@ -14,6 +14,7 @@ use File;
 use Modules\Admin\Entities\JobType;
 use Modules\Vender\Entities\QuotationJobRequestJobType;
 use App\Models\User;
+
 class JobRequestController extends Controller
 {
     /***********  Save Job Request    ***************/
@@ -39,7 +40,7 @@ class JobRequestController extends Controller
 
 
             $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
-             $trading_id = User::find($request->user()->id)['default_trading_unit'];
+            $trading_id = User::find($request->user()->id)['default_trading_unit'];
             $latestOrder = JobRequest::orderBy('created_at', 'DESC')->first();
 
             $file = null;
@@ -59,32 +60,30 @@ class JobRequestController extends Controller
                 $uniqid = uniqid();
                 $file = $folderPath . $uniqid . '.' . $image_type;
                 file_put_contents($file, $image_base64);
-
-
             }
 
             $obj = JobRequest::create([
                 "vender_id" => $vender_id,
                 "image" => $file,
-                "job_request_id" => 'JRQ-'."SVP".str_pad($vender_id, 5, "0", STR_PAD_LEFT)."-". str_pad($latestOrder?$latestOrder->id+1: 0 + 1, 5, "0", STR_PAD_LEFT),
-                "quotation_id"=>$request->quotation_id,
-                "product_id"=>$request->product_id??null,
-                "job_type_id"=>$request->job_type_id,
-                "price_type_id"=>$request->price_type_id,
-                "job_description"=>$request->job_description,
-                "note"=>$request->note,
-                'trading_id'=> $trading_id,
-                "name"=>JobType::find($request->job_type_id)['name']??'',
+                "job_request_id" => 'JRQ-' . "SVP" . str_pad($vender_id, 5, "0", STR_PAD_LEFT) . "-" . str_pad($latestOrder ? $latestOrder->id + 1 : 0 + 1, 5, "0", STR_PAD_LEFT),
+                "quotation_id" => $request->quotation_id,
+                "product_id" => $request->product_id ?? null,
+                "job_type_id" => $request->job_type_id,
+                "price_type_id" => $request->price_type_id,
+                "job_description" => $request->job_description,
+                "note" => $request->note,
+                'trading_id' => $trading_id,
+                "name" => JobType::find($request->job_type_id)['name'] ?? '',
 
             ]);
 
 
-            if(isset($request['job_types'])){
+            if (isset($request['job_types'])) {
                 foreach ($request['job_types'] as $key => $job_type) {
 
                     QuotationJobRequestJobType::create([
-                        "job_request_id"=>$obj['id'],
-                        "job_type_id"=>$job_type['id'],
+                        "job_request_id" => $obj['id'],
+                        "job_type_id" => $job_type['id'],
 
                     ]);
                     # code...
@@ -151,29 +150,27 @@ class JobRequestController extends Controller
                 $uniqid = uniqid();
                 $file = $folderPath . $uniqid . '.' . $image_type;
                 file_put_contents($file, $image_base64);
+            }
 
-
-             }
-
-             JobRequest::find($request['job_request_id'])->update([
+            JobRequest::find($request['job_request_id'])->update([
                 "vender_id" => $vender_id,
-                "image" => str_replace("https://linkmoto.co.uk/","",$file),
-                "quotation_id"=>$request->quotation_id,
-                "job_type_id"=>$request->job_type_id,
-                "price_type_id"=>$request->price_type_id,
-                "job_description"=>$request->job_description,
-                "note"=>$request->note,
-                "name"=>JobType::find($request->job_type_id)['name']??'',
+                "image" => str_replace("https://motonos.com/", "", $file),
+                "quotation_id" => $request->quotation_id,
+                "job_type_id" => $request->job_type_id,
+                "price_type_id" => $request->price_type_id,
+                "job_description" => $request->job_description,
+                "note" => $request->note,
+                "name" => JobType::find($request->job_type_id)['name'] ?? '',
 
-             ]);
+            ]);
 
-             if(isset($request['job_types'])){
-                QuotationJobRequestJobType::where('job_request_id',$request['job_request_id'])->delete();
+            if (isset($request['job_types'])) {
+                QuotationJobRequestJobType::where('job_request_id', $request['job_request_id'])->delete();
                 foreach ($request['job_types'] as $key => $job_type) {
 
                     QuotationJobRequestJobType::create([
-                        "job_request_id"=>$request['job_request_id'],
-                        "job_type_id"=>$job_type['id'],
+                        "job_request_id" => $request['job_request_id'],
+                        "job_type_id" => $job_type['id'],
 
                     ]);
                     # code...
@@ -181,7 +178,7 @@ class JobRequestController extends Controller
             }
 
 
-            $job_request = JobRequest::with(['quotation','job_type','price_type','job_types','job_types.job_type','product'])->find($request->job_request_id);
+            $job_request = JobRequest::with(['quotation', 'job_type', 'price_type', 'job_types', 'job_types.job_type', 'product'])->find($request->job_request_id);
 
             // $job_request = JobRequest::with(['quotation','job_type','price_type'])->find($request->job_request_id);
 
@@ -211,27 +208,24 @@ class JobRequestController extends Controller
 
 
             $job_request = JobRequest::find($request->job_request_id);
-            if(!isset($job_request)){
-            $job_request = BookingJobRequest::find($request->job_request_id);
+            if (!isset($job_request)) {
+                $job_request = BookingJobRequest::find($request->job_request_id);
             }
 
-            if($job_request){
+            if ($job_request) {
                 $job_request->delete();
                 return response()->json([
                     'status' => true,
 
                     'message' => "Job Request Delete Successfully",
                 ]);
-
-            }else{
+            } else {
                 return response()->json([
                     'status' => false,
 
                     'message' => "Job Request Not Found",
                 ]);
-
             }
-
         } catch (Exception $e) {
 
             return response()->json([
@@ -252,22 +246,19 @@ class JobRequestController extends Controller
 
             $job_request = JobRequest::with(['product', 'price_type', 'job_types', 'job_types.job_type'])->find($request->job_request_id);
 
-            if($job_request){
+            if ($job_request) {
                 return response()->json([
                     'status' => true,
                     'job_request' => $job_request,
                     'message' => "Job Request Fetch Successfully",
                 ]);
-
-            }else{
+            } else {
                 return response()->json([
                     'status' => false,
                     'job_request' => $job_request,
                     'message' => "Job Request Not Found",
                 ]);
-
             }
-
         } catch (Exception $e) {
 
             return response()->json([
@@ -287,23 +278,21 @@ class JobRequestController extends Controller
         // try {
 
 
-            $job_request = JobRequest::with(['product', 'price_type', 'job_types', 'job_types.job_type'])->where('quotation_id',$request->quotation_id)->get(); 
- 
-            if(count($job_request)>0){
-                return response()->json([
-                    'status' => true,
-                    'job_requests' => $job_request,
-                    'message' => "Job Requests Fetch Successfully",
-                ]);
+        $job_request = JobRequest::with(['product', 'price_type', 'job_types', 'job_types.job_type'])->where('quotation_id', $request->quotation_id)->get();
 
-            }else{
-                return response()->json([
-                    'status' => false,
-                    'job_requests' =>[],
-                    'message' => "Job Request Not Found",
-                ]);
-
-            }
+        if (count($job_request) > 0) {
+            return response()->json([
+                'status' => true,
+                'job_requests' => $job_request,
+                'message' => "Job Requests Fetch Successfully",
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'job_requests' => [],
+                'message' => "Job Request Not Found",
+            ]);
+        }
 
         // } catch (Exception $e) {
 

@@ -102,10 +102,10 @@
 
             <div class="col-md-8" style="border: 2px solid black;border-radius: 8px;padding:inherit">
                 <div class="link-body" style="padding: 10px">
-                    <h1 id="welcome-heading" class="heading">Welcome to LinkMoto!</h1>
+                    <h1 id="welcome-heading" class="heading">Welcome to Motonos!</h1>
 
                     <p class="intro">
-                        You’ve been invited to complete your <strong>full registration</strong> for the LinkMoto closed
+                        You’ve been invited to complete your <strong>full registration</strong> for the Motonos closed
                         beta.
                     </p>
 

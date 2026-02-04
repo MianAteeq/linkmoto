@@ -66,19 +66,19 @@ class QuotationItemController extends Controller
                 "job_type_id" => $request->job_type_id,
                 "price_type_id" => $request->price_type_id,
                 "job_description" => $request->job_description,
-                "product_id"=>$request->product_id??null,
+                "product_id" => $request->product_id ?? null,
                 "name" => JobType::find($request->job_type_id)['name'] ?? '',
 
             ]);
 
-            if(isset($request['job_type_id'])){
+            if (isset($request['job_type_id'])) {
                 foreach ($request['job_types'] as $key => $job_type) {
-                QuotationJobRequestJobType::create([
-                    "job_request_id"=>$obj['id'],
-                    "job_type_id"=>$job_type['id'],
+                    QuotationJobRequestJobType::create([
+                        "job_request_id" => $obj['id'],
+                        "job_type_id" => $job_type['id'],
 
-                ]);
-            }
+                    ]);
+                }
             }
 
             $job_request = JobRequest::with(['quotation', 'job_type', 'price_type'])->find($obj->id);
@@ -122,33 +122,33 @@ class QuotationItemController extends Controller
 
 
             $vender_id =
-            Quotation::find($request['quotation_id'])['vender_id'];
+                Quotation::find($request['quotation_id'])['vender_id'];
 
 
             $file = JobRequest::find($request['job_request_id'])['image'];
             if ($request->image) {
-                if ( base64_encode(base64_decode($request['image'], true)) === $request['image']){
+                if (base64_encode(base64_decode($request['image'], true)) === $request['image']) {
 
-                $img = $request->image;
-                $folderPath = "quotation/";
+                    $img = $request->image;
+                    $folderPath = "quotation/";
 
-                if (!File::exists($folderPath)) {
-                    File::makeDirectory($folderPath, $mode = 0777, true, true);
+                    if (!File::exists($folderPath)) {
+                        File::makeDirectory($folderPath, $mode = 0777, true, true);
+                    }
+
+                    $image_parts = explode(";base64,", $img);
+                    $image_type_aux = explode("image/", $image_parts[0]);
+                    $image_type = $image_type_aux[1];
+                    $image_base64 = base64_decode($image_parts[1]);
+                    $uniqid = uniqid();
+                    $file = $folderPath . $uniqid . '.' . $image_type;
+                    file_put_contents($file, $image_base64);
                 }
-
-                $image_parts = explode(";base64,", $img);
-                $image_type_aux = explode("image/", $image_parts[0]);
-                $image_type = $image_type_aux[1];
-                $image_base64 = base64_decode($image_parts[1]);
-                $uniqid = uniqid();
-                $file = $folderPath . $uniqid . '.' . $image_type;
-                file_put_contents($file, $image_base64);
-            }
             }
 
             JobRequest::find($request['job_request_id'])->update([
                 "vender_id" => $vender_id,
-                "image" => str_replace("https://linkmoto.fissionmonster.com/","",$file),
+                "image" => str_replace("https://motonos.com/", "", $file),
                 "quotation_id" => $request->quotation_id,
                 "job_type_id" => $request->job_type_id,
                 "price_type_id" => $request->price_type_id,
@@ -157,12 +157,12 @@ class QuotationItemController extends Controller
 
             ]);
 
-            if(isset($request['job_types'])){
-                QuotationJobRequestJobType::where('job_request_id',$request['job_request_id'])->delete();
+            if (isset($request['job_types'])) {
+                QuotationJobRequestJobType::where('job_request_id', $request['job_request_id'])->delete();
                 foreach ($request['job_types'] as $key => $job_type) {
                     QuotationJobRequestJobType::create([
-                        "job_request_id"=>$request['job_request_id'],
-                        "job_type_id"=>$job_type['id'],
+                        "job_request_id" => $request['job_request_id'],
+                        "job_type_id" => $job_type['id'],
 
                     ]);
                 }

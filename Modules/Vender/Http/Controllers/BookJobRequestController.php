@@ -11,7 +11,7 @@ use Modules\Vender\Entities\Booking;
 use Illuminate\Contracts\Support\Renderable;
 use Modules\Vender\Entities\BookingJobRequest;
 use Modules\Vender\Entities\BookingJobRequestJobType;
-use Illuminate\Support\Facades\Log; 
+use Illuminate\Support\Facades\Log;
 use App\Models\User;
 
 class BookJobRequestController extends Controller
@@ -41,7 +41,7 @@ class BookJobRequestController extends Controller
 
 
             $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
-              $trading_id = User::find($request->user()->id)['default_trading_unit'];
+            $trading_id = User::find($request->user()->id)['default_trading_unit'];
             $latestOrder = BookingJobRequest::orderBy('created_at', 'DESC')->first();
 
             $file = null;
@@ -63,45 +63,45 @@ class BookJobRequestController extends Controller
                 file_put_contents($file, $image_base64);
             }
 
-            $booking=Booking::find($request->booking_id);
+            $booking = Booking::find($request->booking_id);
 
-            $is_job=0;
+            $is_job = 0;
 
-            if(isset($booking)){
-            if($booking['job_no']!=null){
-                $is_job=1;
-            }
+            if (isset($booking)) {
+                if ($booking['job_no'] != null) {
+                    $is_job = 1;
+                }
             }
 
             $obj = BookingJobRequest::create([
                 "vender_id" => $vender_id,
                 "image" => $file,
-                "job_request_id" => 'JRQ-'."SVP".str_pad($vender_id, 5, "0", STR_PAD_LEFT)."-". str_pad($latestOrder?$latestOrder->id+1: 0 + 1, 5, "0", STR_PAD_LEFT),
+                "job_request_id" => 'JRQ-' . "SVP" . str_pad($vender_id, 5, "0", STR_PAD_LEFT) . "-" . str_pad($latestOrder ? $latestOrder->id + 1 : 0 + 1, 5, "0", STR_PAD_LEFT),
                 "booking_id" => $request->booking_id,
-                "product_id"=>$request->product_id??null,
+                "product_id" => $request->product_id ?? null,
                 "job_type_id" => $request->job_type_id,
                 "price_type_id" => $request->price_type_id,
                 "job_description" => $request->job_description,
                 "is_job" => $is_job,
                 "note" => $request->note,
-                'trading_id'=> $trading_id,
+                'trading_id' => $trading_id,
                 "name" => JobType::find($request->job_type_id)['name'] ?? '',
 
             ]);
 
-            if(isset($request['job_types'])){
+            if (isset($request['job_types'])) {
                 foreach ($request['job_types'] as $key => $job_type) {
 
                     BookingJobRequestJobType::create([
-                        "job_request_id"=>$obj['id'],
-                        "job_type_id"=>$job_type['id'],
+                        "job_request_id" => $obj['id'],
+                        "job_type_id" => $job_type['id'],
 
                     ]);
                     # code...
                 }
             }
 
-            $job_request = BookingJobRequest::with(['booking', 'job_type', 'price_type','job_types','job_types.job_type'])->find($obj->id);
+            $job_request = BookingJobRequest::with(['booking', 'job_type', 'price_type', 'job_types', 'job_types.job_type'])->find($obj->id);
 
             return response()->json([
                 'status' => true,
@@ -164,7 +164,7 @@ class BookJobRequestController extends Controller
 
             BookingJobRequest::find($request['job_request_id'])->update([
                 "vender_id" => $vender_id,
-                "image" => str_replace("https://linkmoto.co.uk/","",$file),
+                "image" => str_replace("https://motonos.com", "", $file),
                 "booking_id" => $request->booking_id,
                 "job_type_id" => $request->job_type_id,
                 "price_type_id" => $request->price_type_id,
@@ -174,20 +174,20 @@ class BookJobRequestController extends Controller
 
             ]);
 
-            if(isset($request['job_types'])){
-                BookingJobRequestJobType::where('job_request_id',$request['job_request_id'])->delete();
+            if (isset($request['job_types'])) {
+                BookingJobRequestJobType::where('job_request_id', $request['job_request_id'])->delete();
                 foreach ($request['job_types'] as $key => $job_type) {
 
                     BookingJobRequestJobType::create([
-                        "job_request_id"=>$request['job_request_id'],
-                        "job_type_id"=>$job_type['id'],
+                        "job_request_id" => $request['job_request_id'],
+                        "job_type_id" => $job_type['id'],
 
                     ]);
                     # code...
                 }
             }
 
-            $job_request = BookingJobRequest::with(['booking', 'job_type', 'price_type','job_types','job_types.job_type','product'])->find($request->job_request_id);
+            $job_request = BookingJobRequest::with(['booking', 'job_type', 'price_type', 'job_types', 'job_types.job_type', 'product'])->find($request->job_request_id);
 
             return response()->json([
                 'status' => true,
@@ -273,30 +273,28 @@ class BookJobRequestController extends Controller
             ]);
         }
     }
-      public function getJobRequests(Request $request)
+    public function getJobRequests(Request $request)
     {
         // return $request;
 
         // try {
 
 
-            $job_request = BookingJobRequest::with(['product', 'price_type', 'job_types', 'job_types.job_type'])->where('booking_id',$request->quotation_id)->get(); 
- 
-            if(count($job_request)>0){
-                return response()->json([
-                    'status' => true,
-                    'job_requests' => $job_request,
-                    'message' => "Job Requests Fetch Successfully",
-                ]);
+        $job_request = BookingJobRequest::with(['product', 'price_type', 'job_types', 'job_types.job_type'])->where('booking_id', $request->quotation_id)->get();
 
-            }else{
-                return response()->json([
-                    'status' => false,
-                    'job_requests' =>[],
-                    'message' => "Job Request Not Found",
-                ]);
-
-            }
+        if (count($job_request) > 0) {
+            return response()->json([
+                'status' => true,
+                'job_requests' => $job_request,
+                'message' => "Job Requests Fetch Successfully",
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'job_requests' => [],
+                'message' => "Job Request Not Found",
+            ]);
+        }
 
         // } catch (Exception $e) {
 
@@ -308,4 +306,3 @@ class BookJobRequestController extends Controller
         // }
     }
 }
-
