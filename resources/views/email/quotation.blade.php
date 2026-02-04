@@ -186,7 +186,8 @@
                                                     <tr>
                                                         <td style="width:64px;">
 
-                                                            <img height="auto" src="{{ URL::to($setting['headerlogo']??'') }}"
+                                                            <img height="auto"
+                                                                src="{{ URL::to($setting['headerlogo'] ?? '') }}"
                                                                 style="border:0;display:block;outline:none;text-decoration:none;width:100%;"
                                                                 width="64" />
 
@@ -210,40 +211,49 @@
                                         </td>
                                     </tr>
 
-                                   <tr>
-                                        <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                    
+                                    <tr>
+                                        <td align="left"
+                                            style="font-size:0px;padding:10px 25px;word-break:break-word;">
+
                                             <div
                                                 style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:14px;line-height:22px;text-align:left;color:#525252;">
                                                 <h4>Vehicle Detail</h4>
                                                 <p><strong>VRM</strong>: {{ $quotation['vehicle']['vrm'] }}</p>
-                                                <p><strong>VIN No</strong>: {{ $quotation['vehicle']['vin_number'] }}</p>
-                                                <p><strong>Vehicle Make</strong>: {{ $quotation['vehicle']['vehicle_make']['name'] }}</p>
-                                                <p><strong>Vehicle Model</strong>: {{ $quotation['vehicle']['vehicle_model']['name'] }}</p>
-                                    
-                                    
+                                                <p><strong>VIN No</strong>: {{ $quotation['vehicle']['vin_number'] }}
+                                                </p>
+                                                <p><strong>Vehicle Make</strong>:
+                                                    {{ $quotation['vehicle']['vehicle_make']['name'] }}</p>
+                                                <p><strong>Vehicle Model</strong>:
+                                                    {{ $quotation['vehicle']['vehicle_model']['name'] }}</p>
+
+
                                             </div>
-                                    
+
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                    
+                                        <td align="left"
+                                            style="font-size:0px;padding:10px 25px;word-break:break-word;">
+
                                             <div
                                                 style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:14px;line-height:22px;text-align:left;color:#525252;">
                                                 <h4>Contact Detail</h4>
                                                 <p><strong>Name</strong>: {{ $quotation['contact_detail']['name'] }}</p>
-                                                <p><strong>Mobile No</strong>: {{ $quotation['contact_detail']['mobile_no'] }}</p>
-                                                <p><strong>Address</strong>: {{ $quotation['contact_detail']['address'] }},{{ $quotation['contact_detail']['city'] }}, {{ $quotation['contact_detail']['postal_code'] }}</p>
-                                    
-                                    
+                                                <p><strong>Mobile No</strong>:
+                                                    {{ $quotation['contact_detail']['mobile_no'] }}</p>
+                                                <p><strong>Address</strong>:
+                                                    {{ $quotation['contact_detail']['address'] }},{{ $quotation['contact_detail']['city'] }},
+                                                    {{ $quotation['contact_detail']['postal_code'] }}</p>
+
+
                                             </div>
-                                    
+
                                         </td>
                                     </tr>
 
                                     <tr>
-                                        <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                        <td align="left"
+                                            style="font-size:0px;padding:10px 25px;word-break:break-word;">
 
                                             <table 0="[object Object]" 1="[object Object]" 2="[object Object]"
                                                 border="0"
@@ -254,14 +264,15 @@
                                                     <th style="padding: 0 0 0 15px;" align="right">Price</th>
                                                 </tr>
                                                 @foreach ($quotation['quotation_item'] as $quotation_item)
-                                                <tr>
-                                                    <td style="padding: 5px 15px 5px 0;">{{ $quotation_item['product'] }}</td>
-                                                    <td style="padding: 0 15px;">{{ $quotation_item['qty'] }}</td>
-                                                    <td style="padding: 0 0 0 15px;" align="right">£ {{ $quotation_item['total_price'] }}</td>
-                                                </tr>
-                                                    
+                                                    <tr>
+                                                        <td style="padding: 5px 15px 5px 0;">
+                                                            {{ $quotation_item['product'] }}</td>
+                                                        <td style="padding: 0 15px;">{{ $quotation_item['qty'] }}</td>
+                                                        <td style="padding: 0 0 0 15px;" align="right">£
+                                                            {{ $quotation_item['total_price'] }}</td>
+                                                    </tr>
                                                 @endforeach
-                                               
+
                                                 <tr
                                                     style="border-bottom:2px solid #ecedee;text-align:left;padding:15px 0;">
                                                     <td style="padding: 5px 15px 5px 0; font-weight:bold">Sub Total</td>
@@ -274,7 +285,7 @@
                                                     <td style="padding: 5px 15px 5px 0; font-weight:bold"> Vat</td>
                                                     <td style="padding: 0 15px;"></td>
                                                     <td style="padding: 0 0 0 15px; font-weight:bold" align="right">
-                                                         £ {{ $quotation['vat'] }}</td>
+                                                        £ {{ $quotation['vat'] }}</td>
                                                 </tr>
                                                 <tr
                                                     style="border-bottom:2px solid #ecedee;text-align:left;padding:15px 0;">
@@ -289,7 +300,8 @@
                                     </tr>
 
                                     <tr>
-                                        <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                        <td align="left"
+                                            style="font-size:0px;padding:10px 25px;word-break:break-word;">
 
                                             {{-- <div
                                                 style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:12px;line-height:16px;text-align:left;color:#a2a2a2;">
@@ -301,16 +313,17 @@
                                         </td>
                                     </tr>
 
-                                   
+
 
                                     <tr>
-                                        <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                        <td align="left"
+                                            style="font-size:0px;padding:10px 25px;word-break:break-word;">
 
                                             <div
                                                 style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:14px;line-height:20px;text-align:left;color:#525252;">
                                                 Best regards,<br><br> Link Moto<br>Jahangaiz., CEO and Founder<br>
-                                                <a href="http://linkmoto.demo-fissionmonster.xyz"
-                                                    style="color:#2F67F6">info@linkmoto.com</a>
+                                                <a href="http://motonos.com"
+                                                    style="color:#2F67F6">no-reply@motonos.com</a>
                                             </div>
 
                                         </td>
@@ -350,7 +363,8 @@
 
         <div style="Margin:0px auto;max-width:600px;">
 
-            <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+            <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation"
+                style="width:100%;">
                 <tbody>
                     <tr>
                         <td style="direction:ltr;font-size:0px;padding:20px 0;text-align:center;vertical-align:top;">
@@ -367,13 +381,14 @@
                             <div class="mj-column-per-100 outlook-group-fix"
                                 style="font-size:13px;text-align:left;direction:ltr;display:inline-block;vertical-align:bottom;width:100%;">
 
-                                <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                                <table border="0" cellpadding="0" cellspacing="0" role="presentation"
+                                    width="100%">
                                     <tbody>
                                         <tr>
                                             <td style="vertical-align:bottom;padding:0;">
 
-                                                <table border="0" cellpadding="0" cellspacing="0" role="presentation"
-                                                    width="100%">
+                                                <table border="0" cellpadding="0" cellspacing="0"
+                                                    role="presentation" width="100%">
 
                                                     <tr>
                                                         <td align="center"
@@ -393,7 +408,8 @@
 
                                                             <div
                                                                 style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:12px;font-weight:300;line-height:1;text-align:center;color:#575757;">
-                                                                <a href="" style="color:#575757">Unsubscribe</a> from
+                                                                <a href=""
+                                                                    style="color:#575757">Unsubscribe</a> from
                                                                 our emails
                                                             </div>
 
