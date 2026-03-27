@@ -215,15 +215,12 @@
                                 ->implode(' ');
                         @endphp
 
-                        @if ($addressLine1)
-                            <p style="line-height:1.8;font-size:15px;margin:0;">
+                        @if ($addressLine1 || $addressLine2)
+                            <p style="line-height:1.4;font-size:15px;margin:0;">
                                 {{ $addressLine1 }}
-                            </p>
-                        @endif
-
-                        @if ($addressLine2)
-                            <p style="line-height:1.8;font-size:15px;margin:0;">
-                                {{ $addressLine2 }}
+                                @if ($addressLine2)
+                                    <br>{{ $addressLine2 }}
+                                @endif
                             </p>
                         @endif
 
@@ -564,13 +561,19 @@ if($first_item['unit_price_rate']=="Hourly"){
                             style="border-left:1px solid black !important;border-right: 1px solid black !important;">
                             <td class="td" style="color: black;border: none!important;font-size: 12px;">
                                 <p style="margin:0px!important;margin-top:10px!important;font-size: 8px!important">
-                                    @foreach ($first_item->job_types as $i => $record)
-                                        {{ $record->job_type->name }} @if ($i + 1 < count($first_item->job_types))
-                                            ,
-                                        @endif
-                                        @endforeach @if (!empty($first_item->product))
-                                            , {{ \Illuminate\Support\Str::limit($first_item->product, 50) }}
-                                        @endif
+                                    @php
+                                        $items = collect($first_item->job_types)
+                                            ->map(fn($record) => $record->job_type->name)
+                                            ->filter()
+                                            ->values()
+                                            ->toArray();
+
+                                        if (!empty($first_item->product)) {
+                                            $items[] = \Illuminate\Support\Str::limit($first_item->product, 50);
+                                        }
+                                    @endphp
+
+                                    {{ implode(', ', $items) }}
 
 
                                 </p>
@@ -1741,12 +1744,13 @@ if($first_item['unit_price_rate']=="Hourly"){
                             <p style="line-height: 1.8;font-size: 15px;margin:0">
                                 {{ $invoice['trading_name']['app_setting']['address_line_1'] }} @if ($invoice['trading_name']['app_setting']['address_line_2'] != null)
                                     ,
-                                    @endif {{ $invoice['trading_name']['app_setting']['address_line_2'] }}
-                                    @if ($invoice['trading_name']['app_setting']['address_line_3'] != null)
-                                        ,
-                                    @endif
-                                    {{ $invoice['trading_name']['app_setting']['address_line_3'] }} <br>
-                                    {{ $invoice['trading_name']['app_setting']['address_line_4'] }}
+                                @endif
+                                {{ $invoice['trading_name']['app_setting']['address_line_2'] }}
+                                @if ($invoice['trading_name']['app_setting']['address_line_3'] != null)
+                                    ,
+                                @endif
+                                {{ $invoice['trading_name']['app_setting']['address_line_3'] }} <br>
+                                {{ $invoice['trading_name']['app_setting']['address_line_4'] }}
 
                             </p>
                             <p style="line-height: 1.8;font-size: 15px;margin:0;margin-top: -7px">

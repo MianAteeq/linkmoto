@@ -82,9 +82,10 @@
     <div id="page-wrap" style="width: 100%;margin: 0 auto; position: relative;">
 
         <div id="header">
-            <p style="width: 50%;margin-top: 10px;font-size: 17px;text-align: left;float: left;">Powered by Motonos</p>
-            <p style="width: 50%;margin-bottom: 10px;font-size: 16.5px;text-align: right;float: left;">
-                www.motonos.com</p>
+            <p style="width: 50%;margin-top: 10px;font-size: 16px;text-align: left;float: left;margin-left: 12px;"></p>
+            <p
+                style="width: 50%;margin-bottom: 10px;font-size: 16px;text-align: right;float: left;margin-top: 10px;margin-left: 17px;">
+                Powered by Motonos (www.motonos.com)</p>
 
 
         </div>
@@ -240,7 +241,7 @@
                     <td style="color: black;border: none!important;padding:10px;">{{ $invoice['payment_type'] }}</td>
                     <td style="border: none!important;padding:10px;">{{ $invoice['payment_method'] }}</td>
                     <td style="border: none!important;padding:10px;">
-                        {{ \Carbon\Carbon::parse($invoice['payment_date'])->format('D m Y') }}</td>
+                        {{ \Carbon\Carbon::parse($invoice['payment_date'])->format('d/m/Y h:ia') }}</td>
                     <td style="border: none!important;padding:10px;">£{{ number_format($invoice['amount'], 2) }}</td>
 
                 </tr>
