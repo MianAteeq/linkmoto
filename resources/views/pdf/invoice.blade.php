@@ -862,7 +862,7 @@ if($first_item['unit_price_rate']=="Hourly"){
                                     @if ($invoice['status'] == 'REJECTED')
                                         Void
                                     @else
-                                        {{ ucfirst($invoice['status']) }}
+                                        {{ ucfirst(strtolower($invoice['status'])) }}
                                     @endif
                                 </div>
                             </td>
@@ -1542,7 +1542,7 @@ if($first_item['unit_price_rate']=="Hourly"){
                                         @if ($invoice['status'] == 'REJECTED')
                                             Void
                                         @else
-                                            {{ ucfirst($invoice['status']) }}
+                                            {{ ucfirst(strtolower($invoice['status'])) }}
                                         @endif
                                     </div>
                                 </td>
@@ -2217,7 +2217,7 @@ if($first_item['unit_price_rate']=="Hourly"){
                                         @if ($invoice['status'] == 'REJECTED')
                                             Void
                                         @else
-                                            {{ ucfirst($invoice['status']) }}
+                                            {{ ucfirst(strtolower($invoice['status'])) }}
                                         @endif
                                     </div>
                                 </td>
