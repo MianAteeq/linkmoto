@@ -290,35 +290,34 @@
         <p style="width: 100%;margin-top: 10px;font-size: 11px;text-align: left">
             @if ($vender['profile']['organization_status'] === 'Limited Company')
                 @if (
-                    $invoice['trading_name']['app_setting']['header_option'] == 1 ||
-                        $invoice['trading_name']['app_setting']['header_option'] == 2)
+                    $invoice['invoice']['trading_name']['app_setting']['header_option'] == 1 ||
+                        $invoice['invoice']['trading_name']['app_setting']['header_option'] == 2)
                     {{ ucfirst($vender['profile']['company_name']) }}
                 @else
                     {{ ucfirst($vender['profile']['company_name']) }} trading as
-                    {{ $invoice['booking']['trading_name']['trading_name']['name'] }}.
+                    {{ $invoice['invoice']['booking']['trading_name']['trading_name']['name'] }}.
                 @endif
             @else
                 @if (
-                    $invoice['trading_name']['app_setting']['header_option'] == 1 ||
-                        $invoice['trading_name']['app_setting']['header_option'] == 2)
+                    $invoice['invoice']['trading_name']['app_setting']['header_option'] == 1 ||
+                        $invoice['invoice']['trading_name']['app_setting']['header_option'] == 2)
                     {{-- {{ucfirst($vender['profile']['company_name']) }} --}}
                 @else
                     {{ ucfirst($vender['profile']['company_name']) }} trading as
-                    {{ $invoice['booking']['trading_name']['trading_name']['name'] }}.
+                    {{ $invoice['invoice']['booking']['trading_name']['trading_name']['name'] }}.
                 @endif
 
 
             @endif
             {{-- Motodoc Ltd trading as H & H Motors. --}}
         </p>
-        <p style="width: 100%;margin-bottom: 30px;margin-top: -18px;font-size: 11px;text-align: left">Registered
-            office: {{ $vender['profile']['address_line_1'] }}, @isset($vender['profile']['address_line_2'])
+        <p style="width: 100%;margin-bottom: 30px;margin-top: -18px;font-size: 11px;text-align: left">Registered office:
+            {{ $vender['profile']['address_line_1'] }}, @isset($vender['profile']['address_line_2'])
                 {{ $vender['profile']['address_line_2'] }},
             @endisset {{ $vender['profile']['city'] }} {{ $vender['profile']['postcode'] }}. Registered in
             {{ $vender['profile']['company_jurisdiction'] }} no: {{ $vender['profile']['registration_no'] }}.
             {{-- {{ $vender['profile']['area'] }}.
-            Registered in
-            {{$vender['profile']['company_jurisdiction']}} no: {{ $vender['profile']['uk_vat_no'] }} --}}
+            Registered in {{$vender['profile']['company_jurisdiction']}} no: {{ $vender['profile']['uk_vat_no'] }} --}}
         <p style="margin-top:-45px;margin-right: -20px; font-size: 11px;float: right;text-align: right!important">
             v20241002</p>
         </p>
