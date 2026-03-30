@@ -95,7 +95,7 @@
                 <div id="customer"
                     style="overflow: hidden;margin: 10px;margin-top:25px;margin-bottom:0px;width: 50%;float: left;">
 
-                    <h1 id="customer-title" style="font-size: 20px;font-weight: bold;line-height: 2.1;margin-bottom: 0">
+                    <h1 id="customer-title" style="font-size: 15px;font-weight: bold;line-height: 2.1;margin-bottom: 0">
                         @if ($vender['profile']['organization_status'] === 'Limited Company')
                             @if ($invoice['invoice']['trading_name']['app_setting']['header_option'] == 1)
                                 {{ ucfirst($vender['profile']['company_name']) }}
