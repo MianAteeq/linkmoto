@@ -435,7 +435,8 @@ class InvoiceController extends Controller
                 'third_array' => $third_array,
             ];
 
-            return  $addressLine1 = collect([
+            return   $invoices['trading_name']['app_setting']['address_line_1'];
+            $addressLine1 = collect([
                 $invoices['trading_name']['app_setting']['address_line_1'] ?? null,
                 $invoices['trading_name']['app_setting']['address_line_2'] ?? null,
                 $invoices['trading_name']['app_setting']['address_line_3'] ?? null,
