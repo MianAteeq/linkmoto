@@ -92,7 +92,147 @@
         <div style="width: 100%;clear: both;"></div>
         <div>
             <div class="top-addr">
+                <div id="customer" style="overflow: hidden;margin: 10px;margin-bottom:0px;width: 50%;float: left;">
 
+                    <h1 id="customer-title" style="font-size: 15px;font-weight: bold;line-height: 2.1;margin-bottom: 0">
+
+                        @if ($vender['profile']['organization_status'] === 'Limited Company')
+                            @if ($invoice['trading_name']['app_setting']['header_option'] == 1)
+                                {{ ucfirst($vender['profile']['company_name']) }}
+                            @elseif($invoice['trading_name']['app_setting']['header_option'] == 2)
+                                {{ ucfirst($vender['profile']['company_name']) }} trading as
+                                {{ $invoice['trading_name']['trading_name']['name'] }}
+                            @else
+                                {{ $invoice['trading_name']['trading_name']['name'] }}
+                            @endif
+                        @else
+                            @if ($invoice['trading_name']['app_setting']['header_option'] == 1)
+                                {{ ucfirst($vender['profile']['company_name']) }}
+                            @elseif($invoice['trading_name']['app_setting']['header_option'] == 2)
+                                {{ ucfirst($vender['profile']['company_name']) }} trading as
+                                {{ $invoice['trading_name']['trading_name']['name'] }}
+                            @else
+                                {{ $invoice['trading_name']['trading_name']['name'] }}
+                            @endif
+
+                        @endif
+                        {{-- H & H MOTORS --}}
+                    </h1>
+                    <div class="add" style="display: flex;flex-direction: column;width: 100%;margin-top: -7px">
+                        @php
+                            $addressLine1 = collect([
+                                $invoice['trading_name']['app_setting']['address_line_1'] ?? null,
+                                $invoice['trading_name']['app_setting']['address_line_2'] ?? null,
+                                $invoice['trading_name']['app_setting']['address_line_3'] ?? null,
+                                $invoice['trading_name']['app_setting']['address_line_4'] ?? null,
+                            ])
+                                ->filter()
+                                ->implode(', ');
+
+                            $addressLine2 = collect([
+                                $invoice['trading_name']['app_setting']['city'] ?? null,
+                                $invoice['trading_name']['app_setting']['postcode'] ?? null,
+                            ])
+                                ->filter()
+                                ->implode(' ');
+                        @endphp
+
+                        @if ($addressLine1 || $addressLine2)
+                            <p style="line-height:1.4;font-size:15px;margin:0;">
+                                {{ $addressLine1 }}
+                                @if ($addressLine2)
+                                    <br>{{ $addressLine2 }}
+                                @endif
+                            </p>
+                        @endif
+
+                        @if (!empty($invoice['trading_name']['app_setting']['landline']))
+                            <p style="line-height: 1.8;font-size: 15px;margin:0;margin-top: -7px;">Tel:
+                                {{ $invoice['trading_name']['app_setting']['landline'] }}</p>
+                        @endif
+                        @if (!empty($invoice['trading_name']['app_setting']['mobile']))
+                            <p style="line-height: 1.8;font-size: 15px;margin:0;margin-top: -7px;">Mob:
+                                {{ $invoice['trading_name']['app_setting']['mobile'] }}</p>
+                        @endif
+                        @if (!empty($invoice['trading_name']['app_setting']['email']))
+                            <p style="line-height: 1.8;font-size: 15px;margin:0;margin-top: -7px;">Email:
+                                {{ $invoice['trading_name']['app_setting']['email'] }}
+                        @endif
+
+                        @if (!empty($invoice['trading_name']['app_setting']['website']))
+                            <p style="line-height: 1.8; font-size: 15px; margin:0; margin-top: -7px;">
+                                {{ $invoice['trading_name']['app_setting']['website'] }}
+                            </p>
+                        @endif
+                        @if (!empty($vender['profile']['uk_vat_no']))
+                            <p style="line-height: 1.8;font-size: 15px;margin:0;margin-top: -7px;">Registered VAT No:
+                                {{ $vender['profile']['uk_vat_no'] }}</p>
+                        @endif
+
+                    </div>
+                    @php
+                        $landline = $invoice['trading_name']['app_setting']['landline'] ?? '';
+                        $mobile = $invoice['trading_name']['app_setting']['mobile'] ?? '';
+                        $email = $invoice['trading_name']['app_setting']['email'] ?? '';
+                        $website = $invoice['trading_name']['app_setting']['website'] ?? '';
+                        $vat_no = $vender['profile']['uk_vat_no'] ?? '';
+
+                        // Count how many fields have data
+                        $filledCount = collect([$landline, $mobile, $email, $website, $vat_no])
+                            ->filter(fn($val) => !empty($val))
+                            ->count();
+
+                        // Default margin
+                        $marginTop = '194px';
+                        if ($invoice['bank_transfer_detail'] == 'YES') {
+                            $marginTop = '-3px';
+
+                            $margin_top = '100px';
+                        }
+
+                        if ($filledCount === 1) {
+                            $marginTop = '170px'; // only one field
+                            if ($invoice['bank_transfer_detail'] == 'YES') {
+                                $marginTop = '-10px';
+                                $margin_top = '100px';
+                            }
+                        } elseif ($filledCount === 2) {
+                            $marginTop = '150px'; // two fields
+                            if ($invoice['bank_transfer_detail'] == 'YES') {
+                                $marginTop = '-10px';
+                                $margin_top = '80px';
+                            }
+                        } elseif ($filledCount === 3) {
+                            $marginTop = '130px'; // three fields
+                            if ($invoice['bank_transfer_detail'] == 'YES') {
+                                $marginTop = '-10px';
+                                $margin_top = '60px';
+                            }
+                        } elseif ($filledCount === 4) {
+                            $marginTop = '110px'; // four fields
+                            if ($invoice['bank_transfer_detail'] == 'YES') {
+                                $marginTop = '-10px';
+                                $margin_top = '40px';
+                            }
+                        } elseif ($filledCount === 5) {
+                            $marginTop = '90px'; // all fields
+                            if ($invoice['bank_transfer_detail'] == 'YES') {
+                                $marginTop = '-10px';
+                                $margin_top = '20px';
+                            }
+                        }
+                    @endphp
+
+
+
+
+
+
+
+
+
+
+                </div>
 
                 <div class="invoice-side" style="width: 50%;float: left;margin: 30px;margin-bottom:0px;">
                     <h2 style="float: right;padding-bottom: 10px;margin-right:30px; font-size:20px">PAYMENT RECEIPT</h2>
