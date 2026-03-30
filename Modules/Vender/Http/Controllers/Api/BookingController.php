@@ -1736,7 +1736,7 @@ class BookingController extends Controller
             $bookings = $this->baseQuery($vendorId, $tradingId)
                 ->whereDate('booking_date', $date) // 🔥 adjust column name if needed
                 ->orderByDesc('id')
-                ->paginate($perPage);
+                ->get();
 
             return response()->json([
                 'status' => true,
@@ -1751,5 +1751,27 @@ class BookingController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
+    }
+
+    private function baseQuery(int $vendorId, int $tradingId)
+    {
+        return Booking::with([
+            'vehicle.vehicle_model',
+            'vehicle.vehicle_make',
+            'vehicle.engine_size',
+            'vehicle.transmission_type',
+            'vehicle.fuel_type',
+            'vehicle.color',
+            'work_stream',
+            'contact_detail.hub',
+            'service',
+            'job_requests.product',
+            'job_requests.price_type',
+            'job_requests.job_types.job_type',
+            'booking_items.price_type',
+            'booking_items.job_types.job_type'
+        ])
+            ->where('vender_id', $vendorId)
+            ->where('trading_id', $tradingId);
     }
 }
