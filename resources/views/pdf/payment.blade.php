@@ -119,28 +119,27 @@
                     </h1>
                     <div class="add" style="display: flex;flex-direction: column;width: 100%;margin-top: -7px">
                         @php
+                            $settings = $invoice['trading_name']['app_setting'] ?? [];
+
                             $addressLine1 = collect([
-                                $invoice['trading_name']['app_setting']['address_line_1'] ?? null,
-                                $invoice['trading_name']['app_setting']['address_line_2'] ?? null,
-                                $invoice['trading_name']['app_setting']['address_line_3'] ?? null,
-                                $invoice['trading_name']['app_setting']['address_line_4'] ?? null,
+                                $settings['address_line_1'] ?? null,
+                                $settings['address_line_2'] ?? null,
+                                $settings['address_line_3'] ?? null,
+                                $settings['address_line_4'] ?? null,
                             ])
-                                ->filter()
+                                ->filter(fn($value) => filled(trim($value)))
                                 ->implode(', ');
 
-                            $addressLine2 = collect([
-                                $invoice['trading_name']['app_setting']['city'] ?? null,
-                                $invoice['trading_name']['app_setting']['postcode'] ?? null,
-                            ])
-                                ->filter()
+                            $addressLine2 = collect([$settings['city'] ?? null, $settings['postcode'] ?? null])
+                                ->filter(fn($value) => filled(trim($value)))
                                 ->implode(' ');
                         @endphp
 
                         @if ($addressLine1 || $addressLine2)
-                            <p style="line-height:1.4;font-size:15px;margin:0;">
-                                {{ $addressLine1 }}
+                            <p style="margin:0; font-size:14px; line-height:1.3;">
+                                {{ trim($addressLine1) }}
                                 @if ($addressLine2)
-                                    <br>{{ $addressLine2 }}
+                                    <span style="display:block;">{{ trim($addressLine2) }}</span>
                                 @endif
                             </p>
                         @endif
