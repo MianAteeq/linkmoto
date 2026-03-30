@@ -123,8 +123,17 @@ class BookingController extends Controller
 
 
             $bookings = Booking::with([
-                'vehicle.vehicle_model', 'vehicle.vehicle_make', 'vehicle.engine_size', 'vehicle.transmission_type', 'vehicle.fuel_type', 'vehicle.color',
-                'contact_detail', 'contact_detail.hub', 'service', 'job_requests', 'booking_items'
+                'vehicle.vehicle_model',
+                'vehicle.vehicle_make',
+                'vehicle.engine_size',
+                'vehicle.transmission_type',
+                'vehicle.fuel_type',
+                'vehicle.color',
+                'contact_detail',
+                'contact_detail.hub',
+                'service',
+                'job_requests',
+                'booking_items'
             ])->find($booking->id);
 
             return response()->json([
@@ -172,7 +181,7 @@ class BookingController extends Controller
 
 
             // $already_book = Booking::where('quotation_id', $request['quotation_id'])->orderBy('id', 'desc')->first();
-            $already_book=null;
+            $already_book = null;
 
             if (isset($already_book)) {
 
@@ -187,7 +196,7 @@ class BookingController extends Controller
                         "total" => $quotation['total'],
                         "sub_total" => $quotation['sub_total'],
                         "vat" => $quotation['vat'],
-                        "status" => $request['status']==='DRAFT'?'DRAFT':'BOOKED',
+                        "status" => $request['status'] === 'DRAFT' ? 'DRAFT' : 'BOOKED',
                         "booking_date" => $request['booking_date'],
                         "post_code" => $request['post_code'],
                         "address_line_1" => $request['address_line_1'],
@@ -196,8 +205,8 @@ class BookingController extends Controller
                         "address_line_4" => $request['address_line_4'],
                         "service_type" => $quotation['service_type'],
                         "city" => $request['city'],
-                        'workstream_id'=>$request['workstream_id'],
-                        'booking_time'=>$request['booking_time'],
+                        'workstream_id' => $request['workstream_id'],
+                        'booking_time' => $request['booking_time'],
                         "quotation_id" => $request['quotation_id'],
                     ]);
 
@@ -223,7 +232,7 @@ class BookingController extends Controller
                     "total" => $quotation['total'],
                     "sub_total" => $quotation['sub_total'],
                     "vat" => $quotation['vat'],
-                    "status" => $request['status']==='DRAFT'?'DRAFT':'BOOKED',
+                    "status" => $request['status'] === 'DRAFT' ? 'DRAFT' : 'BOOKED',
                     "booking_date" => $request['booking_date'],
                     "booking_time" => $request['booking_time'],
                     "quotation_id" => $request['quotation_id'],
@@ -233,18 +242,18 @@ class BookingController extends Controller
                     "address_line_3" => $request['address_line_3'],
                     "address_line_4" => $request['address_line_4'],
                     "service_type" => $quotation['service_type'],
-                    'workstream_id'=>$request['workstream_id'],
-                    'booking_time'=>$request['booking_time'],
+                    'workstream_id' => $request['workstream_id'],
+                    'booking_time' => $request['booking_time'],
                     "city" => $request['city'],
                 ]);
 
                 foreach ($quotation['job_requests'] as $key => $job_request) {
 
-                   $cleanJobRequest = collect($job_request)
+                    $cleanJobRequest = collect($job_request)
                         ->except(['quotation_id', 'created_at', 'updated_at', 'id']) // exclude known fields
                         ->reject(fn($value) => is_array($value)) // remove any array values
                         ->toArray();
-                    
+
                     $object = BookingJobRequest::create(array_merge(
                         [
                             'booking_id' => $booking['id'],
@@ -263,21 +272,21 @@ class BookingController extends Controller
                         # code...
                     }
                 }
-                
+
                 foreach ($quotation['quotation_item'] as $key => $job_request) {
 
-                   $cleanJobRequest = collect($job_request)
-    ->except(['quotation_id', 'created_at', 'updated_at', 'id']) // remove unwanted keys
-    ->reject(fn($value) => is_array($value)) // remove any nested arrays
-    ->toArray();
+                    $cleanJobRequest = collect($job_request)
+                        ->except(['quotation_id', 'created_at', 'updated_at', 'id']) // remove unwanted keys
+                        ->reject(fn($value) => is_array($value)) // remove any nested arrays
+                        ->toArray();
 
-$obj = BookingJobItem::create(array_merge(
-    [
-        'booking_id' => $booking['id'],
-        'quote_id' => $job_request['quotation_id'],
-    ],
-    $cleanJobRequest
-));
+                    $obj = BookingJobItem::create(array_merge(
+                        [
+                            'booking_id' => $booking['id'],
+                            'quote_id' => $job_request['quotation_id'],
+                        ],
+                        $cleanJobRequest
+                    ));
                     foreach ($job_request['job_types'] as $key => $job_type) {
 
                         BookingJobItemJobType::create([
@@ -313,8 +322,17 @@ $obj = BookingJobItem::create(array_merge(
 
 
             $bookings = Booking::with([
-                'vehicle.vehicle_model', 'vehicle.vehicle_make', 'vehicle.engine_size', 'vehicle.transmission_type', 'vehicle.fuel_type', 'vehicle.color',
-                'contact_detail', 'contact_detail.hub', 'service', 'job_requests', 'booking_items'
+                'vehicle.vehicle_model',
+                'vehicle.vehicle_make',
+                'vehicle.engine_size',
+                'vehicle.transmission_type',
+                'vehicle.fuel_type',
+                'vehicle.color',
+                'contact_detail',
+                'contact_detail.hub',
+                'service',
+                'job_requests',
+                'booking_items'
             ])->find($booking->id ?? $already_book->id);
 
             return response()->json([
@@ -346,8 +364,8 @@ $obj = BookingJobItem::create(array_merge(
             $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
             $trading_id = User::find($request->user()->id)['default_trading_unit'];
 
-            $workstreams = WorkStream::where('vender_id', $vender_id)->where('trading_id', $trading_id)->where('status','Active')->orderBy('id', 'asc')->get();
-          
+            $workstreams = WorkStream::where('vender_id', $vender_id)->where('trading_id', $trading_id)->where('status', 'Active')->orderBy('id', 'asc')->get();
+
             return response()->json([
                 'status' => true,
                 'workstreams' => $workstreams,
@@ -374,11 +392,11 @@ $obj = BookingJobItem::create(array_merge(
             $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
             $trading_id = User::find($request->user()->id)['default_trading_unit'];
             Booking::find($request['booking_id'])->update([
-              'workstream_id'=>$request['workstream_id'],
-               'status'=>'ARRIVED'
-              
-              ]);
-          
+                'workstream_id' => $request['workstream_id'],
+                'status' => 'ARRIVED'
+
+            ]);
+
             return response()->json([
                 'status' => true,
                 'message' => "WorkStream Change Successfully",
@@ -392,64 +410,105 @@ $obj = BookingJobItem::create(array_merge(
             ]);
         }
     }
-    
-    
-    
+
+
+
     public function getBookingDetail(Request $request)
     {
+        try {
+            $user = $request->user();
 
-        // try {
+            $vendorId = $user->vender_id == 0 ? $user->id : $user->vender_id;
+            $tradingId = $user->default_trading_unit;
 
+            // Pagination params
+            $perPage = $request->get('per_page', 10);
 
-            $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
-            $trading_id = User::find($request->user()->id)['default_trading_unit'];
+            $statuses = [
+                'DRAFT',
+                'BOOKING_REQUEST',
+                'CUSTOMER_PENDING',
+                'BOOKED',
+                'RE_SCHEDULE',
+                'MISSED',
+                'DECLINE',
+                'ARRIVED',
+                'INPROGRESS',
+                'FINAL_CHECKS',
+                'DUE',
+                'COMPLETED',
+                'READ_FOR_COLLECTION',
+                'READ_FOR_DELIVERY',
+                'COLLECTED',
+                'DELIVERED',
+                'VOID',
+                'CANCELLED'
+            ];
 
-            $quotations = Booking::with([
-                'vehicle.vehicle_model', 'vehicle.vehicle_make', 'vehicle.engine_size', 'vehicle.transmission_type', 'vehicle.fuel_type', 'vehicle.color',
-                'contact_detail', 'contact_detail.hub', 'service', 'job_requests', 'job_requests.product', 'job_requests.price_type', 'booking_items', 'booking_items.price_type',
-                'job_requests.job_types', 'job_requests.job_types.job_type', 'booking_items.job_types', 'booking_items.job_types.job_type','work_stream',
-            ])->where('vender_id', $vender_id)->where('trading_id', $trading_id)->whereIn('status', ['DRAFT', 'BOOKING_REQUEST', 'CUSTOMER_PENDING', 'BOOKED', 'RE_SCHEDULE', 'MISSED', 'DECLINE'])->orderBy('id', 'desc')->get();
             $bookings = Booking::with([
-                'vehicle.vehicle_model', 'vehicle.vehicle_make', 'vehicle.engine_size', 'vehicle.transmission_type', 'vehicle.fuel_type', 'vehicle.color',
-                'contact_detail', 'service', 'job_requests', 'job_requests.product', 'job_requests.price_type', 'booking_items', 'booking_items.price_type',
-                'job_requests.job_types', 'job_requests.job_types.job_type', 'booking_items.job_types', 'booking_items.job_types.job_type','work_stream',
-            ])->where('vender_id', $vender_id)->where('trading_id', $trading_id)->whereIn('status', ['ARRIVED', 'INPROGRESS', 'FINAL_CHECKS', 'DUE', 'COMPLETED', 'READ_FOR_COLLECTION', 'READ_FOR_DELIVERY', 'COLLECTED', 'DELIVERED', 'VOID'])->orderBy('id', 'desc')->get();
-            $booking_array = [];
-            foreach ($bookings as $key => $value) {
-                $data = new stdClass();
-                $data = $value;
-                $data['status'] = "BOOKED";
-                $data['is_booked'] = 1;
+                'vehicle.vehicle_model',
+                'vehicle.vehicle_make',
+                'vehicle.engine_size',
+                'vehicle.transmission_type',
+                'vehicle.fuel_type',
+                'vehicle.color',
+                'work_stream',
+                'contact_detail',
+                'contact_detail.hub',
+                'service',
+                'job_requests.product',
+                'job_requests.price_type',
+                'job_requests.job_types.job_type',
+                'booking_items.price_type',
+                'booking_items.job_types.job_type'
+            ])
+                ->where('vender_id', $vendorId)
+                ->where('trading_id', $tradingId)
+                ->whereIn('status', $statuses)
+                ->orderByDesc('id')
+                ->paginate($perPage);
 
-                array_push($booking_array, $data);
-            }
-            $cancelled_jobs = Booking::with([
-                'vehicle.vehicle_model', 'vehicle.vehicle_make', 'vehicle.engine_size', 'vehicle.transmission_type', 'vehicle.fuel_type', 'vehicle.color','work_stream',
-                'contact_detail', 'contact_detail.hub', 'service', 'job_requests', 'job_requests.product', 'job_requests.price_type', 'booking_items', 'booking_items.price_type', 'job_requests.job_types', 'job_requests.job_types.job_type', 'booking_items.job_types', 'booking_items.job_types.job_type'
-            ])->where('vender_id', $vender_id)->where('trading_id', $trading_id)->whereIn('status', ['CANCELLED'])->where('job_id', 0)->orderBy('id', 'desc')->get();
-            foreach ($cancelled_jobs as $key => $value) {
-                $data = new stdClass();
-                $data = $value;
+            // Transform collection (add computed fields)
+            $bookings->getCollection()->transform(function ($booking) {
 
+                if (in_array($booking->status, [
+                    'ARRIVED',
+                    'INPROGRESS',
+                    'FINAL_CHECKS',
+                    'DUE',
+                    'COMPLETED',
+                    'READ_FOR_COLLECTION',
+                    'READ_FOR_DELIVERY',
+                    'COLLECTED',
+                    'DELIVERED',
+                    'VOID'
+                ])) {
+                    $booking->is_booked = 1;
+                    $booking->status = 'BOOKED';
+                }
 
-                array_push($booking_array, $data);
-            }
-            $custom_array = array_merge($quotations->toArray(), $booking_array);
+                return $booking;
+            });
+
             return response()->json([
                 'status' => true,
-                'bookings' => $custom_array,
-                'booking_s' => $bookings,
-
-                'message' => "Booking Fetch Successfully",
+                'message' => 'Booking Fetch Successfully',
+                'data' => $bookings->items(),
+                'meta' => [
+                    'current_page' => $bookings->currentPage(),
+                    'last_page' => $bookings->lastPage(),
+                    'per_page' => $bookings->perPage(),
+                    'total' => $bookings->total(),
+                ]
             ]);
-        // } catch (Exception $e) {
+        } catch (\Throwable $e) {
 
-        //     return response()->json([
-        //         'status' => false,
-        //         'error' => $e->getMessage(),
-        //         'message' => "Error while getting Booking",
-        //     ]);
-        // }
+            return response()->json([
+                'status' => false,
+                'message' => 'Error while getting Booking',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
 
@@ -463,13 +522,48 @@ $obj = BookingJobItem::create(array_merge(
             $trading_id = User::find($request->user()->id)['default_trading_unit'];
 
             $quotations = Booking::with([
-                'vehicle.vehicle_model', 'vehicle.vehicle_make', 'vehicle.engine_size', 'vehicle.transmission_type', 'vehicle.fuel_type', 'vehicle.color','work_stream',
-                'contact_detail', 'contact_detail.hub', 'service', 'job_requests', 'job_requests.product', 'job_requests.price_type', 'booking_items', 'booking_items.price_type', 'job_requests.job_types', 'job_requests.job_types.job_type', 'booking_items.job_types', 'booking_items.job_types.job_type'
-            ])->where('vender_id', $vender_id)->where('trading_id', $trading_id)->whereIn('status', ['DRAFT', 'BOOKING_REQUEST', 'CUSTOMER_PENDING', 'BOOKED', 'RE_SCHEDULE', 'MISSED', 'DECLINE'])->orderBy('id', 'desc')->get();
+                'vehicle.vehicle_model',
+                'vehicle.vehicle_make',
+                'vehicle.engine_size',
+                'vehicle.transmission_type',
+                'vehicle.fuel_type',
+                'vehicle.color',
+                'work_stream',
+                'contact_detail',
+                'contact_detail.hub',
+                'service',
+                'job_requests',
+                'job_requests.product',
+                'job_requests.price_type',
+                'booking_items',
+                'booking_items.price_type',
+                'job_requests.job_types',
+                'job_requests.job_types.job_type',
+                'booking_items.job_types',
+                'booking_items.job_types.job_type'
+            ])->where('vender_id', $vender_id)->where('trading_id', $trading_id)->whereIn('status', ['DRAFT', 'BOOKING_REQUEST', 'CUSTOMER_PENDING', 'BOOKED', 'RE_SCHEDULE', 'MISSED', 'DECLINE'])
+                ->orderBy('id', 'desc')->get();
             $bookings = Booking::with([
-                'vehicle.vehicle_model', 'vehicle.vehicle_make', 'vehicle.engine_size', 'vehicle.transmission_type', 'vehicle.fuel_type', 'vehicle.color','work_stream',
-                'contact_detail', 'service', 'job_requests', 'job_requests.product', 'job_requests.price_type', 'booking_items', 'booking_items.price_type', 'job_requests.job_types', 'job_requests.job_types.job_type', 'booking_items.job_types', 'booking_items.job_types.job_type'
-            ])->where('vender_id', $vender_id)->where('trading_id', $trading_id)->whereIn('status', ['ARRIVED', 'INPROGRESS', 'FINAL_CHECKS', 'DUE', 'COMPLETED', 'READ_FOR_COLLECTION', 'READ_FOR_DELIVERY', 'COLLECTED', 'DELIVERED', 'VOID'])->orderBy('id', 'desc')->get();
+                'vehicle.vehicle_model',
+                'vehicle.vehicle_make',
+                'vehicle.engine_size',
+                'vehicle.transmission_type',
+                'vehicle.fuel_type',
+                'vehicle.color',
+                'work_stream',
+                'contact_detail',
+                'service',
+                'job_requests',
+                'job_requests.product',
+                'job_requests.price_type',
+                'booking_items',
+                'booking_items.price_type',
+                'job_requests.job_types',
+                'job_requests.job_types.job_type',
+                'booking_items.job_types',
+                'booking_items.job_types.job_type'
+            ])->where('vender_id', $vender_id)->where('trading_id', $trading_id)->whereIn('status', ['ARRIVED', 'INPROGRESS', 'FINAL_CHECKS', 'DUE', 'COMPLETED', 'READ_FOR_COLLECTION', 'READ_FOR_DELIVERY', 'COLLECTED', 'DELIVERED', 'VOID'])
+                ->orderBy('id', 'desc')->get();
             $booking_array = [];
             foreach ($bookings as $key => $value) {
                 $data = new stdClass();
@@ -480,8 +574,25 @@ $obj = BookingJobItem::create(array_merge(
                 array_push($booking_array, $data);
             }
             $cancelled_jobs = Booking::with([
-                'vehicle.vehicle_model', 'vehicle.vehicle_make', 'vehicle.engine_size', 'vehicle.transmission_type', 'vehicle.fuel_type', 'vehicle.color','work_stream',
-                'contact_detail', 'contact_detail.hub', 'service', 'job_requests', 'job_requests.product', 'job_requests.price_type', 'booking_items', 'booking_items.price_type', 'job_requests.job_types', 'job_requests.job_types.job_type', 'booking_items.job_types', 'booking_items.job_types.job_type'
+                'vehicle.vehicle_model',
+                'vehicle.vehicle_make',
+                'vehicle.engine_size',
+                'vehicle.transmission_type',
+                'vehicle.fuel_type',
+                'vehicle.color',
+                'work_stream',
+                'contact_detail',
+                'contact_detail.hub',
+                'service',
+                'job_requests',
+                'job_requests.product',
+                'job_requests.price_type',
+                'booking_items',
+                'booking_items.price_type',
+                'job_requests.job_types',
+                'job_requests.job_types.job_type',
+                'booking_items.job_types',
+                'booking_items.job_types.job_type'
             ])->where('vender_id', $vender_id)->where('trading_id', $trading_id)->whereIn('status', ['CANCELLED'])->where('job_id', 0)->orderBy('id', 'desc')->get();
             foreach ($cancelled_jobs as $key => $value) {
                 $data = new stdClass();
@@ -531,8 +642,32 @@ $obj = BookingJobItem::create(array_merge(
             $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
 
             $booking = Booking::with([
-                'vehicle.vehicle_model', 'vehicle.vehicle_make', 'vehicle.engine_size', 'job_logs','job_logs.user', 'invoices', 'invoices.payments', 'vehicle.transmission_type', 'vehicle.fuel_type', 'vehicle.color','work_stream',
-                'contact_detail', 'contact_detail.hub', 'invoice', 'service', 'job_invoices', 'job_requests','deposits', 'job_requests.product', 'job_requests.price_type', 'booking_items', 'booking_items.price_type', 'job_requests.job_types', 'job_requests.job_types.job_type', 'booking_items.job_types', 'booking_items.job_types.job_type'
+                'vehicle.vehicle_model',
+                'vehicle.vehicle_make',
+                'vehicle.engine_size',
+                'job_logs',
+                'job_logs.user',
+                'invoices',
+                'invoices.payments',
+                'vehicle.transmission_type',
+                'vehicle.fuel_type',
+                'vehicle.color',
+                'work_stream',
+                'contact_detail',
+                'contact_detail.hub',
+                'invoice',
+                'service',
+                'job_invoices',
+                'job_requests',
+                'deposits',
+                'job_requests.product',
+                'job_requests.price_type',
+                'booking_items',
+                'booking_items.price_type',
+                'job_requests.job_types',
+                'job_requests.job_types.job_type',
+                'booking_items.job_types',
+                'booking_items.job_types.job_type'
             ])->where('vender_id', $vender_id)->find($request['id']);
 
             if ($booking == null) {
@@ -580,8 +715,19 @@ $obj = BookingJobItem::create(array_merge(
             $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
 
             $booking = Booking::with([
-                'vehicle.vehicle_model', 'vehicle.vehicle_make', 'vehicle.engine_size', 'vehicle.transmission_type', 'vehicle.fuel_type', 'vehicle.color',
-                'contact_detail', 'contact_detail.hub', 'service', 'job_requests', 'booking_items', 'job_requests.job_types', 'job_requests.job_types.job_type',
+                'vehicle.vehicle_model',
+                'vehicle.vehicle_make',
+                'vehicle.engine_size',
+                'vehicle.transmission_type',
+                'vehicle.fuel_type',
+                'vehicle.color',
+                'contact_detail',
+                'contact_detail.hub',
+                'service',
+                'job_requests',
+                'booking_items',
+                'job_requests.job_types',
+                'job_requests.job_types.job_type',
             ])->where('vender_id', $vender_id)->find($request['booking_id']);
 
             $booking->status = "INPROGRESS";
@@ -602,12 +748,11 @@ $obj = BookingJobItem::create(array_merge(
             $data->user_id = $request->user()->id;
             $data->type = "booking";
             $data->event = "booking Move to InPROGRESS ";
-            if($request['note']!==null){
+            if ($request['note'] !== null) {
 
-                $data->event_detail="Booking Status Change from ".str_replace('_', ' ', strtoupper($quote['status'])). " to ".str_replace('_', ' ', strtoupper($request['status'])) ." With Message ".$request['note'];
-            }else{
-                $data->event_detail="Booking Status Change from ".str_replace('_', ' ', strtoupper($quote['status'])). " to ".str_replace('_', ' ', strtoupper($request['status'])) ;
-
+                $data->event_detail = "Booking Status Change from " . str_replace('_', ' ', strtoupper($quote['status'])) . " to " . str_replace('_', ' ', strtoupper($request['status'])) . " With Message " . $request['note'];
+            } else {
+                $data->event_detail = "Booking Status Change from " . str_replace('_', ' ', strtoupper($quote['status'])) . " to " . str_replace('_', ' ', strtoupper($request['status']));
             }
             // $data->event_detail = "booking Status Change " . str_replace('_', ' ', strtoupper($booking['status'])) . " to  INPROGRESS";
             $data->type_id = $request['booking_id'];
@@ -651,8 +796,17 @@ $obj = BookingJobItem::create(array_merge(
             $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
 
             $booking = Booking::with([
-                'vehicle.vehicle_model', 'vehicle.vehicle_make', 'vehicle.engine_size', 'vehicle.transmission_type', 'vehicle.fuel_type', 'vehicle.color',
-                'contact_detail', 'contact_detail.hub', 'service', 'job_requests', 'booking_items'
+                'vehicle.vehicle_model',
+                'vehicle.vehicle_make',
+                'vehicle.engine_size',
+                'vehicle.transmission_type',
+                'vehicle.fuel_type',
+                'vehicle.color',
+                'contact_detail',
+                'contact_detail.hub',
+                'service',
+                'job_requests',
+                'booking_items'
             ])->where('vender_id', $vender_id)->find($request['booking_id']);
 
             $latestOrder = Log::orderBy('created_at', 'DESC')->first();
@@ -730,8 +884,16 @@ $obj = BookingJobItem::create(array_merge(
             $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
 
             $booking = Booking::with([
-                'vehicle.vehicle_model', 'vehicle.vehicle_make', 'vehicle.engine_size', 'vehicle.transmission_type', 'vehicle.fuel_type', 'vehicle.color',
-                'contact_detail', 'service', 'job_requests', 'booking_items'
+                'vehicle.vehicle_model',
+                'vehicle.vehicle_make',
+                'vehicle.engine_size',
+                'vehicle.transmission_type',
+                'vehicle.fuel_type',
+                'vehicle.color',
+                'contact_detail',
+                'service',
+                'job_requests',
+                'booking_items'
             ])->where('vender_id', $vender_id)->find($request['booking_id']);
 
             $latestOrder = Log::orderBy('created_at', 'DESC')->first();
@@ -826,26 +988,35 @@ $obj = BookingJobItem::create(array_merge(
             $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
 
             $booking = Booking::with([
-                'vehicle.vehicle_model', 'vehicle.vehicle_make', 'vehicle.engine_size', 'vehicle.transmission_type', 'vehicle.fuel_type', 'vehicle.color',
-                'contact_detail', 'contact_detail.hub', 'service', 'job_requests', 'booking_items'
+                'vehicle.vehicle_model',
+                'vehicle.vehicle_make',
+                'vehicle.engine_size',
+                'vehicle.transmission_type',
+                'vehicle.fuel_type',
+                'vehicle.color',
+                'contact_detail',
+                'contact_detail.hub',
+                'service',
+                'job_requests',
+                'booking_items'
             ])->where('vender_id', $vender_id)->find($request['booking_id']);
-            $booking->booking_date= $request['booking_date'];
-            $booking->booking_time= $request['booking_time'];
-            $booking->workstream_id= $request['workstream_id'];
-           
+            $booking->booking_date = $request['booking_date'];
+            $booking->booking_time = $request['booking_time'];
+            $booking->workstream_id = $request['workstream_id'];
 
-          
+
+
             $booking->update();
-            
+
             $latestOrder = Log::orderBy('created_at', 'DESC')->first();
-             $data = new stdClass();
+            $data = new stdClass();
             $data->log_no = 'lOG-' . "SVP" . str_pad($request->user()->id, 5, "0", STR_PAD_LEFT) . "-" . str_pad($latestOrder ? $latestOrder->id + 1 : 0 + 1, 5, "0", STR_PAD_LEFT);
             $data->user_id = $request->user()->id;
             $data->type = "Book";
             $data->event = "Booking Status Change ";
             $data->event_detail = "Booking Status Change " . str_replace('_', ' ', strtoupper($booking['status'])) . " to  Re Schedule";
             $data->type_id = $request['booking_id'];
-              Log::saveLog($data);
+            Log::saveLog($data);
 
             $single_booking = Booking::find($request['booking_id']);
 
@@ -910,9 +1081,21 @@ $obj = BookingJobItem::create(array_merge(
             $trading_id = User::find($request->user()->id)['default_trading_unit'];
 
             $quotations = Booking::with([
-                'vehicle.vehicle_model', 'vehicle.vehicle_make', 'vehicle.engine_size', 'vehicle.transmission_type', 'vehicle.fuel_type', 'vehicle.color','work_stream',
-                'contact_detail', 'contact_detail.hub', 'service', 'job_requests', 'booking_items', 'job_requests.job_types', 'job_requests.job_types.job_type'
-            ])->where('vender_id', $vender_id)->where('trading_id',$trading_id)->whereIn('status', ['INPROGRESS'])->get();
+                'vehicle.vehicle_model',
+                'vehicle.vehicle_make',
+                'vehicle.engine_size',
+                'vehicle.transmission_type',
+                'vehicle.fuel_type',
+                'vehicle.color',
+                'work_stream',
+                'contact_detail',
+                'contact_detail.hub',
+                'service',
+                'job_requests',
+                'booking_items',
+                'job_requests.job_types',
+                'job_requests.job_types.job_type'
+            ])->where('vender_id', $vender_id)->where('trading_id', $trading_id)->whereIn('status', ['INPROGRESS'])->get();
 
             /*$notification = new CustomNotification();
             $notification->vender_id = Booking::find($request['booking_id'])->vender_id;
@@ -947,9 +1130,21 @@ $obj = BookingJobItem::create(array_merge(
             $trading_id = User::find($request->user()->id)['default_trading_unit'];
 
             $quotations = Booking::with([
-                'vehicle.vehicle_model', 'vehicle.vehicle_make', 'vehicle.engine_size', 'vehicle.transmission_type', 'vehicle.fuel_type', 'vehicle.color','work_stream',
-                'contact_detail', 'contact_detail.hub', 'service', 'job_requests', 'booking_items', 'job_requests.job_types', 'job_requests.job_types.job_type'
-            ])->where('vender_id', $vender_id)->where('trading_id',$trading_id)->whereIn('status', ['FINAL_CHECKS', 'READ_FOR_COLLECTION', 'READY_FOR_DELIVERY'])->get();
+                'vehicle.vehicle_model',
+                'vehicle.vehicle_make',
+                'vehicle.engine_size',
+                'vehicle.transmission_type',
+                'vehicle.fuel_type',
+                'vehicle.color',
+                'work_stream',
+                'contact_detail',
+                'contact_detail.hub',
+                'service',
+                'job_requests',
+                'booking_items',
+                'job_requests.job_types',
+                'job_requests.job_types.job_type'
+            ])->where('vender_id', $vender_id)->where('trading_id', $trading_id)->whereIn('status', ['FINAL_CHECKS', 'READ_FOR_COLLECTION', 'READY_FOR_DELIVERY'])->get();
 
             $record_array = [];
 
@@ -981,9 +1176,21 @@ $obj = BookingJobItem::create(array_merge(
             $trading_id = User::find($request->user()->id)['default_trading_unit'];
 
             $quotations = Booking::with([
-                'vehicle.vehicle_model', 'vehicle.vehicle_make', 'vehicle.engine_size', 'vehicle.transmission_type', 'vehicle.fuel_type', 'vehicle.color','work_stream',
-                'contact_detail', 'contact_detail.hub', 'service', 'job_requests', 'booking_items', 'job_requests.job_types', 'job_requests.job_types.job_type'
-            ])->whereIn('status', ['COLLECTED', 'DELIVERED', 'VOID', 'DUE'])->where('job_delete', 0)->where('trading_id',$trading_id)->get();
+                'vehicle.vehicle_model',
+                'vehicle.vehicle_make',
+                'vehicle.engine_size',
+                'vehicle.transmission_type',
+                'vehicle.fuel_type',
+                'vehicle.color',
+                'work_stream',
+                'contact_detail',
+                'contact_detail.hub',
+                'service',
+                'job_requests',
+                'booking_items',
+                'job_requests.job_types',
+                'job_requests.job_types.job_type'
+            ])->whereIn('status', ['COLLECTED', 'DELIVERED', 'VOID', 'DUE'])->where('job_delete', 0)->where('trading_id', $trading_id)->get();
             // $quotations = Booking::with([
             //     'vehicle.vehicle_model', 'vehicle.vehicle_make', 'vehicle.engine_size', 'vehicle.transmission_type', 'vehicle.fuel_type', 'vehicle.color',
             //     'contact_detail','contact_detail.hub', 'service', 'job_requests', 'booking_items','job_requests.job_types','job_requests.job_types.job_type'
@@ -997,9 +1204,25 @@ $obj = BookingJobItem::create(array_merge(
             $booking_array = [];
 
             $cancelled_jobs = Booking::with([
-                'vehicle.vehicle_model', 'vehicle.vehicle_make', 'vehicle.engine_size', 'vehicle.transmission_type', 'vehicle.fuel_type', 'vehicle.color',
-                'contact_detail', 'contact_detail.hub', 'service', 'job_requests', 'job_requests.product', 'job_requests.price_type', 'booking_items', 'booking_items.price_type', 'job_requests.job_types', 'job_requests.job_types.job_type', 'booking_items.job_types', 'booking_items.job_types.job_type'
-            ])->where('vender_id', $vender_id)->where('trading_id',$trading_id)->whereIn('status', ['CANCELLED'])->where('job_id', "!=", 0)->orderBy('id', 'desc')->get();
+                'vehicle.vehicle_model',
+                'vehicle.vehicle_make',
+                'vehicle.engine_size',
+                'vehicle.transmission_type',
+                'vehicle.fuel_type',
+                'vehicle.color',
+                'contact_detail',
+                'contact_detail.hub',
+                'service',
+                'job_requests',
+                'job_requests.product',
+                'job_requests.price_type',
+                'booking_items',
+                'booking_items.price_type',
+                'job_requests.job_types',
+                'job_requests.job_types.job_type',
+                'booking_items.job_types',
+                'booking_items.job_types.job_type'
+            ])->where('vender_id', $vender_id)->where('trading_id', $trading_id)->whereIn('status', ['CANCELLED'])->where('job_id', "!=", 0)->orderBy('id', 'desc')->get();
             foreach ($cancelled_jobs as $key => $value) {
                 $data = new stdClass();
                 $data = $value;
@@ -1043,83 +1266,77 @@ $obj = BookingJobItem::create(array_merge(
             $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
             $quote = Booking::find($request['booking_id']);
             if ($request['status'] == "ARRIVED") {
-              $already_jobs=Booking::find($request['booking_id']);
+                $already_jobs = Booking::find($request['booking_id']);
 
-              if($already_jobs['job_no']==null){
-                $latestOrder = Booking::orderBy('job_id', 'DESC')->first();
-                Booking::find($request['booking_id'])->update([
-                    "status" => $request['status'],
-                    'job_id' => $latestOrder->job_id + 1,
-                    "job_no" => 'JOB-' . "SVP" . str_pad($vender_id, 5, "0", STR_PAD_LEFT) . "-" . str_pad($latestOrder ? $latestOrder->job_id + 1 : 0 + 1, 5, "0", STR_PAD_LEFT),
-                     "queue_date" => Carbon::now(),
-                     "queue_time" => Carbon::now()->format('h:i:s'),
-                ]);
-                $latestOrder = Log::orderBy('created_at', 'DESC')->first();
-                $data = new stdClass();
-                $data->log_no = 'lOG-' . "SVP" . str_pad($request->user()->id, 5, "0", STR_PAD_LEFT) . "-" . str_pad($latestOrder ? $latestOrder->id + 1 : 0 + 1, 5, "0", STR_PAD_LEFT);
-                $data->user_id = $request->user()->id;
-                $data->type = "Book";
-                $data->event = "Booking Status Change ";
-                if($request['note']!==null){
+                if ($already_jobs['job_no'] == null) {
+                    $latestOrder = Booking::orderBy('job_id', 'DESC')->first();
+                    Booking::find($request['booking_id'])->update([
+                        "status" => $request['status'],
+                        'job_id' => $latestOrder->job_id + 1,
+                        "job_no" => 'JOB-' . "SVP" . str_pad($vender_id, 5, "0", STR_PAD_LEFT) . "-" . str_pad($latestOrder ? $latestOrder->job_id + 1 : 0 + 1, 5, "0", STR_PAD_LEFT),
+                        "queue_date" => Carbon::now(),
+                        "queue_time" => Carbon::now()->format('h:i:s'),
+                    ]);
+                    $latestOrder = Log::orderBy('created_at', 'DESC')->first();
+                    $data = new stdClass();
+                    $data->log_no = 'lOG-' . "SVP" . str_pad($request->user()->id, 5, "0", STR_PAD_LEFT) . "-" . str_pad($latestOrder ? $latestOrder->id + 1 : 0 + 1, 5, "0", STR_PAD_LEFT);
+                    $data->user_id = $request->user()->id;
+                    $data->type = "Book";
+                    $data->event = "Booking Status Change ";
+                    if ($request['note'] !== null) {
 
-                    $data->event_detail="Booking Status Change from ".str_replace('_', ' ', strtoupper($quote['status'])). " to ".str_replace('_', ' ', strtoupper($request['status'])) ." With Message ".$request['note'];
-                }else{
-                    $data->event_detail="Booking Status Change from ".str_replace('_', ' ', strtoupper($quote['status'])). " to ".str_replace('_', ' ', strtoupper($request['status'])) ;
+                        $data->event_detail = "Booking Status Change from " . str_replace('_', ' ', strtoupper($quote['status'])) . " to " . str_replace('_', ' ', strtoupper($request['status'])) . " With Message " . $request['note'];
+                    } else {
+                        $data->event_detail = "Booking Status Change from " . str_replace('_', ' ', strtoupper($quote['status'])) . " to " . str_replace('_', ' ', strtoupper($request['status']));
+                    }
+                    $data->type_id = $request['booking_id'];
 
+                    Log::saveLog($data);
+                } else {
+                    // $latestOrder = Booking::orderBy('job_id', 'DESC')->first();
+                    Booking::find($request['booking_id'])->update([
+                        "status" => $request['status'],
+                        "queue_date" => Carbon::now(),
+                        "queue_time" => Carbon::now()->format('h:i:s'),
+
+
+                    ]);
+
+                    $latestOrder = Log::orderBy('created_at', 'DESC')->first();
+                    $data = new stdClass();
+                    $data->log_no = 'lOG-' . "SVP" . str_pad($request->user()->id, 5, "0", STR_PAD_LEFT) . "-" . str_pad($latestOrder ? $latestOrder->id + 1 : 0 + 1, 5, "0", STR_PAD_LEFT);
+                    $data->user_id = $request->user()->id;
+                    $data->type = "Book";
+                    $data->event = "Booking Status Change ";
+                    if ($quote['status'] == "ARRIVED") {
+                        $q_status = "In Queue";
+                    } else {
+
+                        $q_status = $quote['status'];
+                    }
+                    if ($request['note'] !== null) {
+
+                        $data->event_detail = "Booking Status Change from " . str_replace('_', ' ', strtoupper($q_status)) . " to " . str_replace('_', ' ', strtoupper($request['status'])) . " With Message " . $request['note'];
+                    } else {
+                        $data->event_detail = "Booking Status Change from " . str_replace('_', ' ', strtoupper($q_status)) . " to " . str_replace('_', ' ', strtoupper($request['status']));
+                    }
+                    $data->type_id = $request['booking_id'];
+
+                    Log::saveLog($data);
                 }
-                $data->type_id = $request['booking_id'];
-
-                Log::saveLog($data);
-
-              }else{
-                // $latestOrder = Booking::orderBy('job_id', 'DESC')->first();
-                Booking::find($request['booking_id'])->update([
-                    "status" => $request['status'],
-                    "queue_date" => Carbon::now(),
-                    "queue_time" => Carbon::now()->format('h:i:s'),
-
-
-                ]);
-
-                $latestOrder = Log::orderBy('created_at', 'DESC')->first();
-                $data = new stdClass();
-                $data->log_no = 'lOG-' . "SVP" . str_pad($request->user()->id, 5, "0", STR_PAD_LEFT) . "-" . str_pad($latestOrder ? $latestOrder->id + 1 : 0 + 1, 5, "0", STR_PAD_LEFT);
-                $data->user_id = $request->user()->id;
-                $data->type = "Book";
-                $data->event = "Booking Status Change ";
-                if($quote['status']=="ARRIVED"){
-                    $q_status="In Queue";
-                }else {
-
-                    $q_status=$quote['status'];
-                }
-                if($request['note']!==null){
-
-                    $data->event_detail="Booking Status Change from ".str_replace('_', ' ', strtoupper($q_status)). " to ".str_replace('_', ' ', strtoupper($request['status'])) ." With Message ".$request['note'];
-                }else{
-                    $data->event_detail="Booking Status Change from ".str_replace('_', ' ', strtoupper($q_status)). " to ".str_replace('_', ' ', strtoupper($request['status'])) ;
-
-                }
-                $data->type_id = $request['booking_id'];
-
-                Log::saveLog($data);
-              }
-
-
             } else {
-                if($request['status']=='READY_FOR_COLLECTION'){
+                if ($request['status'] == 'READY_FOR_COLLECTION') {
                     Booking::find($request['booking_id'])->update([
                         "status" => 'READ_FOR_COLLECTION',
 
 
                     ]);
-                }else{
+                } else {
                     Booking::find($request['booking_id'])->update([
                         "status" => $request['status'],
 
                     ]);
                 }
-
             }
 
 
@@ -1174,20 +1391,19 @@ $obj = BookingJobItem::create(array_merge(
                 $data->type = $job;
                 $data->event = $job . " Status Change ";
 
-                if($quote['status']=="ARRIVED"){
-                    $q_status="In Queue";
-                }else {
+                if ($quote['status'] == "ARRIVED") {
+                    $q_status = "In Queue";
+                } else {
 
-                    $q_status=$quote['status'];
+                    $q_status = $quote['status'];
                 }
 
 
-                if($request['note']!==null){
+                if ($request['note'] !== null) {
 
-                    $data->event_detail=$job." Status Change from ".str_replace('_', ' ', strtoupper($q_status)). " to ".str_replace('_', ' ', strtoupper($request['status'])) ." With Message ".$request['note'];
-                }else{
-                    $data->event_detail=$job." Status Change from ".str_replace('_', ' ', strtoupper($q_status)). " to ".str_replace('_', ' ', strtoupper($request['status'])) ;
-
+                    $data->event_detail = $job . " Status Change from " . str_replace('_', ' ', strtoupper($q_status)) . " to " . str_replace('_', ' ', strtoupper($request['status'])) . " With Message " . $request['note'];
+                } else {
+                    $data->event_detail = $job . " Status Change from " . str_replace('_', ' ', strtoupper($q_status)) . " to " . str_replace('_', ' ', strtoupper($request['status']));
                 }
                 $data->type_id = $request['booking_id'];
 
@@ -1196,11 +1412,10 @@ $obj = BookingJobItem::create(array_merge(
 
 
 
-            if($request['status']=='READY_FOR_COLLECTION'){
-                $status='READY_FOR_COLLECTION';
-            }else{
-                $status=$request['status'];
-
+            if ($request['status'] == 'READY_FOR_COLLECTION') {
+                $status = 'READY_FOR_COLLECTION';
+            } else {
+                $status = $request['status'];
             }
 
 
@@ -1325,14 +1540,14 @@ $obj = BookingJobItem::create(array_merge(
         $single_booking = Booking::find($request['booking_id']);
 
         $latestOrder = Invoice::orderBy('created_at', 'DESC')->first();
-        
-        if(count(Invoice::where('booking_id',$request['booking_id'])->where('status','DUE')->get())>0){
-             return response()->json([
-            'status' => false,
-            'invoice'=>null,
 
-            'message' => "Invoice Already Exist!",
-        ]);
+        if (count(Invoice::where('booking_id', $request['booking_id'])->where('status', 'DUE')->get()) > 0) {
+            return response()->json([
+                'status' => false,
+                'invoice' => null,
+
+                'message' => "Invoice Already Exist!",
+            ]);
         }
 
         $invoice = Invoice::create([
@@ -1354,62 +1569,60 @@ $obj = BookingJobItem::create(array_merge(
             'city' => $request['city'],
             'postal_code' => $request['postal_code'],
             'mobile_no' => $request['mobile_no'],
-             'landline_no' => $request['landline_no'],
+            'landline_no' => $request['landline_no'],
             'name' => $request['name'],
             'company' => $request['company'],
             'bank_transfer_detail' => $request['bank_transfer_detail'],
         ]);
-        
-         $deposit_amount=Deposit::where('booking_id',$request['booking_id'])->sum('amount');
 
-        if($deposit_amount>0){
-           $remaining_amount=$invoice['total']-$deposit_amount;
+        $deposit_amount = Deposit::where('booking_id', $request['booking_id'])->sum('amount');
 
-           if($remaining_amount>0){
-            $latestOrderPay = BookingTransaction::orderBy('created_at', 'DESC')->first();
-            BookingTransaction::create([
-                'vender_id' => $single_booking['vender_id'],
-                "pay_no" => 'PAY-' . "SVP" . str_pad($single_booking['vender_id'], 5, "0", STR_PAD_LEFT) . "-" . str_pad($latestOrderPay ? $latestOrderPay->id + 1 : 0 + 1, 5, "0", STR_PAD_LEFT),
-                'invoice_id' => $invoice['id'],
-                'payment_date' => Carbon::now(),
-                'payment_type' => 'Invoice Received',
-                'payment_method' => 'DEPOSIT',
-                'amount' => $deposit_amount,
-                'payment_ref' => '',
-            ]);
+        if ($deposit_amount > 0) {
+            $remaining_amount = $invoice['total'] - $deposit_amount;
 
-           }else if($remaining_amount<0){
+            if ($remaining_amount > 0) {
                 $latestOrderPay = BookingTransaction::orderBy('created_at', 'DESC')->first();
-            BookingTransaction::create([
-                'vender_id' => $single_booking['vender_id'],
-                "pay_no" => 'PAY-' . "SVP" . str_pad($single_booking['vender_id'], 5, "0", STR_PAD_LEFT) . "-" . str_pad($latestOrderPay ? $latestOrderPay->id + 1 : 0 + 1, 5, "0", STR_PAD_LEFT),
-                'invoice_id' => $invoice['id'],
-                'payment_date' => Carbon::now(),
-                'payment_type' => 'Invoice Received',
-                'payment_method' => 'DEPOSIT',
-                'amount' => $deposit_amount,
-                'payment_ref' => '',
-            ]);
-             Invoice::find($invoice['id'])->update([
-                'status'=>'PAID'
+                BookingTransaction::create([
+                    'vender_id' => $single_booking['vender_id'],
+                    "pay_no" => 'PAY-' . "SVP" . str_pad($single_booking['vender_id'], 5, "0", STR_PAD_LEFT) . "-" . str_pad($latestOrderPay ? $latestOrderPay->id + 1 : 0 + 1, 5, "0", STR_PAD_LEFT),
+                    'invoice_id' => $invoice['id'],
+                    'payment_date' => Carbon::now(),
+                    'payment_type' => 'Invoice Received',
+                    'payment_method' => 'DEPOSIT',
+                    'amount' => $deposit_amount,
+                    'payment_ref' => '',
                 ]);
-           }else{
+            } else if ($remaining_amount < 0) {
                 $latestOrderPay = BookingTransaction::orderBy('created_at', 'DESC')->first();
-            BookingTransaction::create([
-                'vender_id' => $single_booking['vender_id'],
-                "pay_no" => 'PAY-' . "SVP" . str_pad($single_booking['vender_id'], 5, "0", STR_PAD_LEFT) . "-" . str_pad($latestOrderPay ? $latestOrderPay->id + 1 : 0 + 1, 5, "0", STR_PAD_LEFT),
-                'invoice_id' => $invoice['id'],
-                'payment_date' => Carbon::now(),
-                'payment_type' => 'Invoice Received',
-                'payment_method' => 'DEPOSIT',
-                'amount' => $deposit_amount,
-                'payment_ref' => '',
-            ]);
-             Invoice::find($invoice['id'])->update([
-                'status'=>'PAID'
+                BookingTransaction::create([
+                    'vender_id' => $single_booking['vender_id'],
+                    "pay_no" => 'PAY-' . "SVP" . str_pad($single_booking['vender_id'], 5, "0", STR_PAD_LEFT) . "-" . str_pad($latestOrderPay ? $latestOrderPay->id + 1 : 0 + 1, 5, "0", STR_PAD_LEFT),
+                    'invoice_id' => $invoice['id'],
+                    'payment_date' => Carbon::now(),
+                    'payment_type' => 'Invoice Received',
+                    'payment_method' => 'DEPOSIT',
+                    'amount' => $deposit_amount,
+                    'payment_ref' => '',
                 ]);
-           }
-
+                Invoice::find($invoice['id'])->update([
+                    'status' => 'PAID'
+                ]);
+            } else {
+                $latestOrderPay = BookingTransaction::orderBy('created_at', 'DESC')->first();
+                BookingTransaction::create([
+                    'vender_id' => $single_booking['vender_id'],
+                    "pay_no" => 'PAY-' . "SVP" . str_pad($single_booking['vender_id'], 5, "0", STR_PAD_LEFT) . "-" . str_pad($latestOrderPay ? $latestOrderPay->id + 1 : 0 + 1, 5, "0", STR_PAD_LEFT),
+                    'invoice_id' => $invoice['id'],
+                    'payment_date' => Carbon::now(),
+                    'payment_type' => 'Invoice Received',
+                    'payment_method' => 'DEPOSIT',
+                    'amount' => $deposit_amount,
+                    'payment_ref' => '',
+                ]);
+                Invoice::find($invoice['id'])->update([
+                    'status' => 'PAID'
+                ]);
+            }
         }
 
         $latestOrder = Log::orderBy('created_at', 'DESC')->first();
@@ -1437,23 +1650,23 @@ $obj = BookingJobItem::create(array_merge(
         $third_array = [];
         $count = 0;
 
-          foreach ($item_array as $key => $value) {
-        if ($count <= 9) {
-            $first_array[$key] = $value;
-            $first_array[$key]['exlusive_vat'] = $value['sub_total_ex_vat'];
-            $first_array[$key]['totalPrice'] = $value['total_price'];
-        } else if ($count <= 19) {
-            $second_array[$key] = $value;
-              $second_array[$key]['exlusive_vat'] = $value['sub_total_ex_vat'];
-            $second_array[$key]['totalPrice'] = $value['total_price'];
-        } else {
-            $third_array[$key] = $value;
-             $third_array[$key]['exlusive_vat'] = $value['sub_total_ex_vat'];
-            $third_array[$key]['totalPrice'] = $value['total_price'];
-        }
+        foreach ($item_array as $key => $value) {
+            if ($count <= 9) {
+                $first_array[$key] = $value;
+                $first_array[$key]['exlusive_vat'] = $value['sub_total_ex_vat'];
+                $first_array[$key]['totalPrice'] = $value['total_price'];
+            } else if ($count <= 19) {
+                $second_array[$key] = $value;
+                $second_array[$key]['exlusive_vat'] = $value['sub_total_ex_vat'];
+                $second_array[$key]['totalPrice'] = $value['total_price'];
+            } else {
+                $third_array[$key] = $value;
+                $third_array[$key]['exlusive_vat'] = $value['sub_total_ex_vat'];
+                $third_array[$key]['totalPrice'] = $value['total_price'];
+            }
 
-        $count++;
-    }
+            $count++;
+        }
 
 
 
@@ -1481,11 +1694,11 @@ $obj = BookingJobItem::create(array_merge(
 
             asset('pdf/' . $invoices['invoice_no'] . time() . ".pdf"),
         ];
-        
+
         foreach ($files as $file) {
-        Invoice::find($invoice['id'])->update([
-            'invoice_path'=>$file
-        ]);
+            Invoice::find($invoice['id'])->update([
+                'invoice_path' => $file
+            ]);
         }
 
         // Mail::send('email.invoice', $data, function ($message) use ($data, $files,$single_booking) {
@@ -1499,7 +1712,7 @@ $obj = BookingJobItem::create(array_merge(
 
         return response()->json([
             'status' => true,
-            'invoice'=>$invoice,
+            'invoice' => $invoice,
 
             'message' => "Invoice Create Successfully",
         ]);
