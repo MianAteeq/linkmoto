@@ -22,9 +22,9 @@
         @if ($appSetting->header_option == 1)
             {{ ucfirst($profile->company_name) }}
         @elseif($appSetting->header_option == 2)
-            {{ ucfirst($profile->company_name) }} trading as {{ $tradingName->name ?? '' }}
+            {{ ucfirst($profile->company_name) }} trading as {{ $tradingName->trading_name->name ?? '' }}
         @else
-            {{ $tradingName->name ?? '' }}
+            {{ $tradingName->trading_name->name ?? '' }}
         @endif
     </p>
 
