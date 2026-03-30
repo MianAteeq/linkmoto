@@ -1730,18 +1730,16 @@ class BookingController extends Controller
             $vendorId = $user->vender_id == 0 ? $user->id : $user->vender_id;
             $tradingId = $user->default_trading_unit;
 
-            $perPage = $request->get('per_page', 10);
             $date = $request->date;
 
             $bookings = $this->baseQuery($vendorId, $tradingId)
-                ->whereDate('booking_date', $date) // 🔥 adjust column name if needed
+                ->whereDate('booking_date', $date)
                 ->orderByDesc('id')
-                ->get();
+                ->get(); // ✅ Collection
 
             return response()->json([
                 'status' => true,
-                'data' => $bookings->items(),
-                'meta' => $this->meta($bookings),
+                'data' => $bookings, // ✅ directly return collection
                 'message' => 'Bookings filtered by date',
             ]);
         } catch (\Throwable $e) {
