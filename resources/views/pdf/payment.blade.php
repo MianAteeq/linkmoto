@@ -104,25 +104,26 @@
                         $contact = $profile['contact_person'] ?? ''; // Monster 2
                     @endphp
 
-                    <h1 id="customer-title" style="font-size:20px; font-weight:bold; margin:0; line-height:1.25;">
+                    <div id="customer-title"
+                        style="font-size:20px; font-weight:bold; margin:0; padding:0; line-height:1.1;">
 
                         @if ($headerOption == 1)
-                            <span style="display:block;">{{ $company }}</span>
+                            <div style="margin:0; padding:0;">{{ $company }}</div>
                         @elseif ($headerOption == 2)
-                            <span style="display:block;">
+                            <div style="margin:0; padding:0;">
                                 {{ $company }} trading as {{ $trading }}
-                            </span>
+                            </div>
 
                             @if ($contact)
-                                <span style="display:block; margin-top:2px; font-weight:normal;">
+                                <div style="margin:0; padding:0; font-weight:normal;">
                                     {{ $contact }}
-                                </span>
+                                </div>
                             @endif
                         @else
-                            <span style="display:block;">{{ $trading }}</span>
+                            <div style="margin:0; padding:0;">{{ $trading }}</div>
                         @endif
 
-                    </h1>
+                    </div>
                     <div class="add" style="display: flex;flex-direction: column;width: 100%;margin-top: -7px">
                         @php
                             $settings = $invoice['trading_name']['app_setting'] ?? [];
