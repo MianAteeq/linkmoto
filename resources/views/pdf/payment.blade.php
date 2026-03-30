@@ -152,7 +152,7 @@
                         @endif
 
                         @if (!empty($invoice['invoice']['trading_name']['app_setting']['landline']))
-                            <p style="line-height: 1.8;font-size: 15px;margin:0;margin-top: -7px;">Tel:
+                            <p style="line-height: 1.8;font-size: 15px;margin:0;margin-top: -4px;">Tel:
                                 {{ $invoice['invoice']['trading_name']['app_setting']['landline'] }}</p>
                         @endif
                         @if (!empty($invoice['invoice']['trading_name']['app_setting']['mobile']))
