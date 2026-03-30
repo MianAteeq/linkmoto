@@ -101,9 +101,10 @@
                         $headerOption = $invoice['invoice']['trading_name']['app_setting']['header_option'] ?? 1;
 
                         $company = ucfirst($profile['company_name'] ?? '');
+                        $contact = $profile['contact_person'] ?? ''; // Monster 2
                     @endphp
 
-                    <h1 id="customer-title" style="font-size:20px; font-weight:bold; margin:0; line-height:1.4;">
+                    <h1 id="customer-title" style="font-size:20px; font-weight:bold; margin:0; line-height:1.25;">
 
                         @if ($headerOption == 1)
                             <span style="display:block;">{{ $company }}</span>
@@ -111,6 +112,12 @@
                             <span style="display:block;">
                                 {{ $company }} trading as {{ $trading }}
                             </span>
+
+                            @if ($contact)
+                                <span style="display:block; margin-top:2px; font-weight:normal;">
+                                    {{ $contact }}
+                                </span>
+                            @endif
                         @else
                             <span style="display:block;">{{ $trading }}</span>
                         @endif
