@@ -426,7 +426,7 @@ class InvoiceController extends Controller
 
 
             // return $records;
-            return  $data = [
+            $data = [
                 'invoice'    => $invoices,
                 'vender' =>  User::with('profile')->find($invoices['vender_id']),
                 'item_array' => $item_array,
@@ -434,6 +434,22 @@ class InvoiceController extends Controller
                 'second_array' => $second_array,
                 'third_array' => $third_array,
             ];
+
+            return  $addressLine1 = collect([
+                $invoices['trading_name']['app_setting']['address_line_1'] ?? null,
+                $invoices['trading_name']['app_setting']['address_line_2'] ?? null,
+                $invoices['trading_name']['app_setting']['address_line_3'] ?? null,
+                $invoices['trading_name']['app_setting']['address_line_4'] ?? null,
+            ])
+                ->filter()
+                ->implode(', ');
+
+            $addressLine2 = collect([
+                $invoices['trading_name']['app_setting']['city'] ?? null,
+                $invoices['trading_name']['app_setting']['postcode'] ?? null,
+            ])
+                ->filter()
+                ->implode(' ');
 
 
 
