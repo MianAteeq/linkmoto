@@ -1717,4 +1717,39 @@ class BookingController extends Controller
             'message' => "Invoice Create Successfully",
         ]);
     }
+
+    public function byDate(Request $request)
+    {
+        $request->validate([
+            'date' => ['required', 'date'],
+        ]);
+
+        try {
+            $user = $request->user();
+
+            $vendorId = $user->vender_id == 0 ? $user->id : $user->vender_id;
+            $tradingId = $user->default_trading_unit;
+
+            $perPage = $request->get('per_page', 10);
+            $date = $request->date;
+
+            $bookings = $this->baseQuery($vendorId, $tradingId)
+                ->whereDate('booking_date', $date) // 🔥 adjust column name if needed
+                ->orderByDesc('id')
+                ->paginate($perPage);
+
+            return response()->json([
+                'status' => true,
+                'data' => $bookings->items(),
+                'meta' => $this->meta($bookings),
+                'message' => 'Bookings filtered by date',
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Error fetching bookings by date',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
 }

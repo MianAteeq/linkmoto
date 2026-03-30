@@ -154,6 +154,7 @@ Route::group(['middleware' => ['cors']], function () {
                 Route::post('booking/confirm', [BookingController::class, 'saveBookingPending'])->middleware('atomic.lock');
                 Route::post('fetch/booking', [BookingController::class, 'getBookingDetail']);
                 Route::post('fetch/booking/test', [BookingController::class, 'getBookingDetailTest']);
+                Route::get('/bookings/by-date', [BookingController::class, 'byDate']);
                 Route::post('find/booking', [BookingController::class, 'getSingleBooking']);
                 Route::post('start/booking', [BookingController::class, 'startBooking']);
                 Route::post('get/inprogress/booking', [BookingController::class, 'getInProgress']);
