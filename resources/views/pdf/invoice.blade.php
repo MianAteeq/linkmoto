@@ -196,7 +196,7 @@
                         @endif
                         {{-- H & H MOTORS --}}
                     </h1>
-                    <div class="add" style="display: flex;flex-direction: column;width: 100%;margin-top: -7px">
+                    <div class="add" style="display: flex;flex-direction: column;width: 100%;margin-top: 0px">
                         @php
                             $addressLine1 = collect([
                                 $invoice['trading_name']['app_setting']['address_line_1'] ?? null,
