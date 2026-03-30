@@ -239,7 +239,7 @@
                     <td style="border: none!important;padding:10px;">{{ $invoice['payment_method'] }}</td>
                     <td style="border: none!important;padding:10px;">
                         {{ \Carbon\Carbon::parse($invoice['payment_date'])->format('d/m/Y h:i a') }}</td>
-                    <td style="border: none!important;padding:10px;float: right">
+                    <td style="border: none!important;float: right">
                         £{{ number_format($invoice['amount'], 2) }}</td>
 
                 </tr>
