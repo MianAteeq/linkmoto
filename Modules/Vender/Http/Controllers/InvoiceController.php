@@ -426,7 +426,7 @@ class InvoiceController extends Controller
 
 
             // return $records;
-            $data = [
+            return  $data = [
                 'invoice'    => $invoices,
                 'vender' =>  User::with('profile')->find($invoices['vender_id']),
                 'item_array' => $item_array,
@@ -434,6 +434,8 @@ class InvoiceController extends Controller
                 'second_array' => $second_array,
                 'third_array' => $third_array,
             ];
+
+
 
 
             $pdf = Pdf::loadView('pdf.payment', $data);
