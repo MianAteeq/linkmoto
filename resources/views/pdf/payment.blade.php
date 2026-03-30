@@ -92,8 +92,7 @@
         <div style="width: 100%;clear: both;"></div>
         <div>
             <div class="top-addr">
-                <div id="customer"
-                    style="overflow: hidden;margin: 10px;margin-top:25px;margin-bottom:0px;width: 50%;float: left;">
+                <div id="customer" style="overflow: hidden;margin: 10px;margin-bottom:0px;width: 50%;float: left;">
 
                     @php
                         $profile = $vender['profile'] ?? [];
@@ -104,69 +103,74 @@
                         $contact = $profile['contact_person'] ?? ''; // Monster 2
                     @endphp
 
-                    <div id="customer-title"
-                        style="font-size:20px; font-weight:bold; margin:0; padding:0; line-height:1.1;">
+                    <h1 id="customer-title" style="font-size: 15px;font-weight: bold;line-height: 2.1;margin-bottom: 0">
 
-                        @if ($headerOption == 1)
-                            <div style="margin:0; padding:0;">{{ $company }}</div>
-                        @elseif ($headerOption == 2)
-                            <div style="margin:0; padding:0;">
-                                {{ $company }} trading as {{ $trading }}
-                            </div>
-
-                            @if ($contact)
-                                <div style="margin:0; padding:0; font-weight:normal;">
-                                    {{ $contact }}
-                                </div>
+                        @if ($vender['profile']['organization_status'] === 'Limited Company')
+                            @if ($invoice['trading_name']['app_setting']['header_option'] == 1)
+                                {{ ucfirst($vender['profile']['company_name']) }}
+                            @elseif($invoice['trading_name']['app_setting']['header_option'] == 2)
+                                {{ ucfirst($vender['profile']['company_name']) }} trading as
+                                {{ $invoice['trading_name']['trading_name']['name'] }}
+                            @else
+                                {{ $invoice['trading_name']['trading_name']['name'] }}
                             @endif
                         @else
-                            <div style="margin:0; padding:0;">{{ $trading }}</div>
-                        @endif
+                            @if ($invoice['trading_name']['app_setting']['header_option'] == 1)
+                                {{ ucfirst($vender['profile']['company_name']) }}
+                            @elseif($invoice['trading_name']['app_setting']['header_option'] == 2)
+                                {{ ucfirst($vender['profile']['company_name']) }} trading as
+                                {{ $invoice['trading_name']['trading_name']['name'] }}
+                            @else
+                                {{ $invoice['trading_name']['trading_name']['name'] }}
+                            @endif
 
-                    </div>
+                        @endif
+                        {{-- H & H MOTORS --}}
+                    </h1>
                     <div class="add" style="display: flex;flex-direction: column;width: 100%;margin-top: -7px">
                         @php
-                            $settings = $invoice['trading_name']['app_setting'] ?? [];
-
                             $addressLine1 = collect([
-                                $settings['address_line_1'] ?? null,
-                                $settings['address_line_2'] ?? null,
-                                $settings['address_line_3'] ?? null,
-                                $settings['address_line_4'] ?? null,
+                                $invoice['trading_name']['app_setting']['address_line_1'] ?? null,
+                                $invoice['trading_name']['app_setting']['address_line_2'] ?? null,
+                                $invoice['trading_name']['app_setting']['address_line_3'] ?? null,
+                                $invoice['trading_name']['app_setting']['address_line_4'] ?? null,
                             ])
-                                ->filter(fn($value) => filled(trim($value)))
+                                ->filter()
                                 ->implode(', ');
 
-                            $addressLine2 = collect([$settings['city'] ?? null, $settings['postcode'] ?? null])
-                                ->filter(fn($value) => filled(trim($value)))
+                            $addressLine2 = collect([
+                                $invoice['trading_name']['app_setting']['city'] ?? null,
+                                $invoice['trading_name']['app_setting']['postcode'] ?? null,
+                            ])
+                                ->filter()
                                 ->implode(' ');
                         @endphp
 
                         @if ($addressLine1 || $addressLine2)
-                            <p style="margin:0; font-size:14px; line-height:1.3;">
-                                HHHHHH {{ trim($addressLine1) }}
+                            <p style="line-height:1.4;font-size:15px;margin:0;">
+                                {{ $addressLine1 }}
                                 @if ($addressLine2)
-                                    <span style="display:block;">{{ trim($addressLine2) }}</span>
+                                    <br>{{ $addressLine2 }}
                                 @endif
                             </p>
                         @endif
 
-                        @if (!empty($invoice['invoice']['trading_name']['app_setting']['landline']))
-                            <p style="line-height: 1.8;font-size: 15px;margin:0;margin-top: 0px;">Tel:
-                                {{ $invoice['invoice']['trading_name']['app_setting']['landline'] }}</p>
+                        @if (!empty($invoice['trading_name']['app_setting']['landline']))
+                            <p style="line-height: 1.8;font-size: 15px;margin:0;margin-top: -7px;">Tel:
+                                {{ $invoice['trading_name']['app_setting']['landline'] }}</p>
                         @endif
-                        @if (!empty($invoice['invoice']['trading_name']['app_setting']['mobile']))
+                        @if (!empty($invoice['trading_name']['app_setting']['mobile']))
                             <p style="line-height: 1.8;font-size: 15px;margin:0;margin-top: -7px;">Mob:
-                                {{ $invoice['invoice']['trading_name']['app_setting']['mobile'] }}</p>
+                                {{ $invoice['trading_name']['app_setting']['mobile'] }}</p>
                         @endif
-                        @if (!empty($invoice['invoice']['trading_name']['app_setting']['email']))
+                        @if (!empty($invoice['trading_name']['app_setting']['email']))
                             <p style="line-height: 1.8;font-size: 15px;margin:0;margin-top: -7px;">Email:
-                                {{ $invoice['invoice']['trading_name']['app_setting']['email'] }}
+                                {{ $invoice['trading_name']['app_setting']['email'] }}
                         @endif
 
-                        @if (!empty($invoice['invoice']['trading_name']['app_setting']['website']))
+                        @if (!empty($invoice['trading_name']['app_setting']['website']))
                             <p style="line-height: 1.8; font-size: 15px; margin:0; margin-top: -7px;">
-                                {{ $invoice['invoice']['trading_name']['app_setting']['website'] }}
+                                {{ $invoice['trading_name']['app_setting']['website'] }}
                             </p>
                         @endif
                         @if (!empty($vender['profile']['uk_vat_no']))
