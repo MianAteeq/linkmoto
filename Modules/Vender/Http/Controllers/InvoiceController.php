@@ -421,6 +421,27 @@ class InvoiceController extends Controller
             }
 
 
+            $book_invoice = Invoice::with([
+                'booking',
+                'trading_name',
+                'trading_name.app_setting',
+                'booking.contact_detail',
+                'booking.service',
+                'booking.job_requests',
+                'booking.booking_items',
+                'booking.booking_items.price_type',
+                'booking.vehicle.vehicle_model',
+                'booking.vehicle.vehicle_make',
+                'booking.vehicle.engine_size',
+                'booking.vehicle.transmission_type',
+                'booking.vehicle.fuel_type',
+                'booking.vehicle.color',
+                'payment',
+                'payments',
+                'job_logs'
+            ])->find($invoices->invoice_id);
+
+
 
 
 
@@ -428,6 +449,7 @@ class InvoiceController extends Controller
             // return $records;
             $data = [
                 'invoice'    => $invoices,
+                'book_invoice'    => $book_invoice,
                 'vender' =>  User::with('profile')->find($invoices['vender_id']),
                 'item_array' => $item_array,
                 'first_array' => $first_array,
@@ -435,26 +457,12 @@ class InvoiceController extends Controller
                 'third_array' => $third_array,
             ];
 
-            return   $invoices['trading_name']['app_setting']['address_line_1'];
-            $addressLine1 = collect([
-                $invoices['trading_name']['app_setting']['address_line_1'] ?? null,
-                $invoices['trading_name']['app_setting']['address_line_2'] ?? null,
-                $invoices['trading_name']['app_setting']['address_line_3'] ?? null,
-                $invoices['trading_name']['app_setting']['address_line_4'] ?? null,
-            ])
-                ->filter()
-                ->implode(', ');
-
-            $addressLine2 = collect([
-                $invoices['trading_name']['app_setting']['city'] ?? null,
-                $invoices['trading_name']['app_setting']['postcode'] ?? null,
-            ])
-                ->filter()
-                ->implode(' ');
-
-
-
-
+            //     // return $records;
+            //     $data = [
+            //         'invoice'    => $invoices,
+            //         'vender'=>User::with('profile')->find(auth()->user()->id),
+            //         'item_array'=>$item_array
+            //    ];
             $pdf = Pdf::loadView('pdf.payment', $data);
             $content = $pdf->download()->getOriginalContent();
             file_put_contents('pdf/' . $invoices['pay_no'] . time()  . ".pdf", $content);

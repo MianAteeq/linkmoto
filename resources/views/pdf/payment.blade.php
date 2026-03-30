@@ -120,17 +120,17 @@
                     <div class="add" style="display: flex;flex-direction: column;width: 100%;">
                         @php
                             $addressLine1 = collect([
-                                $invoice['trading_name']['app_setting']['address_line_1'] ?? null,
-                                $invoice['trading_name']['app_setting']['address_line_2'] ?? null,
-                                $invoice['trading_name']['app_setting']['address_line_3'] ?? null,
-                                $invoice['trading_name']['app_setting']['address_line_4'] ?? null,
+                                $book_invoice['trading_name']['app_setting']['address_line_1'] ?? null,
+                                $book_invoice['trading_name']['app_setting']['address_line_2'] ?? null,
+                                $book_invoice['trading_name']['app_setting']['address_line_3'] ?? null,
+                                $book_invoice['trading_name']['app_setting']['address_line_4'] ?? null,
                             ])
                                 ->filter()
                                 ->implode(', ');
 
                             $addressLine2 = collect([
-                                $invoice['trading_name']['app_setting']['city'] ?? null,
-                                $invoice['trading_name']['app_setting']['postcode'] ?? null,
+                                $book_invoice['trading_name']['app_setting']['city'] ?? null,
+                                $book_invoice['trading_name']['app_setting']['postcode'] ?? null,
                             ])
                                 ->filter()
                                 ->implode(' ');
