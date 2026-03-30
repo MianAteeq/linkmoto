@@ -170,58 +170,7 @@
                         @endif
 
                     </div>
-                    @php
-                        $landline = $invoice['trading_name']['app_setting']['landline'] ?? '';
-                        $mobile = $invoice['trading_name']['app_setting']['mobile'] ?? '';
-                        $email = $invoice['trading_name']['app_setting']['email'] ?? '';
-                        $website = $invoice['trading_name']['app_setting']['website'] ?? '';
-                        $vat_no = $vender['profile']['uk_vat_no'] ?? '';
 
-                        // Count how many fields have data
-                        $filledCount = collect([$landline, $mobile, $email, $website, $vat_no])
-                            ->filter(fn($val) => !empty($val))
-                            ->count();
-
-                        // Default margin
-                        $marginTop = '194px';
-                        if ($invoice['bank_transfer_detail'] == 'YES') {
-                            $marginTop = '-3px';
-
-                            $margin_top = '100px';
-                        }
-
-                        if ($filledCount === 1) {
-                            $marginTop = '170px'; // only one field
-                            if ($invoice['bank_transfer_detail'] == 'YES') {
-                                $marginTop = '-10px';
-                                $margin_top = '100px';
-                            }
-                        } elseif ($filledCount === 2) {
-                            $marginTop = '150px'; // two fields
-                            if ($invoice['bank_transfer_detail'] == 'YES') {
-                                $marginTop = '-10px';
-                                $margin_top = '80px';
-                            }
-                        } elseif ($filledCount === 3) {
-                            $marginTop = '130px'; // three fields
-                            if ($invoice['bank_transfer_detail'] == 'YES') {
-                                $marginTop = '-10px';
-                                $margin_top = '60px';
-                            }
-                        } elseif ($filledCount === 4) {
-                            $marginTop = '110px'; // four fields
-                            if ($invoice['bank_transfer_detail'] == 'YES') {
-                                $marginTop = '-10px';
-                                $margin_top = '40px';
-                            }
-                        } elseif ($filledCount === 5) {
-                            $marginTop = '90px'; // all fields
-                            if ($invoice['bank_transfer_detail'] == 'YES') {
-                                $marginTop = '-10px';
-                                $margin_top = '20px';
-                            }
-                        }
-                    @endphp
 
 
 
