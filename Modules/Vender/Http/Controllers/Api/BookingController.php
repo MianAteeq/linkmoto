@@ -1751,6 +1751,37 @@ class BookingController extends Controller
         }
     }
 
+    public function getBookingDates(Request $request)
+    {
+        try {
+            $user = $request->user();
+
+            $vendorId = $user->vender_id == 0 ? $user->id : $user->vender_id;
+            $tradingId = $user->default_trading_unit;
+
+            $dates = Booking::query()
+                ->where('vender_id', $vendorId)
+                ->where('trading_id', $tradingId)
+                ->whereNotNull('booking_date')
+                ->selectRaw('DATE(booking_date) as booking_date') // ✅ only date
+                ->distinct() // ✅ unique dates only
+                ->orderByDesc('booking_date')
+                ->pluck('booking_date'); // ✅ returns flat array
+
+            return response()->json([
+                'status' => true,
+                'data' => $dates,
+                'message' => 'Booking dates fetched successfully',
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Error fetching booking dates',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
     private function baseQuery(int $vendorId, int $tradingId)
     {
         return Booking::with([
