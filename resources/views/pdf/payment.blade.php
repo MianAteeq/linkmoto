@@ -118,58 +118,7 @@
                         @endif
                         {{-- H & H MOTORS --}}
                     </h1>
-                    <div class="add" style="display: flex;flex-direction: column;width: 100%;margin-top: -7px">
-                        @php
-                            $addressLine1 = collect([
-                                $invoice['trading_name']['app_setting']['address_line_1'] ?? null,
-                                $invoice['trading_name']['app_setting']['address_line_2'] ?? null,
-                                $invoice['trading_name']['app_setting']['address_line_3'] ?? null,
-                                $invoice['trading_name']['app_setting']['address_line_4'] ?? null,
-                            ])
-                                ->filter()
-                                ->implode(', ');
 
-                            $addressLine2 = collect([
-                                $invoice['trading_name']['app_setting']['city'] ?? null,
-                                $invoice['trading_name']['app_setting']['postcode'] ?? null,
-                            ])
-                                ->filter()
-                                ->implode(' ');
-                        @endphp
-
-                        @if ($addressLine1 || $addressLine2)
-                            <p style="line-height:1.4;font-size:15px;margin:0;">
-                                {{ $addressLine1 }}
-                                @if ($addressLine2)
-                                    <br>{{ $addressLine2 }}
-                                @endif
-                            </p>
-                        @endif
-
-                        @if (!empty($invoice['trading_name']['app_setting']['landline']))
-                            <p style="line-height: 1.8;font-size: 15px;margin:0;margin-top: -7px;">Tel:
-                                {{ $invoice['trading_name']['app_setting']['landline'] }}</p>
-                        @endif
-                        @if (!empty($invoice['trading_name']['app_setting']['mobile']))
-                            <p style="line-height: 1.8;font-size: 15px;margin:0;margin-top: -7px;">Mob:
-                                {{ $invoice['trading_name']['app_setting']['mobile'] }}</p>
-                        @endif
-                        @if (!empty($invoice['trading_name']['app_setting']['email']))
-                            <p style="line-height: 1.8;font-size: 15px;margin:0;margin-top: -7px;">Email:
-                                {{ $invoice['trading_name']['app_setting']['email'] }}
-                        @endif
-
-                        @if (!empty($invoice['trading_name']['app_setting']['website']))
-                            <p style="line-height: 1.8; font-size: 15px; margin:0; margin-top: -7px;">
-                                {{ $invoice['trading_name']['app_setting']['website'] }}
-                            </p>
-                        @endif
-                        @if (!empty($vender['profile']['uk_vat_no']))
-                            <p style="line-height: 1.8;font-size: 15px;margin:0;margin-top: -7px;">Registered VAT No:
-                                {{ $vender['profile']['uk_vat_no'] }}</p>
-                        @endif
-
-                    </div>
 
 
 
