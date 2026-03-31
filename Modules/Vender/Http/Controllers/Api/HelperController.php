@@ -41,7 +41,7 @@ class HelperController extends Controller
             $car_maker = CarMaker::get();
             foreach ($car_maker as $key => $value) {
 
-                $car_maker[$key]['value']=$value['name'];
+                $car_maker[$key]['value'] = $value['name'];
                 # code...
             }
             return response()->json([
@@ -69,7 +69,7 @@ class HelperController extends Controller
             $car_maker = CarModel::get();
             foreach ($car_maker as $key => $value) {
 
-                $car_maker[$key]['value']=$value['name'];
+                $car_maker[$key]['value'] = $value['name'];
                 # code...
             }
             return response()->json([
@@ -167,7 +167,7 @@ class HelperController extends Controller
             $car_maker = FuelType::get();
             foreach ($car_maker as $key => $value) {
 
-                $car_maker[$key]['value']=$value['name'];
+                $car_maker[$key]['value'] = $value['name'];
                 # code...
             }
             return response()->json([
@@ -218,7 +218,7 @@ class HelperController extends Controller
             $job_type = JobType::get();
             foreach ($job_type as $key => $value) {
 
-                $job_type[$key]['value']=$value['name'];
+                $job_type[$key]['value'] = $value['name'];
                 # code...
             }
             return response()->json([
@@ -246,7 +246,7 @@ class HelperController extends Controller
             $price_type = PriceType::get();
             foreach ($price_type as $key => $value) {
 
-                $price_type[$key]['value']=$value['name'];
+                $price_type[$key]['value'] = $value['name'];
                 # code...
             }
 
@@ -274,7 +274,7 @@ class HelperController extends Controller
             $trading_id = User::find($request->user()->id)['default_trading_unit'];
 
 
-            $quick_job = QuickProduct::where('trading_id',$trading_id)->with(['job_type', 'job_coverage','job_types'])->with('job_types.jobtype')->where('status','ACTIVE')->get();
+            $quick_job = QuickProduct::where('trading_id', $trading_id)->with(['job_type', 'job_coverage', 'job_types'])->with('job_types.jobtype')->where('status', 'ACTIVE')->get();
             return response()->json([
                 'status' => true,
                 'quick_job' => $quick_job,
@@ -297,7 +297,7 @@ class HelperController extends Controller
 
 
 
-            $notifications = CustomNotification::where('vender_id',$request->user()->id)->get();
+            $notifications = CustomNotification::where('vender_id', $request->user()->id)->get();
             return response()->json([
                 'status' => true,
                 'notifications' => $notifications,
@@ -318,7 +318,7 @@ class HelperController extends Controller
 
 
 
-            $notifications = CustomNotification::where('vender_id',$request->user()->id)->delete();
+            $notifications = CustomNotification::where('vender_id', $request->user()->id)->delete();
             return response()->json([
                 'status' => true,
                 'notifications' => $notifications,
@@ -355,7 +355,7 @@ class HelperController extends Controller
 
 
 
-            $quick_job = JobRequest::where('quotation_id',$request['quotation_id'])->get();
+            $quick_job = JobRequest::where('quotation_id', $request['quotation_id'])->get();
             return response()->json([
                 'status' => true,
                 'quick_job' => $quick_job,
@@ -392,7 +392,7 @@ class HelperController extends Controller
 
 
 
-            $quick_job = BookingJobRequest::where('booking_id',$request['booking_id'])->get();
+            $quick_job = BookingJobRequest::where('booking_id', $request['booking_id'])->get();
             return response()->json([
                 'status' => true,
                 'quick_job' => $quick_job,
@@ -417,36 +417,35 @@ class HelperController extends Controller
             $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
             $trading_id = User::find($request->user()->id)['default_trading_unit'];
 
-            $quotation_vender = Quotation::where('vender_id', $vender_id)->where('trading_id',$trading_id)->where('is_hub',0)->orderBy('id', 'desc')->get();
-            $quotation_hub = Quotation::where('vender_id', $vender_id)->where('trading_id',$trading_id)->where('status','!=','DRAFT')->where('is_hub',1)->orderBy('id', 'desc')->get();
+            $quotation_vender = Quotation::where('vender_id', $vender_id)->where('trading_id', $trading_id)->where('is_hub', 0)->orderBy('id', 'desc')->get();
+            $quotation_hub = Quotation::where('vender_id', $vender_id)->where('trading_id', $trading_id)->where('status', '!=', 'DRAFT')->where('is_hub', 1)->orderBy('id', 'desc')->get();
 
             $quotations = count($quotation_vender->merge($quotation_hub));
-            $bookings = Booking::where('vender_id', $vender_id)->where('trading_id',$trading_id)->whereIn('status',['DRAFT', 'BOOKING_REQUEST', 'CUSTOMER_PENDING', 'BOOKED', 'RE_SCHEDULE', 'MISSED','DECLINE','ARRIVED', 'FINAL_CHECKS', 'DUE','COMPLETED','READ_FOR_COLLECTION','VOID','COLLECTED','DELIVERED','READY_FOR_DELIVERY'])->count();
+            $bookings = Booking::where('vender_id', $vender_id)->where('trading_id', $trading_id)
+                ->whereIn('status', ['BOOKED'])->count();
             // $bookings += Booking::where('vender_id', $vender_id)->where('trading_id',$trading_id)->whereIn('status',[])->count();
-            $booking_actives = Booking::where('vender_id', $vender_id)->where('trading_id',$trading_id)->whereIn('status',['INPROGRESS'])->count();
-            $total_queues = Booking::where('vender_id', $vender_id)->where('trading_id',$trading_id)->whereIn('status',['ARRIVED', 'DIAGNOSING', 'DIAGNOSING_COMPLETE', 'PROGRESS'])->count();
-            $complete_bookings = Booking::where('vender_id', $vender_id)->where('trading_id',$trading_id)->whereIn('status',['FINAL_CHECKS','READ_FOR_COLLECTION','READY_FOR_DELIVERY'])->count();
-            $past_bookings = Booking::where('vender_id', $vender_id)->where('trading_id',$trading_id)->whereIn('status',['COLLECTED','DELIVERED','VOID','DUE'])->where('job_delete',0)->count();
-            $cancelled_jobs = Booking::where('vender_id', $vender_id)->where('trading_id',$trading_id)->whereIn('status',['CANCELLED'])->where('job_id',"!=",0)->orderBy('id','desc')->count();
-            $cancelled_job = Booking::where('vender_id', $vender_id)->where('trading_id',$trading_id)->whereIn('status',['CANCELLED'])->where('job_id',0)->orderBy('id','desc')->count();
-            $total_invoices = Invoice::where('vender_id', $vender_id)->where('trading_id',$trading_id)->count();
+            $booking_actives = Booking::where('vender_id', $vender_id)->where('trading_id', $trading_id)->whereIn('status', ['INPROGRESS'])->count();
+            $total_queues = Booking::where('vender_id', $vender_id)->where('trading_id', $trading_id)->whereIn('status', ['ARRIVED', 'DIAGNOSING', 'DIAGNOSING_COMPLETE', 'PROGRESS'])->count();
+            $complete_bookings = Booking::where('vender_id', $vender_id)->where('trading_id', $trading_id)->whereIn('status', ['FINAL_CHECKS', 'READ_FOR_COLLECTION', 'READY_FOR_DELIVERY'])->count();
+            $past_bookings = Booking::where('vender_id', $vender_id)->where('trading_id', $trading_id)->whereIn('status', ['COLLECTED', 'DELIVERED', 'VOID', 'DUE'])->where('job_delete', 0)->count();
+            $cancelled_jobs = Booking::where('vender_id', $vender_id)->where('trading_id', $trading_id)->whereIn('status', ['CANCELLED'])->where('job_id', "!=", 0)->orderBy('id', 'desc')->count();
+            $cancelled_job = Booking::where('vender_id', $vender_id)->where('trading_id', $trading_id)->whereIn('status', ['CANCELLED'])->where('job_id', 0)->orderBy('id', 'desc')->count();
+            $total_invoices = Invoice::where('vender_id', $vender_id)->where('trading_id', $trading_id)->count();
 
             return response()->json([
                 'status' => true,
-                'vender_id'=>$vender_id,
-                'total_quotations'=> $quotations,
-                'total_bookings'=> $bookings+$cancelled_job,
-                'total_inprogress_bookings'=> $booking_actives,
-                'total_completed_bookings'=> $complete_bookings,
-                'total_past_jobs'=> $past_bookings+$cancelled_jobs,
-                'total_queues'=> $total_queues,
-                'total_invoice'=> $total_invoices,
-                'total_contacts'=> ContactDetail::where('vender_id', $vender_id)->where('contact_no','!=',null)->count(),
-                'total_vehicles'=> Vehicle::where('vender_id', $vender_id)->where('vehicle_no','!=',null)->count(),
+                'vender_id' => $vender_id,
+                'total_quotations' => $quotations,
+                'total_bookings' => $bookings + $cancelled_job,
+                'total_inprogress_bookings' => $booking_actives,
+                'total_completed_bookings' => $complete_bookings,
+                'total_past_jobs' => $past_bookings + $cancelled_jobs,
+                'total_queues' => $total_queues,
+                'total_invoice' => $total_invoices,
+                'total_contacts' => ContactDetail::where('vender_id', $vender_id)->where('contact_no', '!=', null)->count(),
+                'total_vehicles' => Vehicle::where('vender_id', $vender_id)->where('vehicle_no', '!=', null)->count(),
                 'message' => "Fetch Menu Successfully",
             ]);
-
-
         } catch (Exception $e) {
 
             return response()->json([
@@ -458,16 +457,17 @@ class HelperController extends Controller
     }
 
 
-    public function saveLog($data){
+    public function saveLog($data)
+    {
 
 
         Log::create([
 
-            'user_id'=>$data->user_id,
-            'type'=>$data->type,
-            'event'=>$data->event,
-            'event_detail'=>$data->event_detail,
-            'type_id'=>$data->type_id,
+            'user_id' => $data->user_id,
+            'type' => $data->type,
+            'event' => $data->event,
+            'event_detail' => $data->event_detail,
+            'type_id' => $data->type_id,
         ]);
 
         return true;
