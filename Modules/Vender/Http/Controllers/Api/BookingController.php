@@ -1787,16 +1787,16 @@ class BookingController extends Controller
             // $pending = Booking::query()
             //     ->where('vender_id', $vendorId)
             //     ->where('trading_id', $tradingId)->whereIn('status', ['CUSTOMER_PENDING', 'BOOKED'])->where('is_booked', 0)->count();
-            // $other = Booking::query()
-            //     ->where('vender_id', $vendorId)
-            //     ->where('trading_id', $tradingId)->count();
+            $other = Booking::query()
+                ->where('vender_id', $vendorId)
+                ->where('trading_id', $tradingId)->count();
 
             return response()->json([
                 'status' => true,
                 'data' => $dates,
                 'todo' => $todo,
                 'pending' => 0,
-                'other' => 0,
+                'other' => $other,
 
                 'message' => 'Booking dates fetched successfully',
             ]);
