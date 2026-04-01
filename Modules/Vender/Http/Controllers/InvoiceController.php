@@ -159,10 +159,26 @@ class InvoiceController extends Controller
                 'file'        => $invoice['trading_name']['app_setting'],
             ]);
 
+            $profile = optional($vender->profile);
+            $tradingName = optional($invoice->trading_name);
+            $appSetting = optional($tradingName->app_setting);
+
+            $company = ucfirst($profile->company_name ?? '');
+            $trading = optional($tradingName->trading_name)->name ?? '';
+
+            if ($appSetting->header_option == 1) {
+                $CNAME = $company;
+            } elseif ($appSetting->header_option == 2) {
+                $CNAME = $company . ' trading as ' . $trading;
+            } else {
+                $CNAME = $trading;
+            }
+
+
             // 8️⃣ Send email
             Mail::send('email.invoice', $data, function ($message) use ($data, $files, $request) {
                 $message->to($request->email)
-                    ->from(config('mail.from.address'), ' (via Motonos)') // ✅ static
+                    ->from(config('mail.from.address'), $CNAME . ' (via Motonos)') // ✅ static
                     ->subject('Invoice Reminder');
 
                 foreach ($files as $file) {
