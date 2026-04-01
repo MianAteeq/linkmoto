@@ -1779,9 +1779,15 @@ class BookingController extends Controller
                 ->orderByDesc('booking_date')
                 ->pluck('booking_date'); // ✅ returns flat array
 
+
+            $todo = Booking::query()
+                ->where('vender_id', $vendorId)
+                ->where('trading_id', $tradingId)->whereIn('status', ['DRAFT', 'RE_SCHEDULE', 'BOOKING_REQUEST'])->count();
+
             return response()->json([
                 'status' => true,
                 'data' => $dates,
+                'todo' => $todo,
                 'message' => 'Booking dates fetched successfully',
             ]);
         } catch (\Throwable $e) {
