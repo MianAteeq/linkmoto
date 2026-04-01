@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Mail;
 use Kutia\Larafirebase\Facades\Larafirebase;
+use Mockery\Undefined;
 use Modules\ClientHub\Entities\Client;
 use Modules\Vender\Entities\Booking;
 use Modules\Vender\Entities\BookingJobItem;
@@ -1783,11 +1784,20 @@ class BookingController extends Controller
             $todo = Booking::query()
                 ->where('vender_id', $vendorId)
                 ->where('trading_id', $tradingId)->whereIn('status', ['DRAFT', 'RE_SCHEDULE', 'BOOKING_REQUEST'])->count();
+            $pending = Booking::query()
+                ->where('vender_id', $vendorId)
+                ->where('trading_id', $tradingId)->whereIn('status', ['CUSTOMER_PENDING', 'BOOKED'])->where('is_booked', 0)->count();
+            $other = Booking::query()
+                ->where('vender_id', $vendorId)
+                ->where('trading_id', $tradingId)->count();
 
             return response()->json([
                 'status' => true,
                 'data' => $dates,
                 'todo' => $todo,
+                'pending' => $pending,
+                'other' => $other,
+
                 'message' => 'Booking dates fetched successfully',
             ]);
         } catch (\Throwable $e) {
