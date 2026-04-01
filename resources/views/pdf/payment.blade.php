@@ -5,7 +5,7 @@
 <head>
     <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
 
-    <title>Editable Invoice</title>
+    <title>Invoice</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
@@ -18,7 +18,7 @@
 </head>
 <style>
     body {
-        font: 14px/1.4 Georgia, serif;
+        font: 14px/1.4 Arial, Helvetica, sans-serif;
     }
 
     table td,
@@ -204,7 +204,7 @@
                         </tr>
                         <tr>
 
-                            <td style="text-align: left;background: #d9d9d9;color: black" class="meta-head">DATE</td>
+                            <td style="text-align: left;background: #d9d9d9;color: black" class="meta-head">Date</td>
                             <td>
                                 {{ \Carbon\Carbon::parse($invoice['payment_date'])->format('d/m/Y') }}
                             </td>
