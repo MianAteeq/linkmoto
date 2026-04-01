@@ -239,7 +239,8 @@
                     <td style="color: black;border: none!important;padding:10px;">{{ $invoice['payment_type'] }}</td>
                     <td style="border: none!important;padding:10px;">{{ $invoice['payment_method'] }}</td>
                     <td style="border: none!important;padding:10px;">
-                        {{ \Carbon\Carbon::parse($invoice['payment_date'])->format('d/m/Y h:i a') }}</td>
+                        {{ \Carbon\Carbon::parse($invoice['payment_date'])->format('d/m/Y') }}
+                        {{ \Carbon\Carbon::parse($invoice['created_at'])->format('H:i:s') }}</td>
                     <td style="border: none!important;padding:10px;">£{{ number_format($invoice['amount'], 2) }}</td>
 
                 </tr>
