@@ -391,12 +391,23 @@ class BookingController extends Controller
 
             $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
             $trading_id = User::find($request->user()->id)['default_trading_unit'];
-            Booking::find($request['booking_id'])->update([
-                'workstream_id' => $request['workstream_id'],
-                'status' => 'ARRIVED'
+            $booking = Booking::find($request['booking_id']);
+            if ($booking['job_id'] == 0) {
 
-            ]);
+                Booking::find($request['booking_id'])->update([
+                    'workstream_id' => $request['workstream_id'],
 
+
+                ]);
+            } else {
+
+
+                Booking::find($request['booking_id'])->update([
+                    'workstream_id' => $request['workstream_id'],
+                    'status' => 'ARRIVED'
+
+                ]);
+            }
             return response()->json([
                 'status' => true,
                 'message' => "WorkStream Change Successfully",

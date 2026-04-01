@@ -162,7 +162,7 @@ class InvoiceController extends Controller
             // 8️⃣ Send email
             Mail::send('email.invoice', $data, function ($message) use ($data, $files, $request) {
                 $message->to($request->email)
-                    ->from(config('mail.from.address'), 'Service Provider Business Name (via Motonos)') // ✅ static
+                    ->from(config('mail.from.address'), ' (via Motonos)') // ✅ static
                     ->subject('Invoice Reminder');
 
                 foreach ($files as $file) {
