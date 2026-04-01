@@ -237,7 +237,8 @@
                 <tr class="item-row"
                     style="border-left:1px solid black !important;border-right: 1px solid black !important;">
                     <td style="color: black;border: none!important;padding:10px;">{{ $invoice['payment_type'] }}</td>
-                    <td style="border: none!important;padding:10px;">{{ $invoice['payment_method'] }}</td>
+                    <td style="border: none!important;padding:10px;">
+                        {{ $invoice['payment_method'] == 'DEPOSIT' ? 'Deposit' : $invoice['payment_method'] }}</td>
                     <td style="border: none!important;padding:10px;">
                         {{ \Carbon\Carbon::parse($invoice['payment_date'])->format('d/m/Y') }}
                         {{ \Carbon\Carbon::parse($invoice['created_at'])->format('H:i:s') }}</td>
