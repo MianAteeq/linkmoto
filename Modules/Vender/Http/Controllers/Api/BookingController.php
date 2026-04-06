@@ -1749,6 +1749,27 @@ class BookingController extends Controller
                 ->orderByDesc('id')
                 ->get(); // ✅ Collection
 
+            $bookings->getCollection()->transform(function ($booking) {
+
+                if (in_array($booking->status, [
+                    'ARRIVED',
+                    'INPROGRESS',
+                    'FINAL_CHECKS',
+                    'DUE',
+                    'COMPLETED',
+                    'READ_FOR_COLLECTION',
+                    'READ_FOR_DELIVERY',
+                    'COLLECTED',
+                    'DELIVERED',
+                    'VOID'
+                ])) {
+                    $booking->is_booked = 1;
+                    $booking->status = 'BOOKED';
+                }
+
+                return $booking;
+            });
+
             return response()->json([
                 'status' => true,
                 'data' => $bookings, // ✅ directly return collection
