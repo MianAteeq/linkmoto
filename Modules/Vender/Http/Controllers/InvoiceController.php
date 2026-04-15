@@ -675,6 +675,11 @@ class InvoiceController extends Controller
 
             InLog::error('Invoice file not found', ['path' => $first_array]);
 
+            $trading_unit = TradingUnit::find($invoice->booking->trading_id);
+
+
+            $profile = $request->user()['profile'];
+
             $data = [
                 'invoice'      => $invoice,
                 'vender'       => User::with('profile')->find($invoice->vender_id),
@@ -682,6 +687,8 @@ class InvoiceController extends Controller
                 'first_array'  => $first_array,
                 'second_array' => $second_array,
                 'third_array'  => $third_array,
+                'trading_unit' => $trading_unit,
+                'profile'      => $profile
             ];
 
             $pdf = Pdf::loadView('pdf.invoice', $data);
