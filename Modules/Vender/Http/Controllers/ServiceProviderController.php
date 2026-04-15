@@ -332,16 +332,9 @@ class ServiceProviderController extends Controller
             'profile' => $profile
         ];
 
-        $filename = $invoices['invoice_no'] . time() . ".pdf";
-
         $pdf = Pdf::loadView('pdf.invoice', $data);
-        $content = $pdf->output();
 
-        file_put_contents(public_path('pdf/' . $filename), $content);
-
-        return view('vender::service_provider.trading_unit.app_setting.viewer', [
-            'pdfUrl' => asset('pdf/' . $filename)
-        ]);
+        return $pdf->stream($invoices['invoice_no'] . '.pdf');
     }
 
     public function invoiceSetting($id)
