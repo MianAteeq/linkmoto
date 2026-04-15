@@ -344,7 +344,7 @@ class ServiceProviderController extends Controller
 
         // ✅ Return viewer blade
         return view('vender::service_provider.trading_unit.app_setting.viewer', [
-            'pdfUrl' => asset('pdf/' . $fileName)
+            'pdfUrl' => asset('pdf/' . $filePath)
         ]);
     }
 
