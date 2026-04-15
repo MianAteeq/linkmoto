@@ -306,7 +306,7 @@
                     @if ($invoice['booking']['service_type'] == 'Mobile')
 
                         <p
-                            style="margin:6px 0 0 0; font-weight:600;@if ($invoice['bank_transfer_detail'] != 'YES') margin-top: 90px; @endif">
+                            style="margin:6px 0 0 0; font-weight:600;@if ($invoice['bank_transfer_detail'] != 'YES') margin-top: 95px; @endif">
                             Job Location (Mobile Service)
                         </p>
 
