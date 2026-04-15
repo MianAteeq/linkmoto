@@ -121,7 +121,7 @@ class InvoiceController extends Controller
                 'payments',
                 'job_logs'
             ])->where('vender_id', $vender_id)->find($request->invoice_id);
-            $trading_unit = TradingUnit::find($invoices->booking->trading_id);
+            $trading_unit = TradingUnit::find($invoice->booking->trading_id);
 
 
             $profile = $request->user()['profile'];
