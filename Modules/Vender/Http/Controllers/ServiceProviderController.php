@@ -319,7 +319,7 @@ class ServiceProviderController extends Controller
             $count++;
         }
 
-        return $invoices;
+        // return $invoice[];
 
         $data = [
             'invoice'    => $invoices,
