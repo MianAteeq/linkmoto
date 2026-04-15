@@ -329,9 +329,7 @@
                     @endif
 
                     <!-- UNIT PRICE -->
-                    <p style="margin-top:6px;">
-                        Unit Price Rate: H (Hourly), F (Fixed)
-                    </p>
+
 
                     @php
                         $bankTransfer = strtoupper(
@@ -351,9 +349,12 @@
                         }
                     @endphp
 
+                    <p style="margin-top:{{ $marginTop }}">
+                        Unit Price Rate: H (Hourly), F (Fixed)
+                    </p>
 
                     <!-- VEHICLE -->
-                    <table id="meta" style="width: 100%;margin-top: {{ $marginTop }}">
+                    <table id="meta" style="width: 100%;margin-top:6px; ">
                         <tr>
                             <th style="background: #d9d9d9;text-align: left;color: black;" colspan="2">Vehicle
                                 Details
