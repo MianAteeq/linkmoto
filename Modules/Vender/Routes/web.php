@@ -67,7 +67,7 @@ Route::name('vender.')->middleware('auth:web')->group(function () {
     Route::get('vender/trading/name/add', [TradingUnitController::class, 'addTradingName'])->name('trading.name.add');
     Route::post('vender/trading/name/store', [TradingUnitController::class, 'storeTradingName'])->name('trading.name.store');
     Route::post('vender/trading/name/update', [TradingUnitController::class, 'updateTradingName'])->name('trading.name.update');
-    
+
     Route::get('vender/sites', [SiteController::class, 'site'])->name('site');
     Route::get('vender/sites/view/{id}', [SiteController::class, 'SiteView'])->name('site.view');
     Route::get('vender/sites/edit/{id}', [SiteController::class, 'SiteEdit'])->name('site.edit');
@@ -137,6 +137,7 @@ Route::name('vender.')->middleware('auth:web')->group(function () {
     Route::get('vender/service/provider/trading/unit/booking/setting/{id}', [ServiceProviderController::class, 'bookingSetting'])->name('service.provider.trading.unit.booking.setting');
     Route::post('vender/service/provider/trading/unit/booking/setting', [ServiceProviderController::class, 'bookingSettingSubmit'])->name('service.provider.trading.unit.booking.setting.submit');
 
+    Route::get('vender/service/provider/trading/unit/invoice/sample/{id}', [ServiceProviderController::class, 'invoiceSample'])->name('service.provider.trading.unit.invoice.sample');
     Route::get('vender/service/provider/trading/unit/invoice/setting/{id}', [ServiceProviderController::class, 'invoiceSetting'])->name('service.provider.trading.unit.invoice.setting');
     Route::post('vender/service/provider/trading/unit/invoice/setting', [ServiceProviderController::class, 'invoiceSettingSubmit'])->name('service.provider.trading.unit.invoice.setting.submit');
 

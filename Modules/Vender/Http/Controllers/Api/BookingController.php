@@ -25,6 +25,7 @@ use Modules\Vender\Entities\Quotation;
 use stdClass;
 use Modules\Vender\Entities\BookingTransaction;
 use Modules\Vender\Entities\Deposit;
+use Modules\Vender\Entities\TradingUnit;
 use Modules\Vender\Entities\WorkStream;
 
 class BookingController extends Controller
@@ -1682,6 +1683,10 @@ class BookingController extends Controller
 
 
 
+        $trading_unit = TradingUnit::find($invoice->booking->trading_id);
+
+
+        $profile = $request->user()['profile'];
 
 
 
@@ -1693,6 +1698,8 @@ class BookingController extends Controller
             'first_array' => $first_array,
             'second_array' => $second_array,
             'third_array' => $third_array,
+            'trading_unit' => $trading_unit,
+            'profile' => $profile,
         ];
         $pdf = Pdf::loadView('pdf.invoice', $data);
         $content = $pdf->download()->getOriginalContent();
