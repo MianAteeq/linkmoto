@@ -22,11 +22,17 @@ class ContactController extends Controller
     {
 
         try {
+            $request->merge([
+                'mobile_no' => trim($request->mobile_no)
+            ]);
+
+
             $validator = \Validator::make($request->all(), [
                 'name' =>  ['required', 'string', 'max:255'],
                 'last_name' => 'required',
                 // 'mobile_no' => 'required|unique:contact_details,mobile_no',
                 'email' => 'required|string|email:rfc,dns|filled',
+                'mobile_no' => 'required|numeric',
                 // 'address' => 'required',
                 // 'city' => 'required',
                 // 'postal_code' => 'required',
@@ -225,11 +231,17 @@ class ContactController extends Controller
     {
 
         try {
+            $request->merge([
+                'mobile_no' => trim($request->mobile_no)
+            ]);
+
+
             $validator = \Validator::make($request->all(), [
                 'id' =>  ['required'],
                 'name' =>  ['required', 'string', 'max:255'],
                 'last_name' => 'required',
                 'email' => 'required|string|email:rfc,dns|filled',
+                'mobile_no' => 'required|numeric',
                 // 'mobile_no' => 'required|unique:contact_details,mobile_no,' . $request->id,
                 // 'email' => 'required|unique:contact_details,email,' . $request->id,
 
