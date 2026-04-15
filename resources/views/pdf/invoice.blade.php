@@ -342,10 +342,10 @@
                         } elseif ($serviceType !== 'mobile' && $bankTransfer === 'YES') {
                             $marginTop = '90px';
                         } elseif ($serviceType === 'mobile') {
-                            $marginTop = '10px';
+                            $marginTop = '20px';
                         } else {
                             // fallback for any unexpected value
-                            $marginTop = '10px';
+                            $marginTop = '20px';
                         }
                     @endphp
 
