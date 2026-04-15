@@ -334,7 +334,9 @@
                     </p>
 
                     @php
-                        $bankTransfer = strtoupper(trim($invoice['bank_transfer_detail'] ?? ''));
+                        $bankTransfer = strtoupper(
+                            trim($invoice['bank_transfer_detail'] == null ? 'NO' : $invoice['bank_transfer_detail']),
+                        );
                         $serviceType = strtolower(trim($invoice['booking']['service_type'] ?? ''));
 
                         if ($serviceType !== 'mobile' && $bankTransfer === 'NO') {
