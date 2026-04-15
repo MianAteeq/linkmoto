@@ -264,77 +264,81 @@ class ServiceProviderController extends Controller
 
     public function invoiceSample($id)
     {
-        $trading_unit = TradingUnit::find($id);
-        $vender_id = $trading_unit['vender_id'];
+        try {
 
-        $profile = auth()->user()['profile'];
+            $trading_unit = TradingUnit::find($id);
 
-        $invoices = Invoice::with([
-            'booking',
-            'trading_name',
-            'booking.contact_detail',
-            'booking.service',
-            'booking.job_requests',
-            'booking.booking_items',
-            'booking.vehicle.vehicle_model',
-            'booking.vehicle.vehicle_make',
-            'booking.vehicle.engine_size',
-            'booking.vehicle.transmission_type',
-            'booking.vehicle.fuel_type',
-            'booking.vehicle.color',
-            'payments',
-            'booking.trading_name'
-        ])->where('vender_id', $vender_id)->first();
-
-        $item_array = $invoices['booking']['booking_items'];
-
-        $first_array = [];
-        $second_array = [];
-        $third_array = [];
-        $count = 0;
-
-        foreach ($item_array as $key => $value) {
-            if ($count <= 9) {
-                $first_array[$key] = $value;
-            } elseif ($count <= 19) {
-                $second_array[$key] = $value;
-            } else {
-                $third_array[$key] = $value;
+            if (!$trading_unit) {
+                abort(404, 'Trading Unit not found');
             }
 
-            // common values
-            if (isset($first_array[$key])) {
-                $first_array[$key]['exlusive_vat'] = $value['sub_total_ex_vat'];
-                $first_array[$key]['totalPrice'] = $value['total_price'];
-            }
-            if (isset($second_array[$key])) {
-                $second_array[$key]['exlusive_vat'] = $value['sub_total_ex_vat'];
-                $second_array[$key]['totalPrice'] = $value['total_price'];
-            }
-            if (isset($third_array[$key])) {
-                $third_array[$key]['exlusive_vat'] = $value['sub_total_ex_vat'];
-                $third_array[$key]['totalPrice'] = $value['total_price'];
+            $vender_id = $trading_unit->vender_id;
+
+            $profile = optional(auth()->user())->profile;
+
+            $invoices = Invoice::with([
+                'booking',
+                'trading_name',
+                'booking.contact_detail',
+                'booking.service',
+                'booking.job_requests',
+                'booking.booking_items',
+                'booking.vehicle.vehicle_model',
+                'booking.vehicle.vehicle_make',
+                'booking.vehicle.engine_size',
+                'booking.vehicle.transmission_type',
+                'booking.vehicle.fuel_type',
+                'booking.vehicle.color',
+                'payments',
+                'booking.trading_name'
+            ])->where('vender_id', $vender_id)->first();
+
+            if (!$invoices) {
+                abort(404, 'Invoice not found');
             }
 
-            $count++;
+            $item_array = optional($invoices->booking)->booking_items ?? [];
+
+            $first_array = [];
+            $second_array = [];
+            $third_array = [];
+
+            foreach ($item_array as $index => $value) {
+
+                $value['exlusive_vat'] = $value['sub_total_ex_vat'] ?? 0;
+                $value['totalPrice'] = $value['total_price'] ?? 0;
+
+                if ($index <= 9) {
+                    $first_array[] = $value;
+                } elseif ($index <= 19) {
+                    $second_array[] = $value;
+                } else {
+                    $third_array[] = $value;
+                }
+            }
+
+            $data = [
+                'invoice'      => $invoices,
+                'vender'       => User::with('profile')->find($invoices->vender_id),
+                'item_array'   => $item_array,
+                'first_array'  => $first_array,
+                'second_array' => $second_array,
+                'third_array'  => $third_array,
+                'trading_unit' => $trading_unit,
+                'profile'      => $profile
+            ];
+
+            $pdf = Pdf::loadView('pdf.invoice', $data);
+
+            return $pdf->stream($invoices->invoice_no . '.pdf');
+        } catch (\Exception $e) {
+
+            \Log::error('Invoice PDF Error: ' . $e->getMessage());
+
+            return response()->json([
+                'error' => 'Something went wrong while generating PDF'
+            ], 500);
         }
-
-        // return $invoice[];
-
-        $data = [
-            'invoice'    => $invoices,
-            'vender'     => User::with('profile')->find($invoices['vender_id']),
-            'item_array' => $item_array,
-            'first_array' => $first_array,
-            'second_array' => $second_array,
-            'third_array' => $third_array,
-            'trading_unit' => $trading_unit,
-            'profile' => $profile
-        ];
-
-        $pdf = Pdf::loadView('pdf.invoice', $data);
-
-        return $pdf->stream($invoices['invoice_no'] . '.pdf');
     }
 
     public function invoiceSetting($id)
