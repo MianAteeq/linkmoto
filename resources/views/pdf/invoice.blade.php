@@ -338,9 +338,9 @@
                         $serviceType = strtolower(trim($invoice['booking']['service_type'] ?? ''));
 
                         if ($serviceType !== 'mobile' && $bankTransfer === 'NO') {
-                            $marginTop = '170px';
+                            $marginTop = '160px';
                         } elseif ($serviceType !== 'mobile' && $bankTransfer === 'YES') {
-                            $marginTop = '90px';
+                            $marginTop = '80px';
                         } elseif ($serviceType === 'mobile') {
                             $marginTop = '10px';
                         } else {
