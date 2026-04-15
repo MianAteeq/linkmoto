@@ -72,6 +72,20 @@ use Modules\Vender\Http\Controllers\ServiceProviderController;
 |
 */
 
+Route::get('/view-pdf/{file}', function ($file) {
+
+    $path = public_path('pdf/' . $file);
+
+    if (!file_exists($path)) {
+        abort(404);
+    }
+
+    return response()->file($path, [
+        'Content-Type' => 'application/pdf',
+        'Content-Disposition' => 'inline; filename="' . $file . '"',
+    ]);
+});
+
 
 Route::post('/hours/generate', [ServiceProviderController::class, 'generateTime'])->name('generate.time');
 

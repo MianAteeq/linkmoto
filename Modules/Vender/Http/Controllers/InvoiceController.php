@@ -17,7 +17,9 @@ use Modules\Vender\Entities\BookingTransaction;
 // use App\Models\User;
 use stdClass;
 use Illuminate\Support\Facades\Log as InLog;
+use Modules\Vender\Entities\TradingUnit;
 
+use function Symfony\Component\Translation\t;
 
 class InvoiceController extends Controller
 {
@@ -119,6 +121,10 @@ class InvoiceController extends Controller
                 'payments',
                 'job_logs'
             ])->where('vender_id', $vender_id)->find($request->invoice_id);
+            $trading_unit = TradingUnit::find($invoices->booking->trading_id);
+
+
+            $profile = $request->user()['profile'];
 
             if (!$invoice) {
                 return response()->json([
@@ -318,7 +324,14 @@ class InvoiceController extends Controller
 
             $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
 
+
+
             $invoices = Invoice::with(['booking', 'booking.contact_detail', 'booking.service', 'booking.job_requests', 'booking.booking_items', 'booking.vehicle.vehicle_model', 'booking.vehicle.vehicle_make', 'booking.vehicle.engine_size', 'booking.vehicle.transmission_type', 'booking.vehicle.fuel_type', 'booking.vehicle.color', 'payments'])->where('vender_id', $vender_id)->find($request['invoice_id']);
+            $trading_unit = TradingUnit::find($invoices->booking->trading_id);
+
+
+            $profile = $request->user()['profile'];
+
             if ($invoices['invoice_path'] == null) {
 
 
@@ -356,6 +369,8 @@ class InvoiceController extends Controller
                     'first_array' => $first_array,
                     'second_array' => $second_array,
                     'third_array' => $third_array,
+                    'trading_unit' => $trading_unit,
+                    'profile' => $profile
                 ];
 
                 //     // return $records;

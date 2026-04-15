@@ -21,6 +21,8 @@ use Modules\Vender\Entities\TradingUnitAppSetting;
 use Modules\Vender\Entities\TradingUnitHubProfile;
 use Modules\Vender\Entities\WorkStream;
 use App\Models\BankAccount;
+use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ServiceProviderController extends Controller
 {
@@ -94,6 +96,9 @@ class ServiceProviderController extends Controller
 
 
         $user = auth()->user();
+
+        $profile = auth()->user()['profile'];
+
 
         $is_provider = "on";
 
@@ -257,6 +262,92 @@ class ServiceProviderController extends Controller
         return  redirect()->route('vender.service.provider.trading.unit.app.setting', $request['id']);
     }
 
+    public function invoiceSample($id)
+    {
+        $trading_unit = TradingUnit::find($id);
+        $vender_id = $trading_unit['vender_id'];
+
+        $profile = auth()->user()['profile'];
+
+        $invoices = Invoice::with([
+            'booking',
+            'trading_name',
+            'booking.contact_detail',
+            'booking.service',
+            'booking.job_requests',
+            'booking.booking_items',
+            'booking.vehicle.vehicle_model',
+            'booking.vehicle.vehicle_make',
+            'booking.vehicle.engine_size',
+            'booking.vehicle.transmission_type',
+            'booking.vehicle.fuel_type',
+            'booking.vehicle.color',
+            'payments',
+            'booking.trading_name'
+        ])->where('vender_id', $vender_id)->first();
+
+        $item_array = $invoices['booking']['booking_items'];
+
+        $first_array = [];
+        $second_array = [];
+        $third_array = [];
+        $count = 0;
+
+        foreach ($item_array as $key => $value) {
+            if ($count <= 9) {
+                $first_array[$key] = $value;
+            } elseif ($count <= 19) {
+                $second_array[$key] = $value;
+            } else {
+                $third_array[$key] = $value;
+            }
+
+            // common values
+            if (isset($first_array[$key])) {
+                $first_array[$key]['exlusive_vat'] = $value['sub_total_ex_vat'];
+                $first_array[$key]['totalPrice'] = $value['total_price'];
+            }
+            if (isset($second_array[$key])) {
+                $second_array[$key]['exlusive_vat'] = $value['sub_total_ex_vat'];
+                $second_array[$key]['totalPrice'] = $value['total_price'];
+            }
+            if (isset($third_array[$key])) {
+                $third_array[$key]['exlusive_vat'] = $value['sub_total_ex_vat'];
+                $third_array[$key]['totalPrice'] = $value['total_price'];
+            }
+
+            $count++;
+        }
+
+        // return $invoice[];
+
+        $data = [
+            'invoice'    => $invoices,
+            'vender'     => User::with('profile')->find($invoices['vender_id']),
+            'item_array' => $item_array,
+            'first_array' => $first_array,
+            'second_array' => $second_array,
+            'third_array' => $third_array,
+            'trading_unit' => $trading_unit,
+            'profile' => $profile
+        ];
+
+        // ✅ Generate PDF
+        $pdf = Pdf::loadView('pdf.invoice', $data);
+
+
+        // ✅ Save temp file
+        $fileName = 'invoice_' . time() . '.pdf';
+        $filePath = storage_path('app/public/' . $fileName);
+
+        file_put_contents($filePath, $pdf->output());
+
+        // ✅ Return viewer blade
+        return view('vender::service_provider.trading_unit.app_setting.viewer', [
+            'pdfUrl' => asset('pdf/' . $fileName)
+        ]);
+    }
+
     public function invoiceSetting($id)
     {
 
@@ -274,13 +365,14 @@ class ServiceProviderController extends Controller
         $trading_unit = TradingUnit::find($id);
 
         $sites = VenderAddress::where('vender_id', $vender_id)->get();
-        $banks = BankAccount::where('vender_id', $vender_id)->where('status','Verified')->get();
-        $bank_id=0;
-        $bank = BankAccount::where('vender_id', $vender_id)->where('account_name',$trading_unit['app_setting']['account_name'])->where('status','Verified')->first();
-        if(isset($bank)){
-            $bank_id=$bank['id'];
+        $banks = BankAccount::where('vender_id', $vender_id)->where('status', 'Verified')->get();
+        $bank_id = 0;
+        $bank = BankAccount::where('vender_id', $vender_id)->where('account_name', $trading_unit['app_setting']['account_name'])->where('status', 'Verified')->first();
+        if (isset($bank)) {
+            $bank_id = $bank['id'];
         }
-        
+
+        $profile = auth()->user()['profile'];
 
 
         return view('vender::service_provider.trading_unit.app_setting.edit_invoice_setting', get_defined_vars());
@@ -289,12 +381,14 @@ class ServiceProviderController extends Controller
     public function invoiceSettingSubmit(Request $request)
     {
 
+        // return $request;
+
 
         $exist = TradingUnitAppSetting::where('trading_id', $request['id'])->first();
 
         if (isset($exist)) {
 
-            TradingUnitAppSetting::where('trading_id', $request['id'])->update($request->except('_token', 'id'));
+            TradingUnitAppSetting::where('trading_id', $request['id'])->update($request->except('_token', 'id', 'company_jurisdiction'));
         } else {
             TradingUnitAppSetting::create([
 
@@ -424,8 +518,8 @@ class ServiceProviderController extends Controller
         }
 
         $site = VenderAddress::find($request['site_id']);
-        
-         $operationTypes = $request['operation_type']; // Example input
+
+        $operationTypes = $request['operation_type']; // Example input
 
         // Check count and decide output
         if (count($operationTypes) === 2) {
@@ -448,8 +542,9 @@ class ServiceProviderController extends Controller
             'lat' => $site['lat'] ?? '',
             'long' => $site['long'] ?? '',
             'email' => $request['email'],
+            'website' => $request['website'],
             'site_id' => $request['site_id'] ?? '0',
-            'status'=>'Active'
+            'status' => 'Active'
 
 
         ]);
@@ -494,10 +589,10 @@ class ServiceProviderController extends Controller
         }
 
         $site = VenderAddress::find($request['site_id']);
-        
-           $operationTypes = $request['operation_type']; 
-        
-         if (count($operationTypes) === 2) {
+
+        $operationTypes = $request['operation_type'];
+
+        if (count($operationTypes) === 2) {
             $operation = "Both";
         } else {
             $operation = $operationTypes[0] ?? null; // Get first value or null if empty
@@ -515,10 +610,11 @@ class ServiceProviderController extends Controller
             'mobile' => $request['mobile'],
             'landline' => $request['landline'],
             'email' => $request['email'],
+            'website' => $request['website'],
             'site_id' => $request['site_id'] ?? '0',
             'lat' => $site['lat'] ?? '',
             'long' => $site['long'] ?? '',
-            'status'=>'Active'
+            'status' => 'Active'
 
 
         ]);

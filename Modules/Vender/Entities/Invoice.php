@@ -44,7 +44,7 @@ class Invoice extends Model
 
     public function job_logs(): HasMany
     {
-        return $this->hasMany(Log::class, 'type_id', 'id')->whereIn('type',['Invoice']);
+        return $this->hasMany(Log::class, 'type_id', 'id')->whereIn('type', ['Invoice']);
     }
 
     public function trading_name(): BelongsTo
@@ -56,8 +56,8 @@ class Invoice extends Model
     {
         return $this->belongsTo(ContactDetail::class, 'contact_id', 'id');
     }
-    
-     protected $appends = ['invoice_no']; // Optional: include in JSON
+
+    protected $appends = ['invoice_no']; // Optional: include in JSON
 
     public function getInvoiceNoAttribute($value)
     {
@@ -65,6 +65,6 @@ class Invoice extends Model
         $id = $this->trading_id;
         $prefix = 'TRU';
 
-        return 'INV-'."TRU".str_pad($id, 5, "0", STR_PAD_LEFT)."-". str_pad($this->id, 5, "0", STR_PAD_LEFT);
+        return 'INV-' . "TRU" . str_pad($id, 5, "0", STR_PAD_LEFT) . "-" . str_pad($this->id, 5, "0", STR_PAD_LEFT);
     }
 }

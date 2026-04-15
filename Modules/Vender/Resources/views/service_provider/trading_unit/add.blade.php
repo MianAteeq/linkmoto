@@ -268,8 +268,10 @@
                                     <option value="2">Registered company name & trading name</option>
                                     <option value="3">Trading name only</option>
                                 @else
-                                    <option value="1">Registered {{$user['profile']['organization_status']}} name</option>
-                                    <option value="2">Registered {{$user['profile']['organization_status']}} & trading name</option>
+                                    <option value="1">Registered {{ $user['profile']['organization_status'] }} name
+                                    </option>
+                                    <option value="2">Registered {{ $user['profile']['organization_status'] }} &
+                                        trading name</option>
                                     <option value="3">Trading name only</option>
                                 @endif
 
@@ -325,7 +327,7 @@
                                         @if (in_array('On-site', explode(',', $user['profile']['operation_type']))) checked @endif>
                                     <label class="custom-control-label" for="On-site">On-site</label>
                                 </div>
-                        
+
                                 <div class="custom-control custom-checkbox mb-2">
                                     <input type="checkbox" name="operation_type[]" value="Mobile"
                                         class="custom-control-input" id="Mobile"
@@ -403,9 +405,10 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-4 label-control" for="eventRegInput5">Landline  </label>
+                        <label class="col-md-4 label-control" for="eventRegInput5">Landline </label>
                         <div class="col-md-8 mx-auto">
-                            <input type="tel" id="landline" class="form-control" value=""  name="landline" placeholder="Landline">
+                            <input type="tel" id="landline" class="form-control" value="" name="landline"
+                                placeholder="Landline">
                             <p class="text-danger landline"
                                 style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This Field is
                                 Required !</p>
@@ -425,21 +428,44 @@
                             @endif
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 label-control" for="eventRegInput5">Website </label>
+                        <div class="col-md-8 mx-auto">
+                            <input type="url" id="website" class="form-control" value="" name="website"
+                                placeholder="Website">
+                            <p class="text-danger website"
+                                style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">Invalid Website !
+                            </p>
+                            @if ($errors->has('website'))
+                                <p class="text-danger website" style="padding-left: 10px;width:100%;margin-bottom: -8px;">
+                                    {{ $errors->first('website') }}</p>
+                            @endif
+                        </div>
+                    </div>
 
 
-
+                    </p>
+                    @if ($errors->has('email'))
+                        <p class="text-danger email" style="padding-left: 10px;width:100%;margin-bottom: -8px;">
+                            {{ $errors->first('email') }}</p>
+                    @endif
                 </div>
-                <div class="footers">
-
-                    <button type="button" onclick="submitDetailsForm()"
-                        class="btn btn-dark round btn-min-width mr-1 mb-1" style="float: right;">Save</button>
-                    <a href="{{ redirect()->back()->getTargetUrl() }}"> <button type="button"
-                            class="btn btn-dark round btn-min-width mr-1 mb-1" style="float: right;">Cancel</button></a>
-
-
-                </div>
-            </form>
         </div>
+
+
+
+    </div>
+    <div class="footers">
+
+        <button type="button" onclick="submitDetailsForm()" class="btn btn-dark round btn-min-width mr-1 mb-1"
+            style="float: right;">Save</button>
+        <a href="{{ redirect()->back()->getTargetUrl() }}"> <button type="button"
+                class="btn btn-dark round btn-min-width mr-1 mb-1" style="float: right;">Cancel</button></a>
+
+
+    </div>
+    </form>
+    </div>
     </div>
 @endsection
 
@@ -480,35 +506,35 @@
             $('input[type=file]').trigger('click');
         });
     </script>
-   <script>
-    $('input[name="operation_type[]"]').change(function() {
+    <script>
+        $('input[name="operation_type[]"]').change(function() {
 
-        // Check which options are selected
-        let selected = $('input[name="operation_type[]"]:checked').map(function() {
-            return this.value;
-        }).get();
+            // Check which options are selected
+            let selected = $('input[name="operation_type[]"]:checked').map(function() {
+                return this.value;
+            }).get();
 
-        // Reset all visibility first
-        $('.mobile_show, #site_show, #city, .city_show, #postcode, .postcode_show').hide();
+            // Reset all visibility first
+            $('.mobile_show, #site_show, #city, .city_show, #postcode, .postcode_show').hide();
 
-        if (selected.includes('Mobile') && selected.includes('On-site')) {
-            // Both selected
-            $('.mobile_show').show();
-            $('#site_show').show();
-            $('.city_show').show();
-            $('.postcode_show').show();
-        } else if (selected.includes('Mobile')) {
-            $('.mobile_show').show();
-            $('#city').show();
-            $('#postcode').show();
-        } else if (selected.includes('On-site')) {
-            $('#site_show').show();
-            $('#city').show();
-            $('#postcode').show();
-        } 
-        // else none selected → everything stays hidden
-    });
-</script>
+            if (selected.includes('Mobile') && selected.includes('On-site')) {
+                // Both selected
+                $('.mobile_show').show();
+                $('#site_show').show();
+                $('.city_show').show();
+                $('.postcode_show').show();
+            } else if (selected.includes('Mobile')) {
+                $('.mobile_show').show();
+                $('#city').show();
+                $('#postcode').show();
+            } else if (selected.includes('On-site')) {
+                $('#site_show').show();
+                $('#city').show();
+                $('#postcode').show();
+            }
+            // else none selected → everything stays hidden
+        });
+    </script>
 
 
     <script>
@@ -574,76 +600,103 @@
 
 
     <script>
-       function submitDetailsForm() {
-    let status = true; // assume form is valid at start
+        function submitDetailsForm() {
+            let status = true;
 
-    // Get all selected operation types
-    let selectedOps = $('input[name="operation_type[]"]:checked').map(function() {
-        return this.value;
-    }).get();
+            // Helper: set error
+            const setError = (selector, showMsg = false, msgClass = '') => {
+                $(selector).css('border', '2px solid red');
+                if (showMsg && msgClass) $(msgClass).show();
+                status = false;
+            };
 
-    if (selectedOps.length === 0) {
-        alert("Please select at least one operation type.");
-        return false;
-    }
+            // Helper: clear error
+            const clearError = (selector, msgClass = '') => {
+                $(selector).css('border', '2px solid black');
+                if (msgClass) $(msgClass).hide();
+            };
 
-    // Determine required fields based on selection
-    let array = [];
-    let tradingTemplate = $('#trading_template').val();
+            // Get selected operation types
+            const selectedOps = $('input[name="operation_type[]"]:checked')
+                .map(function() {
+                    return this.value;
+                })
+                .get();
 
-    if (selectedOps.includes('Mobile') && !selectedOps.includes('On-site')) {
-        array = (tradingTemplate == 1)
-            ? ['name', 'email', 'city', 'postcode', 'radius']
-            : ['name', 'trading_name_id', 'email', 'city', 'postcode', 'radius'];
-    } else if (selectedOps.includes('On-site') && !selectedOps.includes('Mobile')) {
-        array = (tradingTemplate == 1)
-            ? ['name', 'mobile', 'email', 'city', 'site_id']
-            : ['name', 'trading_name_id', 'mobile', 'email', 'city', 'site_id'];
-    } else if (selectedOps.includes('On-site') && selectedOps.includes('Mobile')) {
-        // Both selected
-        array = (tradingTemplate == 1)
-            ? ['site_id', 'radius', 'name', 'mobile', 'email']
-            : ['site_id', 'radius', 'name', 'trading_name_id', 'mobile', 'email'];
-    }
+            if (selectedOps.length === 0) {
+                alert("Please select at least one operation type.");
+                return false;
+            }
 
-    // Validate required fields
-    array.forEach(function(item) {
-        let value = $(`#${item}`).val().trim();
-        if (!value) {
-            $(`#${item}`).css('border', '2px solid red');
-            status = false;
-        } else {
-            $(`#${item}`).css('border', '2px solid black');
+            const tradingTemplate = $('#trading_template').val();
+
+            // Determine required fields
+            let requiredFields = [];
+
+            if (selectedOps.includes('Mobile') && !selectedOps.includes('On-site')) {
+                requiredFields = tradingTemplate == 1 ? ['name', 'email', 'city', 'postcode', 'radius'] : ['name',
+                    'trading_name_id', 'email', 'city', 'postcode', 'radius'
+                ];
+
+            } else if (selectedOps.includes('On-site') && !selectedOps.includes('Mobile')) {
+                requiredFields = tradingTemplate == 1 ? ['name', 'mobile', 'email', 'city', 'site_id'] : ['name',
+                    'trading_name_id', 'mobile', 'email', 'city', 'site_id'
+                ];
+
+            } else if (selectedOps.includes('On-site') && selectedOps.includes('Mobile')) {
+                requiredFields = tradingTemplate == 1 ? ['site_id', 'radius', 'name', 'mobile', 'email'] : ['site_id',
+                    'radius', 'name', 'trading_name_id', 'mobile', 'email'
+                ];
+            }
+
+            // Validate required fields
+            requiredFields.forEach((field) => {
+                const value = $(`#${field}`).val()?.trim();
+
+                if (!value) {
+                    setError(`#${field}`);
+                } else {
+                    clearError(`#${field}`);
+                }
+            });
+
+            // =========================
+            // Mobile / Landline Validation
+            // =========================
+            const mobileVal = $('#mobile').val()?.trim();
+            const landlineVal = $('#landline').val()?.trim();
+
+            clearError('#mobile, #landline', '.mobile, .landline');
+
+            if (!mobileVal && !landlineVal) {
+                setError('#mobile, #landline', true, '.mobile, .landline');
+                $('.mobile, .landline').text('Please enter mobile or landline');
+
+            } else if (mobileVal && landlineVal) {
+                setError('#mobile, #landline', true, '.mobile, .landline');
+                $('.mobile, .landline').text('Enter only one: mobile OR landline');
+            }
+
+            // =========================
+            // Email Validation
+            // =========================
+            const email = $('#email').val()?.trim();
+
+            if (!email || validateEmail(email) === null) {
+                setError('#email', true, '.email');
+            } else {
+                clearError('#email', '.email');
+            }
+
+            // =========================
+            // Final Submit
+            // =========================
+            if (status) {
+                $('form').submit();
+            }
+
+            return status;
         }
-    });
-
-    // Validate that either Mobile or Landline is filled
-    let mobileVal = $('#mobile').val().trim();
-    let landlineVal = $('#landline').val().trim();
-
-    // Reset borders
-    $('#mobile, #landline').css('border', '2px solid black');
-    $('.mobile, .landline').hide();
-
-    if (!mobileVal && !landlineVal) {
-        $('#mobile, #landline').css('border', '2px solid red');
-        $('.mobile, .landline').show();
-        status = false;
-    }
-
-    // Validate email
-    let email = $('#email').val().trim();
-    if (validateEmail(email) === null) {
-        $('#email').css('border', '2px solid red');
-        $('.email').show();
-        status = false;
-    }
-
-    if (status) {
-        $('form').submit();
-    }
-}
-
     </script>
 
     <script>
