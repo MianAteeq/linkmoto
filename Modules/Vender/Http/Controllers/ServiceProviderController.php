@@ -332,19 +332,12 @@ class ServiceProviderController extends Controller
             'profile' => $profile
         ];
 
-        // ✅ Generate PDF
         $pdf = Pdf::loadView('pdf.invoice', $data);
-
-
-        // ✅ Save temp file
-        $fileName = 'invoice_' . time() . '.pdf';
-        $filePath = storage_path('app/public/' . $fileName);
-
-        file_put_contents($filePath, $pdf->output());
-
+        $content = $pdf->download()->getOriginalContent();
+        file_put_contents('pdf/' . $invoices['invoice_no'] . time()  . ".pdf", $content);
         // ✅ Return viewer blade
         return view('vender::service_provider.trading_unit.app_setting.viewer', [
-            'pdfUrl' => asset('pdf/' . $filePath)
+            'pdfUrl' => asset('pdf/' . $invoices['invoice_no'] . time() . ".pdf")
         ]);
     }
 
