@@ -152,12 +152,31 @@
     .main {
         margin-bottom: 100px;
     }
+
+    .watermark {
+        position: fixed;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-35deg);
+
+        font-size: 140px;
+        font-weight: 800;
+        letter-spacing: 10px;
+
+        color: #000;
+        opacity: 0.08;
+
+        text-transform: uppercase;
+    }
 </style>
 
 
 <body>
 
     <div id="page-wrap" style="width: 100%;margin: 0 auto; position: relative;">
+
+        <div class="watermark">DRAFT</div>
+
 
         <div id="header">
             <p style="width: 50%;margin-top: 10px;font-size: 16px;text-align: left;float: left;margin-left: 12px;"></p>
@@ -228,7 +247,7 @@
                     @endif
 
                     <!-- CONTACT -->
-                    <div style="min-height:70px;">
+                    <div style="min-height:150px;">
 
                         <p style="margin:0 0 3px 0;">
 
@@ -270,43 +289,44 @@
                             @endif
                         </p>
 
+                        @if ($invoice['bank_transfer_detail'] == 'YES')
+                            <div style="margin:6px 0;">
+                                <p style="margin:0; font-weight:bold;">Payment by Bank Transfer</p>
+
+                                <p style="margin:0;">
+                                    <strong>Account Name:</strong>
+                                    {{ $invoice['trading_name']['app_setting']['account_name'] }}
+                                </p>
+
+                                <p style="margin:0;">
+                                    <strong>Sort code:</strong>
+                                    {{ $invoice['trading_name']['app_setting']['sort_code'] }}
+                                    &nbsp;|&nbsp;
+                                    <strong>Account Number:</strong>
+                                    {{ $invoice['trading_name']['app_setting']['account_number'] }}
+                                </p>
+
+                                <p style="margin:0;">
+                                    <strong>Payment Reference:</strong>
+                                    {{ $invoice['invoice_no'] }}
+                                </p>
+
+                                <p style="margin:0;">
+                                    <strong>Remittance Email:</strong>
+                                    {{ $trading_unit['email'] }}
+                                </p>
+                            </div>
+                        @endif
+
                     </div>
 
                     <!-- PAYMENT -->
-                    @if ($invoice['bank_transfer_detail'] == 'YES')
-                        <div style="margin:6px 0;">
-                            <p style="margin:0; font-weight:bold;">Payment by Bank Transfer</p>
 
-                            <p style="margin:0;">
-                                <strong>Account Name:</strong>
-                                {{ $invoice['trading_name']['app_setting']['account_name'] }}
-                            </p>
-
-                            <p style="margin:0;">
-                                <strong>Sort code:</strong>
-                                {{ $invoice['trading_name']['app_setting']['sort_code'] }}
-                                &nbsp;|&nbsp;
-                                <strong>Account Number:</strong>
-                                {{ $invoice['trading_name']['app_setting']['account_number'] }}
-                            </p>
-
-                            <p style="margin:0;">
-                                <strong>Payment Reference:</strong>
-                                {{ $invoice['invoice_no'] }}
-                            </p>
-
-                            <p style="margin:0;">
-                                <strong>Remittance Email:</strong>
-                                {{ $trading_unit['email'] }}
-                            </p>
-                        </div>
-                    @endif
 
                     <!-- JOB LOCATION -->
                     @if ($invoice['booking']['service_type'] == 'Mobile')
 
-                        <p
-                            style="margin:6px 0 0 0; font-weight:600;@if ($invoice['bank_transfer_detail'] != 'YES') margin-top: 95px; @endif">
+                        <p style="margin:6px 0 0 0; font-weight:600;">
                             Job Location (Mobile Service)
                         </p>
 
@@ -338,14 +358,14 @@
                         $serviceType = strtolower(trim($invoice['booking']['service_type'] ?? ''));
 
                         if ($serviceType !== 'mobile' && $bankTransfer === 'NO') {
-                            $marginTop = '160px';
+                            $marginTop = '80px';
                         } elseif ($serviceType !== 'mobile' && $bankTransfer === 'YES') {
-                            $marginTop = '90px';
-                        } elseif ($serviceType === 'mobile') {
-                            $marginTop = '20px';
+                            $marginTop = '80px';
+                        } elseif ($serviceType === 'mobile' && $bankTransfer === 'YES') {
+                            $marginTop = '15px';
                         } else {
                             // fallback for any unexpected value
-                            $marginTop = '20px';
+                            $marginTop = '15px';
                         }
                     @endphp
 

@@ -186,7 +186,8 @@
                                     <h6 class="mb-0">Business Name Format</h6>
                                 </div>
                                 <div class="col-sm-7 text-secondary">
-                                    @if (auth()->user()->profile['organization_status'] === 'Limited Company')
+                                    @if (auth()->user()->profile['organization_status'] === 'Limited Company (Ltd)' ||
+                                            auth()->user()->profile['organization_status'] === 'Limited Liability Partnership (LLP)')
                                         @if ($trading_unit['trading_template'] == 1)
                                             Registered company name
                                         @endif
@@ -198,10 +199,10 @@
                                         @endif
                                     @else
                                         @if ($trading_unit['trading_template'] == 1)
-                                            Registered sole trader name
+                                            Registered s{{ $user['profile']['organization_status'] }} name
                                         @endif
                                         @if ($trading_unit['trading_template'] == 2)
-                                            Registered sole trader name & trading name
+                                            Registered {{ $user['profile']['organization_status'] }} & trading name
                                         @endif
                                         @if ($trading_unit['trading_template'] == 3)
                                             Trading name

@@ -263,7 +263,8 @@
                                 {{-- <option value="1" >Registered company name</option>
                             <option value="2">Registered company name & trading name</option>
                             <option value="3">Trading name</option> --}}
-                                @if (auth()->user()->profile['organization_status'] === 'Limited Company (Ltd)')
+                                @if (auth()->user()->profile['organization_status'] === 'Limited Company (Ltd)' ||
+                                        auth()->user()->profile['organization_status'] === 'Limited Liability Partnership (LLP)')
                                     <option value="1">Registered company name only</option>
                                     <option value="2">Registered company name & trading name</option>
                                     <option value="3">Trading name only</option>
