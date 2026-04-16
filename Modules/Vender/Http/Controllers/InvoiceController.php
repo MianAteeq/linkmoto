@@ -295,7 +295,7 @@ class InvoiceController extends Controller
             $vender = User::with('profile')->find(auth()->user()->id);
 
             $profile = optional($vender->profile);
-            $tradingName = optional($invoices->trading_name);
+            $tradingName = optional($invoices->invoice->trading_name);
             $appSetting = optional($tradingName->app_setting);
 
             $company = ucfirst($profile->company_name ?? '');
