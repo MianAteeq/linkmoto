@@ -8,14 +8,14 @@
 </head>
 
 <body class="antialiased">
-    <h2>Dear {{ $invoice['booking']['contact_detail']['name'] }},</h2>
+    <h2>Dear {{ $invoice['invoice']['booking']['contact_detail']['name'] }},</h2>
 
     <p>Please find attached your Payment Receipt.</p>
 
     <p>Kind regards,</p>
     @php
         $profile = optional($vender->profile);
-        $tradingName = optional($invoice->trading_name);
+        $tradingName = optional($invoice->invoice->trading_name);
         $appSetting = optional($tradingName->app_setting);
     @endphp
 
