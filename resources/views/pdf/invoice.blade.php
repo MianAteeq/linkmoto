@@ -175,7 +175,9 @@
 
     <div id="page-wrap" style="width: 100%;margin: 0 auto; position: relative;">
 
-        <div class="watermark">DRAFT</div>
+        @isset($is_sample)
+            <div class="watermark">DRAFT</div>
+        @endisset
 
 
         <div id="header">
