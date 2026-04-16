@@ -285,7 +285,7 @@
                         @endif
                         <p style="margin:0 0 6px 0;">
                             @if (!empty($vender['profile']['uk_vat_no']))
-                                Registered VAT No: {{ $vender['profile']['uk_vat_no'] }}
+                                Registered vat no: {{ $vender['profile']['uk_vat_no'] }}
                             @else
                                 <span style="visibility:hidden;">VAT placeholder</span>
                             @endif
@@ -973,7 +973,7 @@ if($first_item['unit_price_rate']=="Hourly"){
                     $formattedParts = [];
 
                     foreach ($addressParts as $index => $part) {
-                        $formattedParts[] = $index < count($addressParts) - 1 ? $part . ',' : $part;
+                        $formattedParts[] = $index < count($addressParts) - 1 ? $part . ', ' : $part;
                     }
 
                     $registeredAddress = implode($formattedParts);
