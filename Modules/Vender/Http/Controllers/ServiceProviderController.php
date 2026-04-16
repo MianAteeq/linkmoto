@@ -325,7 +325,8 @@ class ServiceProviderController extends Controller
                 'second_array' => $second_array,
                 'third_array'  => $third_array,
                 'trading_unit' => $trading_unit,
-                'profile'      => $profile
+                'profile'      => $profile,
+                'is_sample'     => true
             ];
 
             $pdf = Pdf::loadView('pdf.invoice', $data);
