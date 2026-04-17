@@ -652,8 +652,8 @@
                                             href="{{ route('vender.service.provider.trading.unit.invoice.setting', $trading_unit['id']) }}">
                                             <button type="button" class="btn btn-dark round btn-min-width mr-1 mb-1"
                                                 style="float: right;">Edit</button></a>
-                                        <a
-                                            href="{{ route('vender.service.provider.trading.unit.invoice.sample', $trading_unit['id']) }}" target="_blank">
+                                        <a href="{{ route('vender.service.provider.trading.unit.invoice.sample', $trading_unit['id']) }}"
+                                            target="_blank">
                                             <button type="button" class="btn btn-dark round btn-min-width mr-1 mb-1"
                                                 style="float: right;">View Sample</button></a>
 

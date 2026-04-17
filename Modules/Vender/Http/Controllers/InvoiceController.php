@@ -184,8 +184,8 @@ class InvoiceController extends Controller
             // 8️⃣ Send email
             Mail::send('email.invoice', $data, function ($message) use ($data, $files, $request, $CNAME) {
                 $message->to($request->email)
-                    ->from(config('mail.from.address'), $CNAME . ' (via Motonos)') // ✅ static
-                    ->subject('Invoice Reminder');
+                    ->from(config('mail.from.address'), $CNAME) // ✅ static
+                    ->subject('Invoice');
 
                 foreach ($files as $file) {
                     $message->attach($file);
@@ -283,8 +283,37 @@ class InvoiceController extends Controller
 
                 public_path('pdf/' . $invoices['pay_no'] . time() . ".pdf"),
             ];
-            Mail::send('email.payment', $data, function ($message) use ($data, $files, $request) {
-                $message->to($request["email"])
+            // Mail::send('email.payment', $data, function ($message) use ($data, $files, $request) {
+            //     $message->to($request["email"])
+            //         ->subject('Payment Receipt');
+
+            //     foreach ($files as $file) {
+            //         $message->attach($file);
+            //     }
+            // });
+
+            $vender = User::with('profile')->find(auth()->user()->id);
+
+            $profile = optional($vender->profile);
+            $tradingName = optional($invoices->invoice->trading_name);
+            $appSetting = optional($tradingName->app_setting);
+
+            $company = ucfirst($profile->company_name ?? '');
+            $trading = optional($tradingName->trading_name)->name ?? '';
+
+            if ($appSetting->header_option == 1) {
+                $CNAME = $company;
+            } elseif ($appSetting->header_option == 2) {
+                $CNAME = $company . ' trading as ' . $trading;
+            } else {
+                $CNAME = $trading;
+            }
+
+
+            // 8️⃣ Send email
+            Mail::send('email.payment', $data, function ($message) use ($data, $files, $request, $CNAME) {
+                $message->to($request->email)
+                    ->from(config('mail.from.address'), $CNAME) // ✅ static
                     ->subject('Payment Receipt');
 
                 foreach ($files as $file) {

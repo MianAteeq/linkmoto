@@ -4,13 +4,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Invoice Email</title>
+    <title>Invoice</title>
 </head>
 
 <body class="antialiased">
-    <h2>Dear {{ $invoice['booking']['contact_detail']['name'] }}
-        {{ $invoice['booking']['contact_detail']['last_name'] }},</h2>
+    <h2>Dear {{ $invoice['booking']['contact_detail']['name'] }},</h2>
+
     <p>Please find attached your invoice.</p>
+
     <p>Kind regards,</p>
     @php
         $profile = optional($vender->profile);

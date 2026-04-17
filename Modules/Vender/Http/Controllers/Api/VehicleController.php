@@ -24,7 +24,7 @@ class VehicleController extends Controller
             $validator = \Validator::make($request->all(), [
                 'vrm' =>  ['required', 'string', 'max:255'],
                 'vehicle_make_id' => 'required',
-                'vehicle_model_id' => 'required',
+                'vehicle_model_id' => 'required|integer|not_in:0',
 
 
 
@@ -42,7 +42,7 @@ class VehicleController extends Controller
             $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
             $trading_id = User::find($request->user()->id)['default_trading_unit'];
 
-            $exists=Vehicle::where('vrm',$request['vrm'])->where('vehicle_make_id',$request['vehicle_make_id'])->where('vehicle_model_id',$request['vehicle_model_id'])->first();
+            $exists = Vehicle::where('vrm', $request['vrm'])->where('vehicle_make_id', $request['vehicle_make_id'])->where('vehicle_model_id', $request['vehicle_model_id'])->first();
             $latestOrder = Vehicle::orderBy('created_at', 'DESC')->first();
             // if($exists){
             //     $responseArr['message'] = "Duplicate Vrm for Vehicle make and Model";
@@ -51,16 +51,16 @@ class VehicleController extends Controller
             // }
 
 
-            $veh= Vehicle::create([
+            $veh = Vehicle::create([
                 "vender_id" => $vender_id,
-                 "vehicle_no"=>'VEH-'."SVP".str_pad($vender_id, 5, "0", STR_PAD_LEFT)."-". str_pad($latestOrder?$latestOrder->id+1: 0 + 1, 5, "0", STR_PAD_LEFT),
-                'type'=>"Vender",
-                'trading_id'=>$trading_id,
-                'year'=>$request['year']??' ',
+                "vehicle_no" => 'VEH-' . "SVP" . str_pad($vender_id, 5, "0", STR_PAD_LEFT) . "-" . str_pad($latestOrder ? $latestOrder->id + 1 : 0 + 1, 5, "0", STR_PAD_LEFT),
+                'type' => "Vender",
+                'trading_id' => $trading_id,
+                'year' => $request['year'] ?? ' ',
                 ...$request->except('year'),
             ]);
 
-            $vehicles=Vehicle::with(['vehicle_make', 'vehicle_model', 'engine_size', 'transmission_type', 'fuel_type', 'color', 'contact'])->with('jobs','quotes','bookings')->withCount('quotes')->withCount('bookings')->withCount('jobs')->where('vender_id', $vender_id)->find($veh['id']);
+            $vehicles = Vehicle::with(['vehicle_make', 'vehicle_model', 'engine_size', 'transmission_type', 'fuel_type', 'color', 'contact'])->with('jobs', 'quotes', 'bookings')->withCount('quotes')->withCount('bookings')->withCount('jobs')->where('vender_id', $vender_id)->find($veh['id']);
             return response()->json([
                 'status' => true,
                 'contact_detail' => $vehicles,
@@ -87,7 +87,7 @@ class VehicleController extends Controller
             $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
             $trading_id = User::find($request->user()->id)['default_trading_unit'];
 
-            $contacts = Vehicle::with(['vehicle_make', 'vehicle_model', 'engine_size', 'transmission_type', 'fuel_type', 'color', 'contact'])->with('quotes','bookings','jobs')->withCount('quotes')->withCount('bookings')->withCount('jobs')->where('vender_id', $vender_id)->where('vehicle_no','!=',null)->orderBy('id','desc')->paginate(20);
+            $contacts = Vehicle::with(['vehicle_make', 'vehicle_model', 'engine_size', 'transmission_type', 'fuel_type', 'color', 'contact'])->with('quotes', 'bookings', 'jobs')->withCount('quotes')->withCount('bookings')->withCount('jobs')->where('vender_id', $vender_id)->where('vehicle_no', '!=', null)->orderBy('id', 'desc')->paginate(20);
             return response()->json([
                 'status' => true,
                 'contact_details' => $contacts,
@@ -124,59 +124,59 @@ class VehicleController extends Controller
             $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
             $trading_id = User::find($request->user()->id)['default_trading_unit'];
 
-    //         $contacts = Vehicle::with(['vehicle_make', 'vehicle_model', 'engine_size', 'transmission_type', 'fuel_type', 'color', 'contact'])->with('quotes','bookings','jobs','jobs.contact_detail','jobs.vehicle',  'jobs.vehicle.vehicle_model', 'jobs.vehicle.vehicle_make', 'jobs.job_requests', 'jobs.job_requests.product', 'jobs.job_requests.price_type', 'jobs.booking_items', 'jobs.booking_items.price_type', 'jobs.job_requests.job_types', 'jobs.job_requests.job_types.job_type',)
-    //       ->withCount([
-    //     'quotes as quotes_count' => function ($q) use ($trading_id) {
-    //         $q->where('trading_id', $trading_id); // ✅ only count quotes with this trading_id
-    //     },
-    //     'bookings as bookings_count' => function ($q) use ($trading_id) {
-    //         $q->where('trading_id', $trading_id); // ✅ only count bookings with this trading_id
-    //     },
-    //     'jobs'
-    // ])->
-    //         where('vender_id', $vender_id)->where('vehicle_no','!=',null)->find($request['vehicle_id']);
-    
-    $contacts = Vehicle::with([
-        'vehicle_make',
-        'vehicle_model',
-        'engine_size',
-        'transmission_type',
-        'fuel_type',
-        'color',
-        'contact',
-        'quotes',
-        'bookings',
-        'jobs' => function ($q) use ($trading_id) {
-            $q->where('trading_id', $trading_id); // 👈 filter jobs
-        },
-        'jobs.contact_detail',
-        'jobs.vehicle',
-        'jobs.vehicle.vehicle_model',
-        'jobs.vehicle.vehicle_make',
-        'jobs.job_requests',
-        'jobs.job_requests.product',
-        'jobs.job_requests.price_type',
-        'jobs.booking_items',
-        'jobs.booking_items.price_type',
-        'jobs.job_requests.job_types',
-        'jobs.job_requests.job_types.job_type',
-    ])
-    ->withCount([
-        'quotes as quotes_count' => function ($q) use ($trading_id) {
-            $q->where('trading_id', $trading_id);
-        },
-        'bookings as bookings_count' => function ($q) use ($trading_id) {
-            $q->where('trading_id', $trading_id);
-        },
-        'jobs as jobs_count' => function ($q) use ($trading_id) {
-            $q->where('trading_id', $trading_id);
-        }
-    ])
-    ->where('vender_id', $vender_id)
-    ->whereNotNull('vehicle_no')
-    ->find($request['vehicle_id']);
+            //         $contacts = Vehicle::with(['vehicle_make', 'vehicle_model', 'engine_size', 'transmission_type', 'fuel_type', 'color', 'contact'])->with('quotes','bookings','jobs','jobs.contact_detail','jobs.vehicle',  'jobs.vehicle.vehicle_model', 'jobs.vehicle.vehicle_make', 'jobs.job_requests', 'jobs.job_requests.product', 'jobs.job_requests.price_type', 'jobs.booking_items', 'jobs.booking_items.price_type', 'jobs.job_requests.job_types', 'jobs.job_requests.job_types.job_type',)
+            //       ->withCount([
+            //     'quotes as quotes_count' => function ($q) use ($trading_id) {
+            //         $q->where('trading_id', $trading_id); // ✅ only count quotes with this trading_id
+            //     },
+            //     'bookings as bookings_count' => function ($q) use ($trading_id) {
+            //         $q->where('trading_id', $trading_id); // ✅ only count bookings with this trading_id
+            //     },
+            //     'jobs'
+            // ])->
+            //         where('vender_id', $vender_id)->where('vehicle_no','!=',null)->find($request['vehicle_id']);
 
-           
+            $contacts = Vehicle::with([
+                'vehicle_make',
+                'vehicle_model',
+                'engine_size',
+                'transmission_type',
+                'fuel_type',
+                'color',
+                'contact',
+                'quotes',
+                'bookings',
+                'jobs' => function ($q) use ($trading_id) {
+                    $q->where('trading_id', $trading_id); // 👈 filter jobs
+                },
+                'jobs.contact_detail',
+                'jobs.vehicle',
+                'jobs.vehicle.vehicle_model',
+                'jobs.vehicle.vehicle_make',
+                'jobs.job_requests',
+                'jobs.job_requests.product',
+                'jobs.job_requests.price_type',
+                'jobs.booking_items',
+                'jobs.booking_items.price_type',
+                'jobs.job_requests.job_types',
+                'jobs.job_requests.job_types.job_type',
+            ])
+                ->withCount([
+                    'quotes as quotes_count' => function ($q) use ($trading_id) {
+                        $q->where('trading_id', $trading_id);
+                    },
+                    'bookings as bookings_count' => function ($q) use ($trading_id) {
+                        $q->where('trading_id', $trading_id);
+                    },
+                    'jobs as jobs_count' => function ($q) use ($trading_id) {
+                        $q->where('trading_id', $trading_id);
+                    }
+                ])
+                ->where('vender_id', $vender_id)
+                ->whereNotNull('vehicle_no')
+                ->find($request['vehicle_id']);
+
+
             return response()->json([
                 'status' => true,
                 'contact_details' => $contacts,
@@ -212,31 +212,36 @@ class VehicleController extends Controller
                 return response()->json($responseArr);
             }
 
-             $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
+            $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
 
             $search = strtolower(request('search'));
 
-$contacts = Vehicle::with([
-        'vehicle_make', 'vehicle_model', 'engine_size',
-        'transmission_type', 'fuel_type', 'color', 'contact'
-    ])
-    ->with('jobs', 'quotes', 'bookings')
-    ->withCount(['quotes', 'bookings', 'jobs'])
-    ->where('vender_id', $vender_id)
-    ->where(function ($query) use ($search) {
-        $query->whereRaw('LOWER(vrm) LIKE ?', ["%{$search}%"])
-              ->orWhereRaw('LOWER(vin_number) LIKE ?', ["%{$search}%"])
-              ->orWhereRaw('LOWER(vehicle_no) LIKE ?', ["%{$search}%"])
-              ->orWhereHas('vehicle_make', function ($q) use ($search) {
-                  $q->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"]);
-              })
-              ->orWhereHas('vehicle_model', function ($q) use ($search) {
-                  $q->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"]);
-              });
-    })
-    ->get();
-    
-    $vehilces=collect($contacts)->where('vender_id', $vender_id)->toArray();
+            $contacts = Vehicle::with([
+                'vehicle_make',
+                'vehicle_model',
+                'engine_size',
+                'transmission_type',
+                'fuel_type',
+                'color',
+                'contact'
+            ])
+                ->with('jobs', 'quotes', 'bookings')
+                ->withCount(['quotes', 'bookings', 'jobs'])
+                ->where('vender_id', $vender_id)
+                ->where(function ($query) use ($search) {
+                    $query->whereRaw('LOWER(vrm) LIKE ?', ["%{$search}%"])
+                        ->orWhereRaw('LOWER(vin_number) LIKE ?', ["%{$search}%"])
+                        ->orWhereRaw('LOWER(vehicle_no) LIKE ?', ["%{$search}%"])
+                        ->orWhereHas('vehicle_make', function ($q) use ($search) {
+                            $q->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"]);
+                        })
+                        ->orWhereHas('vehicle_model', function ($q) use ($search) {
+                            $q->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"]);
+                        });
+                })
+                ->get();
+
+            $vehilces = collect($contacts)->where('vender_id', $vender_id)->toArray();
             return response()->json([
                 'status' => true,
                 'contact_details' => $vehilces,
@@ -261,7 +266,7 @@ $contacts = Vehicle::with([
             $validator = \Validator::make($request->all(), [
                 'vrm' =>  ['required', 'string', 'max:255'],
                 'vehicle_make_id' => 'required',
-                 'vehicle_model_id' => 'required',
+                'vehicle_model_id' => 'required|integer|not_in:0',
 
 
 
@@ -273,7 +278,7 @@ $contacts = Vehicle::with([
                 $responseArr['token'] = '';
                 return response()->json($responseArr);
             }
-            $exists=Vehicle::where('vrm',$request['vrm'])->where('vehicle_make_id',$request['vehicle_make_id'])->where('vehicle_model_id',$request['vehicle_model_id'])->where('id','!=',$request['id'])->first();
+            $exists = Vehicle::where('vrm', $request['vrm'])->where('vehicle_make_id', $request['vehicle_make_id'])->where('vehicle_model_id', $request['vehicle_model_id'])->where('id', '!=', $request['id'])->first();
 
             // if($exists){
             //     $responseArr['message'] = "Duplicate Vrm for Vehicle make and Model";
@@ -284,20 +289,20 @@ $contacts = Vehicle::with([
 
             $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
 
-            $year=$request['year'];
-            if($request['year']=="" || $request['year']==null || $request['year']==" "){
-                $year=' ';
+            $year = $request['year'];
+            if ($request['year'] == "" || $request['year'] == null || $request['year'] == " ") {
+                $year = ' ';
             }
 
-             Vehicle::find($request['id'])->update([
+            Vehicle::find($request['id'])->update([
                 "vender_id" => $vender_id,
-                'type'=>"Vender",
-                'year'=>$year,
+                'type' => "Vender",
+                'year' => $year,
                 ...$request->except('year'),
             ]);
 
 
-            $vehicles = Vehicle::with(['vehicle_make', 'vehicle_model', 'engine_size', 'transmission_type', 'fuel_type', 'color', 'contact'])->with('jobs','quotes','bookings')->withCount('quotes')->withCount('bookings')->withCount('jobs')->where('vender_id', $vender_id)->find($request['id']);
+            $vehicles = Vehicle::with(['vehicle_make', 'vehicle_model', 'engine_size', 'transmission_type', 'fuel_type', 'color', 'contact'])->with('jobs', 'quotes', 'bookings')->withCount('quotes')->withCount('bookings')->withCount('jobs')->where('vender_id', $vender_id)->find($request['id']);
 
             return response()->json([
                 'status' => true,
@@ -333,19 +338,17 @@ $contacts = Vehicle::with([
             }
 
             Vehicle::find($request['vehicle_id'])->update([
-                'contact_id'=>$request['contact_id']
+                'contact_id' => $request['contact_id']
 
             ]);
-            $contact=ContactDetail::with('vehicles','quotes','bookings', 'vehicles.vehicle_make')->withCount('quotes')->withCount('bookings')->withCount('jobs')->orderBy('id','desc')->find($request['contact_id']);
-            $vehicles=Vehicle::with(['vehicle_make', 'vehicle_model', 'engine_size', 'transmission_type', 'fuel_type', 'color', 'contact'])->with('jobs','quotes','bookings')->withCount('quotes')->withCount('bookings')->withCount('jobs')->find($request['vehicle_id']);
+            $contact = ContactDetail::with('vehicles', 'quotes', 'bookings', 'vehicles.vehicle_make')->withCount('quotes')->withCount('bookings')->withCount('jobs')->orderBy('id', 'desc')->find($request['contact_id']);
+            $vehicles = Vehicle::with(['vehicle_make', 'vehicle_model', 'engine_size', 'transmission_type', 'fuel_type', 'color', 'contact'])->with('jobs', 'quotes', 'bookings')->withCount('quotes')->withCount('bookings')->withCount('jobs')->find($request['vehicle_id']);
             return response()->json([
                 'status' => true,
-                'contact'=>$contact,
-                'vehicle'=>$vehicles,
+                'contact' => $contact,
+                'vehicle' => $vehicles,
                 'message' => "Contact Connect Successfully",
             ]);
-
-
         } catch (Exception $e) {
 
             return response()->json([
@@ -374,7 +377,7 @@ $contacts = Vehicle::with([
             }
 
             Vehicle::find($request['vehicle_id'])->update([
-                'contact_id'=>null
+                'contact_id' => null
 
             ]);
 
@@ -382,8 +385,6 @@ $contacts = Vehicle::with([
                 'status' => true,
                 'message' => "Contact Dis Connect Successfully",
             ]);
-
-
         } catch (Exception $e) {
 
             return response()->json([
@@ -417,27 +418,25 @@ $contacts = Vehicle::with([
 
             $request['id'];
 
-            $quote=Quotation::where('vehicle_id',$request['id'])->count();
-            $booking=Booking::where('vehicle_id',$request['id'])->count();
+            $quote = Quotation::where('vehicle_id', $request['id'])->count();
+            $booking = Booking::where('vehicle_id', $request['id'])->count();
             // $vehicle=Vehicle::where('contact_id',$request['id'])->count();
 
-            if($quote>0){
+            if ($quote > 0) {
 
                 return response()->json([
                     'status' => false,
 
                     'message' => "Vehicle Linked with Quotation First Delete Prerequisites First",
                 ]);
-
             }
-            if($booking>0){
+            if ($booking > 0) {
 
                 return response()->json([
                     'status' => false,
 
                     'message' => "Vehicle Linked with Booking First Delete Prerequisites First",
                 ]);
-
             }
 
 
