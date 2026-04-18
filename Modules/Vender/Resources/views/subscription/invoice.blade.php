@@ -3,11 +3,10 @@
 @section('css_custom')
 <link rel="stylesheet" type="text/css" href="/modules/admin/app-assets/vendors/css/tables/datatable/datatables.min.css">
 <style>
-.dataTables_wrapper .dataTables_length {
-  display: none;
-}
-
-.dataTables_wrapper .dataTables_filter {
+/* --- DataTable Customizations --- */
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_info {
   display: none;
 }
 
@@ -22,156 +21,118 @@ table.dataTable thead {
 
 table.dataTable tbody td {
   padding: 8px 10px;
-  padding-bottom: 2px;
-  padding-top: 2px;
   font-size: 10px;
-}
-
-.dataTables_wrapper .dataTables_info {
-  display: none;
-}
-
-table.dataTable tbody td {
   color: black;
 }
 
 table.dataTable thead th,
 table.dataTable thead td {
-  padding: 10px 18px;
+  padding: 10px 18px 10px 8px;
   border-bottom: 1px solid #111;
   font-size: 11px;
-  padding-left: 8px;
-  padding-right: 1px;
-}
-
-th {
   white-space: pre-line;
 }
 
 table.dataTable tfoot th,
 table.dataTable tfoot td {
-  padding: 10px 18px 6px 18px;
+  padding: 10px 18px 6px 8px;
   border-top: 1px solid #111;
   font-size: 10px;
-  padding-right: 0px;
-  padding-left: 8px;
   color: black;
 }
 
-#headingCollapse14:before {
-  position: absolute;
-  top: 48%;
-  right: 20px;
-  margin-top: -8px;
-  font-family: 'feather';
-  content: "\e843";
-  transition: all 300ms linear 0s;
-}
-
-.collapse-icon [data-toggle="collapse"]:before {
-  position: absolute;
-  top: 48%;
-  right: 20px;
-  margin-top: -8px;
-  font-family: 'feather';
-  content: "\e842";
-  transition: all 300ms linear 0s;
-}
-
-.collapse-icon [data-toggle="collapse"]:after {
-  position: absolute;
-  top: 48%;
-  right: 20px;
-  margin-top: -8px;
-  font-family: 'feather';
-  content: "\e845";
-  transition: all 300ms linear 0s;
-}
-
-.collapsed {
-  border-bottom-left-radius: 0px !important;
-  border-bottom-right-radius: 0px !important;
-}
-
-.footers {
-  /* position: absolute; */
-  bottom: 0;
-  left: 0;
-  border-top: 2px solid black;
-  padding-top: 10px;
-  width: 100%;
-}
-
-.btn-dark {
-  border-color: black !important;
-  background-color: black !important;
-  color: #FFFFFF;
-}
-
-.round {
-  border-radius: 0.5rem;
-}
-
-/* --- NEW RESPONSIVE ENHANCEMENTS --- */
-
-/* 1. Prevent the JS script at the bottom from freezing the container height */
-#contens {
-  height: auto !important;
-}
-
-/* 2. Ensure table data doesn't wrap into unreadable vertical columns before horizontal scroll triggers */
+/* Prevent text wrapping in responsive tables */
 .table-responsive table th,
 .table-responsive table td {
   white-space: nowrap !important;
 }
 
-/* 3. Mobile Specific Enhancements */
+/* --- Global Customizations --- */
+.headerbg-custom {
+  padding: 15px 15px 0 15px;
+}
+
+/* --- Sidebar & Headings --- */
+.sidebar-title {
+  border-radius: 7px;
+  border: 2px solid black;
+  padding: 10px;
+  font-weight: 600;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 15px;
+  margin-top: 0;
+}
+
+.sidebar-title img {
+  width: 22px;
+}
+
+/* --- Top Horizontal Navigation --- */
+.top-nav-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.nav-btn {
+  border-radius: 7px;
+  border: 2px solid black;
+  padding: 10px 15px;
+  font-weight: 600;
+  font-size: 17px;
+  color: black;
+  text-decoration: none;
+  text-align: center;
+  flex: 1 1 auto;
+  min-width: 160px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.nav-btn:hover {
+  background-color: #f8f9fa;
+  color: black;
+}
+
+.nav-btn.active {
+  border-color: #ff6600;
+  color: #ff6600;
+}
+
+.nav-btn.active:hover {
+  background-color: #fff0e6;
+}
+
+/* --- Search Bar Container --- */
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px;
+}
+
+.search-input {
+  border: 2px solid black !important;
+  border-radius: 6px !important;
+  flex-grow: 1;
+}
+
+/* --- Mobile Specific Enhancements --- */
 @media (max-width: 767px) {
-
-  /* Adds spacing between the sidebar and the main content area */
-  .col-md-3 {
-    margin-bottom: 20px;
+  .headerbg-custom {
+    padding-left: 15px;
   }
 
-  /* Adjust the Subscriptions/Invoices top navigation links so they stack or wrap cleanly */
-  .col-md-9>.row {
-    display: flex;
+  .top-nav-group {
     flex-direction: column;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
+    gap: 10px;
   }
 
-  .col-md-9>.row a {
-    margin-bottom: 10px;
+  .nav-btn {
     width: 100%;
-  }
-
-  .col-md-9>.row a h4 {
-    margin-left: 0 !important;
-    text-align: center;
-  }
-
-  /* Fix the search header padding */
-  .col-md-12>h3 {
-    margin-left: 0 !important;
-  }
-
-  /* Keeps the search bar and filter icon side-by-side on mobile instead of stacking awkwardly */
-  .row.m-0.mt-2 {
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
-  }
-
-  .row.m-0.mt-2 .col-md-11 {
-    flex: 1;
-    padding-right: 10px;
-  }
-
-  .row.m-0.mt-2 .col-md-1 {
-    width: auto;
-    margin-top: 0 !important;
-    /* overrides inline style */
   }
 }
 </style>
@@ -179,178 +140,120 @@ table.dataTable tfoot td {
 
 @section('header')
 <div class="content-header bg-white">
-  <div class="row" style="border-bottom: 3px solid #949494;">
-    <div class="col-xl-12 col-12 bg-white headerbg" style="padding-left: 32px;padding-top: 13px;">
+  <div class="row" style="border-bottom: 3px solid #949494; margin: 0;">
+    <div class="col-12 bg-white headerbg-custom">
       <h3 class="h3">Invoices</h3>
-      <div class="breadcrumb-wrapper col-12">
+      <div class="breadcrumb-wrapper">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a>Billing</a>
-          </li>
-
-
-
-          <li class="breadcrumb-item">Invoices
-          </li>
-
-
+          <li class="breadcrumb-item"><a>Billing</a></li>
+          <li class="breadcrumb-item">Invoices</li>
         </ol>
-
       </div>
-
     </div>
-
-
   </div>
 </div>
 @endsection
 
 @section('content')
+<div class="row mt-3">
 
-<div class="row">
   <div class="col-md-3">
-    <div style="border-radius: 7px;border: 2px solid black; ">
-      <h4 class="h3" style="font-weight: 600; font-size: 17px;padding: 10px; ">
-        <img src="/wallet.png" style="width: 22px;margin-top: -5px;"> Billing
-
-      </h4>
-
-
-    </div>
-
+    <h4 class="sidebar-title">
+      <img src="/wallet.png" alt="Wallet Icon"> Billing
+    </h4>
   </div>
-  <div class="col-md-9" id="contens" style="margin-bottom: 10px;padding-left: 0;
- padding-right: 0;">
-    <div class="row ">
-      <a href="{{route('vender.subscription.index')}}">
-        <h4 class="h3"
-          style="border-radius: 7px; border: 2px solid black; padding: 10px; font-weight: 600; font-size: 17px; color: black;margin-left: 15px;">
-          Subscriptions</h2>
+
+  <div class="col-md-9" id="contens">
+
+    <div class="top-nav-group">
+      <a href="{{route('vender.subscription.index')}}" class="nav-btn">
+        Subscriptions
       </a>
-      <a href="{{route('vender.invoice.index')}}">
-        <h4 class="h3"
-          style="border-radius: 7px; border: 2px solid #ff6600; padding: 10px; font-weight: 600; font-size: 17px; color: #ff6600;margin-left: 15px;">
-          Invoices</h2>
+      <a href="{{route('vender.invoice.index')}}" class="nav-btn active">
+        Invoices
       </a>
-
-
-
     </div>
-    <div style="border: 2px solid black;border-radius: 6px;">
-      <div class="row" style="margin-right: 0;margin-left: 0;">
-        <div class="col-md-12" style="border-bottom: 2px solid black;">
-          <h3 style="font-size: 20px; padding: 10px; margin-left: -11px; color: black;padding-bottom: 0px;">Invoices
-          </h3>
 
-        </div>
+    <div style="border: 2px solid black; border-radius: 6px; margin-bottom: 30px;">
 
-
-
+      <div style="border-bottom: 2px solid black; padding: 10px 15px;">
+        <h3 style="font-size: 20px; color: black; margin: 0;">Invoices</h3>
       </div>
 
-      <div class="row m-0 mt-2">
-        <div class="col-md-11">
-          <input type="text" class="form-control" id="myInputTextField"
-            style="border: 2px solid black; border-radius: 6px;" placeholder="Search" name="" id="">
-        </div>
-        <div class="col-md-1" style="margin-top: 7px ">
-          <a href=""> <i class="ft-filter" style="font-size: 30px;color: black;"></i></a>
-        </div>
+      <div class="search-container">
+        <input type="text" class="form-control search-input" id="myInputTextField" placeholder="Search">
+        <a href="#">
+          <i class="ft-filter" style="font-size: 30px; color: black;"></i>
+        </a>
       </div>
-      <div class="row mt-2 mb-4">
-        <div class="col-md-12">
-          <div class="table-responsive">
-            <table class="table table-striped table-bordered zero-configuration">
-              <thead>
-                <tr>
-                  <th>Invoice ID</th>
-                  <th>Subscription ID</th>
-                  <th>Product </th>
-                  <th>Plan </th>
-                  <th>Invoice Date</th>
-                  <th>Total</th>
-                  <th>Status</th>
-                  <th>Action</th>
 
-                </tr>
-              </thead>
-              <tbody>
-
-
-
-
-                @foreach ($subscriptions as $account)
-                <tr>
-                  <td>{{$account->number}}</td>
-                  <td> S-{{sprintf("%04d",$account['subscription']['id'])}}</td>
-                  <td>Service Provider App</td>
-                  <td>{{$account['inv_plan']['name']??''}}</td>
-                  <td>{{\Carbon\Carbon::parse($account['created_at'])->format('d/m/Y')}}
-                  </td>
-                  <td>{{number_format($account['amount_due']/100,2)}} </td>
-
-                  <td>{{Str::ucfirst($account['status'])}}</td>
-                  <td><a href="{{route('vender.invoice.detail',$account['id'])}}"><i class="ft-eye"></i></a></td>
-                </tr>
-
-                @endforeach
-
-
-              </tbody>
-              <tfoot>
-                <tr>
-                  <th>Invoice ID</th>
-                  <th>Subscription ID</th>
-                  <th>Product </th>
-                  <th>Plan </th>
-                  <th>Invoice Date</th>
-                  <th>Amount Paid</th>
-                  <th>Status</th>
-                  <th>Action</th>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
+      <div class="px-3 pb-3">
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered zero-configuration w-100">
+            <thead>
+              <tr>
+                <th>Invoice ID</th>
+                <th>Subscription ID</th>
+                <th>Product</th>
+                <th>Plan</th>
+                <th>Invoice Date</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              @foreach ($subscriptions as $account)
+              <tr>
+                <td>{{$account->number}}</td>
+                <td>S-{{sprintf("%04d",$account['subscription']['id'])}}</td>
+                <td>Service Provider App</td>
+                <td>{{$account['inv_plan']['name']??''}}</td>
+                <td>{{\Carbon\Carbon::parse($account['created_at'])->format('d/m/Y')}}</td>
+                <td>{{number_format($account['amount_due']/100,2)}} </td>
+                <td>{{Str::ucfirst($account['status'])}}</td>
+                <td><a href="{{route('vender.invoice.detail',$account['id'])}}"><i class="ft-eye"></i></a></td>
+              </tr>
+              @endforeach
+            </tbody>
+            <tfoot>
+              <tr>
+                <th>Invoice ID</th>
+                <th>Subscription ID</th>
+                <th>Product</th>
+                <th>Plan</th>
+                <th>Invoice Date</th>
+                <th>Amount Paid</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </tfoot>
+          </table>
         </div>
       </div>
 
     </div>
-
-
-
-
-
-
-
   </div>
 </div>
-
-
 @endsection
-
 
 @section('script')
 <script src="/modules/admin/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
-{{-- <script src="/modules/admin/app-assets/js/scripts/tables/datatables/datatable-basic.js"></script> --}}
-
-
-<script>
-oTable = $('.zero-configuration').DataTable({
-  "bPaginate": $('.zero-configuration tbody tr').length > 10,
-  "iDisplayLength": 10,
-  "bAutoWidth": false,
-  "ordering": false,
-
-}); //pay attention to capital D, which is mandatory to retrieve "api" datatables' object, as @Lionel said
-$('#myInputTextField').keyup(function() {
-  oTable.search($(this).val()).draw();
-})
-</script>
 
 <script>
 $(document).ready(function() {
-  var contentHeight = $('#contens').height();
-  $('#contens').height(contentHeight);
+  // Initialize DataTable
+  var oTable = $('.zero-configuration').DataTable({
+    "bPaginate": $('.zero-configuration tbody tr').length > 10,
+    "iDisplayLength": 10,
+    "bAutoWidth": false,
+    "ordering": false,
+  });
+
+  // Custom Search Input Binding
+  $('#myInputTextField').keyup(function() {
+    oTable.search($(this).val()).draw();
+  });
 });
 </script>
-
 @endsection

@@ -8,7 +8,6 @@
 }
 
 .dataTables_wrapper .dataTables_filter {
-
   display: none;
 }
 
@@ -33,7 +32,6 @@ table.dataTable tbody td {
 }
 
 table.dataTable tbody td {
-
   color: black;
 }
 
@@ -60,48 +58,47 @@ table.dataTable tfoot td {
   color: black;
 }
 
-#headingCollapse14:before {
-  position: absolute;
-  top: 48%;
-  right: 20px;
-  margin-top: -8px;
-  font-family: 'feather';
-  content: "\e843";
-  transition: all 300ms linear 0s;
+/* --- PROFESSIONAL SIDEBAR STYLES --- */
+.sidebar-overview {
+  border-radius: 7px;
+  border: 2px solid black;
+  background-color: #fcfdfe;
+  padding-bottom: 20px;
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.04);
 }
 
-.collapse-icon [data-toggle="collapse"]:before {
-  position: absolute;
-  top: 48%;
-  right: 20px;
-  margin-top: -8px;
-  font-family: 'feather';
-  content: "\e842";
-  transition: all 300ms linear 0s;
+.sidebar-header {
+  border-radius: 5px 5px 0 0;
+  padding: 15px 20px;
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: black;
+  border-bottom: 1px solid #eaeaea;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 15px;
+  background-color: white;
 }
 
-.collapse-icon [data-toggle="collapse"]:after {
-  position: absolute;
-  top: 48%;
-  right: 20px;
-  margin-top: -8px;
-  font-family: 'feather';
-  content: "\e845";
-  transition: all 300ms linear 0s;
+.sidebar-content {
+  padding: 0 20px;
 }
 
-.collapsed {
-  border-bottom-left-radius: 0px !important;
-  border-bottom-right-radius: 0px !important;
+.sidebar-content p {
+  line-height: 1.6;
+  color: #333;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
 }
 
+/* Updated Footer style for Flexbox alignment */
 .footers {
-  /* position: absolute; */
-  bottom: 0;
-  left: 0;
   border-top: 2px solid black;
-  padding-top: 10px;
+  padding: 10px 15px;
   width: 100%;
+  margin-top: auto;
+  /* Pushes footer to the bottom of the container */
 }
 
 .btn-dark {
@@ -116,55 +113,54 @@ table.dataTable tfoot td {
 
 /* BEGIN: Responsive Layout Adjustments */
 @media (max-width: 1024px) {
-
-  /* Adjust search and filter alignment for tablets */
-  .row.m-0.mt-2 .col-md-11 {
+  .row.m-0.mt-2 .search-col {
     width: 90%;
     float: left;
   }
 
-  .row.m-0.mt-2 .col-md-1 {
+  .row.m-0.mt-2 .filter-col {
     width: 10%;
     float: left;
     text-align: center;
   }
 }
 
-@media (max-width: 770px) {
+@media (max-width: 768px) {
 
-  /* Override JS-calculated fixed height on mobile so content expands naturally */
-  #contens[style] {
-    height: auto !important;
-    padding-bottom: 20px;
+  /* Ensure container always has padding on mobile/tablet so it doesn't touch the screen edge */
+  .container-fluid {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
   }
 
-  /* Adjust header padding for mobile */
+  #contens[style] {
+    height: auto !important;
+    padding-bottom: 10px !important;
+  }
+
   .headerbg[style] {
     padding-left: 15px !important;
   }
 
-  /* Force search bar and filter icon to sit side-by-side on mobile screens */
   .row.m-0.mt-2 {
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
   }
 
-  .row.m-0.mt-2 .col-md-11 {
+  .row.m-0.mt-2 .search-col {
     flex: 0 0 85%;
     max-width: 85%;
     padding-right: 5px;
   }
 
-  .row.m-0.mt-2 .col-md-1 {
+  .row.m-0.mt-2 .filter-col {
     flex: 0 0 15%;
     max-width: 15%;
     text-align: center;
     margin-top: 0 !important;
-    /* Normalize vertical alignment */
   }
 
-  /* Ensure DataTables overflow smoothly on small screens */
   .table-responsive {
     display: block;
     width: 100%;
@@ -172,15 +168,14 @@ table.dataTable tfoot td {
     -webkit-overflow-scrolling: touch;
   }
 
-  /* Stack footer button and span full width for better touch targeting */
   .footers {
     text-align: center;
-    padding-bottom: 10px;
+    padding-bottom: 15px;
   }
 
   .footers a button {
     float: none !important;
-    width: calc(100% - 20px);
+    width: 100%;
     margin: 0 auto !important;
     display: block;
   }
@@ -215,144 +210,138 @@ table.dataTable tfoot td {
 @endsection
 
 @section('content')
-<div class="row">
-  <div class="col-md-3">
-    <div style="border-radius: 7px;border: 2px solid black; ">
-      <h4 class="h3" style="font-weight: 600; font-size: 17px;padding: 10px; ">
-        <img src="/home.png" style="width: 22px;margin-top: -5px;"> Main Contacts
-      </h4>
-      <p
-        style="border-top:2px solid;padding-left: 10px;padding-top: 10px; padding-right: 10px; line-height: 1.5rem; color: black; ">
-        Manage your business’s main
-        contact. The main contact is the
-        primary point of contact for the
-        platform. They will receive all
-        notifications, account updates,
-        and verification requests, and are
-        authorised to manage
-        subscriptions, payments, and
-        other official actions on behalf of
-        the business. Only one verified
-        active main contact can be
-        assigned. When a new contact is
-        verified, the current one becomes
-        inactive.
+<div class="container-fluid px-3 px-md-4 mt-3">
+  <div class="row align-items-stretch">
 
-      </p>
+    <div class="col-xl-3 col-lg-12 mb-4 d-flex">
+      <div class="sidebar-overview w-100 mb-0 d-flex flex-column">
 
-    </div>
-  </div>
-  <div class="col-md-9" id="contens" style="border: 2px solid black;border-radius: 6px;margin-bottom: 10px;padding-left: 0;
-    padding-right: 0;">
-    <div class="row" style="margin-right: 0;margin-left: 0;">
-      <div class="col-md-12" style="border-bottom: 2px solid black;">
-        <h3 style="font-size: 20px; padding: 10px; margin-left: -11px; color: black;padding-bottom: 0px;">Main
-          contacts</h3>
-      </div>
-
-
-    </div>
-
-    <div class="row m-0 mt-2">
-      <div class="col-md-11">
-        <input type="text" class="form-control" id="myInputTextField"
-          style="border: 2px solid black; border-radius: 6px;" placeholder="Search" name="" id="">
-      </div>
-      <div class="col-md-1" style="margin-top: 7px ">
-        <a href=""> <i class="ft-filter" style="font-size: 30px;color: black;"></i></a>
-      </div>
-    </div>
-    <div class="row mt-2 mb-4">
-      <div class="col-md-12">
-        <div class="table-responsive">
-          <table class="table table-striped table-bordered zero-configuration">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>First Name</th>
-                <th>Middle Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-                <th>Mobile</th>
-                <th>Role / Position</th>
-                <th>Status</th>
-                <th>Action</th>
-
-              </tr>
-            </thead>
-            <tbody>
-
-              {{-- @foreach ($users as $user)
-
-                             @endforeach --}}
-
-              <tr>
-                <td>1</td>
-                <td>{{ $user['name'] }}</td>
-                <td>{{ $user['middle_name'] }}</td>
-                <td>{{ $user['last_name'] }} </td>
-                <td>{{ $user['email'] }}</td>
-                <td>{{ $user['profile']['phone_no'] }}</td>
-                <td>{{ $user['profile']['job_title'] }}</td>
-                <td>{{ $user['user_verified'] }}</td>
-                <td><a href="{{ route('vender.main.contact.view', $user['id']) }}"><i class="ft-eye"></i></a></td>
-              </tr>
-
-              @foreach ($users as $account)
-              <tr>
-                <td>{{ $loop->iteration + 1 }}</td>
-                <td>{{ $account['name'] }}</td>
-                <td>{{ $account['middle_name'] }}</td>
-                <td>{{ $account['last_name'] }} </td>
-                <td>{{ $account['email'] }}</td>
-                <td>{{ $account['sub_profile']['phone_no'] ?? '' }}</td>
-                <td>{{ $account['sub_profile']['job_title'] }}</td>
-                <td>{{ $account['user_verified'] }}</td>
-                <td> <a href="{{ route('vender.main.contact.view', $account['id']) }}"><i class="ft-eye"></i></a></td>
-              </tr>
-              @endforeach
-
-
-
-            </tbody>
-            <tfoot>
-              <tr>
-                <th>ID</th>
-                <th>First Name</th>
-                <th>Middle Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-                <th>Mobile</th>
-                <th>Role / Position</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </tfoot>
-          </table>
+        <div class="sidebar-header">
+          <img src="/home.png" style="width: 22px;" alt="Home">
+          <span>Main Contacts</span>
         </div>
+
+        <div class="sidebar-content flex-grow-1">
+          <p>
+            Manage your business’s main contact. The main contact is the primary point of contact for the platform.
+          </p>
+          <p>
+            They will receive all notifications, account updates, and verification requests, and are authorised to
+            manage subscriptions, payments, and other official actions on behalf of the business.
+          </p>
+          <p class="mb-0">
+            Only one verified active main contact can be assigned. When a new contact is verified, the current one
+            becomes inactive.
+          </p>
+        </div>
+
       </div>
     </div>
 
-    @if (count($exits) <= 0) <div class="footers">
+    <div class="col-xl-9 col-lg-12 mb-4 d-flex">
+      <div id="contens" class="w-100 d-flex flex-column"
+        style="border: 2px solid black;border-radius: 6px; background-color: white; padding: 0;">
 
-      <a href="{{ route('vender.main.contact.add') }}"> <button type="button"
-          class="btn btn-dark round btn-min-width mr-1 mb-1" style="float: right;">Add</button></a>
+        <div class="flex-grow-1">
 
+          <div class="row m-0" style="border-bottom: 2px solid black;">
+            <div class="col-md-12 p-0">
+              <h3 style="font-size: 20px; padding: 10px 15px; margin: 0; color: black;">Main contacts</h3>
+            </div>
+          </div>
+
+          <div class="row m-0 mt-3 align-items-center px-2">
+            <div class="col-10 col-md-11 search-col">
+              <input type="text" class="form-control" id="myInputTextField"
+                style="border: 2px solid black; border-radius: 6px;" placeholder="Search" name="" id="">
+            </div>
+            <div class="col-2 col-md-1 filter-col text-center">
+              <a href=""> <i class="ft-filter" style="font-size: 30px;color: black;"></i></a>
+            </div>
+          </div>
+
+          <div class="row m-0 mt-3 mb-4 px-2">
+            <div class="col-md-12 p-0">
+              <div class="table-responsive">
+                <table class="table table-striped table-bordered zero-configuration w-100 m-0">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>First Name</th>
+                      <th>Middle Name</th>
+                      <th>Last Name</th>
+                      <th>Email</th>
+                      <th>Mobile</th>
+                      <th>Role / Position</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    <tr>
+                      <td>1</td>
+                      <td>{{ $user['name'] }}</td>
+                      <td>{{ $user['middle_name'] }}</td>
+                      <td>{{ $user['last_name'] }} </td>
+                      <td>{{ $user['email'] }}</td>
+                      <td>{{ $user['profile']['phone_no'] }}</td>
+                      <td>{{ $user['profile']['job_title'] }}</td>
+                      <td>{{ $user['user_verified'] }}</td>
+                      <td><a href="{{ route('vender.main.contact.view', $user['id']) }}"><i class="ft-eye"></i></a></td>
+                    </tr>
+
+                    @foreach ($users as $account)
+                    <tr>
+                      <td>{{ $loop->iteration + 1 }}</td>
+                      <td>{{ $account['name'] }}</td>
+                      <td>{{ $account['middle_name'] }}</td>
+                      <td>{{ $account['last_name'] }} </td>
+                      <td>{{ $account['email'] }}</td>
+                      <td>{{ $account['sub_profile']['phone_no'] ?? '' }}</td>
+                      <td>{{ $account['sub_profile']['job_title'] }}</td>
+                      <td>{{ $account['user_verified'] }}</td>
+                      <td> <a href="{{ route('vender.main.contact.view', $account['id']) }}"><i class="ft-eye"></i></a>
+                      </td>
+                    </tr>
+                    @endforeach
+
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th>ID</th>
+                      <th>First Name</th>
+                      <th>Middle Name</th>
+                      <th>Last Name</th>
+                      <th>Email</th>
+                      <th>Mobile</th>
+                      <th>Role / Position</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div> @if (count($exits) <= 0) <div class="footers mt-auto">
+          <a href="{{ route('vender.main.contact.add') }}">
+            <button type="button" class="btn btn-dark round btn-min-width mr-1 mb-1 m-md-0"
+              style="float: right;">Add</button>
+          </a>
+      </div>
+      @endif
+
+    </div>
   </div>
-  @endif
-
-
-
 
 </div>
 </div>
 @endsection
 
-
 @section('script')
 <script src="/modules/admin/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
-{{-- <script src="/modules/admin/app-assets/js/scripts/tables/datatables/datatable-basic.js"></script> --}}
-
 
 <script>
 oTable = $('.zero-configuration').DataTable({
@@ -360,17 +349,10 @@ oTable = $('.zero-configuration').DataTable({
   "iDisplayLength": 10,
   "bAutoWidth": false,
   "ordering": false,
+});
 
-}); //pay attention to capital D, which is mandatory to retrieve "api" datatables' object, as @Lionel said
 $('#myInputTextField').keyup(function() {
   oTable.search($(this).val()).draw();
 })
-</script>
-
-<script>
-$(document).ready(function() {
-  var contentHeight = $('#contens').height();
-  $('#contens').height(contentHeight);
-});
 </script>
 @endsection

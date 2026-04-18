@@ -1,15 +1,12 @@
 @extends('vender::layouts.master')
 
 @section('css_custom')
-
 <link rel="stylesheet" type="text/css" href="/modules/admin/app-assets/vendors/css/tables/datatable/datatables.min.css">
 <style>
-.dataTables_wrapper .dataTables_length {
-  display: none;
-}
-
-.dataTables_wrapper .dataTables_filter {
-
+/* Table Resets (Kept for your global consistency) */
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_info {
   display: none;
 }
 
@@ -27,14 +24,6 @@ table.dataTable tbody td {
   padding-bottom: 2px;
   padding-top: 2px;
   font-size: 10px;
-}
-
-.dataTables_wrapper .dataTables_info {
-  display: none;
-}
-
-table.dataTable tbody td {
-
   color: black;
 }
 
@@ -61,7 +50,9 @@ table.dataTable tfoot td {
   color: black;
 }
 
-#headingCollapse14:before {
+/* Icons & Structural */
+#headingCollapse14:before,
+.collapse-icon [data-toggle="collapse"]:before {
   position: absolute;
   top: 48%;
   right: 20px;
@@ -71,24 +62,8 @@ table.dataTable tfoot td {
   transition: all 300ms linear 0s;
 }
 
-.collapse-icon [data-toggle="collapse"]:before {
-  position: absolute;
-  top: 48%;
-  right: 20px;
-  margin-top: -8px;
-  font-family: 'feather';
-  content: "\e842";
-  transition: all 300ms linear 0s;
-}
-
 .collapse-icon [data-toggle="collapse"]:after {
-  position: absolute;
-  top: 48%;
-  right: 20px;
-  margin-top: -8px;
-  font-family: 'feather';
   content: "\e845";
-  transition: all 300ms linear 0s;
 }
 
 .collapsed {
@@ -96,15 +71,38 @@ table.dataTable tfoot td {
   border-bottom-right-radius: 0px !important;
 }
 
-.footers {
-  /* position: absolute; */
-  bottom: 0;
-  left: 0;
-  border-top: 2px solid black;
-  padding-top: 5px;
-  width: 100%;
+/* Custom Containers */
+.info-sidebar {
+  border-radius: 7px;
+  border: 2px solid black;
+  height: 100%;
 }
 
+.main-content-box {
+  border: 2px solid black;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+}
+
+.main-content-inner {
+  flex-grow: 1;
+  padding: 10px 15px;
+}
+
+.footers {
+  border-top: 2px solid black;
+  padding: 15px 15px 10px 15px;
+  width: 100%;
+  background: white;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+/* Buttons and Forms */
 .btn-dark {
   border-color: black !important;
   background-color: black !important;
@@ -116,17 +114,15 @@ table.dataTable tfoot td {
 }
 
 .form-control {
-
   border: 2px solid black !important;
   height: calc(1em + 1.4rem + 0px);
   border-radius: 7px;
-  width: 60%;
-
+  /* Fixed: Removed width 60% so it behaves responsively */
+  width: 100%;
 }
 
 .form-btn {
   text-align: left;
-  /* opacity: -0.5; */
   color: #babfcc;
   width: 37%;
   padding: 7px;
@@ -134,26 +130,26 @@ table.dataTable tfoot td {
   float: left;
 }
 
-.view-btn {
-  float: left;
+.view-btn,
+.view-btn-black {
   margin-top: 0px;
   padding: 9px;
   margin-left: 10px;
+}
+
+.view-btn {
+  float: left;
   background-color: #ff822f !important;
   border-color: #ff822f !important;
 }
 
-body {
-  color: black;
-}
-
 .view-btn-black {
-  /* float: left; */
-  margin-top: 0px;
-  padding: 9px;
-  margin-left: 10px;
   background-color: black !important;
   border-color: black !important;
+}
+
+body {
+  color: black;
 }
 
 .form-control:focus {
@@ -173,7 +169,6 @@ body.vertical-layout.vertical-menu.menu-expanded .main-menu {
 body.vertical-layout.vertical-menu.menu-expanded .content,
 body.vertical-layout.vertical-menu.menu-expanded .footer {
   margin-left: 274px;
-  /* background-color: white; */
 }
 
 input:focus:required:invalid {
@@ -184,33 +179,19 @@ input:required:valid {
   border: 2px solid black;
 }
 
-/* --- RESPONSIVE MEDIA QUERIES ADDED HERE --- */
-@media (max-width: 768px) {
+/* --- RESPONSIVE MEDIA QUERIES --- */
+@media (max-width: 767.98px) {
   .headerbg {
-    padding-left: 15px !important;
+    padding-left: 25px !important;
   }
 
-  .form-control {
-    width: 100% !important;
+  .info-sidebar-wrapper {
+    margin-bottom: 20px;
   }
 
-  .col-md-9 {
-    margin-top: 20px;
-  }
-
-  #contens {
-    height: auto !important;
-    /* Overrides the JS fixed height calculation */
-  }
-
-  .footers {
-    padding-bottom: 15px;
-  }
-
-  .footers button,
-  .footers a button {
+  .footers .btn-dark {
     float: none !important;
-    width: 100% !important;
+    width: 100%;
     display: block;
     margin-bottom: 10px !important;
   }
@@ -220,209 +201,181 @@ input:required:valid {
 
 @section('header')
 <div class="content-header bg-white">
-  <div class="row" style="border-bottom: 3px solid #949494;">
-    <div class="col-xl-12 col-12 bg-white headerbg" style="padding-left: 32px;padding-top: 13px;">
+  <div class="row m-0" style="border-bottom: 3px solid #949494;">
+    <div class="col-12 bg-white headerbg" style="padding-left: 32px;padding-top: 13px;">
       <h3 class="h3">User</h3>
-      <div class="breadcrumb-wrapper col-12">
+      <div class="breadcrumb-wrapper col-12 p-0">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a>Directory</a>
-          </li>
-
-
-
-          <li class="breadcrumb-item"><a style="color: black" href="{{route('vender.user')}}">Users</a>
-          </li>
-          <li class="breadcrumb-item">Edit user information
-          </li>
-
+          <li class="breadcrumb-item"><a>Directory</a></li>
+          <li class="breadcrumb-item"><a style="color: black" href="{{route('vender.user')}}">Users</a></li>
+          <li class="breadcrumb-item">Edit user information</li>
         </ol>
       </div>
     </div>
-
   </div>
 </div>
 @endsection
 
 @section('content')
-
 <div class="row">
-  <div class="col-md-3">
-    <div style="border-radius: 7px;border: 2px solid black; ">
-      <h4 class="h3" style="font-weight: 600; font-size: 17px;padding: 10px; ">
+  <div class="col-12 col-md-4 col-lg-3 info-sidebar-wrapper">
+    <div class="info-sidebar">
+      <h4 class="h3" style="font-weight: 600; font-size: 17px;padding: 10px; margin: 0;">
         <img src="/user.png" style="width: 22px;margin-top: -5px;"> Edit User
       </h4>
-
     </div>
   </div>
-  <div class="col-md-9"
-    style="border: 2px solid black;border-radius: 6px;margin-bottom: 10px;padding-left: 0;padding-right: 0;">
-    <div class="row" style="margin-right: 0;margin-left: 0;">
-      <div class="col-md-12" style="border-bottom: 2px solid black;">
-        <h3 style="font-size: 20px; padding: 10px; margin-left: -11px; color: black;padding-bottom: 0px;">User
-          Information</h3>
+
+  <div class="col-12 col-md-8 col-lg-9">
+    <div class="main-content-box">
+      <div class="row m-0" style="border-bottom: 2px solid black;">
+        <div class="col-12 p-0">
+          <h3 style="font-size: 20px; padding: 10px 15px; color: black; margin: 0;">User Information</h3>
+        </div>
       </div>
 
+      <form action="{{route('vender.user.update')}}" id="contens" method="POST" enctype="multipart/form-data">
+        @csrf
+        <input type="hidden" name="id" value="{{$user['id']}}">
 
+        <div class="main-content-inner">
+
+          <div class="form-group row align-items-center">
+            <label class="col-md-4 label-control" for="name">First name *</label>
+            <div class="col-md-8">
+              <input type="text" id="name" class="form-control" value="{{$user['name']}}" onkeyup="lookup(this);"
+                name="name" placeholder="First name">
+              <p class="text-danger name" style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This
+                Field is Required !</p>
+            </div>
+          </div>
+
+          <div class="form-group row align-items-center">
+            <label class="col-md-4 label-control" for="middle_name">Middle name </label>
+            <div class="col-md-8">
+              <input type="text" id="middle_name" class="form-control" value="{{$user['middle_name']}}"
+                name="middle_name" placeholder="Middle name ">
+              <p class="text-danger middle_name"
+                style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This Field is Required !</p>
+            </div>
+          </div>
+
+          <div class="form-group row align-items-center">
+            <label class="col-md-4 label-control" for="last_name">Last name *</label>
+            <div class="col-md-8">
+              <input type="text" id="last_name" class="form-control" value="{{$user['last_name']}}"
+                onkeyup="lookup(this);" name="last_name" placeholder="Last name">
+              <p class="text-danger last_name" style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">
+                This Field is Required !</p>
+            </div>
+          </div>
+
+          <div class="form-group row align-items-center">
+            <label class="col-md-4 label-control" for="email">Email * </label>
+            <div class="col-md-8">
+              <input type="email" id="email" class="form-control" value="{{$user['email']}}" onkeyup="lookup(this);"
+                name="email" placeholder="Email">
+              <p class="text-danger email" style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">
+                Invalid Email !</p>
+              @if($errors->has('email'))
+              <p class="text-danger email" style="padding-left: 10px;width:100%;margin-bottom: -8px;">
+                {{ $errors->first('email') }}</p>
+              @endif
+            </div>
+          </div>
+
+          @if(auth()->user()->id == $user['id'])
+          <div class="form-group row align-items-center">
+            <label class="col-md-4 label-control" for="phone_no">Mobile * </label>
+            <div class="col-md-8">
+              <input type="tel" id="phone_no" class="form-control" value="{{$user['profile']['phone_no'] ?? ''}}"
+                onkeyup="lookup(this);" name="phone_no" placeholder="Mobile">
+              <p class="text-danger phone_no" style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">
+                This Field is Required !</p>
+            </div>
+          </div>
+
+          <div class="form-group row align-items-center">
+            <label class="col-md-4 label-control" for="landline">Landline </label>
+            <div class="col-md-8">
+              <input type="tel" id="landline" class="form-control" value="{{$user['profile']['landline'] ?? ''}}"
+                onkeyup="lookup(this);" name="landline" placeholder="Landline">
+              <p class="text-danger landline" style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">
+                This Field is Required !</p>
+            </div>
+          </div>
+
+          @else
+
+          <div class="form-group row align-items-center">
+            <label class="col-md-4 label-control" for="phone_no">Mobile * </label>
+            <div class="col-md-8">
+              <input type="tel" id="phone_no" class="form-control" value="{{$user['phone_no']}}" onkeyup="lookup(this);"
+                name="phone_no" placeholder="Mobile">
+              <p class="text-danger phone_no" style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">
+                This Field is Required !</p>
+            </div>
+          </div>
+
+          <div class="form-group row align-items-center">
+            <label class="col-md-4 label-control" for="landline">Landline </label>
+            <div class="col-md-8">
+              <input type="tel" id="landline" class="form-control" value="{{$user['landline']}}" onkeyup="lookup(this);"
+                name="landline" placeholder="Landline">
+              <p class="text-danger landline" style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">
+                This Field is Required !</p>
+            </div>
+          </div>
+          @endif
+
+        </div>
+
+        <div class="footers">
+          <button type="button" onclick="submitDetailsForm()"
+            class="btn btn-dark round btn-min-width float-md-right mr-md-1 mb-1 mb-md-0">Update</button>
+          <a href="{{redirect()->back()->getTargetUrl()}}">
+            <button type="button"
+              class="btn btn-dark round btn-min-width float-md-right mr-md-1 mb-1 mb-md-0">Cancel</button>
+          </a>
+          <div class="clearfix"></div>
+        </div>
+      </form>
     </div>
-    <form action="{{route('vender.user.update')}}" id="contens" method="POST" enctype="multipart/form-data"> @csrf
-      <input type="hidden" name="id" value="{{$user['id']}}">
-      <div class="link-body" style="padding: 10px">
-
-        <div class="form-group row">
-          <label class="col-md-4 label-control" for="eventRegInput5">First name *</label>
-          <div class="col-md-8 mx-auto">
-            <input type="text" id="name" class="form-control" value="{{$user['name']}}" onkeyup="lookup(this);"
-              name="name" placeholder="First name">
-            <p class="text-danger name" style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This
-              Field is Required !</p>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-md-4 label-control" for="eventRegInput5">Middle name </label>
-          <div class="col-md-8 mx-auto">
-            <input type="text" id="middle_name" class="form-control" value="{{$user['middle_name']}}" name="middle_name"
-              placeholder="Middle name ">
-            <p class="text-danger middle_name" style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">
-              This Field is Required !</p>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-md-4 label-control" for="eventRegInput5">Last name *</label>
-          <div class="col-md-8 mx-auto">
-            <input type="text" id="last_name" class="form-control" value="{{$user['last_name']}}"
-              onkeyup="lookup(this);" name="last_name" placeholder="Last name">
-            <p class="text-danger last_name" style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">
-              This Field is Required !</p>
-
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-md-4 label-control" for="eventRegInput5">Email * </label>
-          <div class="col-md-8 mx-auto">
-            <input type="email" id="email" class="form-control" value="{{$user['email']}}" onkeyup="lookup(this);"
-              name="email" placeholder="Email">
-            <p class="text-danger email" style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">
-              Invalid Email !</p>
-            @if($errors->has('email'))
-
-            <p class="text-danger email" style="padding-left: 10px;width:100%;margin-bottom: -8px;">
-              {{ $errors->first('email') }}</p>
-            @endif
-          </div>
-        </div>
-        @if(auth()->user()->id==$user['id'])
-
-        <div class="form-group row">
-          <label class="col-md-4 label-control" for="eventRegInput5">Mobile * </label>
-          <div class="col-md-8 mx-auto">
-            <input type="tel" id="phone_no" class="form-control" value="{{$user['profile']['phone_no']}}"
-              onkeyup="lookup(this);" name="phone_no" placeholder="Mobile">
-            <p class="text-danger phone_no" style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">
-              This Field is Required !</p>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-md-4 label-control" for="eventRegInput5">Landline </label>
-          <div class="col-md-8 mx-auto">
-            <input type="tel" id="landline" class="form-control" value="{{$user['profile']['landline']}}"
-              onkeyup="lookup(this);" name="landline" placeholder="Landline">
-            <p class="text-danger landline" style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">
-              This Field is Required !</p>
-          </div>
-        </div>
-
-
-        @else
-
-        <div class="form-group row">
-          <label class="col-md-4 label-control" for="eventRegInput5">Mobile * </label>
-          <div class="col-md-8 mx-auto">
-            <input type="tel" id="phone_no" class="form-control" value="{{$user['phone_no']}}" onkeyup="lookup(this);"
-              name="phone_no" placeholder="Mobile">
-            <p class="text-danger phone_no" style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">
-              This Field is Required !</p>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-md-4 label-control" for="eventRegInput5">Landline </label>
-          <div class="col-md-8 mx-auto">
-            <input type="tel" id="landline" class="form-control" value="{{$user['landline']}}" onkeyup="lookup(this);"
-              name="landline" placeholder="Landline">
-            <p class="text-danger landline" style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">
-              This Field is Required !</p>
-          </div>
-        </div>
-
-        @endif
-
-
-
-
-      </div>
-      <div class="footers">
-
-        <button type="button" onclick="submitDetailsForm()" class="btn btn-dark round btn-min-width mr-1 mb-1"
-          style="float: right;">Update</button>
-        <a href="{{redirect()->back()->getTargetUrl()}}"><button type="button"
-            class="btn btn-dark round btn-min-width mr-1 mb-1" style="float: right;">Cancel</button></a>
-
-      </div>
-    </form>
   </div>
 </div>
-
-
 @endsection
-
 
 @section('script')
 <script src="/modules/admin/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
-{{-- <script src="/modules/admin/app-assets/js/scripts/tables/datatables/datatable-basic.js"></script> --}}
-
 
 <script>
-oTable = $('.zero-configuration').DataTable({
-  "bPaginate": $('.zero-configuration tbody tr').length > 10,
-  "iDisplayLength": 10,
-  "bAutoWidth": false,
-  "ordering": false,
-
-}); //pay attention to capital D, which is mandatory to retrieve "api" datatables' object, as @Lionel said
-$('#myInputTextField').keyup(function() {
-  oTable.search($(this).val()).draw();
-})
+// DataTable check (preventing re-init error even if no table exists on page)
+if ($('.zero-configuration').length > 0) {
+  oTable = $('.zero-configuration').DataTable({
+    "destroy": true,
+    "bPaginate": $('.zero-configuration tbody tr').length > 10,
+    "iDisplayLength": 10,
+    "bAutoWidth": false,
+    "ordering": false,
+  });
+  $('#myInputTextField').keyup(function() {
+    oTable.search($(this).val()).draw();
+  });
+}
 </script>
 
-<script>
-$(document).ready(function() {
-  var contentHeight = $('#contens').height();
-  $('#contens').height(contentHeight);
-});
-</script>
-
-<script>
-$(document).ready(function() {
-  var contentHeight = $('#contens').height();
-  $('#contens').height(contentHeight);
-});
-</script>
 <script>
 $('.form-btn').click(function() {
   $('input[type=file]').trigger('click');
 });
 </script>
+
 <script>
 $('input[type=radio]').change(function() {
   if (this.value == 'YES') {
-
     $('.Poof_div').show();
-    var contentHeight = $('#contens').height();
-    $('#contens').height(contentHeight);
-
   } else {
     $('.Poof_div').hide();
-    var contentHeight = $('#contens').height();
-    $('#contens').height('550px');
   }
 });
 </script>
@@ -432,7 +385,6 @@ $(document).ready(function() {
   $('input[type="file"]').change(function(e) {
     var fileName = e.target.files[0].name;
     $('.form-btn').val(fileName);
-
     $('.view-btn').show();
     $('#view_file').attr('href', URL.createObjectURL(e.target.files[0]));
     $('.file_proof').hide();
@@ -445,141 +397,78 @@ $(document).ready(function() {
 async function lookup(arg) {
   var id = arg.getAttribute('id');
   var value = arg.value;
-
-
   let trading_name = $(`#${id}`).val();
+
   if (id !== "address_line_2" && id !== "city" && id !== "postcode") {
     if (trading_name === "") {
-
-
       $(`#${id}`).attr("style", "border:2px solid red!important;");
       status = false;
-
     } else {
       $(`#${id}`).attr("style", "border:2px solid black!important;");
       $(`.${id}`).hide();
     }
   } else {
     if (trading_name === "") {
-
-
       $(`#${id}`).attr("style", "border:2px solid red!important;margin-top: 5px ");
       status = false;
-
     } else {
       $(`#${id}`).attr("style", "border:2px solid black!important;margin-top: 5px;");
       $(`.${id}`).hide();
     }
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
 </script>
 
-
 <script>
 function submitDetailsForm() {
-  let array = ['name', 'last_name', 'email', 'phone_no', 'job_title'];
+  // Note: Removed 'job_title' from this array as it does not exist in the HTML form and causes errors
+  let array = ['name', 'last_name', 'email', 'phone_no'];
+  let status = true;
 
-  let status = false;
-  array.some((item) => {
-    let name = $(`#${item}`).val();
-    console.log(name, item);
-
-    if (name === "") {
-
-
-      $(`#${item}`).attr('style', 'border:2px solid red!important');
-
-
-
-    } else {
-
-      $(`#${item}`).attr('style', 'border:2px solid black!important');
-
-
+  array.forEach((item) => {
+    let element = $(`#${item}`);
+    if (element.length) {
+      let name = element.val();
+      if (name === "") {
+        element.attr('style', 'border:2px solid red!important');
+        status = false;
+      } else {
+        element.attr('style', 'border:2px solid black!important');
+      }
     }
   });
-  array.some((item) => {
-    let name = $(`#${item}`).val();
-    console.log(name, item);
-
-    if (name === "") {
-
-
-      $(`#${item}`).attr('style', 'border:2px solid red!important');
-
-      status = false;
-
-
-      return true;
-
-    } else {
-
-      $(`#${item}`).attr('style', 'border:2px solid black!important');
-      status = true;
-
-    }
-  });
-
-
-
-  // return;
-
 
   if (status === true) {
-    let status = $('input[type=radio]:checked').val();
-    if (status === "YES") {
-
+    let radioStatus = $('input[type=radio]:checked').val();
+    if (radioStatus === "YES") {
       let file = $('input[type=file]').val();
-      if (file === "") {
-
+      if (file === "" || file === undefined) {
         $(`#proof_of_main_contact`).attr('style', 'border:2px solid red!important');
         status = false;
         return false;
-
       } else {
         status = true;
       }
     } else {
       status = true;
     }
+
     let email = $(`#email`).val();
-
-    console.log(validateEmail(email));
-
     if (validateEmail(email) === null) {
       $(`#email`).attr('style', 'border:2px solid red!important');
       $('.email').show();
       return false;
+    } else {
+      $('.email').hide();
     }
 
     if (status === true) {
-
       $("form").submit();
     }
-
   }
-
-
-
-
-
-
 }
 </script>
+
 <script>
 const validateEmail = (email) => {
   return String(email)
@@ -589,6 +478,4 @@ const validateEmail = (email) => {
     );
 };
 </script>
-
-
 @endsection
