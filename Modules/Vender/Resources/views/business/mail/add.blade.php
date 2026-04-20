@@ -1,582 +1,293 @@
 @extends('vender::layouts.master')
 
 @section('css_custom')
-<link rel="stylesheet" type="text/css" href="/modules/admin/app-assets/vendors/css/tables/datatable/datatables.min.css">
-<style>
-.dataTables_wrapper .dataTables_length {
-  display: none;
-}
+    <style>
+        .collapsed {
+            border-bottom-left-radius: 0px !important;
+            border-bottom-right-radius: 0px !important;
+        }
 
-.dataTables_wrapper .dataTables_filter {
+        .footers {
+            border-top: 2px solid black;
+            padding: 15px;
+            width: 100%;
+            background: white;
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+        }
 
-  display: none;
-}
+        .btn-dark {
+            border-color: black !important;
+            background-color: black !important;
+            color: #FFFFFF;
+        }
 
-table.dataTable thead {
-  background: #fafbfc;
-  color: black;
-}
+        .round {
+            border-radius: 0.5rem;
+        }
 
-.table-striped tbody tr:nth-of-type(odd) {
-  background-color: white;
-}
+        .form-control {
+            border: 2px solid black !important;
+            height: calc(1em + 1.4rem + 0px);
+            border-radius: 7px;
+            width: 60%;
+            box-sizing: border-box;
+        }
 
-table.dataTable tbody td {
-  padding: 8px 10px;
-  padding-bottom: 2px;
-  padding-top: 2px;
-  font-size: 10px;
-}
+        .form-control:focus {
+            color: #4e5154;
+            background-color: #fff;
+            border-color: black;
+            outline: 0;
+            box-shadow: none;
+        }
 
-.dataTables_wrapper .dataTables_info {
-  display: none;
-}
+        .accordion .card-header,
+        .default-collapse .card-header {
+            color: black !important;
+            padding: 1rem 1rem !important;
+        }
 
-table.dataTable tbody td {
+        .card .card-title {
+            font-weight: 500;
+            letter-spacing: 0.05rem;
+            font-size: 1rem;
+        }
 
-  color: black;
-}
+        /* Sidebar container */
+        .info-sidebar {
+            border-radius: 7px;
+            border: 2px solid black;
+        }
 
-table.dataTable thead th,
-table.dataTable thead td {
-  padding: 10px 18px;
-  border-bottom: 1px solid #111;
-  font-size: 11px;
-  padding-left: 8px;
-  padding-right: 1px;
-}
+        /* Main content box */
+        .main-content-box {
+            border: 2px solid black;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            padding: 0;
+            background: white;
+        }
 
-th {
-  white-space: pre-line;
-}
+        /* --- RESPONSIVE MEDIA QUERIES --- */
+        @media (max-width: 1024px) {
+            .form-control {
+                width: 85% !important;
+            }
+        }
 
-table.dataTable tfoot th,
-table.dataTable tfoot td {
-  padding: 10px 18px 6px 18px;
-  border-top: 1px solid #111;
-  font-size: 10px;
-  padding-right: 0px;
-  padding-left: 8px;
-  color: black;
-}
+        @media (max-width: 767.98px) {
+            .headerbg {
+                padding-left: 15px !important;
+            }
 
-#headingCollapse14:before {
-  position: absolute;
-  top: 48%;
-  right: 20px;
-  margin-top: -8px;
-  font-family: 'feather';
-  content: "\e843";
-  transition: all 300ms linear 0s;
-}
+            /* Stack both columns full width */
+            .col-12.col-lg-3,
+            .col-12.col-lg-9 {
+                width: 100% !important;
+                max-width: 100% !important;
+                flex: 0 0 100% !important;
+                padding-left: 10px !important;
+                padding-right: 10px !important;
+            }
 
-.collapse-icon [data-toggle="collapse"]:before {
-  position: absolute;
-  top: 48%;
-  right: 20px;
-  margin-top: -8px;
-  font-family: 'feather';
-  content: "\e842";
-  transition: all 300ms linear 0s;
-}
+            /* Prevent outer row overflow */
+            .row {
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+            }
 
-.collapse-icon [data-toggle="collapse"]:after {
-  position: absolute;
-  top: 48%;
-  right: 20px;
-  margin-top: -8px;
-  font-family: 'feather';
-  content: "\e845";
-  transition: all 300ms linear 0s;
-}
+            /* Remove fixed height */
+            .main-content-box {
+                height: auto !important;
+                min-height: unset !important;
+            }
 
-.collapsed {
-  border-bottom-left-radius: 0px !important;
-  border-bottom-right-radius: 0px !important;
-}
+            /* Stack label above input */
+            .form-group.row {
+                flex-direction: column !important;
+                margin-bottom: 12px;
+            }
 
-.footers {
-  /* position: absolute; */
-  bottom: 0;
-  left: 0;
-  border-top: 2px solid black;
-  padding-top: 5px;
-  width: 100%;
-}
+            .form-group.row .col-md-4,
+            .form-group.row .col-md-8,
+            .form-group.row .mx-auto {
+                width: 100% !important;
+                max-width: 100% !important;
+                flex: 0 0 100% !important;
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
 
-.btn-dark {
-  border-color: black !important;
-  background-color: black !important;
-  color: #FFFFFF;
-}
+            .form-group.row .col-md-8 {
+                margin-top: 4px;
+            }
 
-.round {
-  border-radius: 0.5rem;
-}
+            /* All inputs full width */
+            .form-control {
+                width: 100% !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+            }
 
-.form-control {
+            /* Footer buttons stacked */
+            .footers {
+                text-align: center;
+                padding: 10px !important;
+            }
 
-  border: 2px solid black !important;
-  height: calc(1em + 1.4rem + 0px);
-  border-radius: 7px;
-  width: 60%;
-
-}
-
-.form-btn {
-  text-align: left;
-  /* opacity: -0.5; */
-  color: #babfcc;
-  width: 60%;
-  padding: 7px;
-  padding-left: 14px;
-  float: left;
-}
-
-.view-btn {
-  float: left;
-  margin-top: 0px;
-  padding: 9px;
-  margin-left: 10px;
-  background-color: #ff822f !important;
-  border-color: #ff822f !important;
-}
-
-body {
-  color: black;
-}
-
-.view-btn-black {
-  /* float: left; */
-  margin-top: 0px;
-  padding: 9px;
-  margin-left: 10px;
-  background-color: black !important;
-  border-color: black !important;
-}
-
-.form-control:focus {
-  color: #4e5154;
-  background-color: #fff;
-  border-color: black;
-  outline: 0;
-  box-shadow: none;
-}
-
-body.vertical-layout.vertical-menu.menu-expanded .main-menu {
-  width: 274px;
-  transition: 300ms ease all;
-  backface-visibility: hidden;
-}
-
-body.vertical-layout.vertical-menu.menu-expanded .content,
-body.vertical-layout.vertical-menu.menu-expanded .footer {
-  margin-left: 274px;
-  /* background-color: white; */
-}
-
-input:focus:required:invalid {
-  border: 2px solid red;
-}
-
-input:required:valid {
-  border: 2px solid black;
-}
-
-hr {
-  margin-top: 0rem;
-  margin-bottom: 0rem;
-  border: 0;
-  border-top: 2px solid rgba(0, 0, 0, 0.1);
-}
-
-.accordion .card-header,
-.default-collapse .card-header {
-
-  color: black !important;
-  padding: 1rem 1rem !important;
-}
-
-.card>hr {
-  margin-right: 0;
-  margin-left: 0;
-  height: 0px;
-}
-
-.card .card-title {
-  font-weight: 500;
-  letter-spacing: 0.05rem;
-  font-size: 1rem;
-}
-
-.hr {
-  margin-top: 0rem;
-  margin-bottom: 0rem;
-  border: 0;
-  border-top: 2px solid rgba(0, 0, 0, 0.1);
-}
-
-/* BEGIN: Responsive Layout Adjustments */
-@media (max-width: 1024px) {
-
-  .form-control,
-  .form-btn {
-    width: 85% !important;
-  }
-}
-
-@media (max-width: 770px) {
-
-  /* Override fixed inline height so content pushes container naturally */
-  .col-md-9[style] {
-    height: auto !important;
-    min-height: 245px;
-    padding-bottom: 20px;
-  }
-
-  .form-control,
-  .form-btn {
-    width: 100% !important;
-  }
-
-  /* Adjust header padding for mobile */
-  .headerbg[style] {
-    padding-left: 15px !important;
-  }
-
-  /* Ensure input labels have spacing from previous fields */
-  .form-group.row {
-    margin-bottom: 1.5rem;
-  }
-
-  /* Stack footer buttons and center them */
-  .footers {
-    text-align: center;
-    padding-bottom: 10px;
-  }
-
-  .footers button,
-  .footers a button {
-    float: none !important;
-    width: calc(100% - 20px);
-    margin: 5px 10px !important;
-  }
-}
-
-/* END: Responsive Layout Adjustments */
-</style>
+            .footers button,
+            .footers a button {
+                float: none !important;
+                width: 100% !important;
+                margin: 5px 0 !important;
+                display: block;
+            }
+        }
+    </style>
 @endsection
 
 @section('header')
-<div class="content-header bg-white">
-  <div class="row" style="border-bottom: 3px solid #949494;">
-    <div class="col-xl-12 col-12 bg-white headerbg" style="padding-left: 32px;padding-top: 13px;">
-      <h3 class="h3">Add New Email Address</h3>
-      <div class="breadcrumb-wrapper col-12">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a>Business</a>
-          </li>
-
-
-
-          <li class="breadcrumb-item"><a style="color: black" href="{{ route('vender.bank') }}">Bank</a></li>
-          <li class="breadcrumb-item">Add New Email Address
-          </li>
-
-        </ol>
-      </div>
+    <div class="content-header bg-white">
+        <div class="row" style="border-bottom: 3px solid #949494; margin: 0;">
+            <div class="col-12 bg-white headerbg" style="padding-left: 32px; padding-top: 13px;">
+                <h3 class="h3">Add New Email Address</h3>
+                <div class="breadcrumb-wrapper col-12 p-0">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a>Business</a></li>
+                        <li class="breadcrumb-item"><a style="color: black" href="{{ route('vender.mail') }}">Email
+                                Addresses</a></li>
+                        <li class="breadcrumb-item">Add New Email Address</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
     </div>
-
-  </div>
-</div>
 @endsection
 
 @section('content')
-<div class="row">
-  <div class="col-md-3">
-    <div style="border-radius: 7px;border: 2px solid black; ">
-      <h4 class="h3" style="font-weight: 600; font-size: 17px;padding: 10px; ">
-        <img src="/home.png" style="width: 22px;margin-top: -5px;"> New Email Address
-      </h4>
-      <div class="footers" id="show_help" style="border-top:2px solid black;">
-        <h4 style="padding-left: 13px;
-                        color: black;
-                        font-weight: 600;">
-          Help information: </h4>
+    <div class="row">
 
-        <div id="accordionWrap1" role="tablist" aria-multiselectable="true">
-          <div class="card accordion collapse-icon accordion-icon-rotate" style="box-shadow: none;">
-            <a id="business_VAT" class="card-header info collapsed" data-toggle="collapse" href="#collapsebusiness_vat"
-              aria-expanded="false" aria-controls="collapsebusiness_vat">
-              <div class="card-title lead"> Label (?)
-              </div>
-            </a>
-            <div id="collapsebusiness_vat" data-parent="#accordionWrap1" role="tabpanel" aria-labelledby="business_VAT"
-              class="collapse" style="">
-              <div class="card-content">
-                <div class="card-body" style="color:black">
-                  Give this account a short name so you
-                  can recognise it later when selecting for
-                  invoices or payouts. For example: Main
-                  Business Account, Refunds Account,
-                  Payout Account, or Site A – Payments.
-
-
-
-
+        {{-- Sidebar --}}
+        <div class="col-12 col-lg-3 mb-3">
+            <div class="info-sidebar">
+                <h4 class="h3" style="font-weight: 600; font-size: 17px; padding: 10px; margin: 0;">
+                    <img src="/home.png" style="width: 22px; margin-top: -5px;"> New Email Address
+                </h4>
+                <div style="border-top: 2px solid black; padding: 10px 13px;">
+                    <h4 style="color: black; font-weight: 600; margin: 0 0 5px 0;">Help information:</h4>
+                    <div id="accordionWrap1" role="tablist" aria-multiselectable="true">
+                        <div class="card accordion collapse-icon accordion-icon-rotate mb-0" style="box-shadow: none;">
+                            <a id="business_VAT" class="card-header info collapsed" data-toggle="collapse"
+                                href="#collapsebusiness_vat" aria-expanded="false">
+                                <div class="card-title lead">Label (?)</div>
+                            </a>
+                            <div id="collapsebusiness_vat" data-parent="#accordionWrap1" class="collapse">
+                                <div class="card-body" style="color: black;">
+                                    Give this account a short name so you can recognise it later when selecting for
+                                    invoices or payouts. For example: Main Business Account, Refunds Account,
+                                    Payout Account, or Site A – Payments.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-
-
-
-
-          </div>
         </div>
 
-      </div>
+        {{-- Main Content --}}
+        <div class="col-12 col-lg-9">
+            <div class="main-content-box">
 
+                <div style="border-bottom: 2px solid black; padding: 10px 15px;">
+                    <h3 style="font-size: 20px; color: black; margin: 0;">Bank Account Information</h3>
+                </div>
 
+                <form action="{{ route('vender.mail.store') }}" id="contens" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div style="padding: 15px;">
+
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label">Label (?) <span style="color:red;">*</span></label>
+                            <div class="col-md-8 mx-auto">
+                                <input type="text" id="label" value="" onkeyup="lookup(this);"
+                                    class="form-control" name="label" required placeholder="Enter Your Label *">
+                                <p class="text-danger label"
+                                    style="padding-left: 0; width:100%; display: none; margin-bottom: -8px;">
+                                    Label Field is Required!
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label">Email Address <span style="color:red;">*</span></label>
+                            <div class="col-md-8 mx-auto">
+                                <input type="email" id="email" class="form-control" name="email" required
+                                    value="" placeholder="Enter Your Email Address">
+                                <p class="text-danger email"
+                                    style="padding-left: 0; width:100%; display: none; margin-bottom: -8px;">
+                                    Email Address Field is Required!
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="footers">
+                        <button type="button" onclick="submitDetailsForm()"
+                            class="btn btn-dark round btn-min-width float-right mr-1 mb-1">Save</button>
+                        <a href="{{ redirect()->back()->getTargetUrl() }}">
+                            <button type="button"
+                                class="btn btn-dark round btn-min-width float-right mr-1 mb-1">Cancel</button>
+                        </a>
+                        <div class="clearfix"></div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
 
     </div>
-
-  </div>
-  <div class="col-md-9"
-    style="border: 2px solid black;border-radius: 6px;margin-bottom: 10px;padding-left: 0;padding-right: 0;height: 245px;">
-    <div class="row" style="margin-right: 0;margin-left: 0;">
-      <div class="col-md-12" style="border-bottom: 2px solid black;">
-        <h3 style="font-size: 20px; padding: 10px; margin-left: -11px; color: black;padding-bottom: 0px;">Bank
-          Account Information </h3>
-
-      </div>
-
-
-    </div>
-    <form action="{{ route('vender.mail.store') }}" id="contens" method="POST" enctype="multipart/form-data"
-      id="contens"> @csrf
-      <div class="link-body" style="padding: 10px">
-
-        <div class="form-group row">
-          <label class="col-md-4 label-control" for="eventRegInput5"> Label (?) <span
-              style="color:red;">*</span></label>
-          <div class="col-md-8 mx-auto">
-            <input type="text" id="label" value="" onkeyup="lookup(this);" class="form-control" name="label" required
-              placeholder="Enter Your Label * ">
-
-
-            <p class="text-danger label" style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">Label
-              Field is
-              Required !</p>
-
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-md-4 label-control" for="eventRegInput5"> Email Address <span style="color:red;">*</span>
-          </label>
-          <div class="col-md-8 mx-auto">
-            <input type="email" id="email" class="form-control" name="email" required value="" style="margin-top: 5px "
-              placeholder="Enter Your Email Address ">
-
-            <p class="text-danger email" style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">Email
-              Address
-              Field is
-              Required !</p>
-
-
-          </div>
-        </div>
-
-
-
-
-
-      </div>
-      <div class="footers">
-
-        <button type="button" onclick="submitDetailsForm()" class="btn btn-dark round btn-min-width mr-1 mb-1"
-          style="float: right;">Save</button>
-        <a href="{{ redirect()->back()->getTargetUrl() }}"><button type="button"
-            class="btn btn-dark round btn-min-width mr-1 mb-1" style="float: right;">Cancel</button></a>
-
-
-      </div>
-    </form>
-  </div>
-</div>
 @endsection
 
-
 @section('script')
-<script src="/modules/admin/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
-{{-- <script src="/modules/admin/app-assets/js/scripts/tables/datatables/datatable-basic.js"></script> --}}
-
-
-<script>
-oTable = $('.zero-configuration').DataTable({
-  "bPaginate": $('.zero-configuration tbody tr').length > 10,
-  "iDisplayLength": 10,
-  "bAutoWidth": false,
-  "ordering": false,
-
-}); //pay attention to capital D, which is mandatory to retrieve "api" datatables' object, as @Lionel said
-$('#myInputTextField').keyup(function() {
-  oTable.search($(this).val()).draw();
-})
-</script>
-
-<script>
-$(document).ready(function() {
-  var contentHeight = $('#contens').height();
-  $('#contens').height(contentHeight);
-});
-</script>
-
-<script>
-$(document).ready(function() {
-  var contentHeight = $('#contens').height();
-  $('#contens').height(contentHeight);
-});
-</script>
-<script>
-$('.form-btn').click(function() {
-  $('input[type=file]').trigger('click');
-});
-</script>
-<script>
-$('input[type=radio]').change(function() {
-  if (this.value == 'YES') {
-
-    $('.Poof_div').show();
-    var contentHeight = $('#contens').height();
-    $('#contens').height(contentHeight);
-
-  } else {
-    $('.Poof_div').hide();
-    var contentHeight = $('#contens').height();
-    $('#contens').height('550px');
-  }
-});
-</script>
-
-<script>
-$(document).ready(function() {
-  $('input[type="file"]').change(function(e) {
-    var fileName = e.target.files[0].name;
-    $('.form-btn').val(fileName);
-
-    $('.view-btn').show();
-    $('#view_file').attr('href', URL.createObjectURL(e.target.files[0]));
-    $('.file_proof').hide();
-    $(`#proof_of_main_contact`).attr('style', 'border:2px solid black!important');
-  });
-});
-</script>
-
-<script>
-async function lookup(arg) {
-  var id = arg.getAttribute('id');
-  var value = arg.value;
-
-
-  let trading_name = $(`#${id}`).val();
-  if (id !== "address_line_2" && id !== "city" && id !== "postcode") {
-    if (trading_name === "") {
-
-
-      $(`#${id}`).attr("style", "border:2px solid red!important;");
-      status = false;
-
-    } else {
-      $(`#${id}`).attr("style", "border:2px solid black!important;");
-      $(`.${id}`).hide();
-    }
-  } else {
-    if (trading_name === "") {
-
-
-      $(`#${id}`).attr("style", "border:2px solid red!important;margin-top: 5px ");
-      status = false;
-
-    } else {
-      $(`#${id}`).attr("style", "border:2px solid black!important;margin-top: 5px;");
-      $(`.${id}`).hide();
-    }
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}
-</script>
-
-
-<script>
-function submitDetailsForm() {
-
-  let array = ['label', 'email'];
-
-  let status = false;
-  array.some((item) => {
-    let name = $(`#${item}`).val();
-    console.log(name, item);
-
-    if (name === "") {
-
-
-      $(`#${item}`).attr('style', 'border:2px solid red!important');
-
-      status = false;
-
-
-      return false;
-
-    } else {
-
-      $(`#${item}`).attr('style', 'border:2px solid black!important');
-      status = true;
-
-    }
-  });
-
-
-
-
-
-
-
-
-  let file = $('input[type=file]').val();
-  console.log(file, "hh");
-  if (file === "") {
-
-    $(`#proof_of_main_contact`).attr('style', 'border:2px solid red!important');
-    status = false;
-    return false;
-
-  } else {
-    $("form").submit();
-  }
-
-
-
-
-
-
-
-
-
-
-
-}
-</script>
+    <script>
+        $(document).ready(function() {
+
+            // Real-time validation
+            window.lookup = function(arg) {
+                var id = arg.getAttribute('id');
+                var value = arg.value.trim();
+
+                if (value === "") {
+                    $('#' + id).css('border', '2px solid red');
+                } else {
+                    $('#' + id).css('border', '2px solid black');
+                    $('.' + id).hide();
+                }
+            };
+
+            // Final form validation
+            window.submitDetailsForm = function() {
+                let fields = ['label', 'email'];
+                let isValid = true;
+
+                fields.forEach(function(item) {
+                    let val = $('#' + item).val().trim();
+                    if (val === "") {
+                        $('#' + item).css('border', '2px solid red');
+                        isValid = false;
+                    } else {
+                        $('#' + item).css('border', '2px solid black');
+                        $('.' + item).hide();
+                    }
+                });
+
+                if (isValid) {
+                    $("#contens").submit();
+                }
+            };
+
+        });
+    </script>
 @endsection
