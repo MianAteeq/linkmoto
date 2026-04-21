@@ -87,7 +87,9 @@ class VehicleController extends Controller
             $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
             $trading_id = User::find($request->user()->id)['default_trading_unit'];
 
-            $contacts = Vehicle::with(['vehicle_make', 'vehicle_model', 'engine_size', 'transmission_type', 'fuel_type', 'color', 'contact'])->with('quotes', 'bookings', 'jobs')->withCount('quotes')->withCount('bookings')->withCount('jobs')->where('vender_id', $vender_id)->where('vehicle_no', '!=', null)->orderBy('id', 'desc')->paginate(20);
+            $contacts = Vehicle::with(['vehicle_make', 'vehicle_model', 'engine_size', 'transmission_type', 'fuel_type', 'color', 'contact'])
+                ->with('quotes', 'bookings', 'jobs')->withCount('quotes')->withCount('bookings')->withCount('jobs')->where('vender_id', $vender_id)
+                ->where('vehicle_no', '!=', null)->orderBy('id', 'desc')->paginate(20);
             return response()->json([
                 'status' => true,
                 'contact_details' => $contacts,
