@@ -355,6 +355,7 @@
                                             name
                                             only</option>
                                     @endif
+                                @endif
 
 
 
@@ -575,4 +576,367 @@
             </form>
         </div>
     </div>
+@endsection
+
+@section('script')
+    <script src="/modules/admin/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
+    {{-- <script src="/modules/admin/app-assets/js/scripts/tables/datatables/datatable-basic.js"></script> --}}
+
+
+    <script>
+        oTable = $('.zero-configuration').DataTable({
+            "bPaginate": $('.zero-configuration tbody tr').length > 10,
+            "iDisplayLength": 10,
+            "bAutoWidth": false,
+            "ordering": false,
+
+        }); //pay attention to capital D, which is mandatory to retrieve "api" datatables' object, as @Lionel said
+        $('#myInputTextField').keyup(function() {
+            oTable.search($(this).val()).draw();
+        })
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            var contentHeight = $('#contens').height();
+            $('#contens').height(contentHeight);
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            var contentHeight = $('#contens').height();
+            $('#contens').height(contentHeight);
+        });
+    </script>
+    <script>
+        $('.form-btn').click(function() {
+            $('input[type=file]').trigger('click');
+        });
+    </script>
+    <script>
+        $('input[name="operation_type[]"]').change(function() {
+
+            // Check which options are selected
+            let selected = $('input[name="operation_type[]"]:checked').map(function() {
+                return this.value;
+            }).get();
+
+            // Reset all visibility first
+            $('.mobile_show, #site_show, #city, .city_show, #postcode, .postcode_show').hide();
+
+            if (selected.includes('Mobile') && selected.includes('On-site')) {
+                // Both selected
+                $('.mobile_show').show();
+                $('#site_show').show();
+                $('.city_show').show();
+                $('.postcode_show').show();
+            } else if (selected.includes('Mobile')) {
+                $('.mobile_show').show();
+                $('#city').show();
+                $('#postcode').show();
+            } else if (selected.includes('On-site')) {
+                $('#site_show').show();
+                $('#city').show();
+                $('#postcode').show();
+            }
+            // else none selected → everything stays hidden
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('input[type="file"]').change(function(e) {
+                var fileName = e.target.files[0].name;
+                $('.form-btn').val(fileName);
+
+                $('.view-btn').show();
+                $('#view_file').attr('href', URL.createObjectURL(e.target.files[0]));
+                $('.file_proof').hide();
+                $(`#proof_of_main_contact`).attr('style', 'border:2px solid black!important');
+            });
+        });
+    </script>
+
+    <script>
+        async function lookup(arg) {
+            var id = arg.getAttribute('id');
+            var value = arg.value;
+
+
+            let trading_name = $(`#${id}`).val();
+            if (id !== "address_line_2" && id !== "city" && id !== "postcode") {
+                if (trading_name === "") {
+
+
+                    $(`#${id}`).attr("style", "border:2px solid red!important;");
+                    status = false;
+
+                } else {
+                    $(`#${id}`).attr("style", "border:2px solid black!important;");
+                    $(`.${id}`).hide();
+                }
+            } else {
+                if (trading_name === "") {
+
+
+                    $(`#${id}`).attr("style", "border:2px solid red!important;margin-top: 5px ");
+                    status = false;
+
+                } else {
+                    $(`#${id}`).attr("style", "border:2px solid black!important;margin-top: 5px;");
+                    $(`.${id}`).hide();
+                }
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+    </script>
+
+
+    <script>
+        function submitDetailsForm() {
+            let status = true;
+
+            // Get selected operation types
+            let selectedOps = $('input[name="operation_type[]"]:checked').map(function() {
+                return this.value;
+            }).get();
+
+            if (selectedOps.length === 0) {
+                alert("Please select at least one operation type.");
+                return false;
+            }
+
+            // Determine required fields
+            let array = [];
+            let tradingTemplate = $('#trading_template').val();
+
+            if (selectedOps.includes('Mobile') && !selectedOps.includes('On-site')) {
+                array = (tradingTemplate == 1) ? ['name', 'email', 'city', 'postcode', 'radius'] : ['name',
+                    'trading_name_id', 'email', 'city', 'postcode', 'radius'
+                ];
+
+            } else if (selectedOps.includes('On-site') && !selectedOps.includes('Mobile')) {
+                array = (tradingTemplate == 1) ? ['name', 'mobile', 'email', 'city', 'site_id'] : ['name',
+                    'trading_name_id', 'mobile', 'email', 'city', 'site_id'
+                ];
+
+            } else if (selectedOps.includes('On-site') && selectedOps.includes('Mobile')) {
+                array = (tradingTemplate == 1) ? ['site_id', 'radius', 'name', 'mobile', 'email'] : ['site_id', 'radius',
+                    'name', 'trading_name_id', 'mobile', 'email'
+                ];
+            }
+
+            // Validate required fields
+            array.forEach(function(item) {
+                let value = $(`#${item}`).val()?.trim();
+
+                if (!value) {
+                    $(`#${item}`).css('border', '2px solid red');
+                    status = false;
+                } else {
+                    $(`#${item}`).css('border', '2px solid black');
+                }
+            });
+
+            // =========================
+            // Mobile / Landline Validation
+            // =========================
+            let mobileVal = $('#mobile').val()?.trim();
+            let landlineVal = $('#landline').val()?.trim();
+
+            // Reset UI
+            // Reset UI
+            $('#mobile, #landline').css('border', '2px solid black');
+            $('.mobile, .landline').hide();
+
+            // ❌ Case 1: BOTH EMPTY
+            if (!mobileVal && !landlineVal) {
+                $('#mobile, #landline').css('border', '2px solid red');
+                $('.mobile, .landline').text('Enter either mobile or landline').show();
+                status = false;
+            }
+
+            // ❌ Case 2: BOTH FILLED (NOT allowed)
+            // else if (mobileVal && landlineVal) {
+            //     $('#mobile, #landline').css('border', '2px solid red');
+            //     $('.mobile, .landline').text('Enter only one: mobile OR landline').show();
+            //     status = false;
+            // }
+
+            // ✅ Case 3: ONLY ONE FILLED → valid
+
+            // ✅ If one OR both filled → OK (no restriction)
+
+            // =========================
+            // Email Validation
+            // =========================
+            let email = $('#email').val()?.trim();
+
+            if (!email || validateEmail(email) === null) {
+                $('#email').css('border', '2px solid red');
+                $('.email').show();
+                status = false;
+            } else {
+                $('#email').css('border', '2px solid black');
+                $('.email').hide();
+            }
+
+            // Submit
+            if (status) {
+                $('form').submit();
+            }
+
+            return status;
+        }
+    </script>
+
+    <script>
+        $('#site_id').on('change', function() {
+
+            let sites = @json($sites);
+
+            let site = sites.filter((item) => parseInt(item.id) === parseInt(this.value));
+
+            if (site.length > 0) {
+                $('#city').val(site[0].city);
+                $('.city_show').text(site[0].city);
+                $('#postcode').val(site[0].postcode);
+                $('.postcode_show').text(site[0].postcode);
+            }
+
+
+        });
+        $('#trading_name_id').on('change', function() {
+
+            $id = this.value;
+            let company_name = @json(auth()->user()->profile->company_name)
+
+            let trading_names = @json($trading_names).filter((item) => item.id == $id);
+            console.log(trading_names);
+
+            if (trading_names.length > 0) {
+
+                if ($('#trading_template').val() == 2) {
+
+                    trading_name = `Trading as ${trading_names[0].name}`;
+                    $('.company_show').text(`${company_name} ${trading_name}`);
+                } else {
+
+                    trading_name = `${trading_names[0].name}`;
+                    $('.company_show').text(`${trading_name}`);
+                }
+
+
+            }
+
+
+
+        });
+    </script>
+    <script>
+        const validateEmail = (email) => {
+            return String(email)
+                .toLowerCase()
+                .match(
+                    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                );
+        };
+    </script>
+
+    <script>
+        $('#trading_template').on('change', function() {
+
+            $id = this.value;
+
+            if ($id == 1) {
+                $('#company_name').show();
+                $('#trading_name').hide();
+                showCompanyName();
+            }
+            if ($id == 2) {
+                $('#company_name').show();
+                $('#trading_name').show();
+                showCompanyTradingName();
+
+            }
+            if ($id == 3) {
+                // $('#company_name').hide();
+                $('#trading_name').show();
+
+                showTradingName();
+            }
+
+
+        });
+    </script>
+    <script>
+        function showCompanyName() {
+
+            let company_name = @json(auth()->user()->profile->company_name)
+
+            $('.company_show').text(company_name);
+        }
+
+        function showCompanyTradingName() {
+
+            let company_name = @json(auth()->user()->profile->company_name);
+
+            let trading_id = $('#trading_name_id').val();
+            let trading_name = `< Select Trading Name >`;
+            if (trading_id !== null) {
+
+                let trading_names = @json($trading_names).filter((item) => item.id == trading_id);
+                console.log(trading_names);
+
+                if (trading_names.length > 0) {
+                    trading_name = `trading as ${trading_names[0].name}`;
+                }
+            } else {
+
+                trading_name = `trading as < Select Trading Name >`;
+
+            }
+
+
+            $('.company_show').text(`${company_name} ${trading_name}`);
+        }
+
+        function showTradingName() {
+
+            let company_name = @json(auth()->user()->profile->company_name);
+
+            let trading_id = $('#trading_name_id').val();
+            let trading_name = `< Select Trading Name >`;
+            if (trading_id !== null) {
+
+                let trading_names = @json($trading_names).filter((item) => item.id == trading_id);
+                console.log(trading_names);
+
+                if (trading_names.length > 0) {
+                    trading_name = `${trading_names[0].name}`;
+                }
+            } else {
+
+                trading_name = `< Select Trading Name >`;
+
+            }
+
+
+            $('.company_show').text(`${trading_name}`);
+        }
+    </script>
 @endsection
