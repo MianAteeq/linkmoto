@@ -336,26 +336,26 @@
                                 onkeyup="lookup(this);" style="width: 60%;border-radius: 7px;">
                                 <option value="none" selected="" disabled="">Select Business Name Format</option>
 
-                                @if (auth()->user()->profile['organization_status'] === 'Limited Company (Ltd)')
-                                    @if (auth()->user()->profile['organization_status'] === 'Limited Company (Ltd)' ||
-                                            auth()->user()->profile['organization_status'] === 'Limited Liability Partnership (LLP)')
-                                        <option value="1" @if ($trading_unit['trading_template'] == 1) selected @endif>Registered
-                                            company name</option>
-                                        <option value="2" @if ($trading_unit['trading_template'] == 2) selected @endif>Registered
-                                            company name & trading name</option>
-                                        <option value="3" @if ($trading_unit['trading_template'] == 3) selected @endif>Trading
-                                            name
-                                        </option>
-                                    @else
-                                        <option value="1" @if ($trading_unit['trading_template'] == 1) selected @endif>Registered
-                                            {{ $user['profile']['organization_status'] }} name</option>
-                                        <option value="2" @if ($trading_unit['trading_template'] == 2) selected @endif>Registered
-                                            {{ $user['profile']['organization_status'] }} & trading name</option>
-                                        <option value="3" @if ($trading_unit['trading_template'] == 3) selected @endif>Trading
-                                            name
-                                            only</option>
-                                    @endif
+
+                                @if (auth()->user()->profile['organization_status'] === 'Limited Company (Ltd)' ||
+                                        auth()->user()->profile['organization_status'] === 'Limited Liability Partnership (LLP)')
+                                    <option value="1" @if ($trading_unit['trading_template'] == 1) selected @endif>Registered
+                                        company name</option>
+                                    <option value="2" @if ($trading_unit['trading_template'] == 2) selected @endif>Registered
+                                        company name & trading name</option>
+                                    <option value="3" @if ($trading_unit['trading_template'] == 3) selected @endif>Trading
+                                        name
+                                    </option>
+                                @else
+                                    <option value="1" @if ($trading_unit['trading_template'] == 1) selected @endif>Registered
+                                        {{ $user['profile']['organization_status'] }} name</option>
+                                    <option value="2" @if ($trading_unit['trading_template'] == 2) selected @endif>Registered
+                                        {{ $user['profile']['organization_status'] }} & trading name</option>
+                                    <option value="3" @if ($trading_unit['trading_template'] == 3) selected @endif>Trading
+                                        name
+                                        only</option>
                                 @endif
+
 
 
 
