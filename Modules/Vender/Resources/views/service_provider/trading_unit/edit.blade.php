@@ -802,7 +802,7 @@ $('#site_id').on('change', function() {
 $('#trading_name_id').on('change', function() {
 
   $id = this.value;
-  let company_name = @json(auth() - > user() - > profile - > company_name)
+  let company_name = @json(auth() -> user() -> profile -> company_name)
 
   let trading_names = @json($trading_names).filter((item) => item.id == $id);
   console.log(trading_names);
@@ -865,14 +865,14 @@ $('#trading_template').on('change', function() {
 <script>
 function showCompanyName() {
 
-  let company_name = @json(auth() - > user() - > profile - > company_name)
+  let company_name = @json(auth() -> user() -> profile -> company_name)
 
   $('.company_show').text(company_name);
 }
 
 function showCompanyTradingName() {
 
-  let company_name = @json(auth() - > user() - > profile - > company_name);
+  let company_name = @json(auth() -> user() -> profile -> company_name);
 
   let trading_id = $('#trading_name_id').val();
   let trading_name = `< Select Trading Name >`;
@@ -896,7 +896,7 @@ function showCompanyTradingName() {
 
 function showTradingName() {
 
-  let company_name = @json(auth() - > user() - > profile - > company_name);
+  let company_name = @json(auth() -> user() -> profile -> company_name);
 
   let trading_id = $('#trading_name_id').val();
   let trading_name = `< Select Trading Name >`;
