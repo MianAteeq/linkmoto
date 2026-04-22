@@ -1,5 +1,5 @@
 <div class="main-menu menu-fixed menu-light menu-accordion    menu-shadow " data-scroll-to-active="true">
-    <div class="main-menu-content">
+    <div class="main-menu-content" style="height: 500.906px;">
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
 
 

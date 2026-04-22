@@ -31,11 +31,13 @@
 
     $.app.menu.init(compactMenu);
 
-    // Navigation configurations
+   // Navigation configurations
     var config = {
       speed: 300 // set speed to expand / collpase menu
     };
-    if ($.app.nav.initialized === false) {
+    
+    // THE FIX: Check if $.app.nav actually exists before checking initialized
+    if ($.app.nav && $.app.nav.initialized === false) {
       $.app.nav.init(config);
     }
 

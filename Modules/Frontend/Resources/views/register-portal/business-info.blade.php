@@ -14,10 +14,7 @@
             border-radius: 8px;
             padding: 15px;
             height: auto !important;
-            /* let content define height */
             min-height: 530px;
-            /* optional baseline height */
-            /* Removed position: relative; as flexbox handles the footer now */
         }
 
         /* Removed #footers absolute positioning to prevent overlap on mobile */
@@ -36,7 +33,7 @@
 @endsection
 
 @section('content')
-    <div class="content-body">
+    <div class="content-body px-2 px-md-2">
         <div class="row" style="border-bottom: 3px solid #949494; margin-bottom: 15px;">
             <div class="col-xl-12 col-12">
                 <h3 class="h3">Business registration application</h3>
@@ -44,14 +41,15 @@
         </div>
 
         <div class="row" style="margin-top: 10px;">
-            <div class="col-12 col-md-4 mb-4 mb-md-0">
-                <div style="border-radius: 7px;border: 2px solid black;">
-                    <h4 class="h3" style="padding: 10px;font-weight: 600; font-size: 17px;">
+            <div class="col-12 col-lg-4 mb-4 mb-lg-0">
+                <div style="border-radius: 8px;border: 2px solid black; padding: 15px;">
+                    <h4 class="h3" style="font-weight: 600; font-size: 17px; margin-top: 0;">
                         <img src="/home.png" style="width: 22px;margin-top: -5px;"> Your business information
                     </h4>
 
                     <div class="footers">
-                        <h4 style="padding-left: 13px; color: black; font-weight: 600;">Help information: </h4>
+                        <h4 style="padding-left: 13px; color: black; font-weight: 600; margin-top: 15px;">Help information:
+                        </h4>
                         <div id="accordionWrap1" role="tablist" aria-multiselectable="true">
                             <div class="card accordion collapse-icon accordion-icon-rotate"
                                 style="box-shadow: none;margin-right: 10px;margin-left: 10px;">
@@ -117,7 +115,7 @@
                 </div>
             </div>
 
-            <div class="col-12 col-md-8" id="contens">
+            <div class="col-12 col-lg-8" id="contens">
                 <form action="{{ route('vender.profile.business.info') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" id="is_save_later" name="is_save_later" value="0">
@@ -125,9 +123,9 @@
                     <div class="link-body" style="padding: 10px">
 
                         <div class="form-group row">
-                            <label class="col-12 col-md-4 label-control">Business setup <span style="color: red">*</span>
+                            <label class="col-12 col-lg-4 label-control">Business setup <span style="color: red">*</span>
                             </label>
-                            <div class="col-12 col-md-8 mx-auto">
+                            <div class="col-12 col-lg-8 mx-auto">
                                 <div class="input-group">
                                     <select name="organization_status" id="organization_status" class="form-control select2"
                                         style="width:100%!important;">
@@ -154,12 +152,12 @@
                         </div>
 
                         <div class="form-group row">
-                            <label class="col-12 col-md-4 label-control" for="company_name">Registered <span class="cname"
+                            <label class="col-12 col-lg-4 label-control" for="company_name">Registered <span class="cname"
                                     @if ($user['profile']['organization_status'] != 'Limited Company (Ltd)') style="display: none" @endif>company</span> name <span
                                     style="color: red">*</span> <a style="color: black" href="#collapsec_name"
                                     data-toggle="collapse" aria-expanded="false"
                                     aria-controls="collapsec_name">(?)</a></label>
-                            <div class="col-12 col-md-8 mx-auto">
+                            <div class="col-12 col-lg-8 mx-auto">
                                 <input type="tel" id="company_name" value="{{ $user['profile']['company_name'] }}"
                                     class="form-control" onkeyup="lookup(this);" name="company_name" required
                                     placeholder=" ">
@@ -170,13 +168,13 @@
                         </div>
 
                         <div class="form-group row company_feild">
-                            <label class="col-12 col-md-4 label-control" for="registration_no">Registered <span
+                            <label class="col-12 col-lg-4 label-control" for="registration_no">Registered <span
                                     class="cname"
                                     @if ($user['profile']['organization_status'] != 'Limited Company (Ltd)') style="display: none" @endif>company</span> number
                                 <span style="color: red">*</span> <a style="color: black" href="#collapsec_c_number"
                                     data-toggle="collapse" aria-expanded="false"
                                     aria-controls="company_number">(?)</a></label>
-                            <div class="col-12 col-md-8 mx-auto">
+                            <div class="col-12 col-lg-8 mx-auto">
                                 <input type="text" id="registration_no" class="form-control"
                                     value="{{ $user['profile']['registration_no'] }}" onkeyup="lookup(this);"
                                     name="registration_no" required placeholder=" ">
@@ -187,11 +185,11 @@
                         </div>
 
                         <div class="form-group row company_feild">
-                            <label class="col-12 col-md-4 label-control" for="company_jurisdiction">Registered <span
+                            <label class="col-12 col-lg-4 label-control" for="company_jurisdiction">Registered <span
                                     class="cjurisdiction cname"
                                     @if ($user['profile']['organization_status'] != 'Limited Company (Ltd)') style="display: none" @endif>company</span>
                                 Jurisdiction </label>
-                            <div class="col-12 col-md-8 mx-auto">
+                            <div class="col-12 col-lg-8 mx-auto">
                                 <input type="hidden" id="company_jurisdiction" class="form-control"
                                     value="{{ $user['profile']['company_jurisdiction'] }}" onkeyup="lookup(this);"
                                     name="company_jurisdiction" required placeholder=" ">
@@ -202,12 +200,12 @@
                         </div>
 
                         <div class="form-group row">
-                            <label class="col-12 col-md-4 label-control">Registered <span class="cname"
+                            <label class="col-12 col-lg-4 label-control">Registered <span class="cname"
                                     @if ($user['profile']['organization_status'] != 'Limited Company (Ltd)') style="display: none" @endif>company</span> address
                                 <span style="color: red">*</span> <a style="color: black" href="#collapsec_c_address"
                                     data-toggle="collapse" aria-expanded="false"
                                     aria-controls="collapsec_c_address">(?)</a></label>
-                            <div class="col-12 col-md-8 mx-auto">
+                            <div class="col-12 col-lg-8 mx-auto">
                                 <input type="tel" id="address_line_1" onkeyup="lookup(this);" class="form-control"
                                     name="address_line_1" required value="{{ $user['profile']['address_line_1'] }}"
                                     placeholder="Address line one *">
@@ -233,11 +231,11 @@
                         </div>
 
                         <div class="form-group row" id="proof_doc" style="display: none">
-                            <label class="col-12 col-md-4 label-control">Proof of Sole Trader / Self Employed status <span
+                            <label class="col-12 col-lg-4 label-control">Proof of Sole Trader / Self Employed status <span
                                     style="color: red">*</span> <a style="color: black" href="#collapsec_c_proof"
                                     data-toggle="collapse" aria-expanded="false"
                                     aria-controls="collapsec_c_proof">(?)</a></label>
-                            <div class="col-12 col-md-8 mx-auto">
+                            <div class="col-12 col-lg-8 mx-auto">
                                 <div>
                                     <input type="file" class="d-none" name="document_proof"
                                         accept="image/*,.doc, .docx,.pdf" id="">

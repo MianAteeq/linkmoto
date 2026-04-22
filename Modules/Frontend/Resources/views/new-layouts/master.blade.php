@@ -5,8 +5,8 @@
 @include('frontend::new-layouts.head')
 
 
-<body class="vertical-layout vertical-menu 2-columns   fixed-navbar" data-open="click" data-menu="vertical-menu"
-    data-col="2-columns">
+<body class="vertical-layout vertical-menu 2-columns fixed-navbar menu-expanded" data-open="click"
+    data-menu="vertical-menu" data-col="2-columns">
 
     <!-- BEGIN: Header-->
     @include('frontend::new-layouts.navbar')
@@ -87,8 +87,29 @@
             });
         });
     </script>
+    <script>
+        window.addEventListener('load', function() {
+            // A tiny timeout ensures the theme's core JS has fully finished its screen calculations
+            setTimeout(function() {
+                // Check if the screen is at the 768px breakpoint (or larger, up to 992px typically for tablets)
+                if (window.innerWidth >= 768) {
+                    let bodyTag = document.body;
 
+                    // If the theme wrongly collapsed it, fix it
+                    if (bodyTag.classList.contains('menu-collapsed')) {
+                        bodyTag.classList.remove('menu-collapsed');
+                        bodyTag.classList.add('menu-expanded');
+                    }
 
+                    // Ensure the menu is actually visible
+                    let menu = document.getElementById('main-menu-navigation');
+                    if (menu) {
+                        menu.style.display = 'block';
+                    }
+                }
+            }, 150); // 150ms delay is imperceptible to the user but guarantees we override the theme JS
+        });
+    </script>
 </body>
 <!-- END: Body-->
 
