@@ -322,7 +322,7 @@
                                                 @endif
                                             @else
                                                 @if ($trading_unit['trading_template'] == 1)
-                                                    Registered s{{ $user['profile']['organization_status'] }} name
+                                                    Registered {{ $user['profile']['organization_status'] }} name
                                                 @endif
                                                 @if ($trading_unit['trading_template'] == 2)
                                                     Registered {{ $user['profile']['organization_status'] }} & trading name
