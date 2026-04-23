@@ -1,9 +1,5 @@
 <div class="main-menu menu-fixed menu-light menu-accordion    menu-shadow " data-scroll-to-active="true">
-<<<<<<< HEAD
-    <div class="main-menu-content" style="height: calc(100vh - 80px); overflow-y: auto; overflow-x: hidden;">
-=======
     <div class="main-menu-content" style="height: 500.906px;">
->>>>>>> 223d82b291b359de1df6c181a7c723830c29cc7c
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
 
 
