@@ -116,78 +116,129 @@
                             @endif
 
                         @endif
-                    </h1>
-                    <div class="add" style="display: flex;flex-direction: column;width: 100%;">
-                        @php
-                            $addressLine1 = collect([
-                                $book_invoice['trading_name']['app_setting']['address_line_1'] ?? null,
-                                $book_invoice['trading_name']['app_setting']['address_line_2'] ?? null,
-                                $book_invoice['trading_name']['app_setting']['address_line_3'] ?? null,
-                                $book_invoice['trading_name']['app_setting']['address_line_4'] ?? null,
-                            ])
-                                ->filter()
-                                ->implode(', ');
 
-                            $addressLine2 = collect([
-                                $book_invoice['trading_name']['app_setting']['city'] ?? null,
-                                $book_invoice['trading_name']['app_setting']['postcode'] ?? null,
-                            ])
-                                ->filter()
-                                ->implode(' ');
+                        <!-- TITLE -->
+                        <p style="font-weight:bold; font-size:13px; margin:0 0 3px 0;">
+                            @if ($trading_unit['trading_template'] == 1)
+                                {{ ucfirst(auth()->user()->profile->company_name) }}
+                            @endif
+                            @if ($trading_unit['trading_template'] == 2)
+                                {{ ucfirst(auth()->user()->profile->company_name) }} Trading as
+                                {{ $trading_unit['trading_name']['name'] }}
+                            @endif
+                            @if ($trading_unit['trading_template'] == 3)
+                                {{ ucfirst($trading_unit['trading_name']['name']) }}
+                            @endif
+                        </p>
+                        @php
+                            if (
+                                $trading_unit['operation_type'] == 'Both' ||
+                                $trading_unit['operation_type'] == 'On-site'
+                            ) {
+                                $addressLine1 = collect([
+                                    $trading_unit['site']['address_line_1'] ?? null,
+                                    $trading_unit['site']['address_line_2'] ?? null,
+                                    $trading_unit['site']['address_line_3'] ?? null,
+                                    $trading_unit['site']['address_line_4'] ?? null,
+                                ])
+                                    ->filter()
+                                    ->implode(', ');
+
+                                $addressLine2 = collect([
+                                    $trading_unit['site']['city'] ?? null,
+                                    $trading_unit['site']['postcode'] ?? null,
+                                ])
+                                    ->filter()
+                                    ->implode(' ');
+                            } else {
+                                $addressLine1 = collect([
+                                    $profile['address_line_1'] ?? null,
+                                    $profile['address_line_2'] ?? null,
+                                    $profile['address_line_3'] ?? null,
+                                    $profile['address_line_4'] ?? null,
+                                ])
+                                    ->filter()
+                                    ->implode(', ');
+
+                                $addressLine2 = collect([$profile['city'] ?? null, $profile['postcode'] ?? null])
+                                    ->filter()
+                                    ->implode(' ');
+                            }
                         @endphp
 
-
+                        <!-- ADDRESS -->
                         @if ($addressLine1 || $addressLine2)
-                            <p style="line-height:1.4;font-size:15px;margin:0;">
-                                {{ $addressLine1 }}
-                                @if ($addressLine2)
-                                    <br>{{ $addressLine2 }}
+                            <p style="margin:0 0 3px 0;">
+                                {{ $addressLine1 }}<br>
+                                {{ $addressLine2 }}
+                            </p>
+                        @endif
+
+                        <!-- CONTACT -->
+                        <div style="min-height:150px;">
+
+                            <p style="margin:0 0 3px 0;">
+
+                                @php
+                                    $hasTel =
+                                        $trading_unit['app_setting']['show_landline'] === 'YES' &&
+                                        !empty($trading_unit['landline']);
+                                    $hasMobile =
+                                        $trading_unit['app_setting']['show_mobile'] === 'YES' &&
+                                        !empty($trading_unit['mobile']);
+                                @endphp
+
+                                @if ($hasTel)
+                                    Tel: {{ $trading_unit['landline'] }}
+                                @endif
+
+                                @if ($hasTel && $hasMobile)
+                                    &nbsp;|&nbsp;
+                                @endif
+
+                                @if ($hasMobile)
+                                    Mobile: {{ $trading_unit['mobile'] }}
+                                @endif
+
+                            </p>
+
+                            @if ($trading_unit['app_setting']['show_email'] === 'YES' && !empty($trading_unit['email']))
+                                <p style="margin:0 0 3px 0;">Email: {{ $trading_unit['email'] }}</p>
+                            @endif
+
+                            @if ($trading_unit['app_setting']['show_website'] === 'YES' && !empty($trading_unit['website']))
+                                <p style="margin:0 0 3px 0;">{{ $trading_unit['website'] }}</p>
+                            @endif
+                            <p style="margin:0 0 6px 0;">
+                                @if (!empty($vender['profile']['uk_vat_no']))
+                                    Registered vat no: {{ $vender['profile']['uk_vat_no'] }}
+                                @else
+                                    <span style="visibility:hidden;">VAT placeholder</span>
                                 @endif
                             </p>
-                        @endif
 
-                        @if (!empty($invoice['invoice']['trading_name']['app_setting']['landline']))
-                            <p style="line-height: 1.8;font-size: 15px;margin:0;margin-top: -7px;">Tel:
-                                {{ $invoice['invoice']['trading_name']['app_setting']['landline'] }}</p>
-                        @endif
-                        @if (!empty($invoice['invoice']['trading_name']['app_setting']['mobile']))
-                            <p style="line-height: 1.8;font-size: 15px;margin:0;margin-top: -7px;">Mob:
-                                {{ $invoice['invoice']['trading_name']['app_setting']['mobile'] }}</p>
-                        @endif
-                        @if (!empty($invoice['invoice']['trading_name']['app_setting']['email']))
-                            <p style="line-height: 1.8;font-size: 15px;margin:0;margin-top: -7px;">Email:
-                                {{ $invoice['invoice']['trading_name']['app_setting']['email'] }}
-                        @endif
 
-                        @if (!empty($invoice['invoice']['trading_name']['app_setting']['website']))
-                            <p style="line-height: 1.8; font-size: 15px; margin:0; margin-top: -7px;">
-                                {{ $invoice['invoice']['trading_name']['app_setting']['website'] }}
-                            </p>
-                        @endif
-                        @if (!empty($vender['profile']['uk_vat_no']))
-                            <p style="line-height: 1.8;font-size: 15px;margin:0;margin-top: -7px;">Registered VAT No:
-                                {{ $vender['profile']['uk_vat_no'] }}</p>
-                        @endif
 
-                    </div>
-                    <table id="meta" style="margin-top: 160px;width: 100%;">
-                        <tr>
-                            <th style="background: #d9d9d9;text-align: left;color: black;" colspan="2">Invoice
-                                Reference
-                            </th>
-                        </tr>
-                        <tr>
-                            <td style="text-align: left;background: #d9d9d9;color: black;" class="meta-head">Invoice ID
-                            </td>
-                            <td>
-                                {{ $invoice['invoice']['invoice_no'] ?? '' }}
-                            </td>
-                        </tr>
+                        </div>
+                        <table id="meta" style="margin-top: 160px;width: 100%;">
+                            <tr>
+                                <th style="background: #d9d9d9;text-align: left;color: black;" colspan="2">Invoice
+                                    Reference
+                                </th>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;background: #d9d9d9;color: black;" class="meta-head">Invoice
+                                    ID
+                                </td>
+                                <td>
+                                    {{ $invoice['invoice']['invoice_no'] ?? '' }}
+                                </td>
+                            </tr>
 
 
 
 
-                    </table>
+                        </table>
 
                 </div>
 
