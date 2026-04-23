@@ -36,8 +36,8 @@
       speed: 300 // set speed to expand / collpase menu
     };
     if ($.app.nav.initialized === false) {
-      $.app.nav.init(config);
-    }
+    $.app.nav.init(config);
+}
 
     Unison.on('change', function (bp) {
       $.app.menu.change();

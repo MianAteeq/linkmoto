@@ -1,291 +1,266 @@
 @extends('vender::layouts.master')
 
 @section('css_custom')
-<link rel="stylesheet" type="text/css" href="/modules/admin/app-assets/vendors/css/tables/datatable/datatables.min.css">
-<style>
-.dataTables_wrapper .dataTables_length {
-  display: none;
-}
+    <link rel="stylesheet" type="text/css" href="/modules/admin/app-assets/vendors/css/tables/datatable/datatables.min.css">
+    <style>
+        /* Fix for double scrollbar from master layout */
+        .content-wrapper {
+            height: auto !important;
+            min-height: 84vh !important;
+        }
 
-.dataTables_wrapper .dataTables_filter {
-  display: none;
-}
+        /* Table Resets (Included for consistency if you add tables later) */
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_filter,
+        .dataTables_wrapper .dataTables_info {
+            display: none;
+        }
 
-table.dataTable thead {
-  background: #fafbfc;
-  color: black;
-}
+        table.dataTable thead {
+            background: #fafbfc;
+            color: black;
+        }
 
-.table-striped tbody tr:nth-of-type(odd) {
-  background-color: white;
-}
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: white;
+        }
 
-table.dataTable tbody td {
-  padding: 8px 10px;
-  padding-bottom: 2px;
-  padding-top: 2px;
-  font-size: 10px;
-}
+        table.dataTable tbody td {
+            padding: 8px 10px;
+            padding-bottom: 2px;
+            padding-top: 2px;
+            font-size: 10px;
+            color: black;
+        }
 
-.dataTables_wrapper .dataTables_info {
-  display: none;
-}
+        table.dataTable thead th,
+        table.dataTable thead td {
+            padding: 10px 18px;
+            border-bottom: 1px solid #111;
+            font-size: 11px;
+            padding-left: 8px;
+            padding-right: 1px;
+        }
 
-table.dataTable tbody td {
-  color: black;
-}
+        th {
+            white-space: pre-line;
+        }
 
-table.dataTable thead th,
-table.dataTable thead td {
-  padding: 10px 18px;
-  border-bottom: 1px solid #111;
-  font-size: 11px;
-  padding-left: 8px;
-  padding-right: 1px;
-}
+        table.dataTable tfoot th,
+        table.dataTable tfoot td {
+            padding: 10px 18px 6px 18px;
+            border-top: 1px solid #111;
+            font-size: 10px;
+            padding-right: 0px;
+            padding-left: 8px;
+            color: black;
+        }
 
-th {
-  white-space: pre-line;
-}
+        /* Custom Containers */
+        .info-sidebar {
+            border-radius: 7px;
+            border: 2px solid black;
+            background-color: #fcfdfe;
+            box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.04);
+            width: 100%;
+        }
 
-table.dataTable tfoot th,
-table.dataTable tfoot td {
-  padding: 10px 18px 6px 18px;
-  border-top: 1px solid #111;
-  font-size: 10px;
-  padding-right: 0px;
-  padding-left: 8px;
-  color: black;
-}
+        .main-content-box {
+            border: 2px solid black;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            width: 100%;
+        }
 
-#headingCollapse14:before {
-  position: absolute;
-  top: 48%;
-  right: 20px;
-  margin-top: -8px;
-  font-family: 'feather';
-  content: "\e843";
-  transition: all 300ms linear 0s;
-}
+        .main-content-inner {
+            flex-grow: 1;
+            padding-bottom: 0;
+        }
 
-.collapse-icon [data-toggle="collapse"]:before {
-  position: absolute;
-  top: 48%;
-  right: 20px;
-  margin-top: -8px;
-  font-family: 'feather';
-  content: "\e842";
-  transition: all 300ms linear 0s;
-}
+        /* Icons & Structural */
+        .collapsed {
+            border-bottom-left-radius: 0px !important;
+            border-bottom-right-radius: 0px !important;
+        }
 
-.collapse-icon [data-toggle="collapse"]:after {
-  position: absolute;
-  top: 48%;
-  right: 20px;
-  margin-top: -8px;
-  font-family: 'feather';
-  content: "\e845";
-  transition: all 300ms linear 0s;
-}
+        .footers {
+            border-top: 2px solid black;
+            padding: 12px 20px;
+            width: 100%;
+            background: white;
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+            margin-top: auto;
+        }
 
-.collapsed {
-  border-bottom-left-radius: 0px !important;
-  border-bottom-right-radius: 0px !important;
-}
+        .btn-dark {
+            border-color: black !important;
+            background-color: black !important;
+            color: #FFFFFF !important;
+        }
 
-.footers {
-  /* position: absolute; */
-  bottom: 0;
-  left: 0;
-  border-top: 2px solid black;
-  padding-top: 5px;
-  width: 100%;
-}
+        .round {
+            border-radius: 0.5rem;
+        }
 
-.btn-dark {
-  border-color: black !important;
-  background-color: black !important;
-  color: #FFFFFF;
-}
+        /* --- RESPONSIVE MEDIA QUERIES --- */
+        @media (max-width: 991.98px) {
+            .headerbg {
+                padding-left: 25px !important;
+            }
 
-.round {
-  border-radius: 0.5rem;
-}
+            .info-sidebar-wrapper {
+                margin-bottom: 20px;
+            }
 
-.card-footer {
-  border-top: 2px solid black;
-  padding: 0.5rem 1rem;
-  margin-right: -15px;
-  margin-left: -15px;
-}
+            .text-secondary {
+                word-break: break-word;
+                margin-top: 5px;
+            }
 
-/* --- RESPONSIVE MEDIA QUERIES ADDED HERE --- */
-@media (max-width: 768px) {
-  .headerbg {
-    padding-left: 15px !important;
-  }
-
-  #contens {
-    height: auto !important;
-    /* Overrides the JS fixed height */
-    margin-top: 20px;
-    /* Separates the left block from the right block */
-  }
-
-  .text-secondary {
-    word-break: break-word;
-    /* Prevents long text from breaking the layout */
-    margin-top: 5px;
-  }
-
-  .card-footer .btn-primary {
-    width: 100%;
-    display: block;
-    text-align: center;
-  }
-
-  .card-footer .text-secondary {
-    text-align: center !important;
-  }
-}
-</style>
+            .footers .btn-dark {
+                float: none !important;
+                width: 100%;
+                display: block;
+            }
+        }
+    </style>
 @endsection
 
 @section('header')
-<div class="content-header bg-white">
-  <div class="row" style="border-bottom: 3px solid #949494;">
-    <div class="col-xl-12 col-12 bg-white headerbg" style="padding-left: 32px;padding-top: 13px;">
-      <h3 class="h3">Trading name Information</h3>
-      <div class="breadcrumb-wrapper col-12">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a>Business</a>
-          </li>
-          <li class="breadcrumb-item"><a style="color: black" href="{{ route('vender.trading.name') }}">Trading
-              names</a>
-          </li>
-          <li class="breadcrumb-item">{{ $trading_name['name'] }}
-          </li>
-        </ol>
-      </div>
+    <div class="content-header bg-white">
+        <div class="row" style="border-bottom: 3px solid #949494; margin: 0;">
+            <div class="col-12 bg-white headerbg" style="padding-left: 32px; padding-top: 13px;">
+                <h3 class="h3">Trading name Information</h3>
+
+                <div class="breadcrumb-wrapper p-0">
+                    <ol class="breadcrumb" style="padding-left: 0; background-color: transparent; margin-bottom: 10px;">
+                        <li class="breadcrumb-item"><a>Business</a></li>
+                        <li class="breadcrumb-item"><a style="color: black"
+                                href="{{ route('vender.trading.name') }}">Trading names</a></li>
+                        <li class="breadcrumb-item">{{ $trading_name['name'] }}</li>
+                    </ol>
+                </div>
+
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 @endsection
 
 @section('content')
-<div class="row">
-  <div class="col-md-3">
-    <div style="border-radius: 7px;border: 2px solid black; ">
-      <h4 class="h3" style="font-weight: 600; font-size: 17px;padding: 10px; ">
-        <img src="/home.png" style="width: 22px;margin-top: -5px;"> Trading Name
+    <div class="container-fluid px-1 px-md-1 mt-1">
+        <div class="row align-items-stretch" style="padding-left: 0 !important;">
 
-      </h4>
-      <p
-        style="padding-left: 10px; padding-right: 10px; line-height: 1.5rem; color: black; border-top: 2px solid black; ">
-
-        <br>
-        <strong>{{ $trading_name['name'] }} </strong> <br>
-
-
-
-        <br>
-        Created on: {{ $trading_name->created_at->format('d M Y, H:i') }} <br>
-        Last updated: {{ $trading_name->updated_at->format('d M Y, H:i') }}
-      </p>
-
-    </div>
-  </div>
-  <div class="col-md-9" id="contens"
-    style="border: 2px solid black;border-radius: 6px;margin-bottom: 10px;padding-left: 0;padding-right: 0;">
-    <div class="row" style="margin-right: 0;margin-left: 0;">
-      <div class="col-md-12" style="border-bottom: 2px solid black;">
-        <h3 style="font-size: 20px; padding: 10px; margin-left: -11px; color: black;padding-bottom: 0px;">
-          Trading name Information</h3>
-      </div>
-      <div class="col-md-12">
-        <div id="collaptr_businesss_info" role="tabpanel" aria-labelledby="headingCollapsebusinesss_info" style=""
-          class="collapse show" aria-expanded="false">
-          <div class="card-content">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-sm-5">
-                  <h6 class="mb-0">Id</h6>
+            <div class="col-12 col-lg-3 info-sidebar-wrapper d-flex mb-3 mb-lg-0">
+                <div class="info-sidebar d-flex flex-column h-100">
+                    <h4
+                        style="font-weight: 600; font-size: 1.1rem; padding: 12px 16px; margin: 0; display: flex; align-items: center; gap: 10px; background-color: white; border-radius: 5px 5px 0 0;">
+                        <img src="/home.png" style="width: 20px;"> Trading Name
+                    </h4>
+                    <div style="border-top: 2px solid black; padding: 14px 16px; flex-grow: 1;">
+                        <p style="line-height: 1.6; color: #333; font-size: 0.9rem; margin: 0;">
+                            <strong>{{ $trading_name['name'] }}</strong><br><br>
+                            Created on: {{ $trading_name->created_at->format('d M Y, H:i') }} <br>
+                            Last updated: {{ $trading_name->updated_at->format('d M Y, H:i') }}
+                        </p>
+                    </div>
                 </div>
-                <div class="col-sm-7 text-secondary">
-                  {{ $trading_name['id'] }}
-                </div>
-              </div>
-              <hr>
-              <div class="row">
-                <div class="col-sm-5">
-                  <h6 class="mb-0">Trading name</h6>
-                </div>
-                <div class="col-sm-7 text-secondary">
-                  {{ $trading_name['name'] }}
-                </div>
-              </div>
-              <hr>
-
-              <div class="row">
-                <div class="col-sm-5">
-                  <h6 class="mb-0"> Linked trade unit
-                  </h6>
-                </div>
-                <div class="col-sm-7 text-secondary">
-
-                  {{ $trading_name['trading_unit']['name'] ?? 'None' }}
-
-                </div>
-              </div>
-              <hr>
-              <div class="row">
-                <div class="col-sm-5">
-                  <h6 class="mb-0"> Linked invoice document
-                    templates
-                  </h6>
-                </div>
-                <div class="col-sm-7 text-secondary">
-
-                  {{ $trading_name['trading_unit']['name'] ?? 'None' }}
-
-                </div>
-              </div>
             </div>
-            <div class="card-footer">
-              <div class="text-secondary" style="text-align: right">
-                <a href="{{ route('vender.trading.name.edit', $trading_name['id']) }}" style=" background-color: black !important;
-                                       border-color: black !important;" class="btn btn-primary"> Edit</a>
-              </div>
+
+            <div class="col-12 col-lg-9 d-flex ps-lg-3 mb-4">
+                <div class="main-content-box" id="contens">
+
+                    <div class="main-content-inner">
+                        {{-- Title row --}}
+                        <div style="border-bottom: 2px solid black; padding: 12px 20px;">
+                            <h3 style="font-size: 20px; color: black; margin: 0;">
+                                Trading name Information
+                            </h3>
+                        </div>
+
+                        {{-- Card Data --}}
+                        <div class="card-content">
+                            <div class="card-body" style="padding: 20px;">
+
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <h6 class="mb-0">Id</h6>
+                                    </div>
+                                    <div class="col-sm-7 text-secondary">
+                                        {{ $trading_name['id'] }}
+                                    </div>
+                                </div>
+                                <hr>
+
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <h6 class="mb-0">Trading name</h6>
+                                    </div>
+                                    <div class="col-sm-7 text-secondary">
+                                        {{ $trading_name['name'] }}
+                                    </div>
+                                </div>
+                                <hr>
+
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <h6 class="mb-0">Linked trade unit</h6>
+                                    </div>
+                                    <div class="col-sm-7 text-secondary">
+                                        {{ $trading_name['trading_unit']['name'] ?? 'None' }}
+                                    </div>
+                                </div>
+                                <hr>
+
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <h6 class="mb-0">Linked invoice document templates</h6>
+                                    </div>
+                                    <div class="col-sm-7 text-secondary">
+                                        {{ $trading_name['trading_unit']['name'] ?? 'None' }}
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Footer aligned to bottom --}}
+                    <div class="footers mt-auto text-right" style="text-align: right;">
+                        <a href="{{ route('vender.trading.name.edit', $trading_name['id']) }}">
+                            <button type="button" class="btn btn-dark round btn-min-width float-right m-0"
+                                style="color: white !important;">Edit</button>
+                        </a>
+                        <div class="clearfix"></div>
+                    </div>
+
+                </div>
             </div>
-          </div>
+
         </div>
-      </div>
     </div>
-  </div>
-</div>
 @endsection
 
-
 @section('script')
-<script src="/modules/admin/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
+    <script src="/modules/admin/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
 
-<script>
-oTable = $('.zero-configuration').DataTable({
-  "bPaginate": $('.zero-configuration tbody tr').length > 10,
-  "iDisplayLength": 10,
-  "bAutoWidth": false,
-  "ordering": false,
+    <script>
+        // Minimal DataTables init (if needed for future use)
+        $(document).ready(function() {
+            var oTable = $('.zero-configuration').DataTable({
+                "bPaginate": $('.zero-configuration tbody tr').length > 10,
+                "iDisplayLength": 10,
+                "bAutoWidth": false,
+                "ordering": false,
+            });
 
-});
-$('#myInputTextField').keyup(function() {
-  oTable.search($(this).val()).draw();
-})
-</script>
-
-<script>
-$(document).ready(function() {
-  var contentHeight = $('#contens').height();
-  $('#contens').height(contentHeight);
-});
-</script>
+            $('#myInputTextField').keyup(function() {
+                oTable.search($(this).val()).draw();
+            });
+        });
+    </script>
 @endsection

@@ -49,6 +49,34 @@
     @yield('css_lib')
     @yield('css_custom')
     <style>
+        /* Make sidebar content fill available height without forced scroll */
+        .main-menu-content {
+            height: auto !important;
+            max-height: calc(110vh - 130px) !important;
+            /* 60px navbar + 60px footer */
+            overflow-y: auto !important;
+            padding-bottom: 20px !important;
+            /* breathing room at bottom */
+        }
+
+        .main-menu {
+            padding-bottom: 0 !important;
+        }
+
+        /* Thin subtle scrollbar */
+        .main-menu-content::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .main-menu-content::-webkit-scrollbar-thumb {
+            background-color: #C0C0C0;
+            border-radius: 4px;
+        }
+
+        .main-menu-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
         .no-js #loader {
             display: none;
         }
@@ -113,7 +141,6 @@
         }
 
         body.vertical-layout.vertical-menu.menu-expanded .main-menu {
-
             border-right: 3px solid #C0C0C0;
         }
 
@@ -122,7 +149,6 @@
         }
 
         .main-menu.menu-light .navigation>li .active>a {
-
             font-weight: 700;
             background: none;
             margin: 0 0rem 0 0rem;
@@ -198,7 +224,6 @@
         }
 
         .footers {
-            /* position: absolute; */
             bottom: 0;
             left: 0;
             border-top: 2px solid black;
@@ -231,9 +256,8 @@
     </style>
 </head>
 
-<body class="vertical-layout vertical-menu 2-columns   fixed-navbar" data-open="click" data-menu="vertical-menu"
+<body class="vertical-layout vertical-menu 2-columns fixed-navbar" data-open="click" data-menu="vertical-menu"
     data-col="2-columns">
-
 
     @include('vender::layouts.header')
     @include('vender::layouts.sidebar')
@@ -250,100 +274,108 @@
     </div>
     <div class="sidenav-overlay"></div>
     <div class="drag-target"></div>
+
     @include('vender::layouts.footer')
+
     <script src="{{ asset('/modules/admin/app-assets/vendors/js/vendors.min.js') }}"></script>
 
-    <!-- BEGIN: Page Vendor JS-->
+    <!-- BEGIN: Page Vendor JS -->
     <script src="{{ asset('/modules/admin/app-assets/vendors/js/editors/codemirror/lib/codemirror.js') }}"></script>
     <script src="{{ asset('/modules/admin/app-assets/vendors/js/editors/codemirror/mode/xml/xml.js') }}"></script>
     <script src="{{ asset('/modules/admin/app-assets/vendors/js/editors/summernote/summernote.js') }}"></script>
-    <!-- END: Page JS-->
+    <!-- END: Page Vendor JS -->
 
-
-
-    <script src="{{ asset('/modules/admin/app-assets/js/core/app-menu.js') }}"></script>
-    <script src="{{ asset('/modules/admin/app-assets/js/core/app.js') }}"></script>
-
-    <!-- <script src="{{ asset('/modules/admin/app-assets/js/scripts/pages/dashboard-ecommerce.js') }}"></script> -->
+    {{-- Core framework JS - order matters: app-menu before app --}}
+    <script src="{{ asset('/modules/admin/app-assets/js/core/app-menu.min.js') }}"></script>
+    <script src="{{ asset('/modules/admin/app-assets/js/core/app.min.js') }}"></script>
 
     <!--Datatable -->
     <script src="{{ asset('/modules/admin/app-assets/vendors/js/tables/datatable/datatables.min.js') }}"></script>
     <script src="{{ asset('/modules/admin/app-assets/js/scripts/tables/datatables/datatable-basic.js') }}"></script>
     <!--Datatable -->
 
-    <!-- Sweetaltert -->
+    <!-- Sweetalert -->
     <script src="{{ asset('/modules/admin/app-assets/js/sweetalert.min.js') }}"></script>
 
-
-
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
     @yield('scripts_lib')
     @yield('script')
-    <!-- Bootstarp Validion -->
+
+    <!-- Bootstrap Validation -->
     <script>
         (function() {
             'use strict'
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
             var forms = document.querySelectorAll('.needs-validation')
-            // Loop over them and prevent submission
-            Array.prototype.slice.call(forms)
-                .forEach(function(form) {
-                    form.addEventListener('submit', function(event) {
-                        if (!form.checkValidity()) {
-                            event.preventDefault()
-                            event.stopPropagation()
-                        }
-                        form.classList.add('was-validated')
-                    }, false)
-                })
+            Array.prototype.slice.call(forms).forEach(function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
         })()
     </script>
-    <!-- Bootstarp Validion -->
+
     <script type="text/javascript">
         $(document).ready(function() {
             $('.summernote').summernote();
         });
     </script>
+
     <script>
         $(document).ready(function() {
             $(".se-pre-con").fadeOut("slow");
             $('.content-wrapper').css("opacity", 1);
         });
     </script>
+
+    <!-- Fix i18next absolute path so it works on all routes -->
     <script>
-        let click = false;
-        $(document).ready(function() {
-            $(".menu-toggle").click(function() {
-
-                if (click === false) {
-
-                    $('.brand-logo').css('margin-top', "5px");
-                    $('.main-menu').css('width', "5px");
-                    $('.app-content').css('margin-left', "0px");
-                    $('.headerbg').css('margin-top', "21px");
-
-                    click = true;
-                } else {
-                    $('.brand-logo').css('margin-top', "16px");
-                    $('.main-menu').css('width', "260px");
-                    $('.app-content').css('margin-left', "260px");
-                    $('.headerbg').css('margin-top', "13px");
-                    click = false;
-
-                }
-
-
+        $(window).on('load', function() {
+            i18next.init({
+                debug: false,
+                fallbackLng: 'en',
+                backend: {
+                    loadPath: '/modules/admin/app-assets/data/locales/@{{ lng }}.json'
+                },
+                returnObjects: true
+            }, function(err, t) {
+                jqueryI18next.init(i18next, $);
             });
         });
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
-    <!-- Bootstarp Validion -->
+    <!-- Auto-open sidebar on page load for tablet/desktop screens -->
+    <script>
+        $(window).on('load', function() {
+            setTimeout(function() {
+                if ($(window).width() >= 768) {
+                    $('body').removeClass('menu-hide menu-collapsed').addClass('menu-expanded');
+                    $.app.menu.expanded = true;
+                    $.app.menu.collapsed = false;
+                    $.app.menu.hidden = false;
 
+                    // ✅ Let sidebar content grow naturally with viewport
+                    $('.main-menu-content').css('height', 'auto');
+                }
+            }, 300);
+        });
+
+        // Recalculate on window resize
+        $(window).on('resize', function() {
+            if ($(window).width() >= 768) {
+                $('.main-menu-content').css('height', 'auto');
+            }
+        });
+    </script>
+
+
+    <!-- Toastr notifications -->
     <script>
         @if (session('success'))
-            //  alert(1);
             toastr.success("{{ session('success') }}", {
                 timeOut: 500000000,
                 closeButton: !0,
@@ -383,6 +415,7 @@
             });
         @endif
     </script>
+
 </body>
 
 </html>

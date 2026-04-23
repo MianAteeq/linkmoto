@@ -2,39 +2,57 @@
 
 @section('css_custom')
     <style>
-        .collapsed {
-            border-bottom-left-radius: 0px !important;
-            border-bottom-right-radius: 0px !important;
+        /* ========================================================================
+                   1. MASTER LAYOUT & CONTAINER FOUNDATIONS
+                   ======================================================================== */
+        .content-wrapper {
+            height: auto !important;
+            min-height: 84vh !important;
         }
 
-        .footers {
-            border-top: 2px solid black;
-            padding: 15px;
-            width: 100%;
-            background: white;
-            border-bottom-left-radius: 6px;
-            border-bottom-right-radius: 6px;
-        }
-
-        .btn-dark {
-            border-color: black !important;
-            background-color: black !important;
-            color: #FFFFFF;
-        }
-
-        .round {
-            border-radius: 0.5rem;
-        }
-
-        .form-control {
-            border: 2px solid black !important;
-            height: calc(1em + 1.4rem + 0px);
+        .info-sidebar {
             border-radius: 7px;
-            width: 60%;
-            box-sizing: border-box;
+            border: 2px solid black;
+            height: auto;
+            background-color: #fcfdfe;
+            box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.04);
+            width: 100%;
+            overflow: hidden;
         }
 
-        .form-control:focus {
+        .main-content-box {
+            border: 2px solid black;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            width: 100% !important;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .main-content-inner {
+            flex-grow: 1;
+            padding-bottom: 0;
+            width: 100%;
+        }
+
+        /* ========================================================================
+                   2. FORM ELEMENTS
+                   ======================================================================== */
+        .form-control-custom {
+            border: 2px solid black !important;
+            border-radius: 7px;
+            height: calc(1em + 1.4rem + 0px);
+            padding: 8px 12px;
+            width: 100%;
+            box-sizing: border-box;
+            color: black;
+        }
+
+        .form-control-custom:focus {
             color: #4e5154;
             background-color: #fff;
             border-color: black;
@@ -42,65 +60,125 @@
             box-shadow: none;
         }
 
-        .accordion .card-header,
-        .default-collapse .card-header {
+        .form-control-custom.is-invalid {
+            border-color: red !important;
+        }
+
+        .label-control {
+            color: black;
+            font-weight: 500;
+        }
+
+        .required-star {
+            color: red;
+        }
+
+        .validation-msg {
+            color: red;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            margin-bottom: 0;
+            display: none;
+            padding-left: 5px;
+        }
+
+        /* ========================================================================
+                   3. SIDEBAR ACCORDION STYLES
+                   ======================================================================== */
+        .collapse-icon [data-toggle="collapse"]:before {
+            position: absolute;
+            top: 48%;
+            right: 20px;
+            margin-top: -8px;
+            font-family: 'feather';
+            content: "\e842";
+            transition: all 300ms linear 0s;
+        }
+
+        .collapse-icon [data-toggle="collapse"]:after {
+            position: absolute;
+            top: 48%;
+            right: 20px;
+            margin-top: -8px;
+            font-family: 'feather';
+            content: "\e845";
+            transition: all 300ms linear 0s;
+        }
+
+        .accordion .card-header {
             color: black !important;
             padding: 1rem 1rem !important;
+            border-top: 2px solid rgba(0, 0, 0, 0.1);
         }
 
         .card .card-title {
-            font-weight: 500;
-            letter-spacing: 0.05rem;
-            font-size: 1rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin: 0;
         }
 
-        /* Sidebar container */
-        .info-sidebar {
-            border-radius: 7px;
-            border: 2px solid black;
+        .accordion .card-body {
+            color: black;
+            padding-top: 0;
+            font-size: 0.9rem;
         }
 
-        /* Main content box */
-        .main-content-box {
-            border: 2px solid black;
-            border-radius: 6px;
-            margin-bottom: 10px;
-            padding: 0;
+        /* ========================================================================
+                   4. UI ELEMENTS (FOOTERS & BUTTONS)
+                   ======================================================================== */
+        .footers {
+            border-top: 2px solid black;
+            padding: 15px 20px 25px 20px;
+            width: 100%;
             background: white;
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+            margin-top: auto;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 10px;
         }
 
-        /* --- RESPONSIVE MEDIA QUERIES --- */
-        @media (max-width: 1024px) {
-            .form-control {
-                width: 85% !important;
+        .btn-dark {
+            border-color: black !important;
+            background-color: black !important;
+            color: #FFFFFF !important;
+            margin: 0 !important;
+        }
+
+        .round {
+            border-radius: 0.5rem;
+        }
+
+        /* ========================================================================
+                   5. RESPONSIVE MEDIA QUERIES & SCROLL FIX
+                   ======================================================================== */
+        @media (max-width: 991.98px) {
+
+            /* Sidebar Double Scrollbar Fix */
+            body.menu-open {
+                overflow: hidden !important;
             }
-        }
 
-        @media (max-width: 767.98px) {
+            .main-menu,
+            .main-menu-content {
+                overflow-y: auto !important;
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+
+            .main-menu::-webkit-scrollbar,
+            .main-menu-content::-webkit-scrollbar {
+                display: none !important;
+            }
+
             .headerbg {
-                padding-left: 15px !important;
+                padding-left: 25px !important;
             }
 
-            /* Stack both columns full width */
-            .col-12.col-lg-3,
-            .col-12.col-lg-9 {
-                width: 100% !important;
-                max-width: 100% !important;
-                flex: 0 0 100% !important;
-                padding-left: 10px !important;
-                padding-right: 10px !important;
-            }
-
-            /* Prevent outer row overflow */
-            .row {
-                margin-left: 0 !important;
-                margin-right: 0 !important;
-            }
-
-            /* Remove fixed height */
-            .main-content-box {
-                height: auto !important;
-                min-height: unset !important;
+            .info-sidebar-wrapper {
+                margin-bottom: 20px;
             }
 
             /* Stack label above input */
@@ -110,8 +188,7 @@
             }
 
             .form-group.row .col-md-4,
-            .form-group.row .col-md-8,
-            .form-group.row .mx-auto {
+            .form-group.row .col-md-8 {
                 width: 100% !important;
                 max-width: 100% !important;
                 flex: 0 0 100% !important;
@@ -123,25 +200,21 @@
                 margin-top: 4px;
             }
 
-            /* All inputs full width */
-            .form-control {
-                width: 100% !important;
-                max-width: 100% !important;
-                box-sizing: border-box !important;
-            }
-
-            /* Footer buttons stacked */
             .footers {
-                text-align: center;
-                padding: 10px !important;
+                padding: 15px 20px 25px 20px !important;
             }
 
-            .footers button,
-            .footers a button {
+            .footers .btn-dark {
                 float: none !important;
                 width: 100% !important;
-                margin: 5px 0 !important;
+                display: block !important;
+                text-align: center;
+                margin-top: 10px;
+            }
+
+            .footers a {
                 display: block;
+                width: 100%;
             }
         }
     </style>
@@ -152,8 +225,8 @@
         <div class="row" style="border-bottom: 3px solid #949494; margin: 0;">
             <div class="col-12 bg-white headerbg" style="padding-left: 32px; padding-top: 13px;">
                 <h3 class="h3">Add New Email Address</h3>
-                <div class="breadcrumb-wrapper col-12 p-0">
-                    <ol class="breadcrumb">
+                <div class="breadcrumb-wrapper p-0">
+                    <ol class="breadcrumb" style="padding-left: 0; background-color: transparent; margin-bottom: 10px;">
                         <li class="breadcrumb-item"><a>Business</a></li>
                         <li class="breadcrumb-item"><a style="color: black" href="{{ route('vender.mail') }}">Email
                                 Addresses</a></li>
@@ -166,128 +239,145 @@
 @endsection
 
 @section('content')
-    <div class="row">
+    <div class="container-fluid px-1 px-md-1 mt-1">
+        <div class="row align-items-start" style="padding-left: 0 !important;">
 
-        {{-- Sidebar --}}
-        <div class="col-12 col-lg-3 mb-3">
-            <div class="info-sidebar">
-                <h4 class="h3" style="font-weight: 600; font-size: 17px; padding: 10px; margin: 0;">
-                    <img src="/home.png" style="width: 22px; margin-top: -5px;"> New Email Address
-                </h4>
-                <div style="border-top: 2px solid black; padding: 10px 13px;">
-                    <h4 style="color: black; font-weight: 600; margin: 0 0 5px 0;">Help information:</h4>
-                    <div id="accordionWrap1" role="tablist" aria-multiselectable="true">
-                        <div class="card accordion collapse-icon accordion-icon-rotate mb-0" style="box-shadow: none;">
-                            <a id="business_VAT" class="card-header info collapsed" data-toggle="collapse"
-                                href="#collapsebusiness_vat" aria-expanded="false">
-                                <div class="card-title lead">Label (?)</div>
-                            </a>
-                            <div id="collapsebusiness_vat" data-parent="#accordionWrap1" class="collapse">
-                                <div class="card-body" style="color: black;">
-                                    Give this account a short name so you can recognise it later when selecting for
-                                    invoices or payouts. For example: Main Business Account, Refunds Account,
-                                    Payout Account, or Site A – Payments.
+            {{-- Sidebar --}}
+            <div class="col-12 col-md-12 col-lg-3 info-sidebar-wrapper d-flex mb-3 mb-lg-0">
+                <div class="info-sidebar d-flex flex-column">
+                    <h4
+                        style="font-weight: 600; font-size: 1.1rem; padding: 12px 16px; margin: 0; display: flex; align-items: center; gap: 10px; background-color: white; border-radius: 5px 5px 0 0;">
+                        <img src="/home.png" alt="Icon" style="width: 20px;"> New Email Address
+                    </h4>
+
+                    {{-- Help Section Accordion --}}
+                    <div id="show_help" style="border-top:2px solid black; background: #fcfdfe;">
+                        <h4 style="padding: 12px 16px 0 16px; color: black; font-weight: 600; margin: 0; font-size: 1rem;">
+                            Help information:
+                        </h4>
+
+                        <div id="accordionWrap1" role="tablist" aria-multiselectable="true">
+                            <div class="card accordion collapse-icon accordion-icon-rotate mb-0"
+                                style="box-shadow: none; background: transparent;">
+                                <a id="business_VAT" class="card-header info collapsed" data-toggle="collapse"
+                                    href="#collapsebusiness_vat" aria-expanded="false">
+                                    <div class="card-title">Label (?)</div>
+                                </a>
+                                <div id="collapsebusiness_vat" data-parent="#accordionWrap1" class="collapse">
+                                    <div class="card-content">
+                                        <div class="card-body pb-3">
+                                            Give this account a short name so you can recognise it later when selecting for
+                                            invoices or payouts. For example: Main Business Account, Refunds Account, Payout
+                                            Account, or Site A – Payments.
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        {{-- Main Content --}}
-        <div class="col-12 col-lg-9">
-            <div class="main-content-box">
-
-                <div style="border-bottom: 2px solid black; padding: 10px 15px;">
-                    <h3 style="font-size: 20px; color: black; margin: 0;">Bank Account Information</h3>
-                </div>
-
-                <form action="{{ route('vender.mail.store') }}" id="contens" method="POST" enctype="multipart/form-data">
+            {{-- Main Content Box --}}
+            <div class="col-12 col-md-12 col-lg-9 d-flex ps-lg-3 mb-4 w-100">
+                <form action="{{ route('vender.mail.store') }}" id="contens" method="POST" enctype="multipart/form-data"
+                    class="main-content-box w-100" style="display: flex; flex-direction: column; height: 100%;">
                     @csrf
-                    <div style="padding: 15px;">
 
-                        <div class="form-group row">
-                            <label class="col-md-4 col-form-label">Label (?) <span style="color:red;">*</span></label>
-                            <div class="col-md-8 mx-auto">
-                                <input type="text" id="label" value="" onkeyup="lookup(this);"
-                                    class="form-control" name="label" required placeholder="Enter Your Label *">
-                                <p class="text-danger label"
-                                    style="padding-left: 0; width:100%; display: none; margin-bottom: -8px;">
-                                    Label Field is Required!
-                                </p>
-                            </div>
+                    <div class="main-content-inner">
+                        {{-- Title row --}}
+                        <div style="border-bottom: 2px solid black; padding: 12px 20px;">
+                            <h3 style="font-size: 20px; color: black; margin: 0;">
+                                Email Address Information
+                            </h3>
                         </div>
 
-                        <div class="form-group row">
-                            <label class="col-md-4 col-form-label">Email Address <span style="color:red;">*</span></label>
-                            <div class="col-md-8 mx-auto">
-                                <input type="email" id="email" class="form-control" name="email" required
-                                    value="" placeholder="Enter Your Email Address">
-                                <p class="text-danger email"
-                                    style="padding-left: 0; width:100%; display: none; margin-bottom: -8px;">
-                                    Email Address Field is Required!
-                                </p>
+                        {{-- Form Body --}}
+                        <div style="padding: 20px;">
+                            <div class="form-group row align-items-center mb-2">
+                                <label class="col-md-4 label-control">Label (?) <span class="required-star">*</span></label>
+                                <div class="col-md-8">
+                                    <input type="text" id="label" name="label" class="form-control-custom"
+                                        placeholder="Enter Your Label *" onkeyup="lookup(this);" required>
+                                    <p class="validation-msg label-error">Label Field is Required!</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group row align-items-center mb-2">
+                                <label class="col-md-4 label-control">Email Address <span
+                                        class="required-star">*</span></label>
+                                <div class="col-md-8">
+                                    <input type="email" id="email" name="email" class="form-control-custom"
+                                        placeholder="Enter Your Email Address" onkeyup="lookup(this);" required>
+                                    <p class="validation-msg email-error">Email Address Field is Required!</p>
+                                </div>
                             </div>
                         </div>
-
                     </div>
 
-                    <div class="footers">
-                        <button type="button" onclick="submitDetailsForm()"
-                            class="btn btn-dark round btn-min-width float-right mr-1 mb-1">Save</button>
-                        <a href="{{ redirect()->back()->getTargetUrl() }}">
-                            <button type="button"
-                                class="btn btn-dark round btn-min-width float-right mr-1 mb-1">Cancel</button>
+                    {{-- Flexbox Footer --}}
+                    <div class="footers mt-auto">
+                        <a href="{{ redirect()->back()->getTargetUrl() }}" style="text-decoration: none;">
+                            <button type="button" class="btn btn-dark round btn-min-width">Cancel</button>
                         </a>
-                        <div class="clearfix"></div>
+                        <button type="button" onclick="submitDetailsForm()"
+                            class="btn btn-dark round btn-min-width">Save</button>
                     </div>
 
                 </form>
             </div>
         </div>
-
     </div>
 @endsection
 
 @section('script')
+    {{-- SIDEBAR FIX: Force open on mobile with a slight delay --}}
     <script>
-        $(document).ready(function() {
-
-            // Real-time validation
-            window.lookup = function(arg) {
-                var id = arg.getAttribute('id');
-                var value = arg.value.trim();
-
-                if (value === "") {
-                    $('#' + id).css('border', '2px solid red');
-                } else {
-                    $('#' + id).css('border', '2px solid black');
-                    $('.' + id).hide();
-                }
-            };
-
-            // Final form validation
-            window.submitDetailsForm = function() {
-                let fields = ['label', 'email'];
-                let isValid = true;
-
-                fields.forEach(function(item) {
-                    let val = $('#' + item).val().trim();
-                    if (val === "") {
-                        $('#' + item).css('border', '2px solid red');
-                        isValid = false;
-                    } else {
-                        $('#' + item).css('border', '2px solid black');
-                        $('.' + item).hide();
-                    }
-                });
-
-                if (isValid) {
-                    $("#contens").submit();
-                }
-            };
-
+        $(window).on('load', function() {
+            if ($(window).width() <= 768) {
+                setTimeout(function() {
+                    $('.nav-toggle, .menu-toggle').trigger('click');
+                    $('body').removeClass('menu-hide menu-collapsed').addClass('menu-expanded menu-open');
+                }, 500);
+            }
         });
+    </script>
+
+    <script>
+        // Real-time validation on keyup
+        function lookup(element) {
+            var id = element.getAttribute('id');
+            var value = element.value.trim();
+
+            if (value === "") {
+                $('#' + id).addClass("is-invalid");
+                $('.' + id + '-error').show();
+            } else {
+                $('#' + id).removeClass("is-invalid");
+                $('.' + id + '-error').hide();
+            }
+        }
+
+        // Final validation before submission
+        function submitDetailsForm() {
+            let requiredFields = ['label', 'email'];
+            let isValid = true;
+
+            requiredFields.forEach(function(item) {
+                let value = $('#' + item).val().trim();
+                if (value === "") {
+                    $('#' + item).addClass('is-invalid');
+                    $('.' + item + '-error').show();
+                    isValid = false;
+                } else {
+                    $('#' + item).removeClass('is-invalid');
+                    $('.' + item + '-error').hide();
+                }
+            });
+
+            if (isValid) {
+                $("#contens").submit();
+            }
+        }
     </script>
 @endsection

@@ -209,19 +209,26 @@
 
 @section('header')
     <div class="content-header bg-white">
-        <div class="row" style="border-bottom: 3px solid #949494;">
-            <div class="col-xl-12 col-12 bg-white headerbg" style="padding-left: 32px;padding-top: 13px;">
+        {{-- Standardized row with margin: 0 to prevent bleed --}}
+        <div class="row" style="border-bottom: 3px solid #949494; margin: 0;">
+            <div class="col-12 bg-white headerbg" style="padding-left: 32px; padding-top: 13px;">
                 <h3 class="h3">Add new trade unit</h3>
-                <div class="breadcrumb-wrapper col-12">
-                    <ol class="breadcrumb">
+
+                <div class="breadcrumb-wrapper p-0">
+                    {{-- Resetting padding-left to 0 ensures alignment with the H3 above --}}
+                    <ol class="breadcrumb" style="padding-left: 0; background-color: transparent; margin-bottom: 10px;">
                         <li class="breadcrumb-item"><a>Products</a></li>
-                        <li class="breadcrumb-item"><a style="color: black"
-                                href="{{ route('vender.service.provider') }}">Service Provider</a></li>
-                        <li class="breadcrumb-item"><a style="color: black"
-                                href="{{ route('vender.service.provider.trading.unit') }}">Trade Units</a></li>
+                        <li class="breadcrumb-item">
+                            <a style="color: black" href="{{ route('vender.service.provider') }}">Service Provider</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a style="color: black" href="{{ route('vender.service.provider.trading.unit') }}">Trade
+                                Units</a>
+                        </li>
                         <li class="breadcrumb-item">Add new trade unit</li>
                     </ol>
                 </div>
+
             </div>
         </div>
     </div>

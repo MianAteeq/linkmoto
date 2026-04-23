@@ -3,11 +3,61 @@
 @section('css_custom')
     <link rel="stylesheet" type="text/css" href="/modules/admin/app-assets/vendors/css/tables/datatable/datatables.min.css">
     <style>
-        /* Table Resets */
+        /* ========================================================================
+                   1. MASTER LAYOUT & CONTAINER FOUNDATIONS
+                   ======================================================================== */
+        .content-wrapper {
+            height: auto !important;
+            min-height: 84vh !important;
+        }
+
+        .info-sidebar {
+            border-radius: 7px;
+            border: 2px solid black;
+            height: auto;
+            background-color: #fcfdfe;
+            box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.04);
+            width: 100%;
+        }
+
+        .main-content-box {
+            border: 2px solid black;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            width: 100% !important;
+            overflow: hidden;
+        }
+
+        .main-content-inner {
+            flex-grow: 1;
+            padding-bottom: 20px;
+            width: 100%;
+        }
+
+        /* ========================================================================
+                   2. DATATABLES & TABLE STYLING
+                   ======================================================================== */
         .dataTables_wrapper .dataTables_length,
         .dataTables_wrapper .dataTables_filter,
-        .dataTables_wrapper .dataTables_info {
-            display: none;
+        .dataTables_wrapper .dataTables_info,
+        .dataTables_paginate {
+            display: none !important;
+        }
+
+        .dataTables_wrapper .row {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+
+        .dataTables_wrapper [class*="col-"] {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            flex: 0 0 100% !important;
+            max-width: 100% !important;
         }
 
         table.dataTable thead {
@@ -25,6 +75,7 @@
             padding-top: 2px;
             font-size: 10px;
             color: black;
+            vertical-align: middle;
         }
 
         table.dataTable thead th,
@@ -34,9 +85,6 @@
             font-size: 11px;
             padding-left: 8px;
             padding-right: 1px;
-        }
-
-        th {
             white-space: pre-line;
         }
 
@@ -63,54 +111,12 @@
             background-image: none !important;
         }
 
-        .dataTables_paginate {
-            display: none !important;
-        }
-
-        /* Icons & Structural */
-        .collapsed {
-            border-bottom-left-radius: 0px !important;
-            border-bottom-right-radius: 0px !important;
-        }
-
-        .footers {
-            border-top: 2px solid black;
-            padding: 15px 15px 10px 15px;
-            width: 100%;
-            background: white;
-            border-bottom-left-radius: 6px;
-            border-bottom-right-radius: 6px;
-        }
-
-        .btn-dark {
-            border-color: black !important;
-            background-color: black !important;
-            color: #FFFFFF;
-        }
-
-        .round {
-            border-radius: 0.5rem;
-        }
-
-        /* Custom Containers */
-        .info-sidebar {
-            border-radius: 7px;
-            border: 2px solid black;
-            height: 100%;
-        }
-
-        .main-content-box {
-            border: 2px solid black;
-            border-radius: 6px;
-            margin-bottom: 10px;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .main-content-inner {
-            flex-grow: 1;
-            padding-bottom: 20px;
+        /* FIX: 99.8% width prevents the 1px browser rounding error that causes phantom scrollbars */
+        table.dataTable {
+            width: 99.8% !important;
+            max-width: 100% !important;
+            margin: 0 auto !important;
+            /* Centers the table in that tiny 0.2% gap */
         }
 
         .table-responsive {
@@ -120,42 +126,59 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        /* --- RESPONSIVE MEDIA QUERIES --- */
-        @media (max-width: 767.98px) {
+        /* ========================================================================
+                   3. UI ELEMENTS (FOOTERS & BUTTONS)
+                   ======================================================================== */
+        .footers {
+            border-top: 2px solid black;
+            padding: 15px 20px 25px 20px;
+            width: 100%;
+            background: white;
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+            margin-top: auto;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-dark {
+            border-color: black !important;
+            background-color: black !important;
+            color: #FFFFFF !important;
+            margin: 0 !important;
+        }
+
+        .round {
+            border-radius: 0.5rem;
+        }
+
+        /* ========================================================================
+                   4. RESPONSIVE MEDIA QUERIES
+                   ======================================================================== */
+        @media (max-width: 991.98px) {
             .headerbg {
                 padding-left: 25px !important;
             }
 
-            /* Stack both columns full width */
-            .col-12.col-md-4.col-lg-3,
-            .col-12.col-md-8.col-lg-9 {
-                width: 100% !important;
-                max-width: 100% !important;
-                flex: 0 0 100% !important;
-                padding-left: 10px !important;
-                padding-right: 10px !important;
-            }
-
-            /* Gap between sidebar and main box */
             .info-sidebar-wrapper {
-                margin-bottom: 15px;
+                margin-bottom: 20px;
             }
 
-            /* Remove fixed height */
-            .main-content-box {
-                height: auto !important;
-            }
-
-            /* Outer row no overflow */
-            .row {
-                margin-left: 0 !important;
-                margin-right: 0 !important;
+            .footers {
+                padding: 15px 20px 25px 20px !important;
             }
 
             .footers .btn-dark {
                 float: none !important;
-                width: 100%;
+                width: 100% !important;
+                display: block !important;
+            }
+
+            .footers a {
                 display: block;
+                width: 100%;
             }
         }
     </style>
@@ -167,7 +190,7 @@
             <div class="col-12 bg-white headerbg" style="padding-left: 32px; padding-top: 13px;">
                 <h3 class="h3">Bank Accounts</h3>
                 <div class="breadcrumb-wrapper col-12 p-0">
-                    <ol class="breadcrumb">
+                    <ol class="breadcrumb" style="padding-left: 0; background-color: transparent; margin-bottom: 10px;">
                         <li class="breadcrumb-item"><a>Business</a></li>
                         <li class="breadcrumb-item">Bank Accounts</li>
                     </ol>
@@ -178,105 +201,115 @@
 @endsection
 
 @section('content')
-    <div class="row">
-        <div class="col-12 col-lg-3 mb-3 info-sidebar-wrapper">
-            <div class="info-sidebar">
-                <h4 class="h3" style="font-weight: 600; font-size: 17px; padding: 10px; margin: 0;">
-                    <img src="/home.png" style="width: 22px; margin-top: -5px;"> Bank Accounts
-                </h4>
-                <p style="border-top: 2px solid black; padding: 10px; line-height: 1.5rem; color: black; margin: 0;">
-                    Add and manage your business bank accounts here. These will be linked in other sections such as invoice
-                    document
-                    settings and payout account selection. Multiple accounts can be stored for different purposes (e.g. main
-                    business account, remittance, trade unit specific account, etc).
-                    <br><br>
-                    At least 1 bank account needs to be added for the <a>Payout Account</a>.
-                </p>
+    <div class="container-fluid px-1 px-md-1 mt-1">
+        <div class="row align-items-start" style="padding-left: 0 !important;">
+
+            {{-- Sidebar --}}
+            <div class="col-12 col-md-12 col-lg-3 info-sidebar-wrapper d-flex mb-3 mb-lg-0">
+                <div class="info-sidebar d-flex flex-column">
+                    <h4 class="h3"
+                        style="font-weight: 600; font-size: 1.1rem; padding: 12px 16px; margin: 0; display: flex; align-items: center; gap: 10px; background-color: white; border-radius: 5px 5px 0 0;">
+                        <img src="/home.png" style="width: 20px;"> Bank Accounts
+                    </h4>
+                    <div style="border-top: 2px solid black; padding: 14px 16px;">
+                        <p style="line-height: 1.6; color: #333; font-size: 0.9rem; margin: 0;">
+                            Add and manage your business bank accounts here. These will be linked in other sections such as
+                            invoice document settings and payout account selection. Multiple accounts can be stored for
+                            different purposes (e.g. main business account, remittance, trade unit specific account, etc).
+                            <br><br>
+                            At least 1 bank account needs to be added for the <a>Payout Account</a>.
+                        </p>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <div class="col-12 col-lg-9">
-            <div class="main-content-box" id="contens">
+            {{-- Main Content Box --}}
+            <div class="col-12 col-md-12 col-lg-9 d-flex ps-lg-3 mb-4 w-100">
+                <div class="main-content-box w-100" id="contens">
 
-                <div class="main-content-inner">
-                    <div class="row m-0" style="border-bottom: 2px solid black;">
-                        <div class="col-12 p-0">
-                            <h3 style="font-size: 20px; padding: 10px 15px; color: black; margin: 0;">
-                                Bank Accounts
-                            </h3>
+                    <div class="main-content-inner">
+                        <div class="row m-0" style="border-bottom: 2px solid black;">
+                            <div class="col-12 p-0">
+                                <h3 style="font-size: 20px; padding: 12px 20px; color: black; margin: 0;">
+                                    Bank Accounts
+                                </h3>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="row m-0 mt-3 px-2 align-items-center">
-                        <div class="col-10 col-md-11 pr-1">
-                            <input type="text" class="form-control" id="myInputTextField"
-                                style="border: 2px solid black; border-radius: 6px;" placeholder="Search">
+                        {{-- Search Filter --}}
+                        <div class="row m-0 mt-3 align-items-center" style="padding: 0 20px;">
+                            <div class="col-10 col-md-11 p-0 pr-2">
+                                <input type="text" class="form-control" id="myInputTextField"
+                                    style="border: 2px solid black; border-radius: 6px; width: 100%; max-width: 100%;"
+                                    placeholder="Search">
+                            </div>
+                            <div class="col-2 col-md-1 text-center p-0">
+                                <a href="">
+                                    <i class="ft-filter" style="font-size: 26px; color: black; line-height: 1;"></i>
+                                </a>
+                            </div>
                         </div>
-                        <div class="col-2 col-md-1 text-center pl-0">
-                            <a href="">
-                                <i class="ft-filter" style="font-size: 30px; color: black; line-height: 1;"></i>
-                            </a>
-                        </div>
-                    </div>
 
-                    <div class="row m-0 mt-3 px-2">
-                        <div class="col-12 p-0">
-                            <div class="table-responsive">
-                                <table class="table table-striped table-bordered zero-configuration w-100">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Label</th>
-                                            <th>Bank Name</th>
-                                            <th>Account Name</th>
-                                            <th>Sort Code</th>
-                                            <th>Account Number</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($banks as $bank)
+                        {{-- Table --}}
+                        <div class="row m-0 mt-3" style="padding: 0 20px;">
+                            <div class="col-12 p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered zero-configuration m-0">
+                                        <thead>
                                             <tr>
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $bank['label'] }}</td>
-                                                <td>{{ $bank['bank_name'] }}</td>
-                                                <td>{{ $bank['account_name'] }}</td>
-                                                <td>{{ $bank['sort_code'] }}</td>
-                                                <td>{{ $bank['account_number'] }}</td>
-                                                <td>{{ $bank['status'] }}</td>
-                                                <td>
-                                                    <a href="{{ route('vender.bank.view', $bank['id']) }}"><i
-                                                            class="ft-eye"></i></a>
-                                                </td>
+                                                <th>ID</th>
+                                                <th>Label</th>
+                                                <th>Bank Name</th>
+                                                <th>Account Name</th>
+                                                <th>Sort Code</th>
+                                                <th>Account Number</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
                                             </tr>
-                                        @endforeach
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Label</th>
-                                            <th>Bank Name</th>
-                                            <th>Account Name</th>
-                                            <th>Sort Code</th>
-                                            <th>Account Number</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($banks as $bank)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{ $bank['label'] }}</td>
+                                                    <td>{{ $bank['bank_name'] }}</td>
+                                                    <td>{{ $bank['account_name'] }}</td>
+                                                    <td>{{ $bank['sort_code'] }}</td>
+                                                    <td>{{ $bank['account_number'] }}</td>
+                                                    <td>{{ $bank['status'] }}</td>
+                                                    <td>
+                                                        <a href="{{ route('vender.bank.view', $bank['id']) }}"><i
+                                                                class="ft-eye"></i></a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Label</th>
+                                                <th>Bank Name</th>
+                                                <th>Account Name</th>
+                                                <th>Sort Code</th>
+                                                <th>Account Number</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="footers">
-                    <a href="{{ route('vender.bank.add') }}">
-                        <button type="button" class="btn btn-dark round btn-min-width float-md-right m-0">Add</button>
-                    </a>
-                    <div class="clearfix"></div>
-                </div>
+                    {{-- Footer --}}
+                    <div class="footers mt-auto">
+                        <a href="{{ route('vender.bank.add') }}">
+                            <button type="button" class="btn btn-dark round btn-min-width m-0">Add</button>
+                        </a>
+                    </div>
 
+                </div>
             </div>
         </div>
     </div>
@@ -286,9 +319,18 @@
     <script src="/modules/admin/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
 
     <script>
-        $(document).ready(function() {
+        $(window).on('load', function() {
+            if ($(window).width() <= 768) {
+                setTimeout(function() {
+                    $('.nav-toggle, .menu-toggle').trigger('click');
+                    $('body').removeClass('menu-hide menu-collapsed').addClass('menu-expanded menu-open');
+                }, 500);
+            }
+        });
+    </script>
 
-            // Destroy existing instance if already initialized
+    <script>
+        $(document).ready(function() {
             if ($.fn.dataTable.isDataTable('.zero-configuration')) {
                 $('.zero-configuration').DataTable().destroy();
             }
@@ -306,7 +348,6 @@
             $('#myInputTextField').keyup(function() {
                 oTable.search($(this).val()).draw();
             });
-
         });
     </script>
 @endsection

@@ -8,14 +8,16 @@
 
 @endphp
 
-<div class="main-menu menu-fixed menu-light menu-accordion    menu-shadow " data-scroll-to-active="true">
+<div class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true"
+    data-menu="menu-wrapper">
     <div class="main-menu-content">
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
 
 
             <li class=" nav-item"><a style="padding-left: 28px "><i class="la la-home d-none"></i><span class="menu-title"
                         data-i18n="Dashboard"
-                        style="font-weight: bold; color: black;">{{ auth()->user()->profile->company_name }} <span style=" display: inline-block;
+                        style="font-weight: bold; color: black;">{{ auth()->user()->profile->company_name }} <span
+                            style=" display: inline-block;
     padding: 0.6em 0.6em;
     font-size: 83%;
 "
