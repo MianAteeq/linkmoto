@@ -385,13 +385,17 @@
             // Company Number
             $registeredCompanyNo = $isCompany ? $profile['registration_no'] ?? null : null;
         @endphp
-        <p style="width: 100%;margin-bottom: 30px;margin-top: -18px;font-size: 11px;text-align: left">Registered
-            office: {{ $registeredAddress }}. Registered in
-            {{ $registeredJurisdiction }} no: {{ $registeredCompanyNo }}.
-            {{-- {{ $vender['profile']['area'] }}.
-            Registered in {{$vender['profile']['company_jurisdiction']}} no: {{ $vender['profile']['uk_vat_no'] }} --}}
+        <p style="width: 100%;margin-bottom: 30px;margin-top: -18px;font-size: 11px;text-align: left">
+            @isset($registeredAddress)
+                Registered
+                office: {{ $registeredAddress }}.
+                Registered in
+                {{ $registeredJurisdiction }} no: {{ $registeredCompanyNo }}.
+            @endisset
+
         <p style="margin-top:-45px;margin-right: -20px; font-size: 11px;float: right;text-align: right!important">
             v20241002</p>
+        </p>
         </p>
 
 
