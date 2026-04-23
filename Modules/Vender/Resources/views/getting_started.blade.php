@@ -5,7 +5,7 @@
         style="border-bottom: 3px solid #949494; margin-bottom: 30px; padding-bottom: 15px; padding-top: 20px">
         <div class="container-fluid">
             <h3 style="font-weight: 400; font-size: 21px; color: #333; margin-bottom: 4px;">Getting Started</h3>
-            <div style="color: #777; font-size: 14px; padding-left: 15px; padding-top: 5px;">Overview</div>
+            <div style="color: #777; font-size: 14px; padding-left: 2px; padding-top: 5px;">Overview</div>
         </div>
     </div>
 @endsection
@@ -125,14 +125,14 @@
         }
 
         .sidebar-header {
-            padding: 15px 15px 10px 15px;
+            padding: 15px 15px 10px 10px;
             font-weight: 600;
             font-size: 15px;
             color: #000;
             border-bottom: none;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 3px;
             background-color: transparent;
         }
 
@@ -204,7 +204,8 @@
                 <div class="accordion-wrapper pb-5" style="padding-left: 15px; ">
 
                     <div class="custom-accordion-item">
-                        <a href="javascript:void(0);" class="custom-accordion-header" onclick="toggleCollapse(this)"
+                        <a href="javascript:void(0);" class="custom-accordion-header"
+                            style="border-bottom: 2px solid black;" onclick="toggleCollapse(this)"
                             data-target="#collapseContent14">
                             Add a Site
                         </a>
@@ -252,7 +253,8 @@
                     </div>
 
                     <div class="custom-accordion-item">
-                        <a href="javascript:void(0);" class="custom-accordion-header" onclick="toggleCollapse(this)"
+                        <a href="javascript:void(0);" class="custom-accordion-header"
+                            style="border-bottom: 2px solid black;" onclick="toggleCollapse(this)"
                             data-target="#bank_payout">
                             Add a Bank Account for Payouts
                         </a>
@@ -302,7 +304,8 @@
                     </div>
 
                     <div class="custom-accordion-item">
-                        <a href="javascript:void(0);" class="custom-accordion-header" onclick="toggleCollapse(this)"
+                        <a href="javascript:void(0);" class="custom-accordion-header"
+                            style="border-bottom: 2px solid black;" onclick="toggleCollapse(this)"
                             data-target="#upload_proof">
                             Upload Proof Documentation for Verification
                         </a>
@@ -352,8 +355,8 @@
                     </div>
 
                     <div class="custom-accordion-item">
-                        <a href="javascript:void(0);" class="custom-accordion-header" onclick="toggleCollapse(this)"
-                            data-target="#pay_out">
+                        <a href="javascript:void(0);" class="custom-accordion-header"
+                            style="border-bottom: 2px solid black;" onclick="toggleCollapse(this)" data-target="#pay_out">
                             Add a Payout Account
                         </a>
                         <div id="pay_out" class="custom-collapse-content">
@@ -383,7 +386,8 @@
                     </div>
 
                     <div class="custom-accordion-item">
-                        <a href="javascript:void(0);" class="custom-accordion-header" onclick="toggleCollapse(this)"
+                        <a href="javascript:void(0);" class="custom-accordion-header"
+                            style="border-bottom: 2px solid black;" onclick="toggleCollapse(this)"
                             data-target="#trading_name">
                             Add Trading Names
                         </a>
@@ -427,7 +431,8 @@
                     </div>
 
                     <div class="custom-accordion-item">
-                        <a href="javascript:void(0);" class="custom-accordion-header" onclick="toggleCollapse(this)"
+                        <a href="javascript:void(0);" class="custom-accordion-header"
+                            style="border-bottom: 2px solid black;" onclick="toggleCollapse(this)"
                             data-target="#trade_unit">
                             Add a Trade Unit
                         </a>
@@ -472,8 +477,8 @@
                     </div>
 
                     <div class="custom-accordion-item">
-                        <a href="javascript:void(0);" class="custom-accordion-header" onclick="toggleCollapse(this)"
-                            data-target="#book_time">
+                        <a href="javascript:void(0);" class="custom-accordion-header"
+                            style="border-bottom: 2px solid black;" onclick="toggleCollapse(this)" data-target="#book_time">
                             Set Booking Times
                         </a>
                         <div id="book_time" class="custom-collapse-content">
@@ -509,7 +514,8 @@
                     </div>
 
                     <div class="custom-accordion-item">
-                        <a href="javascript:void(0);" class="custom-accordion-header" onclick="toggleCollapse(this)"
+                        <a href="javascript:void(0);" class="custom-accordion-header"
+                            style="border-bottom: 2px solid black;" onclick="toggleCollapse(this)"
                             data-target="#workstream">
                             Add Workstreams
                         </a>
@@ -570,7 +576,8 @@
                     </div>
 
                     <div class="custom-accordion-item">
-                        <a href="javascript:void(0);" class="custom-accordion-header" onclick="toggleCollapse(this)"
+                        <a href="javascript:void(0);" class="custom-accordion-header"
+                            style="border-bottom: 2px solid black;" onclick="toggleCollapse(this)"
                             data-target="#email_address">
                             Add Email Address
                         </a>
@@ -623,7 +630,8 @@
                     </div>
 
                     <div class="custom-accordion-item">
-                        <a href="javascript:void(0);" class="custom-accordion-header" onclick="toggleCollapse(this)"
+                        <a href="javascript:void(0);" class="custom-accordion-header"
+                            style="border-bottom: 2px solid black;" onclick="toggleCollapse(this)"
                             data-target="#invoice_doc">
                             Set Invoice Document
                         </a>
@@ -637,13 +645,13 @@
                                 for the
                                 Service Provider app. You cannot proceed without completing this step.</p>
                             <ul>
-                                <li><strong>Business Name Format</strong> – How your business name will appear on invoices.
+                                <li><strong>Business Name Format</strong> How your business name will appear on invoices.
                                 </li>
-                                <li><strong>Site Address</strong> – Used for contact purposes on the invoice.</li>
-                                <li><strong>Other Contact Details</strong> – Includes phone number, email address, and any
+                                <li><strong>Site Address</strong> Used for contact purposes on the invoice.</li>
+                                <li><strong>Other Contact Details</strong> Includes phone number, email address, and any
                                     other relevant
                                     contact information.</li>
-                                <li><strong>Optional Bank Transfer Details</strong> – If the garage accepts bank transfers,
+                                <li><strong>Optional Bank Transfer Details</strong> If the garage accepts bank transfers,
                                     you can link a
                                     verified bank account, so remittance details appear on the invoice.</li>
                             </ul>
@@ -684,7 +692,8 @@
                     </div>
 
                     <div class="custom-accordion-item">
-                        <a href="javascript:void(0);" class="custom-accordion-header" onclick="toggleCollapse(this)"
+                        <a href="javascript:void(0);" class="custom-accordion-header"
+                            style="border-bottom: 2px solid black;" onclick="toggleCollapse(this)"
                             data-target="#add_user">
                             Add User
                         </a>

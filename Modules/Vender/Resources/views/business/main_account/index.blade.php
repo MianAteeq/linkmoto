@@ -98,7 +98,6 @@
             padding: 10px 15px;
             width: 100%;
             margin-top: auto;
-            /* Pushes footer to the bottom of the container */
         }
 
         .btn-dark {
@@ -127,7 +126,6 @@
 
         @media (max-width: 768px) {
 
-            /* Ensure container always has padding on mobile/tablet so it doesn't touch the screen edge */
             .container-fluid {
                 padding-left: 15px !important;
                 padding-right: 15px !important;
@@ -211,10 +209,12 @@
 @endsection
 
 @section('content')
-    <div class="container-fluid px-1 px-md-1 mt-2">
+    {{-- SPACING FIX: px-1 px-md-1 mt-2 → px-3 px-md-3 mt-3 to match VAT page --}}
+    <div class="container-fluid px-3 px-md-3 mt-3">
         <div class="row align-items-stretch" style="padding-left: 0 !important;">
 
-            <div class="col-xl-3 col-lg-13 mb-3 d-flex">
+            {{-- SPACING FIX: col-lg-13 (invalid) → col-lg-3 to match VAT page sidebar column --}}
+            <div class="col-xl-3 col-lg-3 mb-3 d-flex">
                 <div class="sidebar-overview w-100 mb-0 d-flex flex-column">
 
                     <div class="sidebar-header">
@@ -224,7 +224,7 @@
 
                     <div class="sidebar-content flex-grow-1" style="color: black;">
                         <p>
-                            Manage your business’s main contact. The main contact is the primary point of contact for the
+                            Manage your business's main contact. The main contact is the primary point of contact for the
                             platform. They will receive all notifications, account updates, and verification requests, and
                             are
                             authorised to
@@ -238,7 +238,8 @@
                 </div>
             </div>
 
-            <div class="col-xl-9 col-lg-12 mb-4 d-flex">
+            {{-- SPACING FIX: col-lg-12 → col-lg-9 and added ps-md-3 for gap between the two cards --}}
+            <div class="col-xl-9 col-lg-9 mb-4 d-flex ps-md-3">
                 <div id="contens" class="w-100 d-flex flex-column"
                     style="border: 2px solid black;border-radius: 6px; background-color: white; padding: 0;">
 

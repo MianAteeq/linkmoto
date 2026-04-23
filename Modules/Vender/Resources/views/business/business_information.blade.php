@@ -37,6 +37,12 @@
             justify-content: space-between;
             cursor: pointer;
             text-decoration: none !important;
+            border-bottom: none !important;
+        }
+
+        /* Put the border on the collapsible content so it hides when closed */
+        #collaptr_businesss_info {
+            border-top: 2px solid #000 !important;
         }
 
         /* 3. Row & Alignment Styling */
@@ -124,7 +130,7 @@
                 style="padding-left: 10px !important; padding-top: 15px !important; padding-bottom: 23px !important;">
                 <div class="col-12 bg-white">
                     <h3 class="h3">Business Information</h3>
-                    <div class="breadcrumb-wrapper" style="padding-left: 15px !important;">
+                    <div class="breadcrumb-wrapper" style="padding-left: 3px !important;">
                         <ol class="breadcrumb mb-0 bg-transparent p-0">
                             <li class="breadcrumb-item"><a href="javascript:void(0);" class="text-muted">Business</a></li>
                             <li class="breadcrumb-item"><a href="{{ route('vender.business.detail') }}"
@@ -179,7 +185,7 @@
                 </div>
             </div>
 
-            <div class="col-xl-8 col-lg-8 mb-4 d-flex">
+            <div class="col-xl-8 col-lg-8 mb-4">
                 <div class="theme-box w-100 d-flex flex-column">
 
                     <a href="javascript:void(0);" class="theme-box-header accordion-header-custom"
@@ -320,13 +326,15 @@
                             </div>
                         </div>
 
-                    </div>
+                        {{-- EDIT BUTTON MOVED HERE: Now inside the collapse div so it hides when closed --}}
+                        @if ($user['profile']['business_info'] == 'Todo' || $user['profile']['business_info'] == 'Rejected')
+                            <div class="mt-auto p-1 text-right">
+                                <a href="{{ route('vender.business.information.edit') }}"
+                                    class="btn-view-custom">Edit</a>
+                            </div>
+                        @endif
 
-                    @if ($user['profile']['business_info'] == 'Todo' || $user['profile']['business_info'] == 'Rejected')
-                        <div class="mt-auto p-1 text-right">
-                            <a href="{{ route('vender.business.information.edit') }}" class="btn-view-custom">Edit</a>
-                        </div>
-                    @endif
+                    </div>
 
                 </div>
             </div>
