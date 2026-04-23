@@ -323,34 +323,71 @@
 
     <div id="header" style="position: fixed;bottom: 0;width: 100%;margin: 10px;margin-top: 15px;">
         <p style="width: 100%;margin-top: 10px;font-size: 11px;text-align: left">
-            @if ($vender['profile']['organization_status'] === 'Limited Company')
-                @if (
-                    $invoice['invoice']['trading_name']['app_setting']['header_option'] == 1 ||
-                        $invoice['invoice']['trading_name']['app_setting']['header_option'] == 2)
-                    {{ ucfirst($vender['profile']['company_name']) }}
-                @else
-                    {{ ucfirst($vender['profile']['company_name']) }} trading as
-                    {{ $invoice['invoice']['booking']['trading_name']['trading_name']['name'] }}.
-                @endif
-            @else
-                @if (
-                    $invoice['invoice']['trading_name']['app_setting']['header_option'] == 1 ||
-                        $invoice['invoice']['trading_name']['app_setting']['header_option'] == 2)
-                    {{-- {{ucfirst($vender['profile']['company_name']) }} --}}
-                @else
-                    {{ ucfirst($vender['profile']['company_name']) }} trading as
-                    {{ $invoice['invoice']['booking']['trading_name']['trading_name']['name'] }}.
-                @endif
+            @php
+                $companyName = $profile['company_name'] ?? (auth()->user()->profile['company_name'] ?? null);
+                $tradingName = $trading_unit['trading_name']['name'] ?? null;
 
+                $businessNameFormat = $trading_unit['trading_template'] ?? null;
+                $businessSetup = $profile['organization_status'] ?? null;
 
-            @endif
+                $footerLegalName = null;
+
+                // Case 1: Trading Name Only
+                if ($businessNameFormat == '3' && $companyName && $tradingName) {
+                    $footerLegalName = $companyName . ' trading as ' . $tradingName;
+                }
+                // Case 2: LTD / LLP
+                elseif (
+                    in_array($businessSetup, ['Limited Company (Ltd)', 'Limited Liability Partnership (LLP)']) &&
+                    $companyName
+                ) {
+                    $footerLegalName = $companyName;
+                }
+            @endphp
+            {{ $footerLegalName }}
             {{-- Motodoc Ltd trading as H & H Motors. --}}
         </p>
-        <p style="width: 100%;margin-bottom: 30px;margin-top: -18px;font-size: 11px;text-align: left">Registered office:
-            {{ $vender['profile']['address_line_1'] }}, @isset($vender['profile']['address_line_2'])
-                {{ $vender['profile']['address_line_2'] }},
-            @endisset {{ $vender['profile']['city'] }} {{ $vender['profile']['postcode'] }}. Registered in
-            {{ $vender['profile']['company_jurisdiction'] }} no: {{ $vender['profile']['registration_no'] }}.
+        @php
+
+            $businessSetup = $profile['organization_status'] ?? null;
+
+            $isCompany = in_array($businessSetup, ['Limited Company (Ltd)', 'Limited Liability Partnership (LLP)']);
+
+            $registeredAddress = null;
+
+            if ($isCompany) {
+                $addressParts = array_values(
+                    array_filter([
+                        $profile['address_line_1'] ?? null,
+                        $profile['address_line_2'] ?? null,
+                        $profile['address_line_3'] ?? null,
+                        $profile['address_line_4'] ?? null,
+                        $profile['city'] ?? null,
+                        $profile['postcode'] ?? null,
+                    ]),
+                );
+
+                if (!empty($addressParts)) {
+                    // Add comma to all except last
+                    $formattedParts = [];
+
+                    foreach ($addressParts as $index => $part) {
+                        $formattedParts[] = $index < count($addressParts) - 1 ? $part . ', ' : $part;
+                    }
+
+                    $registeredAddress = implode($formattedParts);
+                }
+            }
+
+            // Jurisdiction
+            $registeredJurisdiction = $isCompany ? $profile['company_jurisdiction'] ?? null : null;
+
+            // Company Number
+            $registeredCompanyNo = $isCompany ? $profile['registration_no'] ?? null : null;
+        @endphp
+        <p style="width: 100%;margin-bottom: 30px;margin-top: -18px;font-size: 11px;text-align: left">Registered
+            office: {{ $registeredAddress }}. Registered in
+            {{ $registeredJurisdiction }} no: {{ $registeredCompanyNo }}.
             {{-- {{ $vender['profile']['area'] }}.
             Registered in {{$vender['profile']['company_jurisdiction']}} no: {{ $vender['profile']['uk_vat_no'] }} --}}
         <p style="margin-top:-45px;margin-right: -20px; font-size: 11px;float: right;text-align: right!important">
