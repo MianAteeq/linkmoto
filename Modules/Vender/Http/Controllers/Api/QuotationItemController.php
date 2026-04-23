@@ -24,7 +24,7 @@ class QuotationItemController extends Controller
                 'quotation_id' =>  ['required'],
                 'job_type_id' =>  ['required'],
                 'price_type_id' =>  ['required'],
-               // 'job_description' =>  ['required'],
+                // 'job_description' =>  ['required'],
                 // 'product' =>  ['required'],
                 'unit_price' =>  ['required'],
                 'qty' =>  ['required'],
@@ -50,23 +50,23 @@ class QuotationItemController extends Controller
 
             $obj = QuotationItem::create([
                 "vender_id" => $vender_id,
-                "job_item_no" => 'JIT-'."SVP".str_pad($vender_id, 5, "0", STR_PAD_LEFT)."-". str_pad($latestOrder?$latestOrder->id+1: 0 + 1, 5, "0", STR_PAD_LEFT),
-                "job_description"=>'sdb',
+                "job_item_no" => 'JIT-' . "SVP" . str_pad($vender_id, 5, "0", STR_PAD_LEFT) . "-" . str_pad($latestOrder ? $latestOrder->id + 1 : 0 + 1, 5, "0", STR_PAD_LEFT),
+                "job_description" => 'sdb',
                 ...$request->except('job_types'),
 
             ]);
-            if(isset($request['job_types'])){
+            if (isset($request['job_types'])) {
                 foreach ($request['job_types'] as $key => $job_type) {
 
                     QuotationJobItemJobType::create([
-                        "job_item_id"=>$obj['id'],
-                        "job_type_id"=>$job_type['id'],
+                        "job_item_id" => $obj['id'],
+                        "job_type_id" => $job_type['id'],
 
                     ]);
                     # code...
                 }
             }
-              Quotation::find($request['quotation_id'])->update([
+            Quotation::find($request['quotation_id'])->update([
                 "vender_id" => $vender_id,
 
                 "total" => QuotationItem::where('quotation_id', $request['quotation_id'])->sum('total_price'),
@@ -102,7 +102,7 @@ class QuotationItemController extends Controller
                 'quotation_id' =>  ['required'],
                 'job_type_id' =>  ['required'],
                 'price_type_id' =>  ['required'],
-               // 'job_description' =>  ['required'],
+                // 'job_description' =>  ['required'],
                 // 'product' =>  ['required'],
                 'unit_price' =>  ['required'],
                 'qty' =>  ['required'],
@@ -128,8 +128,8 @@ class QuotationItemController extends Controller
 
             $obj = QuotationItem::find($request['quotation_item_id'])->update([
                 "vender_id" => $vender_id,
-                  "job_description"=>'sdb',
-                ...$request->except('quotation_item_id','job_types'),
+                "job_description" => 'sdb',
+                ...$request->except('quotation_item_id', 'job_types'),
 
             ]);
 
@@ -141,21 +141,21 @@ class QuotationItemController extends Controller
                 "vat" => QuotationItem::where('quotation_id', $request['quotation_id'])->sum('vat_price'),
 
             ]);
-            QuotationJobItemJobType::where('job_item_id',$request['quotation_item_id'])->delete();
+            QuotationJobItemJobType::where('job_item_id', $request['quotation_item_id'])->delete();
 
-            if(isset($request['job_types'])){
+            if (isset($request['job_types'])) {
                 foreach ($request['job_types'] as $key => $job_type) {
 
                     QuotationJobItemJobType::create([
-                        "job_item_id"=>$request['quotation_item_id'],
-                        "job_type_id"=>$job_type['id'],
+                        "job_item_id" => $request['quotation_item_id'],
+                        "job_type_id" => $job_type['id'],
 
                     ]);
                     # code...
                 }
             }
 
-            $quotation_item = QuotationItem::with(['quotation', 'job_type', 'price_type'])->find($request->quotation_item_id);
+            $quotation_item = QuotationItem::with(['quotation', 'job_type', 'price_type', 'job_types.job_type'])->find($request->quotation_item_id);
 
             return response()->json([
                 'status' => true,
@@ -178,7 +178,7 @@ class QuotationItemController extends Controller
         try {
 
 
-            $quotation_item = QuotationItem::with([ 'job_type', 'price_type'])->find($request->quotation_item_id);
+            $quotation_item = QuotationItem::with(['job_type', 'price_type'])->find($request->quotation_item_id);
 
             if ($quotation_item) {
                 return response()->json([
@@ -217,9 +217,9 @@ class QuotationItemController extends Controller
 
             if ($quotation_item) {
                 Quotation::find($quotation_item['quotation_id'])->update([
-                      "total" => 0,
+                    "total" => 0,
                     "sub_total" => 0,
-                    "vat" =>0,
+                    "vat" => 0,
 
                 ]);
                 $quotation_item->delete();
@@ -244,5 +244,4 @@ class QuotationItemController extends Controller
             ]);
         }
     }
-
 }
