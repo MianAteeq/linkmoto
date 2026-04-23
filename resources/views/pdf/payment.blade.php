@@ -192,7 +192,7 @@
                             @endif
                             <p style="margin:0 0 6px 0;">
                                 @if (!empty($vender['profile']['uk_vat_no']))
-                                    Registered vat no: {{ $vender['profile']['uk_vat_no'] }}
+                                    Registered Vat no: {{ $vender['profile']['uk_vat_no'] }}
                                 @else
                                     <span style="visibility:hidden;">VAT placeholder</span>
                                 @endif
