@@ -1217,8 +1217,27 @@
                                                                 <td>{{ $contact['description'] }}</td>
                                                                 <td>{{ $contact['job_coverage']['name'] }}</td>
                                                                 <td>{{ number_format($contact['price'], 2) }}</td>
-                                                                <td>{{ $contact['price_type'] }}</td>
-                                                                <td>{{ $contact['status'] }}</td>
+                                                                <td>
+                                                                    @if ($contact['price_type'] == 'FIXED')
+                                                                        Fixed
+                                                                    @endif
+                                                                    @if ($contact['price_type'] == 'STARTING_FROM')
+                                                                        Starting From
+                                                                    @endif
+                                                                    @if ($contact['price_type'] == 'HOURLY')
+                                                                        Hourly
+                                                                    @endif
+                                                                    @if ($contact['price_type'] == 'POA')
+                                                                        POA
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    @if ($contact['status'] == 'ACTIVE')
+                                                                        Active
+                                                                    @else
+                                                                        InActive
+                                                                    @endif
+                                                                </td>
 
 
 

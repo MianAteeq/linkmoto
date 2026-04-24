@@ -370,12 +370,12 @@
                                         <div class="col-md-8 mx-auto">
                                             <select class="form-control" name="price_type" id="price_type">
                                                 <option value="FIXED" @if ($product['price_type_id'] == 'FIXED') selected @endif>
-                                                    FIXED
+                                                    Fixed
                                                 </option>
                                                 <option value="STARTING_FROM"
-                                                    @if ($product['price_type_id'] == 'STARTING_FROM') selected @endif>STARTING FROM</option>
+                                                    @if ($product['price_type_id'] == 'STARTING_FROM') selected @endif>Starting From</option>
                                                 <option value="HOURLY" @if ($product['price_type'] == 'HOURLY') selected @endif>
-                                                    HOURLY
+                                                    Hourly
                                                 </option>
                                                 <option value="POA" @if ($product['price_type'] == 'POA') selected @endif>
                                                     POA
@@ -523,7 +523,7 @@
                                 @else
                                     <button type="button" onclick="handleSave()"
                                         class="btn btn-dark round btn-min-width mr-1 mb-1" style="float: right;">
-                                        Update
+                                        Save
                                     </button>
                                 @endif
                                 <a href="{{ redirect()->back()->getTargetUrl() }}"><button type="button"

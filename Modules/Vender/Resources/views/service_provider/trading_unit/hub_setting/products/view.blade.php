@@ -441,7 +441,20 @@
                                     <div class="col-sm-5">
                                         <h6>Price Type</h6>
                                     </div>
-                                    <div class="col-sm-7 text-secondary">{{ $product['price_type'] }}</div>
+                                    <div class="col-sm-7 text-secondary">
+                                        @if ($product['price_type'] == 'FIXED')
+                                            Fixed
+                                        @endif
+                                        @if ($product['price_type'] == 'STARTING_FROM')
+                                            Starting From
+                                        @endif
+                                        @if ($product['price_type'] == 'HOURLY')
+                                            Hourly
+                                        @endif
+                                        @if ($product['price_type'] == 'POA')
+                                            POA
+                                        @endif
+                                    </div>
                                 </div>
                                 <hr>
 
@@ -463,7 +476,16 @@
                                     <div class="col-sm-5">
                                         <h6>Status</h6>
                                     </div>
-                                    <div class="col-sm-7 text-secondary">{{ $product['status'] }}</div>
+                                    <div class="col-sm-7 text-secondary">
+
+                                        @if ($product['status'] == 'ACTIVE')
+                                            Active
+                                        @else
+                                            InActive
+                                        @endif
+
+
+                                    </div>
                                 </div>
 
                             </div>
