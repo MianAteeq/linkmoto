@@ -269,7 +269,7 @@
         <div class="row" style="border-bottom: 3px solid #949494;">
             <div class="col-xl-12 col-12 bg-white headerbg" style="padding-left: 32px;padding-top: 13px;">
                 <h3 class="h3">Trade unit information</h3>
-                <div class="breadcrumb-wrapper col-12">
+                <div class="breadcrumb-wrapper col-12 p-0">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a>Products</a></li>
 
@@ -296,23 +296,37 @@
 @section('content')
     <div class="row">
         <div class="col-md-3">
-            <div style="border-radius: 7px;border: 2px solid black;height: 44px;">
-                <h4 class="h3" style="font-weight: 600; font-size: 17px;padding: 10px;">
-                    <div>
-                        <div style="float: left; width: 10%;">
-                            <img src="/gear-black.png" style="width: 38px;margin-top: -5px;">
-                        </div>
-                        <div style="float: left; width: 90%;">
-                            <span>Product</span>
-                        </div>
+            <div style="border-radius: 8px; border: 2px solid black; overflow: hidden; background-color: #fff;">
+
+                <div style="display: flex; align-items: center; padding: 16px; border-bottom: 2px solid black;">
+                    <img src="/gear-black.png" style="width: 38px; margin-right: 12px; flex-shrink: 0;" alt="Gear">
+
+                    <div style="display: flex; flex-direction: column; line-height: 1.2;">
+                        <span style="color: #F07D44; font-size: 15px;">Product:</span>
+                        <span style="font-weight: 600; font-size: 18px; color: #000; margin-top: 2px;">MOT</span>
                     </div>
-                </h4>
+                </div>
+
+                <div style="padding: 16px;">
+
+                    <div style="margin-bottom: 16px; line-height: 1.4;">
+                        <div style="color: #F07D44; font-size: 14px;">Created:</div>
+                        <div style="font-size: 14px; color: #000;">12/07/2024 at 4:59am</div>
+                    </div>
+
+                    <div style="line-height: 1.4;">
+                        <div style="color: #F07D44; font-size: 14px;">Last updated:</div>
+                        <div style="font-size: 14px; color: #000;">15/10/2024 at 10am</div>
+                    </div>
+
+                </div>
+
             </div>
         </div>
 
         <div class="col-md-9" id="contens" style="border-radius: 6px;margin-bottom: 10px;padding-bottom: 10px;">
             <div class="row">
-                <a href="{{ redirect()->back()->getTargetUrl() }}">
+                <a href="{{ redirect()->back()->getTargetUrl() }} ">
                     <h4 class="h3"
                         style="border-radius: 7px; border: 2px solid black; padding: 10px; font-weight: 600; font-size: 17px; color: white!important;margin-left: 15px;background-color:black">
                         &lt; Back
@@ -322,11 +336,11 @@
 
             <div class="card default-collapse collapse-icon accordion-icon-rotate" style="box-shadow: none;">
 
-                <a id="headingCollapse1" href="{{ redirect()->back()->getTargetUrl() }}" class="card-header info mt-2"
-                    style="border: 2px solid black;border-radius: 7px;padding: 1.2rem 1rem;color: black;">
-                    <div class="card-title lead collapsed">
+                <a id="headingCollapse1" href="{{ redirect()->back()->getTargetUrl() }}" class="card-header info mt-0"
+                    style="border: 2px solid black;border-radius: 7px; padding: 0.8rem 0.8rem;color: black;">
+                    <div class="card-title lead collapsed" style="text-align: left; color: black; padding-top: 20px;">
                         Product Information
-                        <div class="tags" style="float: right;margin-right: 40px;">
+                        <div class="tags" style="float: right; margin-right: 40px;">
                             <div class="tag">Service Provider</div>
                             <div class="tag">Hub</div>
                         </div>
@@ -350,16 +364,18 @@
                                     <div class="position-relative">
 
                                         <!-- 3 DOT MENU -->
-                                        <div class="dropdown" style="position: absolute; top: 10px; right: 10px;">
-                                            <button class="btn p-1" type="button" data-bs-toggle="dropdown">
-                                                <span style="font-size: 20px;">⋮</span>
+                                        <div class="dropdown" style="position: absolute; top: -13px; right: 10px;">
+                                            <button class="btn p-1 shadow-none" type="button" data-bs-toggle="dropdown"
+                                                style="border: none; background: transparent;">
+                                                <span style="font-size: 24px; font-weight: bold; color: #000;">⋮</span>
                                             </button>
 
-                                            <ul class="dropdown-menu dropdown-menu-end">
+                                            <ul class="dropdown-menu dropdown-menu-end"
+                                                style="border: 2px solid #000; border-radius: 6px; padding: 0; min-width: 130px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
 
-                                                <!-- DELETE OPTION -->
                                                 <li>
-                                                    <a class="dropdown-item text-danger"
+                                                    <a class="dropdown-item"
+                                                        style="color: #333; font-size: 14px; font-weight: 400; padding: 8px 16px; cursor: pointer; margin: 0;"
                                                         onclick="handleDelete({{ $product['id'] }}, {{ $is_reference == 1 ? 'true' : 'false' }})">
                                                         Delete Product
                                                     </a>

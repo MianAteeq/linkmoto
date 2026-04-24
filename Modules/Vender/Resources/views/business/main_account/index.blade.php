@@ -38,7 +38,7 @@
         table.dataTable thead th,
         table.dataTable thead td {
             padding: 10px 18px;
-            border-bottom: 1px solid #111;
+            border-bottom: 1px solid #000000;
             font-size: 11px;
             padding-left: 8px;
             padding-right: 1px;
@@ -214,7 +214,7 @@
 
 @section('content')
     {{-- SPACING FIX: px-1 px-md-1 mt-2 → px-3 px-md-3 mt-3 to match VAT page --}}
-    <div class="container-fluid px-3 px-md-3 mt-3">
+    <div class="container-fluid px-1 px-md-1 mt-1">
         <div class="row align-items-stretch" style="padding-left: 0 !important;">
 
             {{-- SPACING FIX: col-lg-13 (invalid) → col-lg-3 to match VAT page sidebar column --}}
