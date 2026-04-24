@@ -1,178 +1,294 @@
 @extends('vender::layouts.master')
 
 @section('css_custom')
+    <style>
+        /* ========================================================================
+       1. ICONS & MENU STYLES
+       ======================================================================== */
+        .collapse-icon [data-toggle="collapse"]:before {
+            position: absolute;
+            top: 48%;
+            right: 20px;
+            margin-top: -8px;
+            font-family: 'feather';
+            content: "\e842";
+            transition: all 300ms linear 0s;
+        }
 
-<style>
-    .footers{
-    /* position: absolute; */
-    bottom: 0;
-    left: 0;
-    border-top: 2px solid black;
-    padding-top: 5px;
-    width: 100%;
-}
-.btn-dark {
-    border-color: black !important;
-    background-color: black !important;
-    color: #FFFFFF;
-}
-.round {
-    border-radius: 0.5rem;
-}
-</style>
+        .collapse-icon [data-toggle="collapse"]:after {
+            position: absolute;
+            top: 48%;
+            right: 20px;
+            margin-top: -8px;
+            font-family: 'feather';
+            content: "\e845";
+            transition: all 300ms linear 0s;
+        }
 
+        .collapsed {
+            border-bottom-left-radius: 0px !important;
+            border-bottom-right-radius: 0px !important;
+        }
+
+        /* ========================================================================
+       2. CONTAINER & UI STYLES
+       ======================================================================== */
+        body {
+            color: black;
+        }
+
+        .info-sidebar {
+            border-radius: 7px;
+            border: 2px solid black;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .main-content-box {
+            border-radius: 6px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .footers {
+            border-top: 2px solid black;
+            padding: 15px 20px;
+            width: 100%;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+        }
+
+        .btn-dark {
+            border-color: black !important;
+            background-color: black !important;
+            color: #FFFFFF !important;
+            margin: 0 !important;
+        }
+
+        .round {
+            border-radius: 0.5rem;
+        }
+
+        .success {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        /* ========================================================================
+       3. RESPONSIVE MEDIA QUERIES (Tablet & Mobile Stacking)
+       ======================================================================== */
+        @media (max-width: 991.98px) {
+            .headerbg {
+                padding-left: 25px !important;
+            }
+
+            .info-sidebar-wrapper {
+                margin-bottom: 20px;
+            }
+
+            .col-lg-9 {
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+                width: 100% !important;
+                flex: 0 0 100% !important;
+                max-width: 100% !important;
+            }
+
+            .footers .btn-dark {
+                float: none !important;
+                width: 100% !important;
+                display: block !important;
+            }
+
+            .footers a {
+                display: block;
+                width: 100%;
+            }
+
+            /* Make nav buttons stack fully on small screens */
+            .nav-buttons {
+                flex-direction: column;
+                align-items: stretch !important;
+            }
+
+            .nav-buttons h4 {
+                text-align: center;
+            }
+        }
+    </style>
 @endsection
 
 @section('header')
-<div class="content-header bg-white">
-    <div class="row" style="border-bottom: 3px solid #949494;">
-        <div class="col-xl-12 col-12 bg-white headerbg" style="padding-left: 32px;padding-top: 13px;">
-            <h3 class="h3">Trade unit information</h3>
-            <div class="breadcrumb-wrapper col-12">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a>Products</a>
-                    </li>
+    <div class="content-header bg-white">
+        <div class="row m-0" style="border-bottom: 3px solid #949494;">
+            {{-- Single-line flexbox alignment --}}
+            <div class="col-12 bg-white headerbg d-flex align-items-center flex-wrap" style="padding: 15px 32px;">
+                <h3 class="h3 m-0 mr-3" style="font-weight: 600;">Trade unit information</h3>
 
-                    <li class="breadcrumb-item"><a style="color: black" href="{{route('vender.service.provider')}}">Service Provider</a>
-                    </li>
-                    <li class="breadcrumb-item"><a style="color: black" href="{{route('vender.service.provider.trading.unit')}}">Trade Units</a>
-                    </li>
-                    <li class="breadcrumb-item"><a style="color: black" href="{{route('vender.service.provider.trading.unit.view',$trading_unit['id'])}}"> {{$trading_unit['name']}}</a>
-                    </li>
-                    <li class="breadcrumb-item"><a style="color: black" href="{{route('vender.service.provider.trading.unit.view',$trading_unit['id'])}}"> Overview</a>
-                    </li>
-                    <li class="breadcrumb-item"> Trade unit information
-                    </li>
-                    <li class="breadcrumb-item"> App Data
-                    </li>
-
-
-
-                </ol>
+                <div class="breadcrumb-wrapper p-0">
+                    <ol class="breadcrumb m-0 p-0" style="background-color: transparent; padding-top: 2px !important;">
+                        <li class="breadcrumb-item"><a>Products</a></li>
+                        <li class="breadcrumb-item"><a style="color: black"
+                                href="{{ route('vender.service.provider') }}">Service Provider</a></li>
+                        <li class="breadcrumb-item"><a style="color: black"
+                                href="{{ route('vender.service.provider.trading.unit') }}">Trade Units</a></li>
+                        <li class="breadcrumb-item"><a style="color: black"
+                                href="{{ route('vender.service.provider.trading.unit.view', $trading_unit['id']) }}">{{ $trading_unit['name'] }}</a>
+                        </li>
+                        <li class="breadcrumb-item"><a style="color: black"
+                                href="{{ route('vender.service.provider.trading.unit.view', $trading_unit['id']) }}">Overview</a>
+                        </li>
+                        <li class="breadcrumb-item">Trade unit information</li>
+                        <li class="breadcrumb-item active">App Data</li>
+                    </ol>
+                </div>
             </div>
         </div>
-
     </div>
-</div>
 @endsection
 
 @section('content')
+    <div class="container-fluid px-1 px-md-1 mt-1">
+        <div class="row align-items-start m-0">
 
-<div class="row">
-    <div class="col-md-3">
-        <div style="border-radius: 7px;border: 2px solid black;  ">
-            <h4 class="h3" style="font-weight: 600; font-size: 17px;padding: 10px; ">
-        <div>
-            <div style="float: left; width: 10%;">
-                <img src="/trading_unit.png" style="width: 22px;margin-top: -5px;" >
+            {{-- Left Sidebar Profile Card --}}
+            <div class="col-12 col-lg-3 info-sidebar-wrapper mb-4 mb-lg-0 p-0 pr-lg-3">
+                <div class="info-sidebar">
+
+                    {{-- Fixed invalid HTML: changed outer h4 to a div --}}
+                    <div
+                        style="font-weight: 600; font-size: 17px; padding: 12px 16px; border-bottom: 2px solid black; display: flex; align-items: flex-start;">
+                        <img src="/trading_unit.png" style="width: 22px; margin-right: 10px; margin-top: 2px;">
+                        <span style="word-break: break-word;"><span style="color:#ff6600">Trading
+                                Unit:</span><br>{{ $trading_unit['name'] }}</span>
+                    </div>
+
+                    <div style="padding: 20px; flex-grow: 1;">
+                        <div class="mb-3" style="font-weight: 500; font-size: 14px;">
+                            <span style="color:#ff6600; font-weight: 600;">Trading Name:</span><br>
+                            {{ $trading_unit['trading_name']['name'] ?? '' }}
+                        </div>
+
+                        <div class="mb-3" style="font-weight: 500; font-size: 14px;">
+                            <span class="success">{{ $trading_unit['status'] }}</span>
+                        </div>
+
+                        <div class="mb-4" style="font-weight: 500; font-size: 14px;">
+                            <span class="success">{{ $trading_unit['active_status'] }}</span>
+                        </div>
+
+                        <div style="font-weight: 500; font-size: 13px; color: #555; line-height: 1.6;">
+                            Created: {{ \Carbon\Carbon::parse($trading_unit['created_at'])->format('d/m/Y \a\t h:i') }}
+                        </div>
+                    </div>
+
+                    {{-- Action Buttons Footer --}}
+                    <div class="footers"
+                        style="flex-direction: column; gap: 12px; padding: 15px; border-radius: 0 0 5px 5px;">
+                        @if ($trading_unit['status'] == 'PENDING' || $trading_unit['status'] == 'INACTIVE')
+                            <a href="{{ route('vender.service.provider.trading.unit.active', $trading_unit['id']) }}"
+                                style="width: 100%; text-decoration: none;">
+                                <button type="button" class="btn btn-dark round w-100 m-0">ACTIVATE TRADE UNIT</button>
+                            </a>
+                        @else
+                            <a href="{{ route('vender.service.provider.trading.unit.in.active', $trading_unit['id']) }}"
+                                style="width: 100%; text-decoration: none;">
+                                <button type="button" class="btn btn-dark round w-100 m-0">INACTIVATE TRADE UNIT</button>
+                            </a>
+                        @endif
+
+                        @if ($trading_unit['active_status'] == 'OFFLINE')
+                            <a href="{{ route('vender.service.provider.trading.unit.Online', $trading_unit['id']) }}"
+                                style="width: 100%; text-decoration: none;">
+                                <button type="button" class="btn btn-dark round w-100 m-0">SHOW ONLINE</button>
+                            </a>
+                        @else
+                            <a href="{{ route('vender.service.provider.trading.unit.offline', $trading_unit['id']) }}"
+                                style="width: 100%; text-decoration: none;">
+                                <button type="button" class="btn btn-dark round w-100 m-0">SHOW OFFLINE</button>
+                            </a>
+                        @endif
+                    </div>
+
+                </div>
             </div>
-            <div style="float: left; width: 90%;">
-                <span>Trading Unit : {{$trading_unit['name']}}</span>
+
+            {{-- Right Content Container --}}
+            <div class="col-12 col-lg-9 p-0" id="contens">
+
+                {{-- Navigation Buttons Row (Flexbox Spacing Fix) --}}
+                <div class="d-flex align-items-center mb-4 flex-wrap nav-buttons" style="gap: 15px;">
+                    <a href="{{ route('vender.service.provider.trading.unit.view', $trading_unit['id']) }}"
+                        style="text-decoration: none;">
+                        <h4 class="h3 m-0"
+                            style="border-radius: 7px; border: 2px solid black; padding: 10px 20px; font-weight: 600; font-size: 17px; color: black; text-align: center;">
+                            Overview
+                        </h4>
+                    </a>
+                    <a href="{{ route('vender.service.provider.trading.unit.app.setting', $trading_unit['id']) }}"
+                        style="text-decoration: none;">
+                        <h4 class="h3 m-0"
+                            style="border-radius: 7px; border: 2px solid black; padding: 10px 20px; font-weight: 600; font-size: 17px; color: black; text-align: center;">
+                            App settings
+                        </h4>
+                    </a>
+                    <h4 class="h3 m-0"
+                        style="border-radius: 7px; border: 2px solid #ff6600; padding: 10px 20px; font-weight: 600; font-size: 17px; color: #ff6600; text-align: center;">
+                        App data
+                    </h4>
+                </div>
+
+                {{-- App Data Menu Links --}}
+                <div class="main-content-box p-0" style="border: none; background: transparent;">
+
+                    <a href="{{ route('vender.service.provider.trading.unit.app.data.contact', $trading_unit['id']) }}"
+                        class="card-header info mb-2"
+                        style="border: 2px solid black; border-radius: 7px !important; padding: 1.2rem 1rem; color: black !important; display: block; text-decoration: none; background: white;">
+                        <div class="card-title lead m-0">Contacts</div>
+                    </a>
+                    <a href="{{ route('vender.service.provider.trading.unit.app.data.vehicle', $trading_unit['id']) }}"
+                        class="card-header info mb-2"
+                        style="border: 2px solid black; border-radius: 7px !important; padding: 1.2rem 1rem; color: black !important; display: block; text-decoration: none; background: white;">
+                        <div class="card-title lead m-0">Vehicles</div>
+                    </a>
+                    <a href="{{ route('vender.service.provider.trading.unit.app.data.quotes', $trading_unit['id']) }}"
+                        class="card-header info mb-2"
+                        style="border: 2px solid black; border-radius: 7px !important; padding: 1.2rem 1rem; color: black !important; display: block; text-decoration: none; background: white;">
+                        <div class="card-title lead m-0">Quotes</div>
+                    </a>
+                    <a href="{{ route('vender.service.provider.trading.unit.app.data.booking', $trading_unit['id']) }}"
+                        class="card-header info mb-2"
+                        style="border: 2px solid black; border-radius: 7px !important; padding: 1.2rem 1rem; color: black !important; display: block; text-decoration: none; background: white;">
+                        <div class="card-title lead m-0">Bookings</div>
+                    </a>
+                    <a href="{{ route('vender.service.provider.trading.unit.app.data.jobs', $trading_unit['id']) }}"
+                        class="card-header info mb-2"
+                        style="border: 2px solid black; border-radius: 7px !important; padding: 1.2rem 1rem; color: black !important; display: block; text-decoration: none; background: white;">
+                        <div class="card-title lead m-0">Jobs</div>
+                    </a>
+                    <a href="{{ route('vender.service.provider.trading.unit.app.data.invoices', $trading_unit['id']) }}"
+                        class="card-header info mb-2"
+                        style="border: 2px solid black; border-radius: 7px !important; padding: 1.2rem 1rem; color: black !important; display: block; text-decoration: none; background: white;">
+                        <div class="card-title lead m-0">Invoices</div>
+                    </a>
+                    <a href="{{ route('vender.service.provider.trading.unit.app.data.payments', $trading_unit['id']) }}"
+                        class="card-header info mb-0"
+                        style="border: 2px solid black; border-radius: 7px !important; padding: 1.2rem 1rem; color: black !important; display: block; text-decoration: none; background: white;">
+                        <div class="card-title lead m-0">Payments</div>
+                    </a>
+
+                </div>
+
             </div>
-
-
-
-        </div>
-        <div style="margin: 20px;margin-top: 53px;font-weight: 500;font-size: 13px;">
-            <span>Trading Name : {{$trading_unit['trading_name']['name']??''}}</span>
-        </div>
-        <div style="margin: 20px;margin-top: 15px;font-weight: 500;font-size: 13px;">
-            <span class="success">{{$trading_unit['status']}}</span>
-        </div>
-        <div style="margin: 20px;margin-top: 15px;font-weight: 500;font-size: 13px;">
-            <span class="success">{{$trading_unit['active_status']}}</span>
-        </div>
-        <div style="margin: 20px;margin-top: 15px;font-weight: 500;font-size: 13px;margin-bottom:0px">
-            <span >Created: {{\Carbon\Carbon::parse($trading_unit['created_at'])->format('d/m/Y') }} at  {{\Carbon\Carbon::parse($trading_unit['created_at'])->format('h:i') }}</span>
-        </div>
-
-        </h4>
-        <div class="footers" style="text-align: center;">
-
-            @if($trading_unit['status']=="PENDING" || $trading_unit['status']=="INACTIVE")
-            <a href="{{route('vender.service.provider.trading.unit.active',$trading_unit['id'])}}">  <button type="button" style="width: 80%;" class="btn btn-dark round btn-min-width mr-1 mb-1">ACTIVATE TRADE UNIT</button></a>
-            @else
-            <a href="{{route('vender.service.provider.trading.unit.in.active',$trading_unit['id'])}}">  <button type="button" style="width: 80%;" class="btn btn-dark round btn-min-width mr-1 mb-1">INACTIVATE TRADE UNIT</button></a>
-
-            @endif
-            @if($trading_unit['active_status']=="OFFLINE")
-            <a href="{{route('vender.service.provider.trading.unit.Online',$trading_unit['id'])}}">  <button type="button" style="width: 80%;" class="btn btn-dark round btn-min-width mr-1 mb-1"
-               >SHOW ONLINE</button></a>
-
-               @else
-               <a href="{{route('vender.service.provider.trading.unit.offline',$trading_unit['id'])}}">  <button type="button" style="width: 80%;" class="btn btn-dark round btn-min-width mr-1 mb-1"
-                  >SHOW OFFLINE</button></a>
-
-               @endif
-
-
-
-       </div>
-
         </div>
     </div>
-    <div class="col-md-9" id="contens" style="border-radius: 6px;margin-bottom: 10px;padding-bottom: 10px;margin-top: 0px;">
-        <div class="row ">
-          <a href="{{route('vender.service.provider.trading.unit.view',$trading_unit['id'])}}"><h4 class="h3"  style="border-radius: 7px; border: 2px solid black; padding: 10px; font-weight: 600; font-size: 17px; color: black;margin-left: 15px;"> Overview</h2></a>
-           <a href="{{route('vender.service.provider.trading.unit.app.setting',$trading_unit['id'])}}"> <h4 class="h3" style="border-radius: 7px; border: 2px solid black; padding: 10px; font-weight: 600; font-size: 17px; color: black;margin-left: 15px;"> App settings</h2></a>
-            <a href="{{route('vender.service.provider.trading.unit.app.data',$trading_unit['id'])}}"> <h4 class="h3" style="border-radius: 7px; border: 2px solid #ff6600; padding: 10px; font-weight: 600; font-size: 17px; color: #ff6600;margin-left: 15px;"> App data </h2> </a>
-                <!--<a href="{{route('vender.service.provider.trading.unit.hub.setting',$trading_unit['id'])}}"> <h4 class="h3" style="border-radius: 7px; border: 2px solid black; padding: 10px; font-weight: 600; font-size: 17px; color: black;margin-left: 15px;"> Hub profile settings </h2> </a>-->
-
-
-        </div>
-
-        <div class="card default-collapse collapse-icon accordion-icon-rotate" style="box-shadow: none;margin-top: 0px;">
-
-
-
-            <a id="headingCollapse1" href="{{route('vender.service.provider.trading.unit.app.data.contact',$trading_unit['id'])}}" class="card-header info mt-4" style="border: 2px solid black;border-radius: 7px !important;padding: 1.2rem 1rem;color: black !important;margin-top: 1px !important;"   >
-                <div class="card-title lead collapsed">Contacts</div>
-            </a>
-            <a id="headingCollapse1" href="{{route('vender.service.provider.trading.unit.app.data.vehicle',$trading_unit['id'])}}" class="card-header info mt-2" style="border: 2px solid black;border-radius: 7px !important;padding: 1.2rem 1rem;color: black !important;"   >
-                <div class="card-title lead collapsed">Vehicles</div>
-            </a>
-            <a id="headingCollapse1" href="{{route('vender.service.provider.trading.unit.app.data.quotes',$trading_unit['id'])}}" class="card-header info mt-2" style="border: 2px solid black;border-radius: 7px !important;padding: 1.2rem 1rem;color: black !important;"   >
-                <div class="card-title lead collapsed">Quotes</div>
-            </a>
-            <a id="headingCollapse1" href="{{route('vender.service.provider.trading.unit.app.data.booking',$trading_unit['id'])}}" class="card-header info mt-2" style="border: 2px solid black;border-radius: 7px !important;padding: 1.2rem 1rem;color: black !important;"   >
-                <div class="card-title lead collapsed">Bookings</div>
-            </a>
-            <a id="headingCollapse1" href="{{route('vender.service.provider.trading.unit.app.data.jobs',$trading_unit['id'])}}" class="card-header info mt-2" style="border: 2px solid black;border-radius: 7px !important;padding: 1.2rem 1rem;color: black !important;"   >
-                <div class="card-title lead collapsed">Jobs</div>
-            </a>
-            <a id="headingCollapse1" href="{{route('vender.service.provider.trading.unit.app.data.invoices',$trading_unit['id'])}}" class="card-header info mt-2" style="border: 2px solid black;border-radius: 7px !important;padding: 1.2rem 1rem;color: black !important;"   >
-                <div class="card-title lead collapsed">Invoices</div>
-            </a>
-            <a id="headingCollapse1" href="{{route('vender.service.provider.trading.unit.app.data.payments',$trading_unit['id'])}}" class="card-header info mt-2" style="border: 2px solid black;border-radius: 7px !important;padding: 1.2rem 1rem;color: black !important;"   >
-                <div class="card-title lead collapsed">Payments</div>
-            </a>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        </div>
-
-
-
-
-
-
-    </div>
-</div>
-
-
 @endsection

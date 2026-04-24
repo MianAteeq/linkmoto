@@ -2,7 +2,6 @@
 
 @section('css_custom')
     <link href="/modules/admin/app-assets/vendors/css/forms/selects/select2.min.css" rel="stylesheet" />
-
     <style>
         /* ================= ORIGINAL STYLES (UNCHANGED) ================= */
 
@@ -386,9 +385,7 @@
                                         <h6>Job Type</h6>
                                     </div>
                                     <div class="col-sm-7 text-secondary">
-                                        @foreach ($jobstypes as $job_type)
-                                            {{ $job_type['name'] }},
-                                        @endforeach
+                                        {{ collect($jobstypes)->pluck('name')->implode(', ') }}
                                     </div>
                                 </div>
                                 <hr>
@@ -397,7 +394,22 @@
                                     <div class="col-sm-5">
                                         <h6>Job Request Description</h6>
                                     </div>
-                                    <div class="col-sm-7 text-secondary">{{ $product['description'] }}</div>
+                                    <div class="col-sm-7 text-secondary">
+                                        <strong>
+                                            {{ collect($jobstypes)->pluck('name')->implode(', ') }}
+                                        </strong>
+                                        <br>
+                                        @php
+                                            $jobTypeString = collect($jobstypes)->pluck('name')->implode(', ');
+                                            $cleanDescription = trim(
+                                                str_replace($jobTypeString, '', $product['description']),
+                                            );
+                                        @endphp
+
+
+                                        {{ $cleanDescription }}
+
+                                    </div>
                                 </div>
                                 <hr>
 

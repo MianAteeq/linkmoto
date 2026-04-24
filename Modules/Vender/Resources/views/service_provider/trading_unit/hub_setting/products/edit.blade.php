@@ -234,174 +234,269 @@
 
                                 <input type="hidden" name="id" value="{{ $trading_unit['id'] }}">
                                 <input type="hidden" name="product_id" value="{{ $product['id'] }}">
-                                <div class="form-group row">
-                                    <label class="col-md-4 label-control" for="eventRegInput5">Product ID * </label>
-                                    <div class="col-md-8 mx-auto">
-                                        <p>{{ $product['product_no'] }}</p>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-md-4 label-control" for="eventRegInput5">Product Name * </label>
-                                    <div class="col-md-8 mx-auto">
-                                        <input type="text" id="product_name" class="form-control"
-                                            value="{{ $product['product_name'] }}" onkeyup="lookup(this);"
-                                            name="product_name" placeholder="Product Name">
-                                        <p class="text-danger product_name"
-                                            style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This
-                                            Field is Required !</p>
-                                    </div>
-                                </div>
-                                <div class="form-group row" style="margin-bottom: 0.5rem ">
-                                    <label class="col-md-4 label-control" for="eventRegInput5">Job Types *
-                                    </label>
-                                    <input type="hidden" name="service_id" id="service_id"
-                                        value="{{ json_encode($product_job_types) }}">
-                                    <div class="col-md-8 mx-auto">
-                                        <select class="form-control select2-placeholder-multiple" name="job_type_id"
-                                            id="job_type_id" onchange="getSelectVal(this);">
-                                            <option value="">Select Job Types</option>
-                                            @foreach ($services_array as $service)
-                                                <option value="{{ $service['id'] }}"
-                                                    @if ($product['job_type_id'] == $service['id']) selected @endif>
-                                                    {{ $service['name'] }}</option>
-                                            @endforeach
-                                        </select>
-                                        <p class="text-danger job_type_id"
-                                            style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This
-                                            Field is Required !</p>
-
-                                        <div id="content_job_type">
-                                            <div class='tag-container mt-2'>
-                                                @foreach ($product['job_types'] as $job_type)
-                                                    <div class="tag">{{ $job_type['jobtype']['name'] }} <span
-                                                            class="close"
-                                                            onclick="removeTag({{ $job_type['jobtype']['id'] }})">X</span>
-                                                    </div>
-                                                @endforeach
-
-                                            </div>
+                                <input type="hidden" name="is_reference" value="{{ $is_reference }}">
+                                @if ($is_reference == 0)
+                                    <div class="form-group row">
+                                        <label class="col-md-4 label-control" for="eventRegInput5">Product ID * </label>
+                                        <div class="col-md-8 mx-auto">
+                                            <p>{{ $product['product_no'] }}</p>
                                         </div>
-
                                     </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-4 label-control" for="eventRegInput5">Product Name * </label>
+                                        <input type="hidden" id="original_name" value="{{ $product['product_name'] }}">
 
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-md-4 label-control" for="eventRegInput5">Job Request Description *
-                                    </label>
-                                    <div class="col-md-8 mx-auto">
-                                        <textarea type="text" id="description" class="form-control" value="" onkeyup="lookup(this);"
-                                            name="description" placeholder="Product Description">{{ $product['description'] }}</textarea>
-                                        <p class="text-danger description"
-                                            style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This
-                                            Field is Required !</p>
+                                        <div class="col-md-8 mx-auto">
+                                            <input type="text" id="product_name" class="form-control"
+                                                value="{{ $product['product_name'] }}" onkeyup="lookup(this);"
+                                                name="product_name" placeholder="Product Name">
+                                            <p class="text-danger product_name"
+                                                style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">
+                                                This
+                                                Field is Required !</p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group row" style="margin-bottom: 0.5rem;display:none; ">
-                                    <label class="col-md-4 label-control" for="eventRegInput5">What’s included *
-                                    </label>
-                                    <input type="hidden" name="what_include_id" id="what_include_id"
-                                        value="{{ json_encode($product_what_includes) }}">
-                                    <div class="col-md-8 mx-auto">
-                                        <select class="form-control" name="what_include" id="what_include"
-                                            onchange="getSelectValInclude(this);">
-                                            <option value="">Select What’s included</option>
-                                            @foreach ($services_array as $service)
-                                                <option value="{{ $service['id'] }}"
-                                                    @if ($product_what_include_id == $service['id']) selected @endif>
-                                                    {{ $service['name'] }}</option>
-                                            @endforeach
-                                        </select>
-                                        <p class="text-danger what_include"
-                                            style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This
-                                            Field is Required !</p>
+                                    <div class="form-group row" style="margin-bottom: 0.5rem ">
+                                        <label class="col-md-4 label-control" for="eventRegInput5">Job Types *
+                                        </label>
+                                        <input type="hidden" name="service_id" id="service_id"
+                                            value="{{ json_encode($product_job_types) }}">
+                                        <div class="col-md-8 mx-auto">
+                                            <select class="form-control select2-placeholder-multiple" name="job_type_id"
+                                                id="job_type_id" onchange="getSelectVal(this);">
+                                                <option value="">Select Job Types</option>
+                                                @foreach ($services_array as $service)
+                                                    <option value="{{ $service['id'] }}"
+                                                        @if ($product['job_type_id'] == $service['id']) selected @endif>
+                                                        {{ $service['name'] }}</option>
+                                                @endforeach
+                                            </select>
+                                            <p class="text-danger job_type_id"
+                                                style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">
+                                                This
+                                                Field is Required !</p>
 
-                                        <div id="content_what_included">
-                                            <div class='tag-container mt-2'>
-                                                @if ($product['what_include'] != null)
-                                                    @foreach (json_decode($product['what_include']) as $job_type)
-                                                        <div class="tag">{{ $job_type->name }} <span class="close"
-                                                                onclick="removeTagInclude({{ $job_type->id }})">X</span>
+                                            <div id="content_job_type">
+                                                <div class='tag-container mt-2'>
+                                                    @foreach ($product['job_types'] as $job_type)
+                                                        <div class="tag">{{ $job_type['jobtype']['name'] }} <span
+                                                                class="close"
+                                                                onclick="removeTag({{ $job_type['jobtype']['id'] }})">X</span>
                                                         </div>
                                                     @endforeach
-                                                @endif
+
+                                                </div>
                                             </div>
+
                                         </div>
 
                                     </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-4 label-control" for="eventRegInput5">Job Request Description
+                                            *
+                                        </label>
+                                        <div class="col-md-8 mx-auto">
+                                            @php
+                                                $jobTypeString = collect($jobstypes)->pluck('name')->implode(', ');
+                                                $cleanDescription = trim(
+                                                    str_replace($jobTypeString, '', $product['description']),
+                                                );
+                                            @endphp
 
-                                </div>
-                                <div class="form-group row" style="margin-bottom: 0.5rem ">
-                                    <label class="col-md-4 label-control" for="eventRegInput5">Job Coverage *
-                                    </label>
-                                    <div class="col-md-8 mx-auto">
-                                        <select class="form-control" name="job_coverage_id" id="job_coverage_id">
-                                            @foreach ($price_types as $price_type)
-                                                <option value="{{ $price_type['id'] }}"
-                                                    @if ($product['job_coverage_id'] == $price_type['id']) selected @endif>
-                                                    {{ $price_type['name'] }}</option>
-                                            @endforeach
+                                            <textarea id="description" class="form-control" name="description" placeholder="Product Description"
+                                                onkeyup="lookup(this);">{{ $jobTypeString }} {{ $cleanDescription }}</textarea>
+                                            <p class="text-danger description"
+                                                style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">
+                                                This
+                                                Field is Required !</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row" style="margin-bottom: 0.5rem;display:none; ">
+                                        <label class="col-md-4 label-control" for="eventRegInput5">What’s included *
+                                        </label>
+                                        <input type="hidden" name="what_include_id" id="what_include_id"
+                                            value="{{ json_encode($product_what_includes) }}">
+                                        <div class="col-md-8 mx-auto">
+                                            <select class="form-control" name="what_include" id="what_include"
+                                                onchange="getSelectValInclude(this);">
+                                                <option value="">Select What’s included</option>
+                                                @foreach ($services_array as $service)
+                                                    <option value="{{ $service['id'] }}"
+                                                        @if ($product_what_include_id == $service['id']) selected @endif>
+                                                        {{ $service['name'] }}</option>
+                                                @endforeach
+                                            </select>
+                                            <p class="text-danger what_include"
+                                                style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">
+                                                This
+                                                Field is Required !</p>
 
-                                        </select>
+                                            <div id="content_what_included">
+                                                <div class='tag-container mt-2'>
+                                                    @if ($product['what_include'] != null)
+                                                        @foreach (json_decode($product['what_include']) as $job_type)
+                                                            <div class="tag">{{ $job_type->name }} <span
+                                                                    class="close"
+                                                                    onclick="removeTagInclude({{ $job_type->id }})">X</span>
+                                                            </div>
+                                                        @endforeach
+                                                    @endif
+                                                </div>
+                                            </div>
+
+                                        </div>
 
                                     </div>
-                                </div>
+                                    <div class="form-group row" style="margin-bottom: 0.5rem ">
+                                        <label class="col-md-4 label-control" for="eventRegInput5">Job Coverage *
+                                        </label>
+                                        <div class="col-md-8 mx-auto">
+                                            <select class="form-control" name="job_coverage_id" id="job_coverage_id">
+                                                @foreach ($price_types as $price_type)
+                                                    <option value="{{ $price_type['id'] }}"
+                                                        @if ($product['job_coverage_id'] == $price_type['id']) selected @endif>
+                                                        {{ $price_type['name'] }}</option>
+                                                @endforeach
+
+                                            </select>
+
+                                        </div>
+                                    </div>
 
 
-                                <div class="form-group row" style="margin-bottom: 0.5rem ">
-                                    <label class="col-md-4 label-control" for="eventRegInput5">Price Type *
-                                    </label>
-                                    <div class="col-md-8 mx-auto">
-                                        <select class="form-control" name="price_type" id="price_type">
-                                            <option value="FIXED" @if ($product['price_type_id'] == 'FIXED') selected @endif>FIXED
-                                            </option>
-                                            <option value="STARTING_FROM"
-                                                @if ($product['price_type_id'] == 'STARTING_FROM') selected @endif>STARTING FROM</option>
-                                            <option value="HOURLY" @if ($product['price_type'] == 'HOURLY') selected @endif>HOURLY
-                                            </option>
-                                            <option value="POA" @if ($product['price_type'] == 'POA') selected @endif>POA
-                                            </option>
+                                    <div class="form-group row" style="margin-bottom: 0.5rem ">
+                                        <label class="col-md-4 label-control" for="eventRegInput5">Price Type *
+                                        </label>
+                                        <div class="col-md-8 mx-auto">
+                                            <select class="form-control" name="price_type" id="price_type">
+                                                <option value="FIXED" @if ($product['price_type_id'] == 'FIXED') selected @endif>
+                                                    FIXED
+                                                </option>
+                                                <option value="STARTING_FROM"
+                                                    @if ($product['price_type_id'] == 'STARTING_FROM') selected @endif>STARTING FROM</option>
+                                                <option value="HOURLY" @if ($product['price_type'] == 'HOURLY') selected @endif>
+                                                    HOURLY
+                                                </option>
+                                                <option value="POA" @if ($product['price_type'] == 'POA') selected @endif>
+                                                    POA
+                                                </option>
 
-                                        </select>
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group row" id="price_div"
+                                        @if ($product['price_type'] == 'POA') style="display:none" @endif>
+                                        <label class="col-md-4 label-control" for="eventRegInput5">Price * </label>
+                                        <div class="col-md-8 mx-auto">
+                                            <input type="number" id="price" class="form-control"
+                                                value="{{ $product['price'] }}" onkeyup="lookup(this);" name="price"
+                                                placeholder="Product Price">
+                                            <p class="text-danger price"
+                                                style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">
+                                                This
+                                                Field is Required !</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row" id="price_poa"
+                                        @if ($product['price_type'] != 'POA') style="display:none" @endif>
+                                        <label class="col-md-4 label-control" for="eventRegInput5">Price * </label>
+                                        <div class="col-md-8 mx-auto">
+                                            <input type="text" id="pricepoa" readonly class="form-control"
+                                                value="POA" onkeyup="lookup(this);" placeholder="Product Price">
+                                            <p class="text-danger price"
+                                                style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">
+                                                This
+                                                Field is Required !</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row" style="display:none;">
+                                        <label class="col-md-4 label-control" for="eventRegInput5">Additional information
+                                        </label>
+                                        <div class="col-md-8 mx-auto">
+                                            <textarea type="text" id="term_condition" class="form-control" value="" onkeyup="lookup(this);"
+                                                name="term_condition" placeholder="Additional information">{{ $product['term_condition'] }}</textarea>
+                                            <p class="text-danger term_condition"
+                                                style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">
+                                                This
+                                                Field is Required !</p>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="row mt-1">
+                                        <div class="col-sm-4">
+                                            <h6>Product ID</h6>
+                                        </div>
+                                        <div class="col-sm-7 text-secondary">{{ $product['product_no'] }}</div>
 
                                     </div>
-                                </div>
+                                    <hr>
 
+                                    <div class="row mt-1">
+                                        <div class="col-sm-4">
+                                            <h6>Product Name</h6>
+                                        </div>
+                                        <div class="col-sm-7 text-secondary">{{ $product['product_name'] }}</div>
+                                    </div>
+                                    <hr>
 
-                                <div class="form-group row" id="price_div"
-                                    @if ($product['price_type'] == 'POA') style="display:none" @endif>
-                                    <label class="col-md-4 label-control" for="eventRegInput5">Price * </label>
-                                    <div class="col-md-8 mx-auto">
-                                        <input type="number" id="price" class="form-control"
-                                            value="{{ $product['price'] }}" onkeyup="lookup(this);" name="price"
-                                            placeholder="Product Price">
-                                        <p class="text-danger price"
-                                            style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This
-                                            Field is Required !</p>
+                                    <div class="row mt-1">
+                                        <div class="col-sm-4">
+                                            <h6>Job Type</h6>
+                                        </div>
+                                        <div class="col-sm-7 text-secondary">
+                                            {{ collect($jobstypes)->pluck('name')->implode(', ') }}
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group row" id="price_poa"
-                                    @if ($product['price_type'] != 'POA') style="display:none" @endif>
-                                    <label class="col-md-4 label-control" for="eventRegInput5">Price * </label>
-                                    <div class="col-md-8 mx-auto">
-                                        <input type="text" id="pricepoa" readonly class="form-control"
-                                            value="POA" onkeyup="lookup(this);" placeholder="Product Price">
-                                        <p class="text-danger price"
-                                            style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This
-                                            Field is Required !</p>
-                                    </div>
-                                </div>
+                                    <hr>
 
-                                <div class="form-group row" style="display:none;">
-                                    <label class="col-md-4 label-control" for="eventRegInput5">Additional information
-                                    </label>
-                                    <div class="col-md-8 mx-auto">
-                                        <textarea type="text" id="term_condition" class="form-control" value="" onkeyup="lookup(this);"
-                                            name="term_condition" placeholder="Additional information">{{ $product['term_condition'] }}</textarea>
-                                        <p class="text-danger term_condition"
-                                            style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This
-                                            Field is Required !</p>
+                                    <div class="row mt-1">
+                                        <div class="col-sm-4">
+                                            <h6>Job Request Description</h6>
+                                        </div>
+                                        <div class="col-sm-7 text-secondary">
+                                            <strong>
+                                                {{ collect($jobstypes)->pluck('name')->implode(', ') }}
+                                            </strong>
+                                            <br>
+                                            {{ $product['description'] }}
+                                        </div>
                                     </div>
-                                </div>
+                                    <hr>
+
+                                    <div class="row mt-1">
+                                        <div class="col-sm-4">
+                                            <h6>Job Coverage</h6>
+                                        </div>
+                                        <div class="col-sm-7 text-secondary">{{ $product['job_coverage']['name'] }}</div>
+                                    </div>
+                                    <hr>
+
+                                    <div class="row mt-1">
+                                        <div class="col-sm-4">
+                                            <h6>Price Type</h6>
+                                        </div>
+                                        <div class="col-sm-7 text-secondary">{{ $product['price_type'] }}</div>
+                                    </div>
+                                    <hr>
+
+                                    <div class="row mt-1">
+                                        <div class="col-sm-4">
+                                            <h6>Price (£)</h6>
+                                        </div>
+                                        <div class="col-sm-7 text-secondary">
+                                            @if ($product['price_type'] == 'POA')
+                                                POA
+                                            @else
+                                                {{ number_format($product['price'], 2, '.', '') }}
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <hr>
+                                @endif
                                 <div class="form-group row" style="margin-bottom: 0.5rem ">
                                     <label class="col-md-4 label-control" for="eventRegInput5"> Status
                                     </label>
@@ -421,8 +516,16 @@
                             </div>
                             <div class="footers">
 
-                                <button type="button" onclick="submitDetailsForm()"
-                                    class="btn btn-dark round btn-min-width mr-1 mb-1" style="float: right;">Save</button>
+                                @if ($is_reference == 1)
+                                    <button type="button" onclick="submitDetailsForm()"
+                                        class="btn btn-dark round btn-min-width mr-1 mb-1"
+                                        style="float: right;">Save</button>
+                                @else
+                                    <button type="button" onclick="handleSave()"
+                                        class="btn btn-dark round btn-min-width mr-1 mb-1" style="float: right;">
+                                        Update
+                                    </button>
+                                @endif
                                 <a href="{{ redirect()->back()->getTargetUrl() }}"><button type="button"
                                         class="btn btn-dark round btn-min-width mr-1 mb-1"
                                         style="float: right;">Cancel</button></a>
@@ -431,6 +534,30 @@
 
                             </div>
                         </form>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="nameExistsModal" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content p-3">
+
+                            <h5 class="text-danger">Product name already exists</h5>
+                            <p>
+                                A product with this name already exists. You can continue creating it using the same name,
+                                or choose a different name.
+                            </p>
+
+                            <div class="d-flex justify-content-between mt-3">
+                                <button class="btn btn-dark" data-bs-dismiss="modal">
+                                    CHANGE NAME
+                                </button>
+
+                                <button class="btn btn-dark" onclick="forceSubmit()">
+                                    CONTINUE
+                                </button>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
 
@@ -462,6 +589,7 @@
 @endsection
 
 @section('script')
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function submitDetailsForm() {
             let array = ['product_name', 'price', 'job_coverage_id', 'price_type', 'job_type_id', 'description'];
@@ -515,7 +643,9 @@
 
 
 
-            // return;
+            let is_reference = @json($is_reference);
+
+
 
 
             if (status == true) {
@@ -603,14 +733,25 @@
             console.log(job_types)
             let html = `<div class='tag-container mt-2'>`;
 
-            let text = '';
+            let textArr = [];
+            // let html = '';
 
             job_types.forEach((item) => {
-                html +=
-                    `<div class="tag">${item.name} <span class="close" onclick="removeTag(${item.id})">X</span></div>`;
-                text += `${item.name} ,`;
+
+                html += `
+        <div class="tag">
+            ${item.name}
+            <span class="close" onclick="removeTag(${item.id})">X</span>
+        </div>
+    `;
+
+                textArr.push(item.name); // collect names
             });
+
             html += `</div>`;
+
+            // Join with comma → no trailing comma
+            let text = textArr.join(', ');
 
             $('#content_job_type').html(html);
             console.log(text);
@@ -628,11 +769,19 @@
             job_types = job_types.filter((item) => item.id != id);
             let html = `<div class='tag-container mt-2'>`;
             let text = '';
+            let names = [];
+
             job_types.forEach((item) => {
-                html +=
-                    `<div class="tag">${item.name} <span class="close" onclick="removeTag(${item.id})">X</span></div>`;
-                text += `${item.name} ,`;
+                html += `<div class="tag">
+                ${item.name}
+                <span class="close" onclick="removeTag(${item.id})">X</span>
+             </div>`;
+
+                names.push(item.name);
             });
+
+            // No trailing comma
+            text = `${names.join(', ')}`;
             html += `</div>`;
             $('#description').val(text);
 
@@ -700,5 +849,57 @@
                 }
             });
         });
+    </script>
+
+    <script>
+        function handleSave() {
+            let originalName = document.getElementById('original_name').value.trim();
+            let updatedName = document.getElementById('product_name').value.trim();
+
+
+            console.log('originalName', originalName);
+            console.log('updatedName', updatedName);
+
+
+
+            // 1. If name not changed → submit
+            if (originalName === updatedName) {
+                submitDetailsForm();
+                return;
+            }
+
+            // 2. Check if exists (AJAX call)
+            checkProductNameExists(updatedName);
+        }
+
+
+        function checkProductNameExists(name) {
+
+            fetch(`/check-product-name?name=${encodeURIComponent(name)}&trading_id=${@json($trading_unit['id'])}`)
+                .then(res => res.json())
+                .then(data => {
+
+                    if (data.exists) {
+                        let modal = new bootstrap.Modal(document.getElementById('nameExistsModal'));
+                        modal.show();
+                    } else {
+                        submitDetailsForm();
+                    }
+
+                })
+                .catch(() => {
+                    alert('Error checking product name');
+                });
+        }
+
+
+        // Continue anyway
+        function forceSubmit() {
+            let modalEl = document.getElementById('nameExistsModal');
+            let modal = bootstrap.Modal.getInstance(modalEl);
+            modal.hide();
+
+            submitDetailsForm();
+        }
     </script>
 @endsection

@@ -218,6 +218,15 @@ class ServiceProviderHubSettingController extends Controller
 
         $services_array = JobType::all();
         $price_types = PriceType::all();
+        $job_request = JobRequest::where('product_id', $id)->get();
+        $job_request_products = BookingJobRequest::where('product_id', $id)->get();
+
+        if (count($job_request) && count($job_request_products)) {
+
+            $is_reference = 1;
+        } else {
+            $is_reference = 0;
+        }
 
 
 
@@ -379,60 +388,73 @@ class ServiceProviderHubSettingController extends Controller
     public function updateProductOffer(Request $request)
     {
 
+        // return $request;
+
+
+        if ($request['is_reference'] == 0) {
 
 
 
-        $request->validate(
-            [
-                'product_name' => ['required', 'string', 'max:255'],
-                'price' => ['required', 'numeric'],
-                // 'job_type_id' => 'required',
-                'job_coverage_id' => 'required',
 
-            ]
-        );
+            $request->validate(
+                [
+                    'product_name' => ['required', 'string', 'max:255'],
+                    'price' => ['required', 'numeric'],
+                    // 'job_type_id' => 'required',
+                    'job_coverage_id' => 'required',
 
-        $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
-        $latestOrder = QuickProduct::orderBy('created_at', 'DESC')->first();
+                ]
+            );
 
-        if (!empty($request->what_include_id)) {
+            $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
+            $latestOrder = QuickProduct::orderBy('created_at', 'DESC')->first();
 
-            $what_include_id = json_decode($request->what_include_id);
-        } else {
-            $what_include_id = [];
-        }
-        $obj = QuickProduct::find($request['product_id'])->update([
+            if (!empty($request->what_include_id)) {
 
-            "vender_id" => $vender_id,
-            "trading_id" => $request['id'],
-            "product_no" => 'PRD-' . "SVP" . str_pad($vender_id, 5, "0", STR_PAD_LEFT) . "-" . str_pad($latestOrder ? $latestOrder->id + 1 : 0 + 1, 5, "0", STR_PAD_LEFT),
-            "job_type_id" => count(json_decode($request->service_id)) > 0 ? json_decode($request->service_id)[0] : 0,
-            "job_coverage_id" => $request->job_coverage_id,
-            "product_name" => $request->product_name,
-            "description" => $request->description,
-            "price_type" => $request->price_type,
-            "what_include" => json_encode(JobType::whereIn('id', $what_include_id)->get()),
-            "term_condition" => $request->term_condition,
-            "price" => $request->price,
-            "status" => $request->status,
-
-
-        ]);
-
-        if (isset($request->service_id)) {
-            QuickProductJobType::where('quick_product_id', $request['product_id'])->delete();
-
-            foreach (json_decode($request->service_id) as $key => $job_id) {
-                QuickProductJobType::create([
-                    "quick_product_id" => $request['product_id'],
-                    "job_type_id" => $job_id,
-
-                ]);
+                $what_include_id = json_decode($request->what_include_id);
+            } else {
+                $what_include_id = [];
             }
+            $obj = QuickProduct::find($request['product_id'])->update([
 
-            # code...
+                "vender_id" => $vender_id,
+                "trading_id" => $request['id'],
+                "product_no" => 'PRD-' . "SVP" . str_pad($vender_id, 5, "0", STR_PAD_LEFT) . "-" . str_pad($latestOrder ? $latestOrder->id + 1 : 0 + 1, 5, "0", STR_PAD_LEFT),
+                "job_type_id" => count(json_decode($request->service_id)) > 0 ? json_decode($request->service_id)[0] : 0,
+                "job_coverage_id" => $request->job_coverage_id,
+                "product_name" => $request->product_name,
+                "description" => $request->description,
+                "price_type" => $request->price_type,
+                "what_include" => json_encode(JobType::whereIn('id', $what_include_id)->get()),
+                "term_condition" => $request->term_condition,
+                "price" => $request->price,
+                "status" => $request->status,
+
+
+            ]);
+
+            if (isset($request->service_id)) {
+                QuickProductJobType::where('quick_product_id', $request['product_id'])->delete();
+
+                foreach (json_decode($request->service_id) as $key => $job_id) {
+                    QuickProductJobType::create([
+                        "quick_product_id" => $request['product_id'],
+                        "job_type_id" => $job_id,
+
+                    ]);
+                }
+
+                # code...
+            }
+        } else {
+            QuickProduct::find($request['product_id'])->update([
+
+
+                "status" => $request->status,
+
+
+            ]);
         }
-
 
 
 

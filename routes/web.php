@@ -74,6 +74,12 @@ use GuzzleHttp\Client as CClinet;
 |
 */
 
+Route::get('/check-product-name', function (\Illuminate\Http\Request $request) {
+    return response()->json([
+        'exists' => QuickProduct::where('product_name', $request->name)->where('trading_id', $request['trading_id'])->exists()
+    ]);
+});
+
 Route::get('/view-pdf', function () {
 
     $client = new CClinet();

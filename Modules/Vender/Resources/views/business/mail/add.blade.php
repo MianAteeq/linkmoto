@@ -3,8 +3,8 @@
 @section('css_custom')
     <style>
         /* ========================================================================
-                   1. MASTER LAYOUT & CONTAINER FOUNDATIONS
-                   ======================================================================== */
+                       1. MASTER LAYOUT & CONTAINER FOUNDATIONS
+                       ======================================================================== */
         .content-wrapper {
             height: auto !important;
             min-height: 84vh !important;
@@ -40,8 +40,8 @@
         }
 
         /* ========================================================================
-                   2. FORM ELEMENTS
-                   ======================================================================== */
+                       2. FORM ELEMENTS
+                       ======================================================================== */
         .form-control-custom {
             border: 2px solid black !important;
             border-radius: 7px;
@@ -83,8 +83,8 @@
         }
 
         /* ========================================================================
-                   3. SIDEBAR ACCORDION STYLES
-                   ======================================================================== */
+                       3. SIDEBAR ACCORDION STYLES
+                       ======================================================================== */
         .collapse-icon [data-toggle="collapse"]:before {
             position: absolute;
             top: 48%;
@@ -124,8 +124,8 @@
         }
 
         /* ========================================================================
-                   4. UI ELEMENTS (FOOTERS & BUTTONS)
-                   ======================================================================== */
+                       4. UI ELEMENTS (FOOTERS & BUTTONS)
+                       ======================================================================== */
         .footers {
             border-top: 2px solid black;
             padding: 15px 20px 25px 20px;
@@ -152,14 +152,16 @@
         }
 
         /* ========================================================================
-                   5. RESPONSIVE MEDIA QUERIES & SCROLL FIX
-                   ======================================================================== */
+                       5. RESPONSIVE MEDIA QUERIES & SCROLL FIX
+                       ======================================================================== */
         @media (max-width: 991.98px) {
 
             /* Sidebar Double Scrollbar Fix */
-            body.menu-open {
-                overflow: hidden !important;
-            }
+                body.menu-open {
+                    overflow-x: hidden !important;
+                    /* Change to overflow-x to only prevent horizontal scrolling */
+                }
+            
 
             .main-menu,
             .main-menu-content {

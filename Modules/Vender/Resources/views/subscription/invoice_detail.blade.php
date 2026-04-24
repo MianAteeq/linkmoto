@@ -144,7 +144,7 @@
     <div class="content-header bg-white">
         <div class="row" style="border-bottom: 3px solid #949494;">
             <div class="col-xl-12 col-12 bg-white headerbg" style="padding-left: 32px; padding-top: 13px;">
-                <h3 class="h3 mb-1">Invoices</h3>
+                <h3 class="h3">Invoices</h3>
 
                 <div class="breadcrumb-wrapper">
                     <ol class="breadcrumb p-0 m-0 pb-2 bg-transparent">
@@ -166,7 +166,7 @@
                 style="border-radius: 7px; border: 2px solid black; padding: 15px; display: flex; flex-direction: column; justify-content: space-between; min-height: 180px;">
 
                 <div>
-                    <div class="d-flex align-items-start mb-3">
+                    <div class="d-flex align-items-start mb-1">
                         <img src="/Invoice.png" style="width: 22px; margin-right: 10px; margin-top: 3px;">
                         <span style="font-weight: 600; font-size: 17px;">{{ $invoice['number'] }}</span>
                     </div>

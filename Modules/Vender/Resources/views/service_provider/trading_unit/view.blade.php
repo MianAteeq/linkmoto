@@ -79,7 +79,7 @@
 
             /* Edit button full width */
             .footers .btn {
-                width: 100% !important;
+                width: 43% !important;
                 float: none !important;
                 margin-top: 10px;
             }
@@ -92,7 +92,7 @@
         <div class="row" style="border-bottom: 3px solid #949494;">
             <div class="col-xl-12 col-12 bg-white headerbg" style="padding-left: 32px;padding-top: 13px;">
                 <h3 class="h3">Trade unit information</h3>
-                <div class="breadcrumb-wrapper col-12">
+                <div class="breadcrumb-wrapper col-12 p-0">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a>Products</a></li>
                         <li class="breadcrumb-item"><a style="color: black"

@@ -1,5 +1,6 @@
  <!-- BEGIN: Header-->
- <nav class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-light bg-info navbar-shadow" style="border-bottom: 2px solid #ff6600;">
+ <nav class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-light bg-info navbar-shadow"
+     style="border-bottom: 2px solid #ff6600;">
      <div class="navbar-wrapper">
          {{-- <div class="navbar-header">
              <ul class="nav navbar-nav flex-row">
@@ -11,23 +12,28 @@
          <div class="navbar-container content" style="margin-left: 0px;">
              <div class="collapse navbar-collapse" id="navbar-mobile">
                  <ul class="nav navbar-nav mr-auto float-left">
-                     <li class="nav-item  d-md-block"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#" style="color: black"><i class="ft-menu"></i></a></li>
-                     <li class="nav-item"><a class="navbar-brand" href="{{route('admin.dashboard')}}"><img class="brand-logo" alt="modern admin logo" style="width: 200px;margin-top: 16px;" src="{{URL::to($setting['headerlogo']??'')}}">
+                     <li class="nav-item  d-md-block"><a class="nav-link nav-menu-main menu-toggle hidden-xs"
+                             href="#" style="color: black"><i class="ft-menu"></i></a></li>
+                     <li class="nav-item"><a class="navbar-brand" href="{{ route('admin.dashboard') }}"><img
+                                 class="brand-logo" alt="modern admin logo" style="width: 200px;margin-top: 16px;"
+                                 src="{{ URL::to($setting['headerlogo'] ?? '') }}">
 
-                     </a></li>
+                         </a></li>
                  </ul>
                  <ul class="nav navbar-nav float-right">
                      <li class="dropdown dropdown-user nav-item">
-                         <a class="dropdown-toggle nav-link dropdown-user-link" href="javascript:void(0)" data-toggle="dropdown">
-                             <span  class="mr-1 user-name text-bold-700" style="color:black;" >
-                                 {{auth()->user()->name}}
+                         <a class="dropdown-toggle nav-link dropdown-user-link" href="javascript:void(0)"
+                             data-toggle="dropdown">
+                             <span class="mr-1 user-name text-bold-700" style="color:black;">
+                                 {{ auth()->user()->name }}
                              </span>
                              <span class="avatar avatar-online">
-                                 <img src="{{asset('/modules/admin/app-assets/images/portrait/small/avatar-s-19.png')}}" alt="avatar"><i></i>
+                                 <img src="{{ asset('logo.png') }}" alt="avatar"><i></i>
                              </span>
                          </a>
                          <div class="dropdown-menu dropdown-menu-right">
-                           <a class="dropdown-item" href="{{route('website.vendor.logout.submit')}}"><i class="ft-power"></i> Logout</a>
+                             <a class="dropdown-item" href="{{ route('website.vendor.logout.submit') }}"><i
+                                     class="ft-power"></i> Logout</a>
                          </div>
                      </li>
                  </ul>
