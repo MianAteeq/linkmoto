@@ -6,7 +6,15 @@
         .dataTables_wrapper .dataTables_length {
             display: none;
         }
+    <link rel="stylesheet" type="text/css" href="/modules/admin/app-assets/vendors/css/tables/datatable/datatables.min.css">
+    <style>
+        .dataTables_wrapper .dataTables_length {
+            display: none;
+        }
 
+        .dataTables_wrapper .dataTables_filter {
+            display: none;
+        }
         .dataTables_wrapper .dataTables_filter {
             display: none;
         }
@@ -15,7 +23,14 @@
             background: #fafbfc;
             color: black;
         }
+        table.dataTable thead {
+            background: #fafbfc;
+            color: black;
+        }
 
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: white;
+        }
         .table-striped tbody tr:nth-of-type(odd) {
             background-color: white;
         }
@@ -26,11 +41,23 @@
             padding-top: 2px;
             font-size: 10px;
         }
+        table.dataTable tbody td {
+            padding: 8px 10px;
+            padding-bottom: 2px;
+            padding-top: 2px;
+            font-size: 10px;
+        }
 
         .dataTables_wrapper .dataTables_info {
             display: none;
         }
+        .dataTables_wrapper .dataTables_info {
+            display: none;
+        }
 
+        table.dataTable tbody td {
+            color: black;
+        }
         table.dataTable tbody td {
             color: black;
         }
@@ -43,7 +70,18 @@
             padding-left: 8px;
             padding-right: 1px;
         }
+        table.dataTable thead th,
+        table.dataTable thead td {
+            padding: 10px 18px;
+            border-bottom: 1px solid #111;
+            font-size: 11px;
+            padding-left: 8px;
+            padding-right: 1px;
+        }
 
+        th {
+            white-space: pre-line;
+        }
         th {
             white-space: pre-line;
         }
@@ -57,7 +95,24 @@
             padding-left: 8px;
             color: black;
         }
+        table.dataTable tfoot th,
+        table.dataTable tfoot td {
+            padding: 10px 18px 6px 18px;
+            border-top: 1px solid #111;
+            font-size: 10px;
+            padding-right: 0px;
+            padding-left: 8px;
+            color: black;
+        }
 
+        /* --- PROFESSIONAL SIDEBAR STYLES --- */
+        .sidebar-overview {
+            border-radius: 7px;
+            border: 2px solid black;
+            background-color: #fcfdfe;
+            padding-bottom: 20px;
+            box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.04);
+        }
         /* --- PROFESSIONAL SIDEBAR STYLES --- */
         .sidebar-overview {
             border-radius: 7px;
@@ -80,11 +135,33 @@
             margin-bottom: 15px;
             background-color: white;
         }
+        .sidebar-header {
+            border-radius: 5px 5px 0 0;
+            padding: 15px 20px;
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: black;
+            border-bottom: 2px solid #0a0a0a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            background-color: white;
+        }
 
         .sidebar-content {
             padding: 0px 10px;
         }
+        .sidebar-content {
+            padding: 0px 10px;
+        }
 
+        .sidebar-content p {
+            line-height: 1.6;
+            color: #333;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
         .sidebar-content p {
             line-height: 1.6;
             color: #333;
@@ -105,7 +182,15 @@
             background-color: black !important;
             color: #FFFFFF;
         }
+        .btn-dark {
+            border-color: black !important;
+            background-color: black !important;
+            color: #FFFFFF;
+        }
 
+        .round {
+            border-radius: 0.5rem;
+        }
         .round {
             border-radius: 0.5rem;
         }
@@ -116,7 +201,19 @@
                 width: 90%;
                 float: left;
             }
+        /* BEGIN: Responsive Layout Adjustments */
+        @media (max-width: 1024px) {
+            .row.m-0.mt-2 .search-col {
+                width: 90%;
+                float: left;
+            }
 
+            .row.m-0.mt-2 .filter-col {
+                width: 10%;
+                float: left;
+                text-align: center;
+            }
+        }
             .row.m-0.mt-2 .filter-col {
                 width: 10%;
                 float: left;
@@ -138,11 +235,23 @@
                 height: auto !important;
                 padding-bottom: 10px !important;
             }
+            #contens[style] {
+                height: auto !important;
+                padding-bottom: 10px !important;
+            }
 
             .headerbg[style] {
                 padding-left: 15px !important;
             }
+            .headerbg[style] {
+                padding-left: 15px !important;
+            }
 
+            .row.m-0.mt-2 {
+                display: flex;
+                flex-wrap: nowrap;
+                align-items: center;
+            }
             .row.m-0.mt-2 {
                 display: flex;
                 flex-wrap: nowrap;
@@ -154,7 +263,18 @@
                 max-width: 85%;
                 padding-right: 5px;
             }
+            .row.m-0.mt-2 .search-col {
+                flex: 0 0 85%;
+                max-width: 85%;
+                padding-right: 5px;
+            }
 
+            .row.m-0.mt-2 .filter-col {
+                flex: 0 0 15%;
+                max-width: 15%;
+                text-align: center;
+                margin-top: 0 !important;
+            }
             .row.m-0.mt-2 .filter-col {
                 flex: 0 0 15%;
                 max-width: 15%;
@@ -168,7 +288,17 @@
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
             }
+            .table-responsive {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
 
+            .footers {
+                text-align: center;
+                padding-bottom: 15px;
+            }
             .footers {
                 text-align: center;
                 padding-bottom: 15px;
@@ -181,7 +311,16 @@
                 display: block;
             }
         }
+            .footers a button {
+                float: none !important;
+                width: 100%;
+                margin: 0 auto !important;
+                display: block;
+            }
+        }
 
+        /* END: Responsive Layout Adjustments */
+    </style>
         /* END: Responsive Layout Adjustments */
     </style>
 @endsection
@@ -200,7 +339,12 @@
                         <li class="breadcrumb-item"><a style="color: black"
                                 href="{{ route('vender.business.detail') }}">Detail</a>
                         </li>
+                        <li class="breadcrumb-item"><a style="color: black"
+                                href="{{ route('vender.business.detail') }}">Detail</a>
+                        </li>
 
+                        <li class="breadcrumb-item">Main contacts
+                        </li>
                         <li class="breadcrumb-item">Main contacts
                         </li>
 
@@ -225,6 +369,10 @@
                         <img src="/home.png" style="width: 22px;" alt="Home">
                         <span>Main Contacts</span>
                     </div>
+                    <div class="sidebar-header">
+                        <img src="/home.png" style="width: 22px;" alt="Home">
+                        <span>Main Contacts</span>
+                    </div>
 
                     <div class="sidebar-content flex-grow-1" style="color: black;">
                         <p>
@@ -237,6 +385,8 @@
                         </p>
                     </div>
 
+                </div>
+            </div>
                 </div>
             </div>
 
@@ -344,14 +494,26 @@
 
                 </div>
             </div>
+                </div>
+            </div>
 
+        </div>
+    </div>
         </div>
     </div>
 @endsection
 
 @section('script')
     <script src="/modules/admin/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
+    <script src="/modules/admin/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
 
+    <script>
+        oTable = $('.zero-configuration').DataTable({
+            "bPaginate": $('.zero-configuration tbody tr').length > 10,
+            "iDisplayLength": 10,
+            "bAutoWidth": false,
+            "ordering": false,
+        });
     <script>
         oTable = $('.zero-configuration').DataTable({
             "bPaginate": $('.zero-configuration tbody tr').length > 10,
@@ -364,4 +526,9 @@
             oTable.search($(this).val()).draw();
         })
     </script>
+        $('#myInputTextField').keyup(function() {
+            oTable.search($(this).val()).draw();
+        })
+    </script>
 @endsection
+

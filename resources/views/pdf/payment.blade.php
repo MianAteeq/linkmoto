@@ -96,98 +96,130 @@
                     style="overflow: hidden;margin: 10px;margin-top:25px;margin-bottom:0px;width: 50%;float: left;">
 
                     <h1 id="customer-title" style="font-size: 15px;font-weight: bold;line-height: 2.1;margin-bottom: 0">
-                        @if ($vender['profile']['organization_status'] === 'Limited Company')
-                            @if ($invoice['invoice']['trading_name']['app_setting']['header_option'] == 1)
-                                {{ ucfirst($vender['profile']['company_name']) }}
-                            @elseif($invoice['invoice']['trading_name']['app_setting']['header_option'] == 2)
-                                {{ ucfirst($vender['profile']['company_name']) }} trading as
-                                {{ $invoice['invoice']['trading_name']['trading_name']['name'] }}
-                            @else
-                                {{ $invoice['invoice']['trading_name']['trading_name']['name'] }}
-                            @endif
-                        @else
-                            @if ($invoice['invoice']['trading_name']['app_setting']['header_option'] == 1)
-                                {{ ucfirst($vender['profile']['company_name']) }}
-                            @elseif($invoice['invoice']['trading_name']['app_setting']['header_option'] == 2)
-                                {{ ucfirst($vender['profile']['company_name']) }} trading as
-                                {{ $invoice['invoice']['trading_name']['trading_name']['name'] }}
-                            @else
-                                {{ $invoice['invoice']['trading_name']['trading_name']['name'] }}
-                            @endif
 
-                        @endif
-                    </h1>
-                    <div class="add" style="display: flex;flex-direction: column;width: 100%;">
+
+                        <!-- TITLE -->
+                        <p style="font-weight:bold; font-size:13px; margin:0 0 3px 0;">
+                            @if ($trading_unit['trading_template'] == 1)
+                                {{ ucfirst(auth()->user()->profile->company_name) }}
+                            @endif
+                            @if ($trading_unit['trading_template'] == 2)
+                                {{ ucfirst(auth()->user()->profile->company_name) }} Trading as
+                                {{ $trading_unit['trading_name']['name'] }}
+                            @endif
+                            @if ($trading_unit['trading_template'] == 3)
+                                {{ ucfirst($trading_unit['trading_name']['name']) }}
+                            @endif
+                        </p>
                         @php
-                            $addressLine1 = collect([
-                                $book_invoice['trading_name']['app_setting']['address_line_1'] ?? null,
-                                $book_invoice['trading_name']['app_setting']['address_line_2'] ?? null,
-                                $book_invoice['trading_name']['app_setting']['address_line_3'] ?? null,
-                                $book_invoice['trading_name']['app_setting']['address_line_4'] ?? null,
-                            ])
-                                ->filter()
-                                ->implode(', ');
+                            if (
+                                $trading_unit['operation_type'] == 'Both' ||
+                                $trading_unit['operation_type'] == 'On-site'
+                            ) {
+                                $addressLine1 = collect([
+                                    $trading_unit['site']['address_line_1'] ?? null,
+                                    $trading_unit['site']['address_line_2'] ?? null,
+                                    $trading_unit['site']['address_line_3'] ?? null,
+                                    $trading_unit['site']['address_line_4'] ?? null,
+                                ])
+                                    ->filter()
+                                    ->implode(', ');
 
-                            $addressLine2 = collect([
-                                $book_invoice['trading_name']['app_setting']['city'] ?? null,
-                                $book_invoice['trading_name']['app_setting']['postcode'] ?? null,
-                            ])
-                                ->filter()
-                                ->implode(' ');
+                                $addressLine2 = collect([
+                                    $trading_unit['site']['city'] ?? null,
+                                    $trading_unit['site']['postcode'] ?? null,
+                                ])
+                                    ->filter()
+                                    ->implode(' ');
+                            } else {
+                                $addressLine1 = collect([
+                                    $profile['address_line_1'] ?? null,
+                                    $profile['address_line_2'] ?? null,
+                                    $profile['address_line_3'] ?? null,
+                                    $profile['address_line_4'] ?? null,
+                                ])
+                                    ->filter()
+                                    ->implode(', ');
+
+                                $addressLine2 = collect([$profile['city'] ?? null, $profile['postcode'] ?? null])
+                                    ->filter()
+                                    ->implode(' ');
+                            }
                         @endphp
 
-
+                        <!-- ADDRESS -->
                         @if ($addressLine1 || $addressLine2)
-                            <p style="line-height:1.4;font-size:15px;margin:0;">
-                                {{ $addressLine1 }}
-                                @if ($addressLine2)
-                                    <br>{{ $addressLine2 }}
+                            <p style="margin:0 0 3px 0;">
+                                {{ $addressLine1 }}<br>
+                                {{ $addressLine2 }}
+                            </p>
+                        @endif
+
+                        <!-- CONTACT -->
+                        <div style="min-height:150px;">
+
+                            <p style="margin:0 0 3px 0;">
+
+                                @php
+                                    $hasTel =
+                                        $trading_unit['app_setting']['show_landline'] === 'YES' &&
+                                        !empty($trading_unit['landline']);
+                                    $hasMobile =
+                                        $trading_unit['app_setting']['show_mobile'] === 'YES' &&
+                                        !empty($trading_unit['mobile']);
+                                @endphp
+
+                                @if ($hasTel)
+                                    Tel: {{ $trading_unit['landline'] }}
+                                @endif
+
+                                @if ($hasTel && $hasMobile)
+                                    &nbsp;|&nbsp;
+                                @endif
+
+                                @if ($hasMobile)
+                                    Mobile: {{ $trading_unit['mobile'] }}
+                                @endif
+
+                            </p>
+
+                            @if ($trading_unit['app_setting']['show_email'] === 'YES' && !empty($trading_unit['email']))
+                                <p style="margin:0 0 3px 0;">Email: {{ $trading_unit['email'] }}</p>
+                            @endif
+
+                            @if ($trading_unit['app_setting']['show_website'] === 'YES' && !empty($trading_unit['website']))
+                                <p style="margin:0 0 3px 0;">{{ $trading_unit['website'] }}</p>
+                            @endif
+                            <p style="margin:0 0 6px 0;">
+                                @if (!empty($vender['profile']['uk_vat_no']))
+                                    Registered Vat no: {{ $vender['profile']['uk_vat_no'] }}
+                                @else
+                                    <span style="visibility:hidden;">VAT placeholder</span>
                                 @endif
                             </p>
-                        @endif
 
-                        @if (!empty($invoice['invoice']['trading_name']['app_setting']['landline']))
-                            <p style="line-height: 1.8;font-size: 15px;margin:0;margin-top: -7px;">Tel:
-                                {{ $invoice['invoice']['trading_name']['app_setting']['landline'] }}</p>
-                        @endif
-                        @if (!empty($invoice['invoice']['trading_name']['app_setting']['mobile']))
-                            <p style="line-height: 1.8;font-size: 15px;margin:0;margin-top: -7px;">Mob:
-                                {{ $invoice['invoice']['trading_name']['app_setting']['mobile'] }}</p>
-                        @endif
-                        @if (!empty($invoice['invoice']['trading_name']['app_setting']['email']))
-                            <p style="line-height: 1.8;font-size: 15px;margin:0;margin-top: -7px;">Email:
-                                {{ $invoice['invoice']['trading_name']['app_setting']['email'] }}
-                        @endif
 
-                        @if (!empty($invoice['invoice']['trading_name']['app_setting']['website']))
-                            <p style="line-height: 1.8; font-size: 15px; margin:0; margin-top: -7px;">
-                                {{ $invoice['invoice']['trading_name']['app_setting']['website'] }}
-                            </p>
-                        @endif
-                        @if (!empty($vender['profile']['uk_vat_no']))
-                            <p style="line-height: 1.8;font-size: 15px;margin:0;margin-top: -7px;">Registered VAT No:
-                                {{ $vender['profile']['uk_vat_no'] }}</p>
-                        @endif
 
-                    </div>
-                    <table id="meta" style="margin-top: 160px;width: 100%;">
-                        <tr>
-                            <th style="background: #d9d9d9;text-align: left;color: black;" colspan="2">Invoice
-                                Reference
-                            </th>
-                        </tr>
-                        <tr>
-                            <td style="text-align: left;background: #d9d9d9;color: black;" class="meta-head">Invoice ID
-                            </td>
-                            <td>
-                                {{ $invoice['invoice']['invoice_no'] ?? '' }}
-                            </td>
-                        </tr>
+                        </div>
+                        <table id="meta" style="margin-top: 160px;width: 100%;">
+                            <tr>
+                                <th style="background: #d9d9d9;text-align: left;color: black;" colspan="2">Invoice
+                                    Reference
+                                </th>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;background: #d9d9d9;color: black;" class="meta-head">Invoice
+                                    ID
+                                </td>
+                                <td>
+                                    {{ $invoice['invoice']['invoice_no'] ?? '' }}
+                                </td>
+                            </tr>
 
 
 
 
-                    </table>
+                        </table>
 
                 </div>
 
@@ -291,38 +323,79 @@
 
     <div id="header" style="position: fixed;bottom: 0;width: 100%;margin: 10px;margin-top: 15px;">
         <p style="width: 100%;margin-top: 10px;font-size: 11px;text-align: left">
-            @if ($vender['profile']['organization_status'] === 'Limited Company')
-                @if (
-                    $invoice['invoice']['trading_name']['app_setting']['header_option'] == 1 ||
-                        $invoice['invoice']['trading_name']['app_setting']['header_option'] == 2)
-                    {{ ucfirst($vender['profile']['company_name']) }}
-                @else
-                    {{ ucfirst($vender['profile']['company_name']) }} trading as
-                    {{ $invoice['invoice']['booking']['trading_name']['trading_name']['name'] }}.
-                @endif
-            @else
-                @if (
-                    $invoice['invoice']['trading_name']['app_setting']['header_option'] == 1 ||
-                        $invoice['invoice']['trading_name']['app_setting']['header_option'] == 2)
-                    {{-- {{ucfirst($vender['profile']['company_name']) }} --}}
-                @else
-                    {{ ucfirst($vender['profile']['company_name']) }} trading as
-                    {{ $invoice['invoice']['booking']['trading_name']['trading_name']['name'] }}.
-                @endif
+            @php
+                $companyName = $profile['company_name'] ?? (auth()->user()->profile['company_name'] ?? null);
+                $tradingName = $trading_unit['trading_name']['name'] ?? null;
 
+                $businessNameFormat = $trading_unit['trading_template'] ?? null;
+                $businessSetup = $profile['organization_status'] ?? null;
 
-            @endif
+                $footerLegalName = null;
+
+                // Case 1: Trading Name Only
+                if ($businessNameFormat == '3' && $companyName && $tradingName) {
+                    $footerLegalName = $companyName . ' trading as ' . $tradingName;
+                }
+                // Case 2: LTD / LLP
+                elseif (
+                    in_array($businessSetup, ['Limited Company (Ltd)', 'Limited Liability Partnership (LLP)']) &&
+                    $companyName
+                ) {
+                    $footerLegalName = $companyName;
+                }
+            @endphp
+            {{ $footerLegalName }}
             {{-- Motodoc Ltd trading as H & H Motors. --}}
         </p>
-        <p style="width: 100%;margin-bottom: 30px;margin-top: -18px;font-size: 11px;text-align: left">Registered office:
-            {{ $vender['profile']['address_line_1'] }}, @isset($vender['profile']['address_line_2'])
-                {{ $vender['profile']['address_line_2'] }},
-            @endisset {{ $vender['profile']['city'] }} {{ $vender['profile']['postcode'] }}. Registered in
-            {{ $vender['profile']['company_jurisdiction'] }} no: {{ $vender['profile']['registration_no'] }}.
-            {{-- {{ $vender['profile']['area'] }}.
-            Registered in {{$vender['profile']['company_jurisdiction']}} no: {{ $vender['profile']['uk_vat_no'] }} --}}
+        @php
+
+            $businessSetup = $profile['organization_status'] ?? null;
+
+            $isCompany = in_array($businessSetup, ['Limited Company (Ltd)', 'Limited Liability Partnership (LLP)']);
+
+            $registeredAddress = null;
+
+            if ($isCompany) {
+                $addressParts = array_values(
+                    array_filter([
+                        $profile['address_line_1'] ?? null,
+                        $profile['address_line_2'] ?? null,
+                        $profile['address_line_3'] ?? null,
+                        $profile['address_line_4'] ?? null,
+                        $profile['city'] ?? null,
+                        $profile['postcode'] ?? null,
+                    ]),
+                );
+
+                if (!empty($addressParts)) {
+                    // Add comma to all except last
+                    $formattedParts = [];
+
+                    foreach ($addressParts as $index => $part) {
+                        $formattedParts[] = $index < count($addressParts) - 1 ? $part . ', ' : $part;
+                    }
+
+                    $registeredAddress = implode($formattedParts);
+                }
+            }
+
+            // Jurisdiction
+            $registeredJurisdiction = $isCompany ? $profile['company_jurisdiction'] ?? null : null;
+
+            // Company Number
+            $registeredCompanyNo = $isCompany ? $profile['registration_no'] ?? null : null;
+        @endphp
+        <p style="width: 100%;margin-bottom: 30px;margin-top: -18px;font-size: 11px;text-align: left">
+            @isset($registeredAddress)
+                Registered
+                office: {{ $registeredAddress }}.
+                Registered in
+                {{ $registeredJurisdiction }} no: {{ $registeredCompanyNo }}.
+            @endisset
+
         <p style="margin-top:-45px;margin-right: -20px; font-size: 11px;float: right;text-align: right!important">
             v20241002</p>
+        </p>
         </p>
 
 

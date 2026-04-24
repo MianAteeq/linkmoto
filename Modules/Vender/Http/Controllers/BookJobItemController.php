@@ -42,12 +42,12 @@ class BookJobItemController extends Controller
                 return response()->json($responseArr);
             }
 
-            $booking=Booking::find($request->booking_id);
+            $booking = Booking::find($request->booking_id);
 
-            $is_job=0;
+            $is_job = 0;
 
-            if($booking['job_no']!=null){
-                $is_job=1;
+            if ($booking['job_no'] != null) {
+                $is_job = 1;
             }
 
             $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
@@ -56,18 +56,18 @@ class BookJobItemController extends Controller
 
             $obj = BookingJobItem::create([
                 "vender_id" => $vender_id,
-                "job_item_no" => 'JIT-'."SVP".str_pad($vender_id, 5, "0", STR_PAD_LEFT)."-". str_pad($latestOrder?$latestOrder->id+1: 0 + 1, 5, "0", STR_PAD_LEFT),
-                 "is_job"=>$is_job,
+                "job_item_no" => 'JIT-' . "SVP" . str_pad($vender_id, 5, "0", STR_PAD_LEFT) . "-" . str_pad($latestOrder ? $latestOrder->id + 1 : 0 + 1, 5, "0", STR_PAD_LEFT),
+                "is_job" => $is_job,
                 ...$request->except('job_types'),
 
             ]);
 
-            if(isset($request['job_types'])){
+            if (isset($request['job_types'])) {
                 foreach ($request['job_types'] as $key => $job_type) {
 
                     BookingJobItemJobType::create([
-                        "job_item_id"=>$obj['id'],
-                        "job_type_id"=>$job_type['id'],
+                        "job_item_id" => $obj['id'],
+                        "job_type_id" => $job_type['id'],
 
                     ]);
                     # code...
@@ -136,18 +136,18 @@ class BookJobItemController extends Controller
 
             $obj = BookingJobItem::find($request['booking_item_id'])->update([
                 "vender_id" => $vender_id,
-                ...$request->except('booking_item_id','job_types'),
+                ...$request->except('booking_item_id', 'job_types'),
 
             ]);
 
-            BookingJobItemJobType::where('job_item_id',$request['booking_item_id'])->delete();
+            BookingJobItemJobType::where('job_item_id', $request['booking_item_id'])->delete();
 
-            if(isset($request['job_types'])){
+            if (isset($request['job_types'])) {
                 foreach ($request['job_types'] as $key => $job_type) {
 
                     BookingJobItemJobType::create([
-                        "job_item_id"=>$request['booking_item_id'],
-                        "job_type_id"=>$job_type['id'],
+                        "job_item_id" => $request['booking_item_id'],
+                        "job_type_id" => $job_type['id'],
 
                     ]);
                     # code...
@@ -163,7 +163,7 @@ class BookJobItemController extends Controller
 
             ]);
 
-            $quotation_item = BookingJobItem::with(['booking', 'job_type', 'price_type'])->find($request->booking_item_id);
+            $quotation_item = BookingJobItem::with(['booking', 'job_type', 'price_type', 'job_types.job_type'])->find($request->booking_item_id);
 
             return response()->json([
                 'status' => true,
@@ -210,7 +210,7 @@ class BookJobItemController extends Controller
             ]);
         }
     }
-   
+
     public function changeMarkStatus(Request $request)
     {
         try {
@@ -220,9 +220,9 @@ class BookJobItemController extends Controller
 
             if (isset($quotation_item)) {
                 BookingJobItem::find($request->booking_item_id)->update([
-                'is_complete'=>$request->is_completed
+                    'is_complete' => $request->is_completed
                 ]);
-                  $items = BookingJobItem::find($request->booking_item_id);
+                $items = BookingJobItem::find($request->booking_item_id);
                 return response()->json([
                     'status' => true,
                     'item' => $items,
@@ -260,7 +260,7 @@ class BookJobItemController extends Controller
             if ($quotation_item) {
                 $quotation_item->delete();
                 Booking::find($quotation_item['booking_id'])->update([
-                    "total" =>( BookingJobItem::where('booking_id', $quotation_item['booking_id'])->sum('total_price')),
+                    "total" => (BookingJobItem::where('booking_id', $quotation_item['booking_id'])->sum('total_price')),
                     "sub_total" => BookingJobItem::where('booking_id', $quotation_item['booking_id'])->sum('sub_total_ex_vat'),
                     "vat" => BookingJobItem::where('booking_id', $quotation_item['booking_id'])->sum('vat_price'),
 

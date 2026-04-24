@@ -240,6 +240,10 @@ class InvoiceController extends Controller
             $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
 
             $invoices = BookingTransaction::with('invoice')->where('vender_id', $vender_id)->find($request['payment_id']);
+            $trading_unit = TradingUnit::find($invoices->invoice->booking->trading_id);
+
+
+            $profile = $request->user()['profile'];
 
             $item_array = [];
 
@@ -270,6 +274,8 @@ class InvoiceController extends Controller
 
             $data = [
                 'invoice'    => $invoices,
+                'trading_unit' => $trading_unit,
+                'profile' => $profile,
                 'vender' => User::with('profile')->find(auth()->user()->id),
                 'item_array' => $item_array,
                 'first_array' => $first_array,
@@ -456,6 +462,11 @@ class InvoiceController extends Controller
             $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
 
             $invoices = BookingTransaction::with('invoice')->where('vender_id', $vender_id)->find($request['payment_id']);;
+
+            $trading_unit = TradingUnit::find($invoices->invoice->booking->trading_id);
+
+
+            $profile = $request->user()['profile'];
             $item_array = [];
 
             $first_array = [];
@@ -511,6 +522,8 @@ class InvoiceController extends Controller
             $data = [
                 'invoice'    => $invoices,
                 'book_invoice'    => $book_invoice,
+                'trading_unit' => $trading_unit,
+                'profile' => $profile,
                 'vender' =>  User::with('profile')->find($invoices['vender_id']),
                 'item_array' => $item_array,
                 'first_array' => $first_array,
