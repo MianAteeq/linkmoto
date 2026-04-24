@@ -162,7 +162,7 @@
     <div class="content-header bg-white">
         <div class="row" style="border-bottom: 3px solid #949494;">
             <div class="col-xl-12 col-12 bg-white headerbg" style="padding-left: 32px; padding-top: 13px;">
-                <h3 class="h3 mb-1">Subscription information</h3>
+                <h3 class="h3">Subscription information</h3>
 
                 <div class="breadcrumb-wrapper">
                     <ol class="breadcrumb p-0 m-0 pb-2 bg-transparent">
@@ -181,7 +181,7 @@
 
         <div class="col-lg-3 col-12 mb-3">
             <div style="border-radius: 7px; border: 2px solid black; padding: 15px;">
-                <div class="d-flex align-items-start mb-4">
+                <div class="d-flex align-items-start mb-2">
                     <img src="/box.png" style="width: 22px; margin-right: 10px; margin-top: 3px;">
                     <span style="font-weight: 600; font-size: 16px;">Motonos Service Provider App
                         ({{ $invoice['plan']['name'] ?? '' }})</span>

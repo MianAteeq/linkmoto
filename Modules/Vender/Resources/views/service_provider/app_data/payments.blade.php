@@ -130,7 +130,7 @@
     <div class="content-header bg-white">
         <div class="row" style="border-bottom: 3px solid #949494;">
             <div class="col-xl-12 col-12 bg-white headerbg" style="padding-left: 32px;padding-top: 13px;">
-                <h3 class="h3 mb-1">Payment</h3>
+                <h3 class="h3">Payment</h3>
 
                 <div class="breadcrumb-wrapper">
                     <ol class="breadcrumb p-0 m-0 pb-2 bg-transparent">

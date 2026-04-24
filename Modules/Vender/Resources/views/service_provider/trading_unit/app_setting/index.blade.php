@@ -1,20 +1,152 @@
 @extends('vender::layouts.master')
 
 @section('css_custom')
+    <link rel="stylesheet" type="text/css" href="/modules/admin/app-assets/vendors/css/tables/datatable/datatables.min.css">
     <style>
-        .footers {
-            /* position: absolute; */
-            bottom: 0;
-            left: 0;
-            border-top: 2px solid black;
-            padding-top: 5px;
+        /* ========================================================================
+                           1. TABLE STYLES
+                           ======================================================================== */
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_filter,
+        .dataTables_wrapper .dataTables_info {
+            display: none !important;
+        }
+
+        table.dataTable thead {
+            background: #fafbfc;
+            color: black;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: white;
+        }
+
+        table.dataTable tbody td {
+            padding: 8px 10px;
+            padding-bottom: 2px;
+            padding-top: 2px;
+            font-size: 10px;
+            color: black;
+            vertical-align: middle;
+        }
+
+        table.dataTable thead th,
+        table.dataTable thead td {
+            padding: 10px 18px;
+            border-bottom: 1px solid #111;
+            font-size: 11px;
+            padding-left: 8px;
+            padding-right: 1px;
+            white-space: nowrap;
+        }
+
+        table.dataTable tfoot th,
+        table.dataTable tfoot td {
+            padding: 10px 18px 6px 18px;
+            border-top: 1px solid #111;
+            font-size: 10px;
+            padding-right: 0px;
+            padding-left: 8px;
+            color: black;
+        }
+
+        table.dataTable {
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+            border-collapse: collapse !important;
+        }
+
+        .table-responsive {
             width: 100%;
+            overflow-x: auto;
+            padding: 1px;
+        }
+
+        /* Hide DataTables sorting icons */
+        table.dataTable thead .sorting,
+        table.dataTable thead .sorting_asc,
+        table.dataTable thead .sorting_desc {
+            background-image: none !important;
+            cursor: default !important;
+        }
+
+        table.dataTable thead th {
+            padding-right: 18px !important;
+        }
+
+        /* ========================================================================
+                           2. ICONS & COLLAPSE STYLES
+                           ======================================================================== */
+        .collapse-icon [data-toggle="collapse"]:before {
+            position: absolute;
+            top: 48%;
+            right: 20px;
+            margin-top: -8px;
+            font-family: 'feather';
+            content: "\e842";
+            transition: all 300ms linear 0s;
+        }
+
+        .collapse-icon [data-toggle="collapse"]:after {
+            position: absolute;
+            top: 48%;
+            right: 20px;
+            margin-top: -8px;
+            font-family: 'feather';
+            content: "\e845";
+            transition: all 300ms linear 0s;
+        }
+
+        .collapsed {
+            border-bottom-left-radius: 0px !important;
+            border-bottom-right-radius: 0px !important;
+        }
+
+        /* ========================================================================
+                           3. CONTAINER & UI STYLES
+                           ======================================================================== */
+        body {
+            color: black;
+        }
+
+        .info-sidebar {
+            border-radius: 7px;
+            border: 2px solid black;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .main-content-box {
+            border: 2px solid black;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            width: 100%;
+        }
+
+        .footers {
+            border-top: 2px solid black;
+            padding: 15px 20px;
+            width: 100%;
+            background: white;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
         }
 
         .btn-dark {
             border-color: black !important;
             background-color: black !important;
-            color: #FFFFFF;
+            color: #FFFFFF !important;
+            margin: 0 !important;
         }
 
         .round {
@@ -36,1159 +168,489 @@
             border-radius: 8px;
             font-size: 14px;
         }
+
+        .badge-success {
+            background-color: #ff6600 !important;
+            padding: 6px 10px;
+            font-size: 12px;
+        }
+
+        /* ========================================================================
+                           4. RESPONSIVE MEDIA QUERIES
+                           ======================================================================== */
+        @media (max-width: 991.98px) {
+            .headerbg {
+                padding-left: 25px !important;
+            }
+
+            .info-sidebar-wrapper {
+                margin-bottom: 20px;
+            }
+
+            .col-lg-9 {
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+                width: 100% !important;
+                flex: 0 0 100% !important;
+                max-width: 100% !important;
+            }
+
+            .footers .btn-dark {
+                float: none !important;
+                width: 100% !important;
+                display: block !important;
+            }
+
+            .footers a {
+                display: block;
+                width: 100%;
+            }
+
+            .tags {
+                float: none;
+                margin-top: 10px;
+                margin-right: 0;
+            }
+
+            /* Make nav buttons stack fully on small screens */
+            .nav-buttons {
+                flex-direction: column;
+                align-items: stretch !important;
+            }
+
+            .nav-buttons h4 {
+                text-align: center;
+            }
+        }
     </style>
 @endsection
 
 @section('header')
     <div class="content-header bg-white">
-        <div class="row" style="border-bottom: 3px solid #949494;">
-            <div class="col-xl-12 col-12 bg-white headerbg" style="padding-left: 32px;padding-top: 13px;">
-                <h3 class="h3">Trade unit information</h3>
-                <div class="breadcrumb-wrapper col-12">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a>Products</a>
-                        </li>
-
+        <div class="row m-0" style="border-bottom: 3px solid #949494;">
+            <div class="col-12 bg-white headerbg d-flex align-items-center flex-wrap" style="padding: 15px 32px;">
+                <h3 class="h3 m-0 mr-3" style="font-weight: 600;">Trade unit information</h3>
+                <div class="breadcrumb-wrapper p-0">
+                    <ol class="breadcrumb m-0 p-0" style="background-color: transparent; padding-top: 2px !important;">
+                        <li class="breadcrumb-item"><a>Products</a></li>
                         <li class="breadcrumb-item"><a style="color: black"
-                                href="{{ route('vender.service.provider') }}">Service Provider</a>
-                        </li>
+                                href="{{ route('vender.service.provider') }}">Service Provider</a></li>
                         <li class="breadcrumb-item"><a style="color: black"
-                                href="{{ route('vender.service.provider.trading.unit') }}">Trade Units</a>
-                        </li>
+                                href="{{ route('vender.service.provider.trading.unit') }}">Trade Units</a></li>
                         <li class="breadcrumb-item"><a style="color: black"
-                                href="{{ route('vender.service.provider.trading.unit.view', $trading_unit['id']) }}">
-                                {{ $trading_unit['name'] }}</a>
+                                href="{{ route('vender.service.provider.trading.unit.view', $trading_unit['id']) }}">{{ $trading_unit['name'] }}</a>
                         </li>
                         <li class="breadcrumb-item"><a style="color: black"
-                                href="{{ route('vender.service.provider.trading.unit.view', $trading_unit['id']) }}">
-                                Overview</a>
+                                href="{{ route('vender.service.provider.trading.unit.view', $trading_unit['id']) }}">Overview</a>
                         </li>
-                        <li class="breadcrumb-item"> Trade unit information
-                        </li>
-                        <li class="breadcrumb-item"> App settings
-                        </li>
-
-
-
+                        <li class="breadcrumb-item">Trade unit information</li>
+                        <li class="breadcrumb-item active">App settings</li>
                     </ol>
                 </div>
             </div>
-
         </div>
     </div>
 @endsection
 
 @section('content')
-    <div class="row">
-        <div class="col-md-3">
-            <div style="border-radius: 7px;border: 2px solid black;  ">
-                <h4 class="h3" style="font-weight: 600; font-size: 17px;padding: 10px; ">
-                    <div>
-                        <div style="float: left; width: 10%;">
-                            <img src="/trading_unit.png" style="width: 22px;margin-top: -5px;">
-                        </div>
-                        <div style="float: left; width: 90%;">
-                            <span><span style="color:#ff6600">Trading Unit : </span> {{ $trading_unit['name'] }}</span>
-                        </div>
+    <div class="container-fluid px-1 px-md-1 mt-1">
+        <div class="row align-items-start m-0">
 
-                        <p style="border-bottom: 2px solid black;padding-top: 30px;margin-left: -12px;margin-right: -10px;">
-                        </p>
+            {{-- Left Sidebar --}}
+            <div class="col-12 col-lg-3 info-sidebar-wrapper mb-4 mb-lg-0 p-0 pr-lg-3">
+                <div class="info-sidebar">
+                    <h4 class="h3 m-0"
+                        style="font-weight: 600; font-size: 17px; padding: 12px 16px; border-bottom: 2px solid black; display: flex; align-items: flex-start;">
+                        <img src="/trading_unit.png" style="width: 22px; margin-right: 10px; margin-top: 2px;">
+                        <span style="word-break: break-word;"><span style="color:#ff6600">Trading
+                                Unit:</span><br>{{ $trading_unit['name'] }}</span>
+                    </h4>
 
-
-
-                    </div>
-                    <div style="margin: 20px;margin-top: 23px;font-weight: 500;font-size: 15px;">
-                        <span> <span style="color:#ff6600"> Business Name</span> : @if ($trading_unit['trading_template'] == 1)
+                    <div style="padding: 20px; flex-grow: 1;">
+                        <div class="mb-1" style="font-weight: 500; font-size: 14px;">
+                            <span style="color:#ff6600; font-weight: 600;">Business Name:</span><br>
+                            @if ($trading_unit['trading_template'] == 1)
                                 {{ auth()->user()->profile->company_name }}
-
-                            @endif
-                            @if ($trading_unit['trading_template'] == 2)
+                            @elseif ($trading_unit['trading_template'] == 2)
                                 {{ auth()->user()->profile->company_name }} Trading as
                                 {{ $trading_unit['trading_name']['name'] }}
-
-                            @endif
-                            @if ($trading_unit['trading_template'] == 3)
+                            @elseif ($trading_unit['trading_template'] == 3)
                                 {{ $trading_unit['trading_name']['name'] ?? '' }}
-
                             @endif
-                        </span>
-                    </div>
-                    <div style="margin: 20px;margin-top: 23px;font-weight: 500;font-size: 15px;">
-                        <span> <span style="color:#ff6600"> Online Status : </span> </span>
-                    </div>
-                    <div style="margin: 20px;margin-top: 13px;font-weight: 500;font-size: 15px;">
-                        <span> Marketplace : @isset($trading_unit['hub_setting'])
-                                {{ $trading_unit['hub_setting']['is_marketplace'] ? 'On' : 'Off' }}
-                            @else
-                                'OFF' @endif </span> <br>
-                            <span> Quotes :
-                                @isset($trading_unit['hub_setting']){{ $trading_unit['hub_setting']['is_quote'] ? 'On' : 'Off' }}
-                                @else
-                                    'Off' @endif
-                                </span>
+                        </div>
+
+                        <div class="mb-0" style="font-weight: 600; font-size: 14px;">
+                            <span style="color:#ff6600">Online Status:</span>
+                        </div>
+
+                        <div class="mb-2" style="font-weight: 500; font-size: 14px; line-height: 1.8;">
+                            Marketplace:
+                            @isset($trading_unit['hub_setting']){{ $trading_unit['hub_setting']['is_marketplace'] ? 'On' : 'Off' }}@else'Off'
+                                @endif
                                 <br>
-                                <span> Bookings : @isset($trading_unit['hub_setting'])
-                                        {{ $trading_unit['hub_setting']['is_booking'] ? 'On' : 'Off' }}
+                                Quotes:
+                                @isset($trading_unit['hub_setting']){{ $trading_unit['hub_setting']['is_quote'] ? 'On' : 'Off' }}@else'Off'
+                                    @endif
+                                    <br>
+                                    Bookings:
+                                    @isset($trading_unit['hub_setting']){{ $trading_unit['hub_setting']['is_booking'] ? 'On' : 'Off' }}@else'Off'
+                                        @endif
+                                    </div>
+
+                                    <div style="font-weight: 500; font-size: 13px; color: #555; margin-bottom: 10px;">
+                                        Created: {{ \Carbon\Carbon::parse($trading_unit['created_at'])->format('d/m/Y \a\t h:i') }}
+                                    </div>
+                                    <div style="font-weight: 500; font-size: 13px; color: #555;">
+                                        Last updated:
+                                        {{ \Carbon\Carbon::parse($trading_unit['updated_at'])->format('d/m/Y \a\t h:i') }}
+                                    </div>
+                                </div>
+
+                                <div class="footers"
+                                    style="flex-direction: column; gap: 12px; border-radius: 0 0 5px 5px; padding: 15px;">
+
+                                    @if ($trading_unit['status'] == 'PENDING' || $trading_unit['status'] == 'INACTIVE')
+                                        <a href="{{ route('vender.service.provider.trading.unit.active', $trading_unit['id']) }}"
+                                            style="width: 100%; text-decoration: none;">
+                                            {{-- Removed mb-2, letting gap handle the spacing --}}
+                                            <button type="button" class="btn btn-dark round w-100 m-0">ACTIVATE TRADE UNIT</button>
+                                        </a>
                                     @else
-                                        'Off' @endif
-                                    </span>
-                                </div>
-                                {{-- <div style="margin: 20px;margin-top: 15px;font-weight: 500;font-size: 13px;">
-            <span class="success">{{$trading_unit['status']}}</span>
-        </div>
-        <div style="margin: 20px;margin-top: 15px;font-weight: 500;font-size: 13px;">
-            <span class="success">{{$trading_unit['active_status']}}</span>
-        </div> --}}
-                                <div style="margin: 20px;margin-top: 15px;font-weight: 500;font-size: 13px;margin-bottom:0px">
-                                    <span>Created: {{ \Carbon\Carbon::parse($trading_unit['created_at'])->format('d/m/Y') }} at
-                                        {{ \Carbon\Carbon::parse($trading_unit['created_at'])->format('h:i') }}</span>
-                                </div>
-                                <div style="margin: 20px;margin-top: 15px;font-weight: 500;font-size: 13px;margin-bottom:0px">
-                                    <span>Last updated: {{ \Carbon\Carbon::parse($trading_unit['updated_at'])->format('d/m/Y') }} at
-                                        {{ \Carbon\Carbon::parse($trading_unit['updated_at'])->format('h:i') }}</span>
-                                </div>
+                                        <a href="{{ route('vender.service.provider.trading.unit.in.active', $trading_unit['id']) }}"
+                                            style="width: 100%; text-decoration: none;">
+                                            <button type="button" class="btn btn-dark round w-100 m-0">INACTIVATE TRADE UNIT</button>
+                                        </a>
+                                    @endif
 
-                            </h4>
-                            <div class="footers" style="text-align: center;">
+                                    @if ($trading_unit['active_status'] == 'OFFLINE')
+                                        <a href="{{ route('vender.service.provider.trading.unit.Online', $trading_unit['id']) }}"
+                                            style="width: 100%; text-decoration: none;">
+                                            <button type="button" class="btn btn-dark round w-100 m-0">SHOW ONLINE</button>
+                                        </a>
+                                    @else
+                                        <a href="{{ route('vender.service.provider.trading.unit.offline', $trading_unit['id']) }}"
+                                            style="width: 100%; text-decoration: none;">
+                                            <button type="button" class="btn btn-dark round w-100 m-0">SHOW OFFLINE</button>
+                                        </a>
+                                    @endif
 
-                                @if ($trading_unit['status'] == 'PENDING' || $trading_unit['status'] == 'INACTIVE')
-                                    <a href="{{ route('vender.service.provider.trading.unit.active', $trading_unit['id']) }}"> <button
-                                            type="button" style="width: 80%;"
-                                            class="btn btn-dark round btn-min-width mr-1 mb-1">ACTIVATE TRADE UNIT</button></a>
-                                @else
-                                    <a href="{{ route('vender.service.provider.trading.unit.in.active', $trading_unit['id']) }}">
-                                        <button type="button" style="width: 80%;"
-                                            class="btn btn-dark round btn-min-width mr-1 mb-1">INACTIVATE TRADE UNIT</button></a>
-
-                                @endif
-                                @if ($trading_unit['active_status'] == 'OFFLINE')
-                                    <a href="{{ route('vender.service.provider.trading.unit.Online', $trading_unit['id']) }}"> <button
-                                            type="button" style="width: 80%;" class="btn btn-dark round btn-min-width mr-1 mb-1">SHOW
-                                            ONLINE</button></a>
-                                @else
-                                    <a href="{{ route('vender.service.provider.trading.unit.offline', $trading_unit['id']) }}"> <button
-                                            type="button" style="width: 80%;" class="btn btn-dark round btn-min-width mr-1 mb-1">SHOW
-                                            OFFLINE</button></a>
-
-                                @endif
-
-
-
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="col-md-9" id="contens"
-                        style="border-radius: 6px;margin-bottom: 10px;padding-bottom: 10px;margin-top: 0px;">
-                        <div class="row ">
-                            <a href="{{ route('vender.service.provider.trading.unit.view', $trading_unit['id']) }}">
-                                <h4 class="h3"
-                                    style="border-radius: 7px; border: 2px solid black; padding: 10px; font-weight: 600; font-size: 17px; color: black;margin-left: 15px;">
-                                    Overview</h2>
-                            </a>
-                            <a href="{{ route('vender.service.provider.trading.unit.app.setting', $trading_unit['id']) }}">
-                                <h4 class="h3"
-                                    style="border-radius: 7px; border: 2px solid #ff6600; padding: 10px; font-weight: 600; font-size: 17px; color: #ff6600;margin-left: 15px;">
-                                    App settings</h2>
-                            </a>
-                            <a href="{{ route('vender.service.provider.trading.unit.app.data', $trading_unit['id']) }}">
-                                <h4 class="h3"
-                                    style="border-radius: 7px; border: 2px solid black; padding: 10px; font-weight: 600; font-size: 17px; color: black;margin-left: 15px;">
-                                    App data </h2>
-                            </a>
-
-
-                        </div>
-
-                        <div class="card default-collapse collapse-icon accordion-icon-rotate"
-                            style="box-shadow: none;margin-top: -6px;">
-
-
-
-
-                            <a id="headingCollapse1" class="card-header info mt-2"
-                                style="border: 2px solid black;border-radius: 7px !important;padding: 1.2rem 1rem;color: black !important;"
-                                data-toggle="collapse" href="#collaptr_businesss_info" aria-expanded="false"
-                                aria-controls="collaptr_businesss_info">
-                                <div class="card-title lead ">Booking
-                                    <div class="tags">
-                                        <div class="tag">Service Provider</div>
-                                        <div class="tag">Hub</div>
-                                    </div>
-                                </div>
-                            </a>
-                            <div id="collaptr_businesss_info" role="tabpanel" aria-labelledby="headingCollapsebusinesss_info"
-                                style="border-left: 2px solid black;
-            margin-top: -4px;
-            border-right: 2px solid black;
-            border-bottom: 2px solid black;
-            border-bottom-left-radius: 6px;
-            border-bottom-right-radius: 6px;"
-                                class="collapse " aria-expanded="false">
-                                <div class="card-content">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-sm-5">
-                                                <h6 class="mb-0">Booking start time</h6>
-                                            </div>
-                                            <div class="col-sm-7 text-secondary">
-                                                {{ $trading_unit['app_setting']['start_time'] ?? '' }}
-                                            </div>
-                                        </div>
-                                        <hr>
-                                        <div class="row">
-                                            <div class="col-sm-5">
-                                                <h6 class="mb-0">Last booking time</h6>
-                                            </div>
-                                            <div class="col-sm-7 text-secondary">
-                                                {{ $trading_unit['app_setting']['end_time'] ?? '' }}
-                                            </div>
-                                        </div>
-                                        <hr>
-                                        <div class="row">
-                                            <div class="col-sm-5">
-                                                <h6 class="mb-0">Booking time intervals</h6>
-                                            </div>
-                                            <div class="col-sm-7 text-secondary">
-                                                {{ $trading_unit['app_setting']['interval'] ?? '' }} minutes
-                                            </div>
-                                        </div>
-
-
-
-
-
-
-                                    </div>
-                                    <div class="footers" @if ($is_provider == 'off') style="display:none" @endif>
-
-                                        <a
-                                            href="{{ route('vender.service.provider.trading.unit.booking.setting', $trading_unit['id']) }}">
-                                            <button type="button" class="btn btn-dark round btn-min-width mr-1 mb-1"
-                                                style="float: right;">Edit</button></a>
-
-                                    </div>
                                 </div>
                             </div>
+                        </div>
 
+                        {{-- Right Content Container --}}
+                        <div class="col-12 col-lg-9 p-0" id="contens">
 
-                            <a id="headingCollapse2" class="card-header info mt-2"
-                                style="border: 2px solid black;border-radius: 7px !important;padding: 1.2rem 1rem;color: black !important;"
-                                data-toggle="collapse" href="#invoice_settings" aria-expanded="false"
-                                aria-controls="invoice_settings">
-                                <div class="card-title lead ">Invoice Document
-                                    <div class="tags">
-                                        <div class="tag">Service Provider</div>
+                            {{-- Navigation Buttons Row (Flexbox Spacing Fix) --}}
+                            <div class="d-flex align-items-center mb-4 flex-wrap nav-buttons" style="gap: 15px;">
+                                <a href="{{ route('vender.service.provider.trading.unit.view', $trading_unit['id']) }}"
+                                    style="text-decoration: none;">
+                                    <h4 class="h3 m-0"
+                                        style="border-radius: 7px; border: 2px solid black; padding: 10px 20px; font-weight: 600; font-size: 17px; color: black; text-align: center;">
+                                        Overview
+                                    </h4>
+                                </a>
+                                <h4 class="h3 m-0"
+                                    style="border-radius: 7px; border: 2px solid #ff6600; padding: 10px 20px; font-weight: 600; font-size: 17px; color: #ff6600; text-align: center;">
+                                    App settings
+                                </h4>
+                                <a href="{{ route('vender.service.provider.trading.unit.app.data', $trading_unit['id']) }}"
+                                    style="text-decoration: none;">
+                                    <h4 class="h3 m-0"
+                                        style="border-radius: 7px; border: 2px solid black; padding: 10px 20px; font-weight: 600; font-size: 17px; color: black; text-align: center;">
+                                        App data
+                                    </h4>
+                                </a>
+                            </div>
 
+                            <div class="card default-collapse collapse-icon accordion-icon-rotate m-0" style="box-shadow: none;">
+
+                                {{-- Accordion 1: Booking --}}
+                                <div class="card-header info mt-0 mb-1"
+                                    style="border: 2px solid black; border-radius: 7px !important; padding: 1.2rem 1rem; cursor: pointer; background: white;"
+                                    data-toggle="collapse" data-target="#collaptr_businesss_info">
+                                    <div class="card-title lead m-0" style="color: black !important;">
+                                        Booking
+                                        <div class="tags">
+                                            <div class="tag">Service Provider</div>
+                                            <div class="tag">Hub</div>
+                                        </div>
                                     </div>
                                 </div>
-                            </a>
-                            <div id="invoice_settings" role="tabpanel" aria-labelledby="headingCollapsebusinesss_info"
-                                style="border-left: 2px solid black;
-            margin-top: -4px;
-            border-right: 2px solid black;
-            border-bottom: 2px solid black;
-            border-bottom-left-radius: 6px;
-            border-bottom-right-radius: 6px;"
-                                class="collapse " aria-expanded="false">
-                                <div class="card-content">
-                                    <div class="card-body">
-
-                                        <div class="row">
-                                            <div class="col-sm-5">
-                                                <h6 class="mb-0">Business Name</h6>
+                                <div id="collaptr_businesss_info" class="collapse mb-3"
+                                    style="border: 2px solid black; border-top: 0; border-radius: 0 0 6px 6px; margin-top: -10px; background: white;">
+                                    <div class="card-content">
+                                        <div class="card-body" style="padding: 20px;">
+                                            <div class="row align-items-center py-2">
+                                                <div class="col-12 col-sm-5">
+                                                    <h6 class="mb-0 font-weight-bold">Booking start time</h6>
+                                                </div>
+                                                <div class="col-12 col-sm-7 text-secondary">
+                                                    {{ $trading_unit['app_setting']['start_time'] ?? '' }}</div>
                                             </div>
-                                            <div class="col-sm-7 text-secondary">
-                                                @if ($trading_unit['trading_template'] == 1)
-                                                    {{ ucfirst(auth()->user()->profile->company_name) }}
-
-                                                @endif
-                                                @if ($trading_unit['trading_template'] == 2)
-                                                    {{ ucfirst(auth()->user()->profile->company_name) }} Trading as
-                                                    {{ $trading_unit['trading_name']['name'] }}
-
-                                                @endif
-                                                @if ($trading_unit['trading_template'] == 3)
-                                                    {{ ucfirst($trading_unit['trading_name']['name']) ?? '' }}
-
-                                                @endif
+                                            <hr class="m-0">
+                                            <div class="row align-items-center py-2">
+                                                <div class="col-12 col-sm-5">
+                                                    <h6 class="mb-0 font-weight-bold">Last booking time</h6>
+                                                </div>
+                                                <div class="col-12 col-sm-7 text-secondary">
+                                                    {{ $trading_unit['app_setting']['end_time'] ?? '' }}</div>
+                                            </div>
+                                            <hr class="m-0">
+                                            <div class="row align-items-center py-2">
+                                                <div class="col-12 col-sm-5">
+                                                    <h6 class="mb-0 font-weight-bold">Booking time intervals</h6>
+                                                </div>
+                                                <div class="col-12 col-sm-7 text-secondary">
+                                                    {{ $trading_unit['app_setting']['interval'] ?? '' }} minutes</div>
                                             </div>
                                         </div>
-                                        <hr>
-
-                                        <div class="row">
-                                            <div class="col-sm-5">
-                                                <h6 class="mb-0">Address</h6>
+                                        @if ($is_provider != 'off')
+                                            <div class="footers m-0" style="border-radius: 0 0 5px 5px;">
+                                                <a
+                                                    href="{{ route('vender.service.provider.trading.unit.booking.setting', $trading_unit['id']) }}">
+                                                    <button type="button" class="btn btn-dark round btn-min-width m-0">Edit</button>
+                                                </a>
                                             </div>
-                                            <div class="col-sm-7 text-secondary">
-                                                <p class="address_line1">
+                                        @endif
+                                    </div>
+                                </div>
+
+                                {{-- Accordion 2: Invoice Document --}}
+                                <div class="card-header info mt-1 mb-1"
+                                    style="border: 2px solid black; border-radius: 7px !important; padding: 1.2rem 1rem; cursor: pointer; background: white;"
+                                    data-toggle="collapse" data-target="#invoice_settings">
+                                    <div class="card-title lead m-0" style="color: black !important;">
+                                        Invoice Document
+                                        <div class="tags">
+                                            <div class="tag">Service Provider</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="invoice_settings" class="collapse mb-3"
+                                    style="border: 2px solid black; border-top: 0; border-radius: 0 0 6px 6px; margin-top: -10px; background: white;">
+                                    <div class="card-content">
+                                        <div class="card-body" style="padding: 20px;">
+                                            <div class="row py-2">
+                                                <div class="col-12 col-sm-5">
+                                                    <h6 class="mb-0 font-weight-bold">Business Name</h6>
+                                                </div>
+                                                <div class="col-12 col-sm-7 text-secondary">
+                                                    @if ($trading_unit['trading_template'] == 1)
+                                                        {{ ucfirst(auth()->user()->profile->company_name) }}
+                                                    @elseif ($trading_unit['trading_template'] == 2)
+                                                        {{ ucfirst(auth()->user()->profile->company_name) }} Trading as
+                                                        {{ $trading_unit['trading_name']['name'] }}
+                                                    @elseif ($trading_unit['trading_template'] == 3)
+                                                        {{ ucfirst($trading_unit['trading_name']['name'] ?? '') }}
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <hr class="m-0">
+
+                                            {{-- Address Logic Re-structured purely for display --}}
+                                            <div class="row py-2">
+                                                <div class="col-12 col-sm-5">
+                                                    <h6 class="mb-0 font-weight-bold">Address</h6>
+                                                </div>
+                                                <div class="col-12 col-sm-7 text-secondary">
                                                     @if ($trading_unit['operation_type'] == 'Both' || $trading_unit['operation_type'] == 'On-site')
                                                         @if (!empty($trading_unit['site']['address_line_1']))
-                                                            {{ $trading_unit['site']['address_line_1'] }},<br>
-                                                        @endif
-                                                        @if (!empty($trading_unit['site']['address_line_2']))
-                                                            {{ $trading_unit['site']['address_line_2'] }},<br>
-                                                        @endif
-                                                        @if (!empty($trading_unit['site']['address_line_3']))
-                                                            {{ $trading_unit['site']['address_line_3'] }},<br>
-                                                        @endif
-                                                        @if (!empty($trading_unit['site']['address_line_4']))
-                                                            {{ $trading_unit['site']['address_line_4'] }},<br>
-                                                        @endif
+                                                            {{ $trading_unit['site']['address_line_1'] }},<br> @endif
                                                         @if (!empty($trading_unit['app_setting']['city']))
-                                                            {{ $trading_unit['app_setting']['city'] }},<br>
-                                                        @endif
+                                                            {{ $trading_unit['app_setting']['city'] }},<br> @endif
                                                         @if (!empty($trading_unit['app_setting']['postcode']))
-                                                            {{ $trading_unit['app_setting']['postcode'] }}
-                                                        @endif
+                                                            {{ $trading_unit['app_setting']['postcode'] }} @endif
                                                     @else
                                                         @if (!empty($profile['address_line_1']))
-                                                            {{ $profile['address_line_1'] }},<br>
-                                                        @endif
-                                                        @if (!empty($profile['address_line_2']))
-                                                            {{ $profile['address_line_2'] }},<br>
-                                                        @endif
-                                                        @if (!empty($profile['address_line_3']))
-                                                            {{ $profile['address_line_3'] }},<br>
-                                                        @endif
-                                                        @if (!empty($profile['address_line_4']))
-                                                            {{ $profile['address_line_4'] }},<br>
-                                                        @endif
+                                                            {{ $profile['address_line_1'] }},<br> @endif
                                                         @if (!empty($profile['city']))
-                                                            {{ $profile['city'] }},<br>
-                                                        @endif
+                                                            {{ $profile['city'] }},<br> @endif
                                                         @if (!empty($profile['postcode']))
-                                                            {{ $profile['postcode'] }}
-                                                        @endif
+                                                            {{ $profile['postcode'] }} @endif
                                                     @endif
-                                                </p>
+                                                </div>
                                             </div>
+                                            <hr class="m-0">
+
+                                            <div class="row py-2">
+                                                <div class="col-12 col-sm-5">
+                                                    <h6 class="mb-0 font-weight-bold">Contact Info</h6>
+                                                </div>
+                                            </div>
+                                            <div class="row py-1">
+                                                <div class="col-12 col-sm-5">
+                                                    <h6 class="mb-0 pl-3">Include Landline</h6>
+                                                </div>
+                                                <div class="col-12 col-sm-7 text-secondary">
+                                                    {{ ucfirst(strtolower($trading_unit['app_setting']['show_landline'] ?? '')) }}
+                                                    {{ $trading_unit['landline'] ?? '' }}</div>
+                                            </div>
+                                            <div class="row py-1">
+                                                <div class="col-12 col-sm-5">
+                                                    <h6 class="mb-0 pl-3">Include Mobile</h6>
+                                                </div>
+                                                <div class="col-12 col-sm-7 text-secondary">
+                                                    {{ ucfirst(strtolower($trading_unit['app_setting']['show_mobile'] ?? '')) }}
+                                                    {{ $trading_unit['mobile'] ?? '' }}</div>
+                                            </div>
+                                            <div class="row py-1">
+                                                <div class="col-12 col-sm-5">
+                                                    <h6 class="mb-0 pl-3">Include Email</h6>
+                                                </div>
+                                                <div class="col-12 col-sm-7 text-secondary">
+                                                    {{ ucfirst(strtolower($trading_unit['app_setting']['show_email'] ?? '')) }}
+                                                    {{ $trading_unit['email'] ?? '' }}</div>
+                                            </div>
+                                            <div class="row py-1 mb-2">
+                                                <div class="col-12 col-sm-5">
+                                                    <h6 class="mb-0 pl-3">Include Website</h6>
+                                                </div>
+                                                <div class="col-12 col-sm-7 text-secondary">
+                                                    {{ ucfirst(strtolower($trading_unit['app_setting']['show_website'] ?? '')) }}
+                                                    {{ $trading_unit['website'] ?? '' }}</div>
+                                            </div>
+
+                                            @if ($user['profile']['vat_register'] == 'YES')
+                                                <hr class="m-0">
+                                                <div class="row align-items-center py-2">
+                                                    <div class="col-12 col-sm-5">
+                                                        <h6 class="mb-0 font-weight-bold">UK VAT Number</h6>
+                                                    </div>
+                                                    <div class="col-12 col-sm-7 text-secondary">
+                                                        {{ auth()->user()->profile['uk_vat_no'] ?? '' }}</div>
+                                                </div>
+                                            @endif
+
+                                            <hr class="m-0">
+                                            <div class="row align-items-center py-2">
+                                                <div class="col-12 col-sm-5">
+                                                    <h6 class="mb-0 font-weight-bold">Include Bank Transfer Details</h6>
+                                                </div>
+                                                <div class="col-12 col-sm-7 text-secondary">
+                                                    {{ ucfirst(strtolower($trading_unit['app_setting']['bank_transfer'] ?? '')) }}
+                                                </div>
+                                            </div>
+
+                                            @if (($trading_unit['app_setting']['bank_transfer'] ?? '') == 'YES')
+                                                <div class="row py-1">
+                                                    <div class="col-12 col-sm-5">
+                                                        <h6 class="mb-0 pl-3">Account Name</h6>
+                                                    </div>
+                                                    <div class="col-12 col-sm-7 text-secondary">
+                                                        {{ $trading_unit['app_setting']['account_name'] ?? '' }}</div>
+                                                </div>
+                                                <div class="row py-1">
+                                                    <div class="col-12 col-sm-5">
+                                                        <h6 class="mb-0 pl-3">Sort Code</h6>
+                                                    </div>
+                                                    <div class="col-12 col-sm-7 text-secondary">
+                                                        {{ $trading_unit['app_setting']['sort_code'] ?? '' }}</div>
+                                                </div>
+                                                <div class="row py-1">
+                                                    <div class="col-12 col-sm-5">
+                                                        <h6 class="mb-0 pl-3">Account Number</h6>
+                                                    </div>
+                                                    <div class="col-12 col-sm-7 text-secondary">
+                                                        {{ $trading_unit['app_setting']['account_number'] ?? '' }}</div>
+                                                </div>
+                                                <div class="row py-1 mb-2">
+                                                    <div class="col-12 col-sm-5">
+                                                        <h6 class="mb-0 pl-3">Payment Reference</h6>
+                                                    </div>
+                                                    <div class="col-12 col-sm-7 text-secondary">
+                                                        {{ ucfirst(strtolower($trading_unit['app_setting']['is_payment_reference'] ?? '')) }}
+                                                        {{ $trading_unit['app_setting']['payment_reference'] ?? '' }}</div>
+                                                </div>
+                                            @endif
+
                                         </div>
-
-                                        <hr>
-                                        <div class="row">
-                                            <div class="col-sm-5">
-                                                <h6 class="mb-0">Contact Info</h6>
-                                            </div>
-                                            <div class="col-sm-7 text-secondary">
-
-                                            </div>
-                                        </div>
-                                        <div class="row mt-2">
-                                            <div class="col-sm-5">
-                                                <h6 class="mb-0" style="padding-left: 16px;">Include Landline</h6>
-                                            </div>
-                                            <div class="col-sm-7 text-secondary">
-                                                {{ ucfirst(strtolower($trading_unit['app_setting']['show_landline'])) ?? '' }}
-                                                {{ $trading_unit['landline'] ?? '' }}
-                                            </div>
-                                        </div>
-                                        <div class="row mt-1">
-                                            <div class="col-sm-5">
-                                                <h6 class="mb-0" style="padding-left: 16px;">Include Mobile</h6>
-                                            </div>
-                                            <div class="col-sm-7 text-secondary">
-                                                {{ ucfirst(strtolower($trading_unit['app_setting']['show_mobile'])) ?? '' }}
-                                                {{ $trading_unit['mobile'] ?? '' }}
-                                            </div>
-                                        </div>
-                                        <div class="row mt-1">
-                                            <div class="col-sm-5">
-                                                <h6 class="mb-0" style="padding-left: 16px;">Include Email</h6>
-                                            </div>
-                                            <div class="col-sm-7 text-secondary">
-                                                {{ ucfirst(strtolower($trading_unit['app_setting']['show_email'])) ?? '' }}
-                                                {{ $trading_unit['email'] ?? '' }}
-                                            </div>
-                                        </div>
-                                        <div class="row mt-1">
-                                            <div class="col-sm-5">
-                                                <h6 class="mb-0" style="padding-left: 16px;">Include Website</h6>
-                                            </div>
-                                            <div class="col-sm-7 text-secondary">
-                                                {{ ucfirst(strtolower($trading_unit['app_setting']['show_website'])) ?? '' }}
-                                                {{ $trading_unit['website'] ?? '' }}
-                                            </div>
-                                        </div>
-
-
-                                        @if ($user['profile']['vat_register'] == 'YES')
-
-
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-sm-5">
-                                                    <h6 class="mb-0">UK VAT Number</h6>
-                                                </div>
-                                                <div class="col-sm-7 text-secondary">
-                                                    <p>{{ auth()->user()->profile['uk_vat_no'] ?? '' }}</p>
-                                                </div>
+                                        @if ($is_provider != 'off')
+                                            <div class="footers m-0" style="border-radius: 0 0 5px 5px;">
+                                                <a href="{{ route('vender.service.provider.trading.unit.invoice.sample', $trading_unit['id']) }}"
+                                                    target="_blank">
+                                                    <button type="button" class="btn btn-dark round btn-min-width m-0">View
+                                                        Sample</button>
+                                                </a>
+                                                <a
+                                                    href="{{ route('vender.service.provider.trading.unit.invoice.setting', $trading_unit['id']) }}">
+                                                    <button type="button" class="btn btn-dark round btn-min-width m-0">Edit</button>
+                                                </a>
                                             </div>
                                         @endif
-                                        <hr>
-                                        <div class="row">
-                                            <div class="col-sm-5">
-                                                <h6 class="mb-0">Include Bank Transfer Details</h6>
-                                            </div>
-                                            <div class="col-sm-7 text-secondary">
-                                                <p> {{ ucfirst(strtolower($trading_unit['app_setting']['bank_transfer'])) ?? '' }}</p>
-                                            </div>
-                                        </div>
-
-                                        @if ($trading_unit['app_setting']['bank_transfer'] == 'YES')
-                                            <div class="row">
-                                                <div class="col-sm-5">
-                                                    <h6 class="mb-0" style="padding-left: 15px;">Account Name</h6>
-                                                </div>
-                                                <div class="col-sm-7 text-secondary">
-                                                    <p> {{ $trading_unit['app_setting']['account_name'] ?? '' }}</p>
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-sm-5">
-                                                    <h6 class="mb-0" style="padding-left: 15px;">Sort Code</h6>
-                                                </div>
-                                                <div class="col-sm-7 text-secondary">
-                                                    <p> {{ $trading_unit['app_setting']['sort_code'] ?? '' }}</p>
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-sm-5">
-                                                    <h6 class="mb-0" style="padding-left: 15px;">Account Number</h6>
-                                                </div>
-                                                <div class="col-sm-7 text-secondary">
-                                                    <p> {{ $trading_unit['app_setting']['account_number'] ?? '' }}</p>
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-sm-5">
-                                                    <h6 class="mb-0" style="padding-left: 15px;">Payment Reference</h6>
-                                                </div>
-                                                <div class="col-sm-7 text-secondary">
-                                                    <p> {{ ucfirst(strtolower($trading_unit['app_setting']['is_payment_reference'] ?? '')) }}
-                                                    </p>
-                                                    {{ $trading_unit['app_setting']['payment_reference'] ?? '' }}</p>
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-sm-5">
-                                                    <h6 class="mb-0" style="padding-left: 15px;">Remittance Email Address</h6>
-                                                </div>
-                                                <div class="col-sm-7 text-secondary">
-                                                    <p>{{ ucfirst(strtolower($trading_unit['app_setting']['show_remittance_email'])) ?? '' }}
-                                                        {{ $trading_unit['email'] ?? '' }}</p>
-                                                </div>
-                                            </div>
-                                            <hr>
-                                        @endif
-                                        @if ($trading_unit['operation_type'] != 'Both' || $trading_unit['operation_type'] != 'On-site')
-                                            <div class="row">
-                                                <div class="col-sm-5">
-                                                    <h6 class="mb-0">Job Location (Mobile Service)</h6>
-                                                </div>
-                                                <div class="col-sm-7 text-secondary">
-                                                    <p>Job Mobile Address </p>
-                                                </div>
-                                            </div>
-                                            <hr>
-                                        @endif
-
-                                        @php
-                                            $companyName =
-                                                $profile['company_name'] ??
-                                                (auth()->user()->profile['company_name'] ?? null);
-                                            $tradingName = $trading_unit['trading_name']['name'] ?? null;
-
-                                            $businessNameFormat = $trading_unit['trading_template'] ?? null;
-                                            $businessSetup = $profile['organization_status'] ?? null;
-
-                                            $footerLegalName = null;
-
-                                            // Case 1: Trading Name Only
-                                            if ($businessNameFormat == '3' && $companyName && $tradingName) {
-                                                $footerLegalName = $companyName . ' trading as ' . $tradingName;
-                                            }
-                                            // Case 2: LTD / LLP
-                                            elseif (
-                                                in_array($businessSetup, [
-                                                    'Limited Company (Ltd)',
-                                                    'Limited Liability Partnership (LLP)',
-                                                ]) &&
-                                                $companyName
-                                            ) {
-                                                $footerLegalName = $companyName;
-                                            }
-                                        @endphp
-                                        @php
-                                            $profileData = auth()->user()->profile;
-
-                                            $businessSetup = $profile['organization_status'] ?? null;
-
-                                            $isCompany = in_array($businessSetup, [
-                                                'Limited Company (Ltd)',
-                                                'Limited Liability Partnership (LLP)',
-                                            ]);
-
-                                            $registeredAddress = null;
-
-                                            if ($isCompany) {
-                                                $addressParts = array_values(
-                                                    array_filter([
-                                                        $profileData['address_line_1'] ?? null,
-                                                        $profileData['address_line_2'] ?? null,
-                                                        $profileData['address_line_3'] ?? null,
-                                                        $profileData['address_line_4'] ?? null,
-                                                        $profileData['city'] ?? null,
-                                                        $profileData['postcode'] ?? null,
-                                                    ]),
-                                                );
-
-                                                if (!empty($addressParts)) {
-                                                    // Add comma to all except last
-                                                    $formattedParts = [];
-
-                                                    foreach ($addressParts as $index => $part) {
-                                                        $formattedParts[] =
-                                                            $index < count($addressParts) - 1 ? $part . ',' : $part;
-                                                    }
-
-                                                    $registeredAddress = implode('<br>', $formattedParts);
-                                                }
-                                            }
-
-                                            // Jurisdiction
-                                            $registeredJurisdiction = $isCompany
-                                                ? $profileData['company_jurisdiction'] ?? null
-                                                : null;
-
-                                            // Company Number
-                                            $registeredCompanyNo = $isCompany
-                                                ? $profileData['registration_no'] ?? null
-                                                : null;
-                                        @endphp
-                                        @if (
-                                            !empty($footerLegalName) ||
-                                                !empty($registeredAddress) ||
-                                                !empty($registeredJurisdiction) ||
-                                                !empty($registeredCompanyNo))
-                                            <div class="form-group row align-items-center mb-2">
-                                                <div class="col-md-5">
-                                                    <h6 class="mb-0">Footer</h6>
-                                                </div>
-                                            </div>
-                                        @endif
-
-                                        @if (!empty($footerLegalName))
-                                            <div class="row">
-                                                <div class="col-md-5">
-                                                    <h6 class="mb-0" style="padding-left: 15px;">Legal Business Name</h6>
-                                                </div>
-
-                                                <div class="col-sm-7 text-secondary">
-
-                                                    <p>
-                                                        {{ $footerLegalName }}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        @endif
-
-                                        @if (!empty($registeredAddress))
-                                            <div class="row">
-                                                <div class="col-md-5 ">
-                                                    <h6 class="mb-0" style="padding-left: 15px;">Footer – Registered Address</h6>
-                                                </div>
-
-                                                <div class="col-md-7 text-secondary">
-
-
-                                                    <p class="mb-0">{!! $registeredAddress !!}</p>
-                                                </div>
-                                            </div>
-                                        @endif
-                                        @if (!empty($registeredJurisdiction))
-                                            <div class="row mt-1">
-                                                <div class="col-md-5">
-                                                    <h6 class="mb-0" style="padding-left: 15px;"> Footer – Registered Company
-                                                        Jurisdiction</h6>
-                                                </div>
-
-                                                <div class="col-sm-7 text-secondary">
-
-
-                                                    <p>{{ $registeredJurisdiction }}</p>
-                                                </div>
-                                            </div>
-                                        @endif
-                                        @if (!empty($registeredCompanyNo))
-                                            <div class="row">
-                                                <div class="col-md-5">
-                                                    <h6 class="mb-0" style="padding-left: 15px;"> Footer – Registered Company Number
-                                                    </h6>
-                                                </div>
-
-                                                <div class="col-sm-7 text-secondary">
-
-
-                                                    <p>{{ $registeredCompanyNo }}</p>
-                                                </div>
-                                            </div>
-                                        @endif
-
-
-
-
-
-
-
-                                    </div>
-                                    <div class="footers" @if ($is_provider == 'off') style="display:none" @endif>
-
-                                        <a
-                                            href="{{ route('vender.service.provider.trading.unit.invoice.setting', $trading_unit['id']) }}">
-                                            <button type="button" class="btn btn-dark round btn-min-width mr-1 mb-1"
-                                                style="float: right;">Edit</button></a>
-                                        <a href="{{ route('vender.service.provider.trading.unit.invoice.sample', $trading_unit['id']) }}"
-                                            target="_blank">
-                                            <button type="button" class="btn btn-dark round btn-min-width mr-1 mb-1"
-                                                style="float: right;">View Sample</button></a>
-
-
                                     </div>
                                 </div>
-                            </div>
 
-                            <a id="headingCollapse2" class="card-header info mt-2"
-                                style="border: 2px solid black;border-radius: 7px !important;padding: 1.2rem 1rem;color: black !important;display:none;"
-                                data-toggle="collapse" href="#vat_settings" aria-expanded="false" aria-controls="vat_settings">
-                                <div class="card-title lead ">VAT settings</div>
-                            </a>
-                            <div id="vat_settings" role="tabpanel" aria-labelledby="headingCollapsebusinesss_info"
-                                style="border-left: 2px solid black;
-            margin-top: -4px;
-            border-right: 2px solid black;
-            border-bottom: 2px solid black;
-            border-bottom-left-radius: 6px;
-            border-bottom-right-radius: 6px;"
-                                class="collapse " aria-expanded="false">
-                                <div class="card-content">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-sm-5">
-                                                <h6 class="mb-0">VAT </h6>
-                                            </div>
-                                            <div class="col-sm-7 text-secondary">
-                                                {{ auth()->user()['profile']['vat_register'] }}
-                                            </div>
+                                {{-- Accordion 3: Workstream --}}
+                                <div class="card-header info mt-1 mb-1"
+                                    style="border: 2px solid black; border-radius: 7px !important; padding: 1.2rem 1rem; cursor: pointer; background: white;"
+                                    data-toggle="collapse" data-target="#collaptr_Workstream_info">
+                                    <div class="card-title lead m-0" style="color: black !important;">
+                                        Workstream
+                                        <div class="tags">
+                                            <div class="tag">Service Provider</div>
                                         </div>
-                                        <hr>
-                                        <div class="row">
-                                            <div class="col-sm-5">
-                                                <h6 class="mb-0">VAT Booking </h6>
-                                            </div>
-                                            <div class="col-sm-7 text-secondary">
-                                                {{ $trading_unit['app_setting']['vat_booking'] ?? '0' == 1 ? 'YES' : 'NO' }}
-                                            </div>
-                                        </div>
-                                        <hr>
-                                        <div class="row">
-                                            <div class="col-sm-5">
-                                                <h6 class="mb-0">VAT Quote</h6>
-                                            </div>
-                                            <div class="col-sm-7 text-secondary">
-                                                {{ $trading_unit['app_setting']['vat_quote'] ?? '0' == 1 ? 'YES' : 'NO' }}
-                                            </div>
-                                        </div>
-                                        <hr>
-                                        <div class="row">
-                                            <div class="col-sm-5">
-                                                <h6 class="mb-0">VAT Jobs</h6>
-                                            </div>
-                                            <div class="col-sm-7 text-secondary">
-                                                {{ $trading_unit['app_setting']['vat_job'] ?? '0' == 1 ? 'YES' : 'NO' }}
-                                            </div>
-                                        </div>
-
-
-
-
-
-
-
-
-                                    </div>
-                                    <div class="footers" @if ($is_provider == 'off') style="display:none" @endif>
-
-                                        <a
-                                            href="{{ route('vender.service.provider.trading.unit.vat.setting', $trading_unit['id']) }}">
-                                            <button type="button" class="btn btn-dark round btn-min-width mr-1 mb-1"
-                                                style="float: right;">Edit</button></a>
-
                                     </div>
                                 </div>
-                            </div>
-                            <a id="headingCollapse1" class="card-header info mt-2"
-                                style="border: 2px solid black;border-radius: 7px !important;padding: 1.2rem 1rem;color: black !important;"
-                                data-toggle="collapse" href="#collaptr_Workstream_info" aria-expanded="false"
-                                aria-controls="collaptr_Workstream_info">
-                                <div class="card-title lead ">Workstream
-                                    <div class="tags">
-                                        <div class="tag">Service Provider</div>
-
-                                    </div>
-                                </div>
-                            </a>
-                            <div id="collaptr_Workstream_info" role="tabpanel" aria-labelledby="headingCollapsebusinesss_info"
-                                style="border-left: 2px solid black;
-            margin-top: -4px;
-            border-right: 2px solid black;
-            border-bottom: 2px solid black;
-            border-bottom-left-radius: 6px;
-            border-bottom-right-radius: 6px;"
-                                class="collapse " aria-expanded="false">
-                                <div class="card-content">
-                                    <div class="card-body">
-                                        <div class="col-md-12">
+                                <div id="collaptr_Workstream_info" class="collapse mb-3"
+                                    style="border: 2px solid black; border-top: 0; border-radius: 0 0 6px 6px; margin-top: -10px; background: white;">
+                                    <div class="card-content">
+                                        <div class="card-body" style="padding: 20px;">
                                             <div class="table-responsive">
-                                                <table class="table table-striped table-bordered zero-configuration">
+                                                <table class="table table-striped table-bordered zero-configuration w-100 m-0">
                                                     <thead>
                                                         <tr>
                                                             <th>ID</th>
                                                             <th>Workstream name</th>
                                                             <th>Status</th>
-                                                            <th>Action</th>
-
+                                                            <th style="text-align: center;">Action</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-
-                                                        {{-- @foreach ($users as $user)
-
-                                        @endforeach --}}
-
-
                                                         @foreach ($workstreams as $contact)
                                                             <tr>
                                                                 <td>{{ $loop->iteration }}</td>
                                                                 <td>{{ $contact['workstream_name'] }}</td>
                                                                 <td>{{ $contact['status'] }}</td>
-
-
-
-                                                                <td> <a
-                                                                        href="{{ route('vender.service.provider.trading.unit.view.work.stream', [$contact['id'], $trading_unit['id']]) }}"><i
-                                                                            class="ft-eye"></i></a></td>
+                                                                <td style="text-align: center;">
+                                                                    <a
+                                                                        href="{{ route('vender.service.provider.trading.unit.view.work.stream', [$contact['id'], $trading_unit['id']]) }}">
+                                                                        <i class="ft-eye" style="color: #ff6600;"></i>
+                                                                    </a>
+                                                                </td>
                                                             </tr>
                                                         @endforeach
-
-
-
                                                     </tbody>
-                                                    <tfoot>
-                                                        <tr>
-                                                            <th>ID</th>
-                                                            <th>Workstream name</th>
-                                                            <th>Status</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                    </tfoot>
                                                 </table>
                                             </div>
                                         </div>
-
-
-
-
-
-
-
-
-                                    </div>
-                                    <div class="footers">
-
-                                        <a
-                                            href="{{ route('vender.service.provider.trading.unit.add.work.stream', $trading_unit['id']) }}">
-                                            <button type="button" class="btn btn-dark round btn-min-width mr-1 mb-1"
-                                                style="float: right;">ADD</button></a>
-
+                                        <div class="footers m-0" style="border-radius: 0 0 5px 5px;">
+                                            <a
+                                                href="{{ route('vender.service.provider.trading.unit.add.work.stream', $trading_unit['id']) }}">
+                                                <button type="button" class="btn btn-dark round btn-min-width m-0">ADD</button>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            @isset($trading_unit['hub_setting'])
-                                <a id="headingCollapse1" class="card-header info mt-2"
-                                    style="border: 2px solid black;border-radius: 7px !important;padding: 1.2rem 1rem;color: black !important;"
-                                    data-toggle="collapse" href="#online_status_info" aria-expanded="false"
-                                    aria-controls="online_status_info">
-                                    <div class="card-title lead ">Online statuses
+
+                                {{-- Accordion 4: Products --}}
+                                <div class="card-header info mt-1 mb-1"
+                                    style="border: 2px solid black; border-radius: 7px !important; padding: 1.2rem 1rem; cursor: pointer; background: white;"
+                                    data-toggle="collapse" data-target="#product_offer">
+                                    <div class="card-title lead m-0" style="color: black !important;">
+                                        Products
                                         <div class="tags">
+                                            <div class="tag">Service Provider</div>
                                             <div class="tag">Hub</div>
                                         </div>
                                     </div>
-                                </a>
-                                <div id="online_status_info" role="tabpanel" aria-labelledby="headingCollapsebusinesss_info"
-                                    style="border-left: 2px solid black;
-            margin-top: -4px;
-            border-right: 2px solid black;
-            border-bottom: 2px solid black;
-            border-bottom-left-radius: 6px;
-            border-bottom-right-radius: 6px;"
-                                    class="collapse " aria-expanded="false">
+                                </div>
+                                <div id="product_offer" class="collapse mb-3"
+                                    style="border: 2px solid black; border-top: 0; border-radius: 0 0 6px 6px; margin-top: -10px; background: white;">
                                     <div class="card-content">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-sm-5">
-                                                    <h6 class="mb-0">Marketplace</h6>
-                                                </div>
-                                                <div class="col-sm-7 text-secondary">
-                                                    @isset($trading_unit['hub_setting'])
-                                                        {{ $trading_unit['hub_setting']['is_marketplace'] ? 'On' : 'Off' }}
-                                                    @else
-                                                    'Off' @endisset
-                                                </div>
-                                            </div>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-sm-5">
-                                                    <h6 class="mb-0">Quotes</h6>
-                                                </div>
-                                                <div class="col-sm-7 text-secondary">
-                                                    @isset($trading_unit['hub_setting'])
-                                                        {{ $trading_unit['hub_setting']['is_quote'] ? 'On' : 'Off' }}
-                                                    @else
-                                                    'Off' @endisset
-                                                </div>
-                                            </div>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-sm-5">
-                                                    <h6 class="mb-0">Bookings</h6>
-                                                </div>
-                                                <div class="col-sm-7 text-secondary">
-                                                    @isset($trading_unit['hub_setting'])
-                                                        {{ $trading_unit['hub_setting']['is_booking'] ? 'On' : 'Off' }}
-                                                    @else
-                                                    'Off' @endisset
-                                                </div>
-                                            </div>
-
-
-
-
-
-
-                                        </div>
-
-                                        <div class="footers" @if ($is_hub == 'off') style="display: none" @endif>
-
-                                            <a
-                                                href="{{ route('vender.service.provider.trading.unit.hub.setting.online.status', $trading_unit['id']) }}">
-                                                <button type="button" class="btn btn-dark round btn-min-width mr-1 mb-1"
-                                                    style="float: right;">Edit</button></a>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            @endisset
-
-                            <a id="headingCollapse2" class="card-header info mt-2"
-                                style="border: 2px solid black;border-radius: 7px !important;padding: 1.2rem 1rem;color: black !important;"
-                                data-toggle="collapse" href="#opening_hours" aria-expanded="false" aria-controls="opening_hours">
-                                <div class="card-title lead ">Opening hours
-                                    <div class="tags">
-
-                                        <div class="tag">Hub</div>
-                                    </div>
-                                </div>
-                            </a>
-                            @isset($trading_unit['hub_setting'])
-                                <div id="opening_hours" role="tabpanel" aria-labelledby="headingCollapsebusinesss_info"
-                                    style="border-left: 2px solid black;
-            margin-top: -4px;
-            border-right: 2px solid black;
-            border-bottom: 2px solid black;
-            border-bottom-left-radius: 6px;
-            border-bottom-right-radius: 6px;"
-                                    class="collapse " aria-expanded="false">
-                                    <div class="card-content">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-sm-5">
-                                                    <h6 class="mb-0">Monday </h6>
-                                                </div>
-                                                <div class="col-sm-7 text-secondary">
-                                                    @if ($trading_unit['hub_setting']['is_monday'] == 1)
-                                                        {{ $trading_unit['hub_setting']['monday_start_time'] }} -
-                                                        {{ $trading_unit['hub_setting']['monday_end_time'] }}
-                                                    @else
-                                                        Close
-                                                    @endif
-                                                </div>
-                                            </div>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-sm-5">
-                                                    <h6 class="mb-0">Tuesday </h6>
-                                                </div>
-                                                <div class="col-sm-7 text-secondary">
-                                                    @if ($trading_unit['hub_setting']['is_tuesday'] == 1)
-                                                        {{ $trading_unit['hub_setting']['tuesday_start_time'] }} -
-                                                        {{ $trading_unit['hub_setting']['tuesday_end_time'] }}
-                                                    @else
-                                                        Closed
-                                                    @endif
-                                                </div>
-                                            </div>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-sm-5">
-                                                    <h6 class="mb-0">Wednesday</h6>
-                                                </div>
-                                                <div class="col-sm-7 text-secondary">
-                                                    @if ($trading_unit['hub_setting']['is_wednesday'] == 1)
-                                                        {{ $trading_unit['hub_setting']['wednesday_start_time'] }} -
-                                                        {{ $trading_unit['hub_setting']['wednesday_end_time'] }}
-                                                    @else
-                                                        Closed
-                                                    @endif
-                                                </div>
-                                            </div>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-sm-5">
-                                                    <h6 class="mb-0">Thursaday</h6>
-                                                </div>
-                                                <div class="col-sm-7 text-secondary">
-                                                    @if ($trading_unit['hub_setting']['is_thursday'] == 1)
-                                                        {{ $trading_unit['hub_setting']['thursday_start_time'] }} -
-                                                        {{ $trading_unit['hub_setting']['thursday_end_time'] }}
-                                                    @else
-                                                        Closed
-                                                    @endif
-                                                </div>
-                                            </div>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-sm-5">
-                                                    <h6 class="mb-0">Friday</h6>
-                                                </div>
-                                                <div class="col-sm-7 text-secondary">
-                                                    @if ($trading_unit['hub_setting']['is_friday'] == 1)
-                                                        {{ $trading_unit['hub_setting']['friday_start_time'] }} -
-                                                        {{ $trading_unit['hub_setting']['friday_end_time'] }}
-                                                    @else
-                                                        Closed
-                                                    @endif
-                                                </div>
-                                            </div>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-sm-5">
-                                                    <h6 class="mb-0">Saturday</h6>
-                                                </div>
-                                                <div class="col-sm-7 text-secondary">
-                                                    @if ($trading_unit['hub_setting']['is_saturday'] == 1)
-                                                        {{ $trading_unit['hub_setting']['saturday_start_time'] }} -
-                                                        {{ $trading_unit['hub_setting']['saturday_end_time'] }}
-                                                    @else
-                                                        Closed
-
-                                                    @endif
-                                                </div>
-                                            </div>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-sm-5">
-                                                    <h6 class="mb-0">Sunday</h6>
-                                                </div>
-                                                <div class="col-sm-7 text-secondary">
-                                                    @if ($trading_unit['hub_setting']['is_sunday'] == 1)
-                                                        {{ $trading_unit['hub_setting']['sunday_start_time'] }} -
-                                                        {{ $trading_unit['hub_setting']['sunday_end_time'] }}
-                                                    @else
-                                                        Closed
-
-                                                    @endif
-                                                </div>
-                                            </div>
-
-
-
-
-
-
-
-
-                                        </div>
-                                        <div class="footers" @if ($is_hub == 'off') style="display: none" @endif>
-
-                                            <a
-                                                href="{{ route('vender.service.provider.trading.unit.hub.setting.opening.hour', $trading_unit['id']) }}">
-                                                <button type="button" class="btn btn-dark round btn-min-width mr-1 mb-1"
-                                                    style="float: right;">Edit</button></a>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            @endisset
-                            @isset($trading_unit['hub_setting'])
-                                <a id="headingCollapse2" class="card-header info mt-2"
-                                    style="border: 2px solid black;border-radius: 7px !important;padding: 1.2rem 1rem;color: black !important;"
-                                    data-toggle="collapse" href="#social_media" aria-expanded="false" aria-controls="social_media">
-                                    <div class="card-title lead ">Social media profiles
-                                        <div class="tags">
-
-                                            <div class="tag">Hub</div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <div id="social_media" role="tabpanel" aria-labelledby="headingCollapsebusinesss_info"
-                                    style="border-left: 2px solid black;
-            margin-top: -4px;
-            border-right: 2px solid black;
-            border-bottom: 2px solid black;
-            border-bottom-left-radius: 6px;
-            border-bottom-right-radius: 6px;"
-                                    class="collapse " aria-expanded="false">
-                                    <div class="card-content">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-sm-5">
-                                                    <h6 class="mb-0">Website </h6>
-                                                </div>
-                                                <div class="col-sm-7 text-secondary">
-                                                    {{ $trading_unit['hub_setting']['website'] }}
-                                                </div>
-                                            </div>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-sm-5">
-                                                    <h6 class="mb-0">Facebook </h6>
-                                                </div>
-                                                <div class="col-sm-7 text-secondary">
-                                                    {{ $trading_unit['hub_setting']['facebook'] }}
-                                                </div>
-                                            </div>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-sm-5">
-                                                    <h6 class="mb-0">Instagram</h6>
-                                                </div>
-                                                <div class="col-sm-7 text-secondary">
-                                                    {{ $trading_unit['hub_setting']['instagram'] }}
-                                                </div>
-                                            </div>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-sm-5">
-                                                    <h6 class="mb-0">Trust Pilot</h6>
-                                                </div>
-                                                <div class="col-sm-7 text-secondary">
-                                                    {{ $trading_unit['hub_setting']['trust_pilot'] }}
-                                                </div>
-                                            </div>
-
-
-
-
-
-
-
-
-                                        </div>
-                                        <div class="footers">
-
-                                            <a
-                                                href="{{ route('vender.service.provider.trading.unit.hub.setting.social.media', $trading_unit['id']) }}">
-                                                <button type="button" class="btn btn-dark round btn-min-width mr-1 mb-1"
-                                                    style="float: right;">Edit</button></a>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            @endisset
-                            <a id="headingCollapse2" class="card-header info mt-2"
-                                style="border: 2px solid black;border-radius: 7px !important;padding: 1.2rem 1rem;color: black !important;"
-                                data-toggle="collapse" href="#job_type" aria-expanded="false" aria-controls="job_type">
-                                <div class="card-title lead ">Job types
-                                    <div class="tags">
-                                        <div class="tag">Hub</div>
-                                    </div>
-                                </div>
-                            </a>
-                            <div id="job_type" role="tabpanel" aria-labelledby="headingCollapsebusinesss_info"
-                                style="border-left: 2px solid black;
-            margin-top: -4px;
-            border-right: 2px solid black;
-            border-bottom: 2px solid black;
-            border-bottom-left-radius: 6px;
-            border-bottom-right-radius: 6px;"
-                                class="collapse " aria-expanded="false">
-                                <div class="card-content">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <h6 class="mb-0">Job Type </h6>
-                                            </div>
-                                            <div class="col-sm-8 text-secondary">
-                                                <div class="row">
-                                                    @foreach ($trading_unit['job_types'] as $job_type)
-                                                        <div class="col-md-3 mt-1">
-                                                            <span
-                                                                class="badge badge-primary-1">{{ $job_type['job_type']['name'] }}</span>
-                                                        </div>
-                                                    @endforeach
-
-
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-
-
-
-
-
-
-
-                                    </div>
-                                    <div class="footers">
-
-                                        <a
-                                            href="{{ route('vender.service.provider.trading.unit.hub.setting.job.type', $trading_unit['id']) }}">
-                                            <button type="button" class="btn btn-dark round btn-min-width mr-1 mb-1"
-                                                style="float: right;">Edit</button></a>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <a id="headingCollapse2" class="card-header info mt-2"
-                                style="border: 2px solid black;border-radius: 7px !important;padding: 1.2rem 1rem;color: black !important;"
-                                data-toggle="collapse" href="#product_offer" aria-expanded="false" aria-controls="product_offer">
-                                <div class="card-title lead ">Products
-                                    <div class="tags">
-                                        <div class="tag">Service Provider</div>
-                                        <div class="tag">Hub</div>
-                                    </div>
-                                </div>
-                            </a>
-                            <div id="product_offer" role="tabpanel" aria-labelledby="headingCollapsebusinesss_info"
-                                style="border-left: 2px solid black;
-            margin-top: -4px;
-            border-right: 2px solid black;
-            border-bottom: 2px solid black;
-            border-bottom-left-radius: 6px;
-            border-bottom-right-radius: 6px;"
-                                class="collapse " aria-expanded="false">
-                                <div class="card-content">
-                                    <div class="card-body">
-                                        <div class="col-md-12">
+                                        <div class="card-body" style="padding: 20px;">
                                             <div class="table-responsive">
-                                                <table class="table table-striped table-bordered zero-configuration">
+                                                <table class="table table-striped table-bordered zero-configuration w-100 m-0">
                                                     <thead>
                                                         <tr>
                                                             <th>ID</th>
@@ -1198,20 +660,12 @@
                                                             <th>Price</th>
                                                             <th>Price Type</th>
                                                             <th>Status</th>
-                                                            <th>Action</th>
-
+                                                            <th style="text-align: center;">Action</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-
-                                                        {{-- @foreach ($users as $user)
-
-                                        @endforeach --}}
-
-
                                                         @foreach ($trading_unit['product_offers'] as $contact)
                                                             <tr>
-
                                                                 <td>{{ $contact['product_no'] }}</td>
                                                                 <td>{{ $contact['product_name'] }}</td>
                                                                 <td>{{ $contact['description'] }}</td>
@@ -1219,293 +673,100 @@
                                                                 <td>{{ number_format($contact['price'], 2) }}</td>
                                                                 <td>{{ $contact['price_type'] }}</td>
                                                                 <td>{{ $contact['status'] }}</td>
-
-
-
-                                                                <td> <a
-                                                                        href="{{ route('vender.service.provider.trading.unit.hub.setting.view.product.offer', [$contact['id'], $trading_unit['id']]) }}"><i
-                                                                            class="ft-eye"></i></a></td>
+                                                                <td style="text-align: center;">
+                                                                    <a
+                                                                        href="{{ route('vender.service.provider.trading.unit.hub.setting.view.product.offer', [$contact['id'], $trading_unit['id']]) }}">
+                                                                        <i class="ft-eye" style="color: #ff6600;"></i>
+                                                                    </a>
+                                                                </td>
                                                             </tr>
                                                         @endforeach
-
-
-
                                                     </tbody>
-                                                    <tfoot>
-                                                        <tr>
-                                                            <th>ID</th>
-                                                            <th>Product Name</th>
-                                                            <th>Product Description</th>
-                                                            <th>Job Coverage</th>
-                                                            <th>Price</th>
-                                                            <th>Price Type</th>
-                                                            <th>Status</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                    </tfoot>
                                                 </table>
                                             </div>
                                         </div>
-
-
-
-
-
-
-
-
-                                    </div>
-                                    <div class="footers">
-
-                                        <a
-                                            href="{{ route('vender.service.provider.trading.unit.hub.setting.product.offer', $trading_unit['id']) }}">
-                                            <button type="button" class="btn btn-dark round btn-min-width mr-1 mb-1"
-                                                style="float: right;">Add</button></a>
-
+                                        <div class="footers m-0" style="border-radius: 0 0 5px 5px;">
+                                            <a
+                                                href="{{ route('vender.service.provider.trading.unit.hub.setting.product.offer', $trading_unit['id']) }}">
+                                                <button type="button" class="btn btn-dark round btn-min-width m-0">Add</button>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <a id="headingCollapse2" class="card-header info mt-2"
-                                style="border: 2px solid black;border-radius: 7px !important;padding: 1.2rem 1rem;color: black !important;"
-                                data-toggle="collapse" href="#warrenty_job" aria-expanded="false" aria-controls="warrenty_job">
-                                <div class="card-title lead ">Warranty jobs
-                                    <div class="tags">
 
-                                        <div class="tag">Hub</div>
+                                {{-- Accordion 5: Job Types --}}
+                                <div class="card-header info mt-1 mb-1"
+                                    style="border: 2px solid black; border-radius: 7px !important; padding: 1.2rem 1rem; cursor: pointer; background: white;"
+                                    data-toggle="collapse" data-target="#job_type">
+                                    <div class="card-title lead m-0" style="color: black !important;">
+                                        Job types
+                                        <div class="tags">
+                                            <div class="tag">Hub</div>
+                                        </div>
                                     </div>
                                 </div>
-                            </a>
-                            <div id="warrenty_job" role="tabpanel" aria-labelledby="headingCollapsebusinesss_info"
-                                style="border-left: 2px solid black;
-            margin-top: -4px;
-            border-right: 2px solid black;
-            border-bottom: 2px solid black;
-            border-bottom-left-radius: 6px;
-            border-bottom-right-radius: 6px;"
-                                class="collapse " aria-expanded="false">
-                                <div class="card-content">
-                                    <div class="card-body">
-
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <h6 class="mb-0">Warranty Job </h6>
-                                            </div>
-                                            <div class="col-sm-8 text-secondary">
-                                                <div class="row">
-                                                    @foreach ($trading_unit['warranty_jobs'] as $job_type)
-                                                        <div class="col-md-3 mt-1">
-                                                            <span
-                                                                class="badge badge-success">{{ $job_type['warranty_job']['name'] }}</span>
-                                                        </div>
+                                <div id="job_type" class="collapse mb-3"
+                                    style="border: 2px solid black; border-top: 0; border-radius: 0 0 6px 6px; margin-top: -10px; background: white;">
+                                    <div class="card-content">
+                                        <div class="card-body" style="padding: 20px;">
+                                            <div class="row align-items-start py-2">
+                                                <div class="col-12 col-md-3">
+                                                    <h6 class="mb-2 font-weight-bold">Job Type</h6>
+                                                </div>
+                                                <div class="col-12 col-md-9 text-secondary"
+                                                    style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                                    @foreach ($trading_unit['job_types'] as $job_type)
+                                                        <span class="badge badge-success">{{ $job_type['job_type']['name'] }}</span>
                                                     @endforeach
-
-
                                                 </div>
                                             </div>
                                         </div>
-
-
-
-
-
-
-                                    </div>
-                                    <div class="footers">
-
-                                        <a
-                                            href="{{ route('vender.service.provider.trading.unit.hub.setting.warranty.job', $trading_unit['id']) }}">
-                                            <button type="button" class="btn btn-dark round btn-min-width mr-1 mb-1"
-                                                style="float: right;">Edit</button></a>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <a id="headingCollapse2" class="card-header info mt-2"
-                                style="border: 2px solid black;border-radius: 7px !important;padding: 1.2rem 1rem;color: black !important;"
-                                data-toggle="collapse" href="#vehicle_specialist" aria-expanded="false"
-                                aria-controls="vehicle_specialist">
-                                <div class="card-title lead ">Vehicle specialist
-                                    <div class="tags">
-                                        <div class="tag">Hub</div>
-                                    </div>
-                                </div>
-                            </a>
-                            <div id="vehicle_specialist" role="tabpanel" aria-labelledby="headingCollapsebusinesss_info"
-                                style="border-left: 2px solid black;
-            margin-top: -4px;
-            border-right: 2px solid black;
-            border-bottom: 2px solid black;
-            border-bottom-left-radius: 6px;
-            border-bottom-right-radius: 6px;"
-                                class="collapse " aria-expanded="false">
-                                <div class="card-content">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <h6 class="mb-0">Vehicle specialist </h6>
-                                            </div>
-                                            <div class="col-sm-8 text-secondary">
-                                                <div class="row">
-                                                    @foreach ($trading_unit['vehicle_specialists'] as $job_type)
-                                                        <div class="col-md-3 mt-1">
-                                                            <span
-                                                                class="badge badge-success">{{ $job_type['vehicle_specialist']['name'] }}</span>
-                                                        </div>
-                                                    @endforeach
-
-
-                                                </div>
-                                            </div>
+                                        <div class="footers m-0" style="border-radius: 0 0 5px 5px;">
+                                            <a
+                                                href="{{ route('vender.service.provider.trading.unit.hub.setting.job.type', $trading_unit['id']) }}">
+                                                <button type="button" class="btn btn-dark round btn-min-width m-0">Edit</button>
+                                            </a>
                                         </div>
-
-
-
-
-
-
-
-
-                                    </div>
-                                    <div class="footers">
-
-                                        <a
-                                            href="{{ route('vender.service.provider.trading.unit.hub.setting.vehicle.specialist', $trading_unit['id']) }}">
-                                            <button type="button" class="btn btn-dark round btn-min-width mr-1 mb-1"
-                                                style="float: right;">Edit</button></a>
-
                                     </div>
                                 </div>
+
                             </div>
-                            <a id="headingCollapse2" class="card-header info mt-2"
-                                style="border: 2px solid black;border-radius: 7px !important;padding: 1.2rem 1rem;color: black !important;"
-                                data-toggle="collapse" href="#accreditation" aria-expanded="false" aria-controls="accreditation">
-                                <div class="card-title lead ">Accreditation & schemes
-                                    <div class="tags">
-                                        <div class="tag">Hub</div>
-                                    </div>
-                                </div>
-                            </a>
-                            <div id="accreditation" role="tabpanel" aria-labelledby="headingCollapsebusinesss_info"
-                                style="border-left: 2px solid black;
-            margin-top: -4px;
-            border-right: 2px solid black;
-            border-bottom: 2px solid black;
-            border-bottom-left-radius: 6px;
-            border-bottom-right-radius: 6px;"
-                                class="collapse " aria-expanded="false">
-                                <div class="card-content">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <h6 class="mb-0">Accreditation & schemes </h6>
-                                            </div>
-                                            <div class="col-sm-8 text-secondary">
-                                                <div class="row">
-                                                    @foreach ($trading_unit['accreditations'] as $job_type)
-                                                        <div class="col-md-3 mt-1">
-                                                            <span
-                                                                class="badge badge-success">{{ $job_type['accreditation']['name'] }}</span>
-                                                        </div>
-                                                    @endforeach
-
-
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-
-
-
-
-
-                                    </div>
-                                    <div class="footers">
-
-                                        <a
-                                            href="{{ route('vender.service.provider.trading.unit.hub.setting.accreditation', $trading_unit['id']) }}">
-                                            <button type="button" class="btn btn-dark round btn-min-width mr-1 mb-1"
-                                                style="float: right;">Edit</button></a>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <a id="headingCollapse2" class="card-header info mt-2"
-                                style="border: 2px solid black;border-radius: 7px !important;padding: 1.2rem 1rem;color: black !important;"
-                                data-toggle="collapse" href="#payment_method" aria-expanded="false" aria-controls="payment_method">
-                                <div class="card-title lead ">Payment methods
-                                    <div class="tags">
-
-                                        <div class="tag">Hub</div>
-                                    </div>
-                                </div>
-                            </a>
-                            <div id="payment_method" role="tabpanel" aria-labelledby="headingCollapsebusinesss_info"
-                                style="border-left: 2px solid black;
-            margin-top: -4px;
-            border-right: 2px solid black;
-            border-bottom: 2px solid black;
-            border-bottom-left-radius: 6px;
-            border-bottom-right-radius: 6px;"
-                                class="collapse " aria-expanded="false">
-                                <div class="card-content">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-sm-5">
-                                                <h6 class="mb-0">Payment methods </h6>
-                                            </div>
-                                            <div class="col-sm-7 text-secondary">
-                                                <div class="row">
-                                                    @foreach ($trading_unit['payment_methods'] as $job_type)
-                                                        <div class="col-md-3 mt-1">
-                                                            <span
-                                                                class="badge badge-success">{{ $job_type['payment_method']['name'] }}</span>
-                                                        </div>
-                                                    @endforeach
-
-
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-
-
-
-
-
-
-
-                                    </div>
-                                    <div class="footers">
-
-                                        <a
-                                            href="{{ route('vender.service.provider.trading.unit.hub.setting.payment.method', $trading_unit['id']) }}">
-                                            <button type="button" class="btn btn-dark round btn-min-width mr-1 mb-1"
-                                                style="float: right;">Edit</button></a>
-
-                                    </div>
-                                </div>
-                            </div>
-
-
-
-
-
-
-
-
-
-
-
-
                         </div>
-
-
-
-
-
-
                     </div>
                 </div>
+            @endsection
+
+            @section('script')
+                <script src="/modules/admin/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
+
+                <script>
+                    $(document).ready(function() {
+                        if ($('.zero-configuration').length > 0) {
+                            if ($.fn.dataTable.isDataTable('.zero-configuration')) {
+                                $('.zero-configuration').DataTable().destroy();
+                            }
+
+                            var oTable = $('.zero-configuration').DataTable({
+                                "bPaginate": $('.zero-configuration tbody tr').length > 10,
+                                "iDisplayLength": 10,
+                                "bAutoWidth": false,
+                                "ordering": false,
+                                "width": "100%",
+                                "columnDefs": [{
+                                    "targets": "_all",
+                                    "orderable": false
+                                }]
+                            });
+
+                            // Re-adjust heavily nested DataTables when their accordions are opened
+                            $('.collapse').on('shown.bs.collapse', function() {
+                                oTable.columns.adjust().draw();
+                            });
+
+                            $(window).on('resize', function() {
+                                oTable.columns.adjust();
+                            });
+                        }
+                    });
+                </script>
             @endsection

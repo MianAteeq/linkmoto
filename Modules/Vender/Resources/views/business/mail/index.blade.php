@@ -128,23 +128,11 @@
 @endsection
 
 @section('content')
-    <div class="container-fluid mt-3">
-        {{-- Breadcrumb Row - Aligned with boxes below --}}
-        <div class="row mb-2">
-            <div class="col-12">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb" style="background: transparent; padding-left: 0;">
-                        <li class="breadcrumb-item"><a href="#" style="color: #666;">Business</a></li>
-                        <li class="breadcrumb-item active" aria-current="page" style="color: #000; font-weight: 600;">Email
-                            Addresses</li>
-                    </ol>
-                </nav>
-            </div>
-        </div>
+    <div class="container-fluid mt-1">
 
         <div class="row align-items-stretch">
             {{-- Left Sidebar --}}
-            <div class="col-12 col-lg-3 info-sidebar-wrapper mb-3 mb-lg-0">
+            <div class="col-12 col-lg-3 info-sidebar-wrapper mb-1 mb-lg-0">
                 <div class="info-sidebar">
                     <div class="box-header">
                         <img src="/home.png" style="width: 20px;">
@@ -172,14 +160,14 @@
                             <div style="flex-grow: 1;">
                                 <input type="text" class="form-control" id="myInputTextField" placeholder="Search...">
                             </div>
-                            <a href="#"><i class="ft-filter" style="font-size: 24px; color: #000;"></i></a>
+                            <a href="#"><i class="ft-filter" style="font-size: 24px; color: #000000;"></i></a>
                         </div>
 
                         {{-- Table Section --}}
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered zero-configuration w-100">
                                 <thead>
-                                    <tr>
+                                    <tr style="color: #000000;">
                                         <th style="width: 10%;">ID</th>
                                         <th>Label</th>
                                         <th>Email Address</th>

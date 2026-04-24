@@ -196,7 +196,7 @@
 @endsection
 
 @section('content')
-    <div class="row mt-3">
+    <div class="row mt-2">
 
         <div class="col-lg-3 col-12 mb-3">
             <div class="sidebar-box">

@@ -79,7 +79,7 @@
     <div class="content-header bg-white">
         <div class="row" style="border-bottom: 3px solid #949494; margin: 0;">
             <div class="col-12 bg-white p-2 pl-2">
-                <h3 class="h3 mb-1">Invoices</h3>
+                <h3 class="h3">Invoices</h3>
                 <div class="breadcrumb-wrapper">
                     <ol class="breadcrumb p-0 m-0 pb-2 bg-transparent">
                         <li class="breadcrumb-item"><a>Billing</a></li>

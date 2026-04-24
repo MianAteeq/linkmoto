@@ -1,449 +1,373 @@
 @extends('vender::layouts.master')
 
 @section('css_custom')
+    <link rel="stylesheet" type="text/css" href="/modules/admin/app-assets/vendors/css/tables/datatable/datatables.min.css">
+    <style>
+        /* ========================================================================
+       1. TABLE & UI STYLES
+       ======================================================================== */
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_filter,
+        .dataTables_wrapper .dataTables_info {
+            display: none !important;
+        }
 
-<link rel="stylesheet" type="text/css" href="/modules/admin/app-assets/vendors/css/tables/datatable/datatables.min.css">
-<style>
-.dataTables_wrapper .dataTables_length {
-  display: none;
-}
+        table.dataTable thead {
+            background: #fafbfc;
+            color: black;
+        }
 
-.dataTables_wrapper .dataTables_filter {
-  display: none;
-}
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: white;
+        }
 
-table.dataTable thead {
-  background: #fafbfc;
-  color: black;
-}
+        table.dataTable tbody td {
+            padding: 8px 10px;
+            font-size: 10px;
+            color: black;
+            vertical-align: middle;
+        }
 
-.table-striped tbody tr:nth-of-type(odd) {
-  background-color: white;
-}
+        /* ========================================================================
+       2. ICONS & ACCORDION
+       ======================================================================== */
+        .collapse-icon [data-toggle="collapse"]:before {
+            position: absolute;
+            top: 48%;
+            right: 20px;
+            margin-top: -8px;
+            font-family: 'feather';
+            content: "\e842";
+            transition: all 300ms linear 0s;
+        }
 
-table.dataTable tbody td {
-  padding: 8px 10px;
-  padding-bottom: 2px;
-  padding-top: 2px;
-  font-size: 10px;
-}
+        .collapse-icon [data-toggle="collapse"]:after {
+            position: absolute;
+            top: 48%;
+            right: 20px;
+            margin-top: -8px;
+            font-family: 'feather';
+            content: "\e845";
+            transition: all 300ms linear 0s;
+        }
 
-.dataTables_wrapper .dataTables_info {
-  display: none;
-}
+        /* ========================================================================
+       3. CONTAINER & FORM STYLES
+       ======================================================================== */
+        body {
+            color: black;
+        }
 
-table.dataTable tbody td {
+        .info-sidebar {
+            border-radius: 7px;
+            border: 2px solid black;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
+        }
 
-  color: black;
-}
+        .main-content-box {
+            border: 2px solid black;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            width: 100%;
+        }
 
-table.dataTable thead th,
-table.dataTable thead td {
-  padding: 10px 18px;
-  border-bottom: 1px solid #111;
-  font-size: 11px;
-  padding-left: 8px;
-  padding-right: 1px;
-}
+        .footers {
+            border-top: 2px solid black;
+            padding: 15px 20px;
+            width: 100%;
+            background: white;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 10px;
+        }
 
-th {
-  white-space: pre-line;
-}
+        .btn-dark {
+            border-color: black !important;
+            background-color: black !important;
+            color: #FFFFFF !important;
+        }
 
-table.dataTable tfoot th,
-table.dataTable tfoot td {
-  padding: 10px 18px 6px 18px;
-  border-top: 1px solid #111;
-  font-size: 10px;
-  padding-right: 0px;
-  padding-left: 8px;
-  color: black;
-}
+        .round {
+            border-radius: 0.5rem;
+        }
 
-#headingCollapse14:before {
-  position: absolute;
-  top: 48%;
-  right: 20px;
-  margin-top: -8px;
-  font-family: 'feather';
-  content: "\e843";
-  transition: all 300ms linear 0s;
-}
+        .success {
+            color: #28a745;
+            font-weight: bold;
+        }
 
-.collapse-icon [data-toggle="collapse"]:before {
-  position: absolute;
-  top: 48%;
-  right: 20px;
-  margin-top: -8px;
-  font-family: 'feather';
-  content: "\e842";
-  transition: all 300ms linear 0s;
-}
+        .form-control {
+            border: 2px solid #000000 !important;
+            color: #000000;
+            width: 100%;
+            /* Mobile default */
+            max-width: 400px;
+            /* Desktop limit */
+        }
 
-.collapse-icon [data-toggle="collapse"]:after {
-  position: absolute;
-  top: 48%;
-  right: 20px;
-  margin-top: -8px;
-  font-family: 'feather';
-  content: "\e845";
-  transition: all 300ms linear 0s;
-}
+        /* ========================================================================
+       4. RESPONSIVE MEDIA QUERIES
+       ======================================================================== */
+        @media (max-width: 991.98px) {
+            .headerbg {
+                padding-left: 25px !important;
+            }
 
-.collapsed {
-  border-bottom-left-radius: 0px !important;
-  border-bottom-right-radius: 0px !important;
-}
+            .info-sidebar-wrapper {
+                margin-bottom: 20px;
+            }
 
-.footers {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  border-top: 2px solid black;
-  padding-top: 5px;
-  width: 100%;
-}
+            .col-lg-9 {
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+            }
 
-.btn-dark {
-  border-color: black !important;
-  background-color: black !important;
-  color: #FFFFFF;
-}
+            /* Center sidebar content on mobile */
+            .info-sidebar h4 {
+                text-align: left;
+            }
 
-.round {
-  border-radius: 0.5rem;
-}
+            .footers {
+                flex-direction: column;
+            }
 
-form .form-control {
-  border: 2px solid #000000;
-  color: #000000;
-}
+            .footers .btn-dark,
+            .footers a {
+                width: 100% !important;
+                display: block !important;
+                margin: 0 !important;
+            }
 
-p {
-  color: black;
-}
-
-.form-control:focus {
-  color: #000000;
-  background-color: #fff;
-  border-color: #000000;
-  outline: 0;
-  box-shadow: none;
-}
-
-/* --- RESPONSIVE MEDIA QUERIES ADDED HERE --- */
-@media (max-width: 768px) {
-  .headerbg {
-    padding-left: 15px !important;
-  }
-
-  #contens {
-    height: auto !important;
-    /* Overrides the JS fixed height calculation */
-    margin-top: 20px;
-    /* Spacing between stacked left and right columns */
-  }
-
-  /* Overrides inline width attributes on form selects (and JS validation overrides) */
-  form select.form-control {
-    width: 100% !important;
-  }
-
-  /* Styles for the left column buttons */
-  .col-md-3 .footers a button {
-    width: 100% !important;
-  }
-
-  /* Styles for the right column form buttons */
-  .col-md-9 .footers button,
-  .col-md-9 .footers a {
-    float: none !important;
-    width: 100% !important;
-    display: block;
-    margin-bottom: 10px;
-  }
-
-  .col-md-9 .footers {
-    padding-bottom: 15px;
-    position: relative;
-    /* Prevents overlap on long forms */
-  }
-}
-</style>
+            .form-control {
+                max-width: 100% !important;
+            }
+        }
+    </style>
 @endsection
 
 @section('header')
-<div class="content-header bg-white">
-  <div class="row" style="border-bottom: 3px solid #949494;">
-    <div class="col-xl-12 col-12 bg-white headerbg" style="padding-left: 32px;padding-top: 13px;">
-      <h3 class="h3">User</h3>
-      <div class="breadcrumb-wrapper col-12">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a>Directory</a>
-          </li>
-          <li class="breadcrumb-item">Users
-          </li>
-          <li class="breadcrumb-item">{{$user['name']}} {{$user['middle_name']}} {{$user['last_name']}}
-          </li>
-          <li class="breadcrumb-item">App
-          </li>
-          <li class="breadcrumb-item">{{$app['app_name']}}
-          </li>
-          <li class="breadcrumb-item">Edit user app settings
-          </li>
-        </ol>
-      </div>
+    <div class="content-header bg-white">
+        <div class="row m-0" style="border-bottom: 3px solid #949494;">
+            {{-- Fixed alignment: 2 Rows, flush left --}}
+            <div class="col-12 bg-white headerbg" style="padding: 15px 32px;">
+                <h3 class="h3 mb-1" style="font-weight: 600; color: black;">User</h3>
+                <div class="breadcrumb-wrapper p-0">
+                    <ol class="breadcrumb m-0 p-0" style="background-color: transparent;">
+                        <li class="breadcrumb-item"><a>Directory</a></li>
+                        <li class="breadcrumb-item">Users</li>
+                        <li class="breadcrumb-item">{{ $user['name'] }} {{ $user['middle_name'] }} {{ $user['last_name'] }}
+                        </li>
+                        <li class="breadcrumb-item">App</li>
+                        <li class="breadcrumb-item">{{ $app['app_name'] }}</li>
+                        <li class="breadcrumb-item active">Edit user app settings</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
     </div>
-
-  </div>
-</div>
 @endsection
 
 @section('content')
+    <div class="container-fluid px-1 px-md-1 mt-1">
+        <div class="row align-items-start m-0">
 
-<div class="row">
-  <div class="col-md-3">
-    <div style="border-radius: 7px;border: 2px solid black;">
-      <h4 class="h3" style="font-weight: 600; font-size: 17px;padding: 10px; ">
-        <div>
-          <div style="float: left; width: 10%;">
-            <img src="/user.png" style="width: 22px;margin-top: -5px;">
-          </div>
-          <div style="float: left; width: 90%;">
-            <span>{{$user['name']}} {{$user['middle_name']}} {{$user['last_name']}}</span>
-          </div>
-        </div>
-        <div style="margin: 20px;margin-top: 53px;font-weight: 500;font-size: 13px;">
-          <span>{{$user['email']}}</span>
-        </div>
-        <div style="margin: 20px;margin-top: 15px;font-weight: 500;font-size: 13px;">
-          <span class="success">{{$user['status']}}</span>
-        </div>
-        <div style="margin: 20px;margin-top: 15px;font-weight: 500;font-size: 13px;">
-          <span>Last sign in: {{\Carbon\Carbon::parse($user['updated_at'])->format('d/m/Y') }} at
-            {{\Carbon\Carbon::parse($user['updated_at'])->format('h:i') }}</span>
-        </div>
-        <div style="margin: 20px;margin-top: 15px;font-weight: 500;font-size: 13px;margin-bottom:0px">
-          <span>Created: {{\Carbon\Carbon::parse($user['created_at'])->format('d/m/Y') }} at
-            {{\Carbon\Carbon::parse($user['created_at'])->format('h:i') }}</span>
-        </div>
-      </h4>
-      <div class="footers" style="text-align: center;position: relative;">
+            {{-- Left Sidebar Profile Card --}}
+            <div class="col-12 col-lg-3 info-sidebar-wrapper mb-4 mb-lg-0 p-0 pr-lg-3">
+                <div class="info-sidebar">
+                    <div
+                        style="font-weight: 600; font-size: 17px; padding: 12px 16px; border-bottom: 2px solid black; display: flex; align-items: flex-start;">
+                        <div style="width: 15%; margin-top: 2px;"><img src="/user.png" style="width: 22px;"></div>
+                        <div style="width: 85%; padding-left: 5px;"><span>{{ $user['name'] }} {{ $user['middle_name'] }}
+                                {{ $user['last_name'] }}</span></div>
+                    </div>
 
-        <a href="{{route('vender.user.password',$user['id'])}}"> <button type="button" style="width: 80%;"
-            class="btn btn-dark round btn-min-width mr-1 mb-1">RESET PASSWORD</button></a>
-        <a href="{{route('vender.user.edit',$user['id'])}}"> <button type="button" style="width: 80%;"
-            class="btn btn-dark round btn-min-width mr-1 mb-1">UPDATE USER</button></a>
-        <a href="{{route('vender.user.suspend',$user['id'])}}"> <button type="button" style="width: 80%;"
-            class="btn btn-dark round btn-min-width mr-1 mb-1">SUSPEND USER</button></a>
-        @if ($user['status']!="ACTIVE")
-        <a href="{{route('vender.user.active',$user['id'])}}"> <button type="button" style="width: 80%;"
-            class="btn btn-dark round btn-min-width mr-1 mb-1">ACTIVATE USER</button></a>
-        @else
-        <a href="{{route('vender.user.in.active',$user['id'])}}"> <button type="button" style="width: 80%;"
-            class="btn btn-dark round btn-min-width mr-1 mb-1">INACTIVATE USER</button></a>
-        @endif
+                    <div style="padding: 20px; flex-grow: 1;">
+                        <div class="mb-3" style="font-weight: 500; font-size: 13px; word-break: break-all;">
+                            <span>{{ $user['email'] }}</span>
+                        </div>
+                        <div class="mb-2"><span class="success">{{ $user['status'] }}</span></div>
+                        <div class="mb-3" style="font-weight: 500; font-size: 13px;">
+                            <span>Last sign in:
+                                {{ \Carbon\Carbon::parse($user['updated_at'])->format('d/m/Y \a\t h:i') }}</span>
+                        </div>
+                        <div style="font-weight: 500; font-size: 13px; color: #555;">
+                            <span>Created:
+                                {{ \Carbon\Carbon::parse($user['created_at'])->format('d/m/Y \a\t h:i') }}</span>
+                        </div>
+                    </div>
 
-      </div>
+                    {{-- Action Buttons Footer (Vertical Stack Fix) --}}
+                    <div class="footers"
+                        style="flex-direction: column; gap: 12px; padding: 15px; border-radius: 0 0 5px 5px;">
+                        <a href="{{ route('vender.user.password', $user['id']) }}" class="w-100"><button type="button"
+                                class="btn btn-dark round w-100 m-0">RESET PASSWORD</button></a>
+                        <a href="{{ route('vender.user.edit', $user['id']) }}" class="w-100"><button type="button"
+                                class="btn btn-dark round w-100 m-0">UPDATE USER</button></a>
+                        <a href="{{ route('vender.user.suspend', $user['id']) }}" class="w-100"><button type="button"
+                                class="btn btn-dark round w-100 m-0">SUSPEND USER</button></a>
+                        @if ($user['status'] != 'ACTIVE')
+                            <a href="{{ route('vender.user.active', $user['id']) }}" class="w-100"><button type="button"
+                                    class="btn btn-dark round w-100 m-0">ACTIVATE USER</button></a>
+                        @else
+                            <a href="{{ route('vender.user.in.active', $user['id']) }}" class="w-100"><button
+                                    type="button" class="btn btn-dark round w-100 m-0">INACTIVATE USER</button></a>
+                        @endif
+                    </div>
+                </div>
+            </div>
 
+            {{-- Right Content Container --}}
+            <div class="col-12 col-lg-9 p-0">
+                <form action="{{ route('vender.user.app.update') }}" method="POST" enctype="multipart/form-data"
+                    class="main-content-box" id="userAppForm">
+                    @csrf
+                    <input type="hidden" name="id" value="{{ $app['id'] }}">
+
+                    {{-- Form Header --}}
+                    <div style="border-bottom: 2px solid black; padding: 12px 20px;">
+                        <h3 style="font-size: 20px; color: black; margin: 0;">Edit user app settings</h3>
+                    </div>
+
+                    <div class="link-body" style="padding: 20px">
+
+                        <div class="form-group row align-items-center">
+                            <label class="col-md-4 label-control">App *</label>
+                            <div class="col-md-8">
+                                <p class="m-0 font-weight-bold">{{ $app['app_name'] }}</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group row align-items-center">
+                            <label class="col-md-4 label-control" for="status">Status *</label>
+                            <div class="col-md-8">
+                                <select id="status" name="status" @if ($is_edit_able == 'off') disabled @endif
+                                    class="form-control">
+                                    <option value="none" selected disabled>Select Status</option>
+                                    <option value="0" @if ($app['status'] == 0) selected @endif>Off</option>
+                                    <option value="1" @if ($app['status'] == 1) selected @endif>On</option>
+                                </select>
+                                <p class="text-danger status-error" style="display: none; margin-top: 5px;">This Field is
+                                    Required !</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group row align-items-center">
+                            <label class="col-md-4 label-control" for="role_id">Group *</label>
+                            <div class="col-md-8">
+                                <select id="role_id" name="role_id" class="form-control">
+                                    <option value="none" selected disabled>Select Group</option>
+                                    @foreach ($roles as $role)
+                                        <option value="{{ $role['id'] }}"
+                                            @if ($app['role_id'] == $role['id']) selected @endif>
+                                            @if ($role['type'] == 'BUSINESS')
+                                                {{ str_replace('SVP_B_' . ($vender_id ?? auth()->user()->id), '', $role['name']) }}
+                                            @else
+                                                {{ str_replace('SVP_' . ($vender_id ?? auth()->user()->id), '', $role['name']) }}
+                                            @endif
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <p class="text-danger role_id-error" style="display: none; margin-top: 5px;">This Field is
+                                    Required !</p>
+                            </div>
+                        </div>
+
+                        @if ($app['app_name'] == 'Service Provider')
+                            <div class="form-group row">
+                                <label class="col-md-4 label-control">Trade units *</label>
+                                <div class="col-md-8">
+                                    <div class="row m-0">
+                                        @foreach ($trade_units as $trade_unit)
+                                            <div class="col-12 col-md-6 p-0 mb-1">
+                                                <fieldset>
+                                                    <label class="m-0 cursor-pointer">
+                                                        <input type="checkbox" name="trade_unit[]"
+                                                            @foreach ($user['trading_units'] as $unit) @if ($unit['trading_id'] == $trade_unit['id']) checked @endif @endforeach
+                                                            value="{{ $trade_unit['id'] }}">
+                                                        {{ $trade_unit['name'] }}
+                                                    </label>
+                                                </fieldset>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row align-items-center">
+                                <label class="col-md-4 label-control" for="default_trading_unit">Default trade unit
+                                    *</label>
+                                <div class="col-md-8">
+                                    <select id="default_trading_unit" name="default_trading_unit" class="form-control">
+                                        <option value="none" selected disabled>Select Default trade unit</option>
+                                        @foreach ($trade_units as $trade_unit)
+                                            <option value="{{ $trade_unit['id'] }}"
+                                                @if ($user['default_trading_unit'] == $trade_unit['id']) selected @endif>{{ $trade_unit['name'] }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <p class="text-danger default_trading_unit-error"
+                                        style="display: none; margin-top: 5px;">This Field is Required !</p>
+                                </div>
+                            </div>
+                        @endif
+
+                    </div>
+
+                    <div class="footers">
+                        <a href="{{ redirect()->back()->getTargetUrl() }}">
+                            <button type="button" class="btn btn-dark round btn-min-width">Cancel</button>
+                        </a>
+                        @if ($is_edit_able != 'off')
+                            <button type="button" onclick="submitDetailsForm()"
+                                class="btn btn-dark round btn-min-width">Save</button>
+                        @endif
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-  </div>
-  <div class="col-md-9" id="contens"
-    style="border: 2px solid black;border-radius: 6px;margin-bottom: 10px;padding-left: 0;padding-right: 0;height: auto; ">
-    <div class="row" style="margin-right: 0;margin-left: 0;">
-      <div class="col-md-12" style="border-bottom: 2px solid black;">
-        <h3 style="font-size: 20px; padding: 10px; margin-left: -11px; color: black;padding-bottom: 0px;">Edit user app
-          settings</h3>
-      </div>
-
-
-    </div>
-    <form action="{{route('vender.user.app.update')}}" id="contens" method="POST" enctype="multipart/form-data"> @csrf
-      <div class="link-body" style="padding: 10px">
-
-        <input type="hidden" name="id" value="{{$app['id']}}">
-        <div class="form-group row">
-          <label class="col-md-4 label-control" for="eventRegInput5">App *</label>
-          <div class="col-md-8 mx-auto">
-            <p>{{$app['app_name']}}</p>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-md-4 label-control" for="eventRegInput5">Status *</label>
-          <div class="col-md-8 mx-auto">
-            <select id="status" name="status" @if($is_edit_able=="off" ) disabled @endif class="form-control"
-              style="width: 30%;border-radius: 4px;">
-              <option value="none" selected="" disabled="">Select Status</option>
-              <option value="0" @if ($app['status']==0) selected @endif>Off</option>
-              <option value="1" @if ($app['status']==1) selected @endif>On</option>
-
-            </select>
-            <p class="text-danger status" style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This
-              Field is Required !</p>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-md-4 label-control" for="eventRegInput5">Group *</label>
-          <div class="col-md-8 mx-auto">
-            <select id="role_id" name="role_id" class="form-control" style="width: 50%;
-                        border-radius: 4px;">
-              <option value="none" selected="" disabled="">Select Group</option>
-
-              @foreach ($roles as $role)
-
-              <option value="{{$role['id']}}" @if ($app['role_id']==$role['id']) selected @endif>
-                @if($role['type']=="BUSINESS")
-                {{str_replace("SVP_B_".$vender_id,"",$role['name'])}}
-                @else
-                {{str_replace("SVP_".$vender_id,"",$role['name'])}}
-
-                @endif
-              </option>
-              @endforeach
-
-            </select>
-            <p class="text-danger role_id" style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This
-              Field is Required !</p>
-
-          </div>
-        </div>
-
-        @if($app['app_name']=="Service Provider")
-
-        <div class="form-group row">
-          <label class="col-md-4 label-control" for="eventRegInput5">Trade units *</label>
-          <div class="col-md-8 mx-auto">
-            @foreach ($trade_units as $trade_unit)
-            <fieldset class="checkboxsas">
-              <label>
-                <input type="checkbox" id="trade_units" name="trade_unit[]" @foreach ($user['trading_units'] as $unit)
-                  @if($unit['trading_id']==$trade_unit['id']) checked @endif @endforeach value="{{$trade_unit['id']}}">
-                {{$trade_unit['name']}}
-              </label>
-            </fieldset>
-            @endforeach
-
-
-            <p class="text-danger role_id" style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This
-              Field is Required !</p>
-
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-md-4 label-control" for="eventRegInput5">Default trade unit *</label>
-          <div class="col-md-8 mx-auto">
-            <select id="default_trading_unit" name="default_trading_unit" class="form-control" style="width: 50%;
-                        border-radius: 4px;">
-              <option value="none" selected="" disabled="">Select Default trade unit</option>
-
-              @foreach ($trade_units as $trade_unit)
-
-              <option value="{{$trade_unit['id']}}" @if ($user['default_trading_unit']==$trade_unit['id']) selected
-                @endif>{{$trade_unit['name']}}</option>
-              @endforeach
-
-            </select>
-            <p class="text-danger default_trading_unit"
-              style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This Field is Required !</p>
-
-          </div>
-        </div>
-
-        @endif
-
-
-
-
-      </div>
-      <div class="footers">
-
-        <button type="button" @if($is_edit_able=="off" ) style="display: none" @else style="float: right;" @endif
-          onclick="submitDetailsForm()" class="btn btn-dark round btn-min-width mr-1 mb-1">Save</button>
-        <a href="{{redirect()->back()->getTargetUrl()}}"><button type="button"
-            class="btn btn-dark round btn-min-width mr-1 mb-1" style="float: right;">Cancel</button></a>
-
-
-      </div>
-    </form>
-  </div>
-</div>
-
-
 @endsection
 
-
 @section('script')
-<script src="/modules/admin/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
+    <script src="/modules/admin/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
+    <script>
+        function submitDetailsForm() {
+            let appName = @json($app['app_name']);
+            let fields = ['role_id'];
 
-<script>
-oTable = $('.zero-configuration').DataTable({
-  "bPaginate": $('.zero-configuration tbody tr').length > 10,
-  "iDisplayLength": 10,
-  "bAutoWidth": false,
-  "ordering": false,
+            if (appName === "Service Provider") {
+                fields.push('default_trading_unit');
+            }
 
-});
-$('#myInputTextField').keyup(function() {
-  oTable.search($(this).val()).draw();
-})
-</script>
+            let isValid = true;
 
-<script>
-$(document).ready(function() {
-  var contentHeight = $('#contens').height();
-  $('#contens').height(contentHeight + 100);
-});
-</script>
+            fields.forEach((id) => {
+                let element = $(`#${id}`);
+                let errorMsg = $(`.${id}-error`);
 
-<script>
-function submitDetailsForm() {
+                if (element.val() === null || element.val() === "none") {
+                    element.attr('style', 'border:2px solid red !important;');
+                    errorMsg.show();
+                    isValid = false;
+                } else {
+                    element.attr('style', 'border:2px solid black !important;');
+                    errorMsg.hide();
+                }
+            });
 
-  let app = @json(($app['app_name']));
-
-  let array = [];
-
-  if (app == "Service Provider") {
-
-    array = ['role_id', 'default_trading_unit'];
-  } else {
-    array = ['role_id'];
-
-  }
-
-  let status = false;
-  array.some((item) => {
-    let name = $(`#${item}`).val();
-    console.log(name, item);
-
-    if (name === null) {
-
-
-      $(`#${item}`).attr('style', 'border:2px solid red!important;width: 50%;');
-
-      status = false;
-
-
-      return true;
-
-    } else {
-
-      $(`#${item}`).attr('style', 'border:2px solid black!important;width: 50%;');
-      status = true;
-
-    }
-  });
-
-  if (status == true) {
-    $("form").submit();
-  }
-
-
-
-
-
-
-}
-</script>
-
-
+            if (isValid) {
+                $("#userAppForm").submit();
+            }
+        }
+    </script>
 @endsection
