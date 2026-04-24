@@ -214,7 +214,7 @@
 
 @section('content')
     {{-- SPACING FIX: px-1 px-md-1 mt-2 → px-3 px-md-3 mt-3 to match VAT page --}}
-    <div class="container-fluid px-3 px-md-3 mt-3">
+    <div class="container-fluid px-2 px-md-2 mt-1">
         <div class="row align-items-stretch" style="padding-left: 0 !important;">
 
             {{-- SPACING FIX: col-lg-13 (invalid) → col-lg-3 to match VAT page sidebar column --}}
@@ -253,7 +253,7 @@
                             </div>
                         </div>
 
-                        <div class="row m-0 mt-3 align-items-center px-2">
+                        <div class="row m-0 mt-1 align-items-center px-2">
                             <div class="col-10 col-md-11 search-col">
                                 <input type="text" class="form-control" id="myInputTextField"
                                     style="border: 2px solid black; border-radius: 6px;" placeholder="Search" name=""

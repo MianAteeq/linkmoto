@@ -3,200 +3,109 @@
 @section('css_custom')
     <link rel="stylesheet" type="text/css" href="/modules/admin/app-assets/vendors/css/tables/datatable/datatables.min.css">
     <style>
-        /* ========================================================================
-                   1. MASTER LAYOUT & CONTAINER FOUNDATIONS
-                   ======================================================================== */
+        /* 1. LAYOUT FOUNDATIONS */
         .content-wrapper {
-            height: auto !important;
-            min-height: 84vh !important;
+            min-height: 85vh !important;
+            background-color: #f4f7fa;
+            /* Light gray background to make white boxes pop */
         }
 
-        .info-sidebar {
-            border-radius: 7px;
-            border: 2px solid black;
-            height: auto;
-            background-color: #fcfdfe;
-            box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.04);
-            width: 100%;
-        }
-
+        /* 2. BOX STYLING (Sidebar & Main Box) */
+        .info-sidebar,
         .main-content-box {
-            border: 2px solid black;
-            border-radius: 6px;
-            margin-bottom: 10px;
-            padding: 0;
+            background-color: white;
+            border: 2px solid #000;
+            border-radius: 8px;
+            box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.05);
+            height: 100%;
+            /* Ensures both boxes take equal height if needed */
             display: flex;
             flex-direction: column;
-            background-color: white;
-            width: 100% !important;
             overflow: hidden;
         }
 
-        .main-content-inner {
-            flex-grow: 1;
-            padding-bottom: 20px;
-            width: 100%;
-        }
-
-        /* ========================================================================
-                   2. DATATABLES & TABLE STYLING
-                   ======================================================================== */
-        .dataTables_wrapper .dataTables_length,
-        .dataTables_wrapper .dataTables_filter,
-        .dataTables_wrapper .dataTables_info,
-        .dataTables_paginate {
-            display: none !important;
-        }
-
-        .dataTables_wrapper .row {
-            margin-left: 0 !important;
-            margin-right: 0 !important;
-        }
-
-        .dataTables_wrapper [class*="col-"] {
-            padding-left: 0 !important;
-            padding-right: 0 !important;
-            flex: 0 0 100% !important;
-            max-width: 100% !important;
-        }
-
-        table.dataTable thead {
-            background: #fafbfc;
-            color: black;
-        }
-
-        .table-striped tbody tr:nth-of-type(odd) {
-            background-color: white;
-        }
-
-        table.dataTable tbody td {
-            padding: 8px 10px;
-            padding-bottom: 2px;
-            padding-top: 2px;
-            font-size: 10px;
-            color: black;
-            vertical-align: middle;
-        }
-
-        table.dataTable thead th,
-        table.dataTable thead td {
-            padding: 10px 18px;
-            border-bottom: 1px solid #111;
-            font-size: 11px;
-            padding-left: 8px;
-            padding-right: 1px;
-            white-space: pre-line;
-        }
-
-        table.dataTable tfoot th,
-        table.dataTable tfoot td {
-            padding: 10px 18px 6px 18px;
-            border-top: 1px solid #111;
-            font-size: 10px;
-            padding-right: 0px;
-            padding-left: 8px;
-            color: black;
-        }
-
-        table.dataTable thead th {
-            cursor: default !important;
-        }
-
-        table.dataTable thead .sorting,
-        table.dataTable thead .sorting_asc,
-        table.dataTable thead .sorting_desc,
-        table.dataTable thead .sorting_asc_disabled,
-        table.dataTable thead .sorting_desc_disabled {
-            cursor: default !important;
-            background-image: none !important;
-        }
-
-        /* FIX: 99.8% width prevents the 1px browser rounding error that causes phantom scrollbars */
-        table.dataTable {
-            width: 99.8% !important;
-            max-width: 100% !important;
-            margin: 0 auto !important;
-        }
-
-        .table-responsive {
-            display: block;
-            width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        /* ========================================================================
-                   3. UI ELEMENTS (FOOTERS & BUTTONS)
-                   ======================================================================== */
-        .footers {
-            border-top: 2px solid black;
-            padding: 15px 20px 25px 20px;
-            width: 100%;
-            background: white;
-            border-bottom-left-radius: 6px;
-            border-bottom-right-radius: 6px;
-            margin-top: auto;
+        /* 3. INTERNAL HEADERS */
+        .box-header {
+            padding: 15px 20px;
+            border-bottom: 2px solid #000;
             display: flex;
-            justify-content: flex-end;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+        }
+
+        .box-header h3,
+        .box-header h4 {
+            margin: 0;
+            font-weight: 700;
+            color: #000;
+            font-size: 1.1rem;
+        }
+
+        /* 4. CONTENT SPACING */
+        .box-body {
+            padding: 20px;
+            flex-grow: 1;
+        }
+
+        /* 5. TABLE STRETCH & BORDER FIX */
+        .dataTables_wrapper {
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        table.dataTable {
+            width: 100% !important;
+            border-collapse: collapse !important;
+            margin: 15px 0 !important;
+        }
+
+        /* Fix for missing right border */
+        .table-responsive {
+            border: none !important;
+            overflow-x: auto;
+            padding: 1px;
+            /* Small buffer to prevent border clipping */
+        }
+
+        /* 6. BUTTONS & FOOTER */
+        .box-footer {
+            padding: 15px 20px;
+            border-top: 2px solid #000;
+            background: #fff;
+            text-align: right;
         }
 
         .btn-dark {
-            border-color: black !important;
-            background-color: black !important;
-            color: #FFFFFF !important;
-            margin: 0 !important;
+            background-color: #000 !important;
+            border: none !important;
+            padding: 10px 25px;
+            font-weight: 600;
+            border-radius: 6px;
         }
 
-        .round {
-            border-radius: 0.5rem;
+        /* 7. SEARCH BAR */
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
         }
 
-        /* ========================================================================
-                   4. RESPONSIVE MEDIA QUERIES & SIDEBAR SCROLL FIX
-                   ======================================================================== */
-        @media (max-width: 991.98px) {
+        .search-container input {
+            border: 2px solid #000;
+            border-radius: 6px;
+            padding: 10px 15px;
+        }
 
-            /* Stop the background body from scrolling ONLY when the sidebar is open */
-            body.menu-open {
-                overflow: hidden !important;
-            }
-
-            /* Ensure the sidebar scrolls natively but hide the ugly double track */
-            .main-menu,
-            .main-menu-content {
-                overflow-y: auto !important;
-                -ms-overflow-style: none;
-                scrollbar-width: none;
-            }
-
-            .main-menu::-webkit-scrollbar,
-            .main-menu-content::-webkit-scrollbar {
-                display: none !important;
-            }
-
-            .headerbg {
-                padding-left: 25px !important;
-            }
-
+        /* 8. RESPONSIVE ALIGNMENT */
+        @media (max-width: 991px) {
             .info-sidebar-wrapper {
-                margin-bottom: 20px;
+                margin-bottom: 25px;
             }
 
-            .footers {
-                padding: 15px 20px 25px 20px !important;
-            }
-
-            .footers .btn-dark {
-                float: none !important;
-                width: 100% !important;
-                display: block !important;
-            }
-
-            .footers a {
-                display: block;
-                width: 100%;
+            .col-lg-9 {
+                padding-left: 15px !important;
             }
         }
     </style>
@@ -219,100 +128,90 @@
 @endsection
 
 @section('content')
-    <div class="container-fluid px-1 px-md-1 mt-1">
-        <div class="row align-items-start" style="padding-left: 0 !important;">
+    <div class="container-fluid mt-3">
+        {{-- Breadcrumb Row - Aligned with boxes below --}}
+        <div class="row mb-2">
+            <div class="col-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb" style="background: transparent; padding-left: 0;">
+                        <li class="breadcrumb-item"><a href="#" style="color: #666;">Business</a></li>
+                        <li class="breadcrumb-item active" aria-current="page" style="color: #000; font-weight: 600;">Email
+                            Addresses</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
 
-            {{-- Sidebar --}}
-            <div class="col-12 col-md-12 col-lg-3 info-sidebar-wrapper d-flex mb-3 mb-lg-0">
-                <div class="info-sidebar d-flex flex-column">
-                    <h4 class="h3"
-                        style="font-weight: 600; font-size: 1.1rem; padding: 12px 16px; margin: 0; display: flex; align-items: center; gap: 10px; background-color: white; border-radius: 5px 5px 0 0;">
-                        <img src="/home.png" style="width: 20px;"> Email Addresses
-                    </h4>
-                    <div style="border-top: 2px solid black; padding: 14px 16px;">
-                        <p style="line-height: 1.6; color: #333; font-size: 0.9rem; margin: 0;">
+        <div class="row align-items-stretch">
+            {{-- Left Sidebar --}}
+            <div class="col-12 col-lg-3 info-sidebar-wrapper mb-3 mb-lg-0">
+                <div class="info-sidebar">
+                    <div class="box-header">
+                        <img src="/home.png" style="width: 20px;">
+                        <h4>Email Addresses</h4>
+                    </div>
+                    <div class="box-body">
+                        <p style="line-height: 1.6; color: #444; font-size: 0.9rem; margin: 0;">
                             Add and manage your business email addresses here. These will be linked in other sections such
-                            as remittance advise, invoice settings, and billing notifications. Multiple addresses can be
-                            stored for different purposes (e.g. accounts@, billing@, etc).
+                            as remittance advise, invoice settings, and billing notifications.
                         </p>
                     </div>
                 </div>
             </div>
 
-            {{-- Main Content Box --}}
-            <div class="col-12 col-md-12 col-lg-9 d-flex ps-lg-3 mb-4 w-100">
-                <div class="main-content-box w-100" id="contens">
+            {{-- Main Content --}}
+            <div class="col-12 col-lg-9">
+                <div class="main-content-box" id="contens">
+                    <div class="box-header">
+                        <h3>Email Addresses</h3>
+                    </div>
 
-                    <div class="main-content-inner">
-                        <div class="row m-0" style="border-bottom: 2px solid black;">
-                            <div class="col-12 p-0">
-                                <h3 style="font-size: 20px; padding: 12px 20px; color: black; margin: 0;">
-                                    Email Addresses
-                                </h3>
+                    <div class="box-body">
+                        {{-- Search Section --}}
+                        <div class="search-container">
+                            <div style="flex-grow: 1;">
+                                <input type="text" class="form-control" id="myInputTextField" placeholder="Search...">
                             </div>
+                            <a href="#"><i class="ft-filter" style="font-size: 24px; color: #000;"></i></a>
                         </div>
 
-                        {{-- Search Filter --}}
-                        <div class="row m-0 mt-3 align-items-center" style="padding: 0 20px;">
-                            <div class="col-10 col-md-11 p-0 pr-2">
-                                <input type="text" class="form-control" id="myInputTextField"
-                                    style="border: 2px solid black; border-radius: 6px; width: 100%; max-width: 100%;"
-                                    placeholder="Search">
-                            </div>
-                            <div class="col-2 col-md-1 text-center p-0">
-                                <a href="">
-                                    <i class="ft-filter" style="font-size: 26px; color: black; line-height: 1;"></i>
-                                </a>
-                            </div>
-                        </div>
-
-                        {{-- Table --}}
-                        <div class="row m-0 mt-3" style="padding: 0 20px;">
-                            <div class="col-12 p-0">
-                                <div class="table-responsive">
-                                    <table class="table table-striped table-bordered zero-configuration m-0">
-                                        <thead>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Label</th>
-                                                <th>Email Address</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($banks as $bank)
-                                                <tr>
-                                                    <td>{{ $loop->iteration }}</td>
-                                                    <td>{{ $bank['label'] }}</td>
-                                                    <td>{{ $bank['email'] }}</td>
-                                                    <td>
-                                                        <a href="{{ route('vender.mail.view', $bank['id']) }}"><i
-                                                                class="ft-eye"></i></a>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Label</th>
-                                                <th>Email Address</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                            </div>
+                        {{-- Table Section --}}
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered zero-configuration w-100">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10%;">ID</th>
+                                        <th>Label</th>
+                                        <th>Email Address</th>
+                                        <th style="width: 15%; text-align: center;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($banks as $bank)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $bank['label'] }}</td>
+                                            <td>{{ $bank['email'] }}</td>
+                                            <td class="text-center">
+                                                <a href="{{ route('vender.mail.view', $bank['id']) }}">
+                                                    <i class="ft-eye" style="color: #ff6600;"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        {{-- DataTables handles the empty message, but we keep the structure clean --}}
+                                    @endforelse
+                                </tbody>
+                            </table>
                         </div>
                     </div>
 
-                    {{-- Footer --}}
-                    <div class="footers mt-auto">
-                        <a href="{{ route('vender.mail.add') }}">
-                            <button type="button" class="btn btn-dark round btn-min-width m-0">Add</button>
+                    {{-- Action Footer --}}
+                    <div class="box-footer">
+                        <a href="{{ route('vender.mail.add') }}" class="btn btn-dark">
+                            Add
                         </a>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -320,38 +219,33 @@
 @endsection
 
 @section('script')
-    <script src="/modules/admin/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
-
-    {{-- SIDEBAR FIX: Force open on mobile with a slight delay --}}
-    <script>
-        $(window).on('load', function() {
-            if ($(window).width() <= 768) {
-                setTimeout(function() {
-                    $('.nav-toggle, .menu-toggle').trigger('click');
-                    $('body').removeClass('menu-hide menu-collapsed').addClass('menu-expanded menu-open');
-                }, 500);
-            }
-        });
-    </script>
-
     <script>
         $(document).ready(function() {
+            // Destroy existing instance to avoid the "reinitialise" error
             if ($.fn.dataTable.isDataTable('.zero-configuration')) {
                 $('.zero-configuration').DataTable().destroy();
             }
 
             var oTable = $('.zero-configuration').DataTable({
                 "paging": false,
-                "bAutoWidth": false,
                 "ordering": false,
-                "columnDefs": [{
-                    "orderable": false,
-                    "targets": "_all"
-                }]
+                "info": false,
+                "searching": true,
+                "autoWidth": false,
+                "dom": 't', // Only show the table (custom search handled below)
+                "language": {
+                    "emptyTable": "No data available in table"
+                }
             });
 
-            $('#myInputTextField').keyup(function() {
-                oTable.search($(this).val()).draw();
+            // Force the table to recalculate its width to match the professional spacing
+            setTimeout(function() {
+                oTable.columns.adjust().draw();
+            }, 200);
+
+            // Custom search trigger
+            $('#myInputTextField').on('keyup', function() {
+                oTable.search(this.value).draw();
             });
         });
     </script>

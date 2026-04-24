@@ -1,0 +1,140 @@
+*   [33m8fb2927[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m Changings in blade files
+[31m|[m[32m\[m  
+[31m|[m * [33mb41d518[m buf giix
+[31m|[m * [33m15f3bd8[m buf giix
+[31m|[m * [33mecdd493[m buf giix
+[31m|[m * [33mf6c9745[m buf giix
+[31m|[m * [33mcc7f00c[m buf giix
+[31m|[m * [33m50918d8[m buf giix
+[31m|[m * [33m47083b7[m buf giix
+[31m|[m * [33m9a93a45[m buf giix
+[31m|[m * [33m22b0247[m buf giix
+* [32m|[m [33mc544e0f[m Changings in blade files
+[32m|[m[32m/[m  
+*   [33m0bcc5d2[m Changings in blade files
+[33m|[m[34m\[m  
+[33m|[m * [33m223d82b[m buf giix
+[33m|[m * [33m5842666[m buf giix
+[33m|[m * [33mf072f66[m buf giix
+[33m|[m * [33m9e7c760[m buf giix
+[33m|[m * [33m09a8266[m buf giix
+[33m|[m * [33m4a9a801[m Corrections in blade files
+* [34m|[m [33mbe15c13[m Changings in blade files
+[34m|[m[34m/[m  
+* [33mb33517b[m buf giix
+* [33me4c80e0[m buf giix
+* [33me1c6d20[m Corrections in blade files
+* [33m69a4c4d[m Changings in blade files
+* [33m6c33f03[m Changings in blade files
+* [33m77ba9a7[m Changings in blade files
+*   [33m61a3ec9[m Changings in blade files
+[35m|[m[36m\[m  
+[35m|[m * [33m6887300[m bug fix
+[35m|[m * [33m578e0f6[m bug fix
+[35m|[m * [33md2ba4d5[m bug fix
+[35m|[m * [33m4f9feba[m bug fix
+[35m|[m * [33m8841a25[m bug fix
+[35m|[m * [33m48512e2[m bug fix
+[35m|[m * [33mff1898d[m bug fix
+[35m|[m * [33m9bd9a41[m bug fix
+[35m|[m * [33m49f9f28[m bug fix
+* [36m|[m [33m2e3bc6e[m Changings in blade files
+* [36m|[m [33m0a59e1d[m Changings in blade files
+[1;31m|[m[36m\[m[36m|[m 
+[1;31m|[m * [33mc068ba1[m bug fix
+[1;31m|[m * [33m48bb71d[m bug fix
+[1;31m|[m * [33mb0df5a5[m bug fix
+[1;31m|[m * [33ma2b4e56[m bug fix
+[1;31m|[m * [33md1119b6[m bug fix
+[1;31m|[m * [33mb03b247[m bug fix
+[1;31m|[m * [33m3c5927d[m bug fix
+[1;31m|[m * [33m775998f[m bug fix
+[1;31m|[m * [33ma99bcdb[m bug fix
+[1;31m|[m * [33mf2d2e8e[m bug fix
+[1;31m|[m * [33m0efa69c[m bug fix
+[1;31m|[m * [33m80f65ad[m bug fix
+[1;31m|[m * [33m85a7256[m bug fix
+[1;31m|[m * [33mb2711ac[m bug fix
+[1;31m|[m * [33m548059f[m bug fix
+[1;31m|[m * [33m18baf8d[m bug fix
+[1;31m|[m * [33m4f1a2a1[m bug fix
+[1;31m|[m * [33mac76e9b[m bug fix
+[1;31m|[m * [33mea901b1[m bug fix
+* [1;32m|[m [33m3c47c20[m Changings in blade files
+[1;32m|[m[1;32m/[m  
+* [33m0ee00a1[m Changings in blade files
+* [33mda13f23[m bug fix
+* [33mffa2b48[m bug fix
+* [33m53156a6[m bug fix
+* [33md9a08c6[m bug fix
+* [33m67192f5[m bug fix
+* [33m50a593c[m bug fix
+* [33me4b62d7[m bug fix
+* [33m911ac13[m bug fix
+* [33madf501f[m bug fix
+* [33m928b142[m bug fix
+* [33m5ceb673[m bug fix
+* [33mcdedaf8[m bug fix
+* [33ma5f34c6[m bug fix
+* [33mec0c341[m bug fix
+* [33mb3f5efa[m bug fix
+* [33m9c33bdb[m bug fix
+* [33m491b15a[m bug fix
+* [33mf358ae1[m bug fix
+* [33m17ff8e6[m bug fix
+* [33m9812ed2[m bug fix
+* [33m5d17312[m bug fix
+* [33mdb67913[m bug fix
+* [33m4cfc3f7[m bug fix
+* [33m52e8244[m bug fix
+* [33m6f9c85a[m bug fix
+* [33m7ed9835[m bug fix
+* [33mbda854e[m bug fix
+* [33me796011[m bug fix
+* [33m2eeb2d3[m bug fix
+* [33mcbc515b[m bug fix
+* [33m6ee5514[m bug fix
+* [33mee81846[m bug fix
+* [33m0add303[m bug fix
+* [33m4fb449c[m bug fix
+* [33mfdf3bfa[m bug fix
+* [33m130ae5f[m bug fix
+* [33m344ee7a[m bug fix
+* [33mc1dc45f[m bug fix
+* [33m0d46de2[m bug fix
+* [33m77a1c8c[m bug fix
+* [33md0ffaf3[m bug fix
+* [33m8dfaa9d[m bug fix
+* [33m721887f[m bug fix
+* [33ma9b5d10[m bug fix
+* [33m1bfca04[m bug fix
+* [33m75875dc[m bug fix
+* [33mc567a57[m bug fix
+* [33m0b6c89b[m bug fix
+* [33m4e1c1bb[m bug fix
+* [33m3516cf5[m bug fix
+* [33m40d1b08[m bug fix
+* [33maab6504[m bug fix
+* [33m7a41dcd[m bug fix
+* [33m1a26288[m bug fix
+* [33m7446fe1[m bug fix
+* [33m18bd5cf[m agreemnet
+* [33m6050b39[m agreemnet
+* [33m67915b5[m agreemnet
+* [33mcb76720[m agreemnet
+*   [33md477915[m Merge branch 'master' of https://github.com/MianAteeq/linkmoto
+[1;33m|[m[1;34m\[m  
+[1;33m|[m * [33ma4f4af5[m Update sign-up.blade.php
+[1;33m|[m * [33me205a25[m Refactor login logic for better error handling
+[1;33m|[m * [33m63e96c2[m Update LoginController.php
+[1;33m|[m * [33mca61a76[m Update LoginController.php
+[1;33m|[m * [33m4bcc17f[m Update LoginController.php
+[1;33m|[m * [33m94f0f3a[m Update LoginController.php
+[1;33m|[m * [33m4f51b82[m Refactor store method in LoginController
+[1;33m|[m * [33m413a0af[m Refactor LoginController for improved login handling
+[1;33m|[m * [33mc3ed513[m Refactor login logic with attempt limit handling
+[1;33m|[m * [33md11f3b1[m Refactor store method in LoginController
+[1;33m|[m * [33m7ec0008[m Update LoginController.php
+* [1;34m|[m [33m9fdee21[m agreemnet
+[1;34m|[m[1;34m/[m  
+* [33md172425[m first push

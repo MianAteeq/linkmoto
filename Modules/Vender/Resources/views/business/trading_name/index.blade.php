@@ -5,8 +5,8 @@
 
     <style>
         /* ========================================================================
-               1. MASTER LAYOUT & CONTAINER FOUNDATIONS
-               ======================================================================== */
+                   1. MASTER LAYOUT & CONTAINER FOUNDATIONS
+                   ======================================================================== */
         .content-wrapper {
             height: auto !important;
             min-height: 84vh !important;
@@ -41,8 +41,8 @@
         }
 
         /* ========================================================================
-               2. SEARCH & FILTER ROW
-               ======================================================================== */
+                   2. SEARCH & FILTER ROW
+                   ======================================================================== */
         .search-filter-row {
             display: flex;
             align-items: center;
@@ -66,8 +66,8 @@
         }
 
         /* ========================================================================
-               3. THE "NUCLEAR" DATATABLES STRETCH FIX
-               ======================================================================== */
+                   3. THE "NUCLEAR" DATATABLES STRETCH FIX
+                   ======================================================================== */
         /* Hide DataTables default controls */
         .dataTables_length,
         .dataTables_filter,
@@ -123,8 +123,8 @@
         }
 
         /* ========================================================================
-               4. TABLE STYLING & EXACT COLUMN PERCENTAGES
-               ======================================================================== */
+                   4. TABLE STYLING & EXACT COLUMN PERCENTAGES
+                   ======================================================================== */
         table.dataTable thead {
             background: #fafbfc;
             color: black;
@@ -170,8 +170,8 @@
         }
 
         /* ========================================================================
-               5. UI ELEMENTS (FOOTERS & BUTTONS)
-               ======================================================================== */
+                   5. UI ELEMENTS (FOOTERS & BUTTONS)
+                   ======================================================================== */
         .footers {
             border-top: 2px solid black;
             padding: 12px 20px;
@@ -194,8 +194,8 @@
         }
 
         /* ========================================================================
-               6. RESPONSIVE MEDIA QUERIES
-               ======================================================================== */
+                   6. RESPONSIVE MEDIA QUERIES
+                   ======================================================================== */
         @media (max-width: 1024px) {
             .search-filter-row {
                 flex-wrap: wrap;
@@ -314,7 +314,7 @@
                                                 </td>
                                                 <td style="text-align: center;">
                                                     <a href="{{ route('vender.trading.name.view', $trading_name['id']) }}">
-                                                        <i class="ft-eye" style="color: black;"></i>
+                                                        <i class="ft-eye" style="color: #ff6600;"></i>
                                                     </a>
                                                 </td>
                                             </tr>
