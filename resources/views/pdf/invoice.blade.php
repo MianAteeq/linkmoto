@@ -285,7 +285,7 @@
                         @endif
                         <p style="margin:0 0 6px 0;">
                             @if (!empty($vender['profile']['uk_vat_no']))
-                                Registered vat no: {{ $vender['profile']['uk_vat_no'] }}
+                                Registered Vat no: {{ $vender['profile']['uk_vat_no'] }}
                             @else
                                 <span style="visibility:hidden;">VAT placeholder</span>
                             @endif
@@ -296,25 +296,25 @@
                                 <p style="margin:0; font-weight:bold;">Payment by Bank Transfer</p>
 
                                 <p style="margin:0;">
-                                    <strong>Account Name:</strong>
+                                    <span>Account Name:</span>
                                     {{ $invoice['trading_name']['app_setting']['account_name'] }}
                                 </p>
 
                                 <p style="margin:0;">
-                                    <strong>Sort code:</strong>
+                                    <span>Sort code:</span>
                                     {{ $invoice['trading_name']['app_setting']['sort_code'] }}
                                     &nbsp;|&nbsp;
-                                    <strong>Account Number:</strong>
+                                    <span>Account Number:</span>
                                     {{ $invoice['trading_name']['app_setting']['account_number'] }}
                                 </p>
 
                                 <p style="margin:0;">
-                                    <strong>Payment Reference:</strong>
+                                    <span>Payment Reference:</span>
                                     {{ $invoice['invoice_no'] }}
                                 </p>
 
                                 <p style="margin:0;">
-                                    <strong>Remittance Email:</strong>
+                                    <span>Remittance Email:</span>
                                     {{ $trading_unit['email'] }}
                                 </p>
                             </div>
@@ -328,7 +328,7 @@
                     <!-- JOB LOCATION -->
                     @if ($invoice['booking']['service_type'] == 'Mobile')
 
-                        <p style="margin:6px 0 0 0; font-weight:600;">
+                        <p style="margin:6px 0 0 0; font-weight:bold;">
                             Job Location (Mobile Service)
                         </p>
 
@@ -986,13 +986,17 @@ if($first_item['unit_price_rate']=="Hourly"){
             // Company Number
             $registeredCompanyNo = $isCompany ? $profile['registration_no'] ?? null : null;
         @endphp
-        <p style="width: 100%;margin-bottom: 30px;margin-top: -18px;font-size: 11px;text-align: left">Registered
-            office: {{ $registeredAddress }}. Registered in
-            {{ $registeredJurisdiction }} no: {{ $registeredCompanyNo }}.
-            {{-- {{ $vender['profile']['area'] }}.
-            Registered in {{$vender['profile']['company_jurisdiction']}} no: {{ $vender['profile']['uk_vat_no'] }} --}}
+        <p style="width: 100%;margin-bottom: 30px;margin-top: -18px;font-size: 11px;text-align: left">
+            @isset($registeredAddress)
+                Registered
+                office: {{ $registeredAddress }}.
+                Registered in
+                {{ $registeredJurisdiction }} no: {{ $registeredCompanyNo }}.
+            @endisset
+
         <p style="margin-top:-45px;margin-right: -20px; font-size: 11px;float: right;text-align: right!important">
             v20241002</p>
+        </p>
         </p>
 
 

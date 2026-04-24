@@ -34,12 +34,7 @@
 
 @section('content')
     <div class="content-body px-2 px-md-2">
-<<<<<<< HEAD
-        <div class="row"
-            style="border-bottom: 3px solid #949494; margin-bottom: 15px; margin-left: -40px; margin-right: -40px; padding-left: 20px; padding-right: 40px;">
-=======
         <div class="row" style="border-bottom: 3px solid #949494; margin-bottom: 15px;">
->>>>>>> 223d82b291b359de1df6c181a7c723830c29cc7c
             <div class="col-xl-12 col-12">
                 <h3 class="h3">Business registration application</h3>
             </div>

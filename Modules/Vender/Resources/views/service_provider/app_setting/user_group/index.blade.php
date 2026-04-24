@@ -19,6 +19,49 @@
             display: none;
         }
 
+        /* --- CRITICAL DATATABLES WIDTH FIXES --- */
+        .table-responsive {
+            display: block;
+            width: 100% !important;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Force the outer wrapper to 100% */
+        .dataTables_wrapper {
+            width: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            display: block !important;
+        }
+
+        /* Force DataTables' injected row to 100% */
+        .dataTables_wrapper .row {
+            width: 100% !important;
+            margin: 0 !important;
+        }
+
+        /* Force DataTables' injected column to 100% and remove padding */
+        .dataTables_wrapper .col-sm-12 {
+            width: 100% !important;
+            max-width: 100% !important;
+            flex: 0 0 100% !important;
+            padding: 0 !important;
+        }
+
+        /* Force the actual table to stretch */
+        table.dataTable,
+        table.table {
+            width: 100% !important;
+            min-width: 100% !important;
+            max-width: 100% !important;
+            display: table !important;
+            /* Prevents block-level collapse */
+            clear: both;
+            border-collapse: collapse;
+            margin: 0 !important;
+        }
+
         table.dataTable thead {
             background: #fafbfc;
             color: black;
@@ -105,7 +148,6 @@
         }
 
         /* --- RESPONSIVE ENHANCEMENTS --- */
-
         .card-body {
             position: relative;
             padding-bottom: 60px !important;
@@ -131,10 +173,6 @@
         }
 
         @media (max-width: 991px) {
-            .col-lg-3 {
-                margin-bottom: 25px;
-            }
-
             .nav-buttons {
                 display: flex;
                 flex-direction: column;
@@ -173,23 +211,6 @@
             .card-body {
                 padding-bottom: 15px !important;
             }
-
-            .search-row {
-                display: flex;
-                flex-wrap: nowrap;
-                align-items: center;
-            }
-
-            .search-row .col-md-11 {
-                flex: 1;
-                padding-right: 10px;
-            }
-
-            .search-row .col-md-1 {
-                width: auto;
-                margin-top: 0 !important;
-                padding-left: 0;
-            }
         }
     </style>
 @endsection
@@ -197,16 +218,18 @@
 @section('header')
     <div class="content-header bg-white">
         <div class="row" style="border-bottom: 3px solid #949494;">
-            <div class="col-xl-12 col-12 bg-white headerbg" style="padding-left: 32px;padding-top: 13px;">
-                <h3 class="h3">App settings</h3>
-                <div class="breadcrumb-wrapper col-12">
-                    <ol class="breadcrumb">
+            <div class="col-xl-12 col-12 bg-white headerbg" style="padding-left: 32px; padding-top: 13px;">
+                <h3 class="h3 mb-1">App settings</h3>
+
+                <div class="breadcrumb-wrapper">
+                    <ol class="breadcrumb p-0 m-0 pb-2 bg-transparent">
                         <li class="breadcrumb-item"><a>Products</a></li>
                         <li class="breadcrumb-item">Business manager</li>
                         <li class="breadcrumb-item">App settings</li>
                         <li class="breadcrumb-item">User groups</li>
                     </ol>
                 </div>
+
             </div>
         </div>
     </div>
@@ -214,14 +237,14 @@
 
 @section('content')
     <div class="row">
-        <div class="col-lg-3 col-12 mb-3">
+        <div class="col-lg-3 col-md-12 col-12 mb-3">
             <h4 class="h3 d-flex align-items-center"
                 style="border-radius: 7px;border: 2px solid black;padding: 10px;font-weight: 600; font-size: 17px; margin: 0;">
                 <img src="/business_manager.png" style="width: 22px; margin-right: 8px;"> Business Manager
             </h4>
         </div>
 
-        <div class="col-lg-9 col-12" id="contens"
+        <div class="col-lg-9 col-md-12 col-12" id="contens"
             style="border-radius: 6px;margin-bottom: 10px;padding-bottom: 10px;margin-top: 0px;">
 
             <div class="row d-flex align-items-center mb-2 flex-wrap nav-buttons" style="margin-left: 0;">
@@ -244,21 +267,22 @@
                     <div class="card-content">
                         <div class="card-body" style="padding-left: 0px;padding-right: 0px;">
 
-                            <div class="row m-0 mt-1 search-row">
-                                <div class="col-md-11 col-10">
-                                    <input type="text" class="form-control" id="myInputTextField"
+                            <div class="d-flex align-items-center mb-3 mt-1 px-2">
+                                <div class="flex-grow-1 pr-2">
+                                    <input type="text" class="form-control w-100" id="myInputTextField"
                                         style="border: 2px solid black; border-radius: 6px;" placeholder="Search"
                                         name="" id="">
                                 </div>
-                                <div class="col-md-1 col-2 text-center">
+                                <div>
                                     <a href=""> <i class="ft-filter" style="font-size: 30px;color: black;"></i></a>
                                 </div>
                             </div>
 
-                            <div class="row mt-1 mb-1">
-                                <div class="col-md-12">
-                                    <div class="table-responsive">
-                                        <table class="table table-striped table-bordered zero-configuration">
+                            <div class="row m-0 mt-1 mb-1 px-2">
+                                <div class="col-12 p-0">
+                                    <div class="table-responsive w-100">
+                                        <table class="table table-striped table-bordered zero-configuration w-100"
+                                            style="width: 100% !important;">
                                             <thead>
                                                 <tr>
                                                     <th>ID</th>
@@ -276,11 +300,13 @@
                                                         <td>{{ $role['group_type'] }}</td>
                                                         <td>
                                                             <a
-                                                                href="{{ route('vender.service.provider.user.group.edit', $role['id']) }}"><i
-                                                                    class="ft-edit"></i></a>
+                                                                href="{{ route('vender.service.provider.user.group.edit', $role['id']) }}">
+                                                                <i class="ft-edit"></i>
+                                                            </a>
                                                             <a
-                                                                href="{{ route('vender.service.provider.user.group.view', $role['id']) }}"><i
-                                                                    class="ft-eye"></i></a>
+                                                                href="{{ route('vender.service.provider.user.group.view', $role['id']) }}">
+                                                                <i class="ft-eye"></i>
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -322,6 +348,16 @@
             "iDisplayLength": 10,
             "bAutoWidth": false,
             "ordering": false,
+            "initComplete": function(settings, json) {
+                // Forcibly apply 100% width to all injected elements via JS
+                $('.dataTables_wrapper, .dataTables_wrapper .row, .dataTables_wrapper .col-sm-12, .dataTable')
+                    .css('width', '100%', 'important');
+
+                // Trigger window resize to force DataTables to recount columns
+                setTimeout(function() {
+                    $(window).trigger('resize');
+                }, 100);
+            }
         });
 
         $('#myInputTextField').keyup(function() {
