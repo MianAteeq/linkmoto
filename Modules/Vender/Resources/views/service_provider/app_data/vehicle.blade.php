@@ -196,8 +196,11 @@
                                         <td>{{ $contact['vehicle_no'] }}</td>
                                         <td>{{ $contact['vrm'] }}</td>
                                         <td>{{ $contact['vin_number'] }}</td>
-                                        <td>{{ $contact['vehicle_make']['name'] }} {{ $contact['vehicle_model']['name'] }}
+                                        <td>
+                                            {{ $contact['vehicle_make']['name'] ?? 'N/A' }}
+                                            {{ $contact['vehicle_model']['name'] ?? '' }}
                                         </td>
+
                                     </tr>
                                 @endforeach
                             </tbody>

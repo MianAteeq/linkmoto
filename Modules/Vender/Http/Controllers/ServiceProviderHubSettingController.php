@@ -15,6 +15,8 @@ use Modules\Vender\Entities\QuickProduct;
 use Illuminate\Contracts\Support\Renderable;
 use Modules\Admin\Entities\VehicleSpecialist;
 use Modules\Admin\Entities\AccreditationScheme;
+use Modules\Vender\Entities\BookingJobRequest;
+use Modules\Vender\Entities\JobRequest;
 use Modules\Vender\Entities\TradingUnitJobType;
 use Modules\Vender\Entities\QuickProductJobType;
 use Modules\Vender\Entities\TradingUnitHubProfile;
@@ -250,9 +252,35 @@ class ServiceProviderHubSettingController extends Controller
         $services = JobType::all();
         $price_types = PriceType::all();
 
+        $job_request = JobRequest::where('product_id', $id)->get();
+        $job_request_products = BookingJobRequest::where('product_id', $id)->get();
+
+        if (count($job_request) && count($job_request_products)) {
+
+            $is_reference = 1;
+        } else {
+            $is_reference = 0;
+        }
+
+
 
 
         return view('vender::service_provider.trading_unit.hub_setting.products.view', get_defined_vars());
+    }
+    public function deleteProductOffer($id, $trading_id)
+    {
+
+
+        $user = auth()->user();
+
+        $product = QuickProduct::with('job_types', 'job_types.jobtype')->find($id);
+
+        $product->delete();
+
+
+
+
+        return  redirect()->route('vender.service.provider.trading.unit.app.setting', $trading_id);
     }
     public function paymentMethod($id)
     {

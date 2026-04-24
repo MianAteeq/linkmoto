@@ -60,6 +60,8 @@ use Modules\Vender\Entities\TradingUnitAccreditationScheme;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Modules\Vender\Http\Controllers\ServiceProviderController;
+use GuzzleHttp\Client as CClinet;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -72,18 +74,31 @@ use Modules\Vender\Http\Controllers\ServiceProviderController;
 |
 */
 
-Route::get('/view-pdf/{file}', function ($file) {
+Route::get('/view-pdf', function () {
 
-    $path = public_path('pdf/' . $file);
+    $client = new CClinet();
+    $url = 'https://www.wasenderapi.com/api/send-message';
+    $apiKey = '01e88dd01451a3fedb7371bf0698d7f12b60c0af2e3e060a9e0b3edb3fca5f60';
+    try {
+        $response = $client->post($url, [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $apiKey,
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ],
+            'json' =>             [
+                'to' => '120363228937007922@g.us',
+                'text' => 'HI',
+            ]
+        ]);
 
-    if (!file_exists($path)) {
-        abort(404);
+        echo $response->getBody();
+    } catch (\GuzzleHttp\Exception\RequestException $e) {
+        echo "Request failed: " . $e->getMessage();
+        if ($e->hasResponse()) {
+            echo "\nResponse: " . $e->getResponse()->getBody();
+        }
     }
-
-    return response()->file($path, [
-        'Content-Type' => 'application/pdf',
-        'Content-Disposition' => 'inline; filename="' . $file . '"',
-    ]);
 });
 
 
