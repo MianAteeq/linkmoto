@@ -200,10 +200,16 @@
 
                 <div class="breadcrumb-wrapper p-0">
                     <ol class="breadcrumb" style="padding-left: 0; background-color: transparent; margin-bottom: 10px;">
-                        <li class="breadcrumb-item"><a>Business</a></li>
-                        <li class="breadcrumb-item"><a style="color: black"
-                                href="{{ route('vender.trading.name') }}">Trading names</a></li>
-                        <li class="breadcrumb-item">Edit trading name</li>
+                        <li class="breadcrumb-item">
+                            <a href="javascript:void(0)" style="text-decoration: none; color: black;">Business</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ route('vender.trading.name') }}"
+                                style="text-decoration: none; color: black;">Trading names</a>
+                        </li>
+                        <li class="breadcrumb-item active">
+                            Edit trading name ({{ $trading_name['name'] }})
+                        </li>
                     </ol>
                 </div>
 
@@ -211,7 +217,6 @@
         </div>
     </div>
 @endsection
-
 @section('content')
     <div class="container-fluid px-1 px-md-1 mt-1">
         <div class="row align-items-stretch" style="padding-left: 0 !important;">

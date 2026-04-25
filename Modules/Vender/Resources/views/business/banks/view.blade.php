@@ -5,8 +5,8 @@
 
     <style>
         /* ========================================================================
-                   1. MASTER LAYOUT & CONTAINER FOUNDATIONS
-                   ======================================================================== */
+                                       1. MASTER LAYOUT & CONTAINER FOUNDATIONS
+                                       ======================================================================== */
         .content-wrapper {
             height: auto !important;
             min-height: 84vh !important;
@@ -46,8 +46,8 @@
         }
 
         /* ========================================================================
-                   2. UI ELEMENTS (FOOTERS, BUTTONS, BADGES)
-                   ======================================================================== */
+                                       2. UI ELEMENTS (FOOTERS, BUTTONS, BADGES)
+                                       ======================================================================== */
         .footers {
             border-top: 2px solid black;
             padding: 15px 20px 25px 20px;
@@ -109,8 +109,8 @@
         }
 
         /* ========================================================================
-                   3. RESPONSIVE MEDIA QUERIES
-                   ======================================================================== */
+                                       3. RESPONSIVE MEDIA QUERIES
+                                       ======================================================================== */
         @media (max-width: 991.98px) {
             .headerbg {
                 padding-left: 25px !important;
@@ -158,13 +158,20 @@
     <div class="content-header bg-white">
         <div class="row" style="border-bottom: 3px solid #949494; margin: 0;">
             <div class="col-12 bg-white headerbg" style="padding-left: 32px; padding-top: 13px;">
-                <h3 class="h3">Bank</h3>
+                <h3 class="h3">Bank Accounts</h3>
 
                 <div class="breadcrumb-wrapper p-0">
                     <ol class="breadcrumb" style="padding-left: 0; background-color: transparent; margin-bottom: 10px;">
-                        <li class="breadcrumb-item"><a>Business</a></li>
-                        <li class="breadcrumb-item">Bank</li>
-                        <li class="breadcrumb-item">{{ $site['label'] }}</li>
+                        <li class="breadcrumb-item">
+                            <a href="javascript:void(0)" style="text-decoration: none; color: black;">Business</a>
+                        </li>
+
+                        <li class="breadcrumb-item">
+                            <a href="{{ route('vender.bank') }}" style="text-decoration: none; color: black;">Bank
+                                Accounts</a>
+                        </li>
+
+                        <li class="breadcrumb-item active">{{ $site['label'] }}</li>
                     </ol>
                 </div>
             </div>

@@ -233,7 +233,7 @@
 @section('header')
     <div class="content-header bg-white">
         <div class="row" style="border-bottom: 3px solid #949494; margin: 0;">
-            <div class="col-12 bg-white headerbg" style="padding-left: 32px; padding-top: 13px;">
+            <div class="col-12 bg-white headerbg" style="padding-left: 28px; padding-top: 13px;">
                 <h3 class="h3">Trading names</h3>
 
                 <div class="breadcrumb-wrapper p-0">

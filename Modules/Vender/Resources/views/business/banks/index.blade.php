@@ -4,8 +4,8 @@
     <link rel="stylesheet" type="text/css" href="/modules/admin/app-assets/vendors/css/tables/datatable/datatables.min.css">
     <style>
         /* ========================================================================
-                   1. MASTER LAYOUT & CONTAINER FOUNDATIONS
-                   ======================================================================== */
+                       1. MASTER LAYOUT & CONTAINER FOUNDATIONS
+                       ======================================================================== */
         .content-wrapper {
             height: auto !important;
             min-height: 84vh !important;
@@ -39,8 +39,8 @@
         }
 
         /* ========================================================================
-                   2. DATATABLES & TABLE STYLING
-                   ======================================================================== */
+                       2. DATATABLES & TABLE STYLING
+                       ======================================================================== */
         .dataTables_wrapper .dataTables_length,
         .dataTables_wrapper .dataTables_filter,
         .dataTables_wrapper .dataTables_info,
@@ -127,8 +127,8 @@
         }
 
         /* ========================================================================
-                   3. UI ELEMENTS (FOOTERS & BUTTONS)
-                   ======================================================================== */
+                       3. UI ELEMENTS (FOOTERS & BUTTONS)
+                       ======================================================================== */
         .footers {
             border-top: 2px solid black;
             padding: 15px 20px 25px 20px;
@@ -155,8 +155,8 @@
         }
 
         /* ========================================================================
-                   4. RESPONSIVE MEDIA QUERIES
-                   ======================================================================== */
+                       4. RESPONSIVE MEDIA QUERIES
+                       ======================================================================== */
         @media (max-width: 991.98px) {
             .headerbg {
                 padding-left: 25px !important;
@@ -237,7 +237,7 @@
                         </div>
 
                         {{-- Search Filter --}}
-                        <div class="row m-0 mt-3 align-items-center" style="padding: 0 20px;">
+                        <div class="row m-0 mt-2 align-items-center" style="padding: 0 20px;">
                             <div class="col-10 col-md-11 p-0 pr-2">
                                 <input type="text" class="form-control" id="myInputTextField"
                                     style="border: 2px solid black; border-radius: 6px; width: 100%; max-width: 100%;"
@@ -251,7 +251,7 @@
                         </div>
 
                         {{-- Table --}}
-                        <div class="row m-0 mt-3" style="padding: 0 20px;">
+                        <div class="row m-0 mt-2" style="padding: 0 20px;">
                             <div class="col-12 p-0">
                                 <div class="table-responsive">
                                     <table class="table table-striped table-bordered zero-configuration m-0">
@@ -303,7 +303,7 @@
                     </div>
 
                     {{-- Footer --}}
-                    <div class="footers mt-auto">
+                    <div class="footers" style="padding: 15px 20px 15px 20px;">
                         <a href="{{ route('vender.bank.add') }}">
                             <button type="button" class="btn btn-dark round btn-min-width m-0">Add</button>
                         </a>

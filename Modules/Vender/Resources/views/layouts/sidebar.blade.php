@@ -1,16 +1,33 @@
 <style>
-    /* Fix: Only allow scroll on the inner content, not the outer wrapper */
+    /* Force native vertical scrolling */
     .main-menu .main-menu-content {
-        overflow-y: auto;
-        /* scroll here */
-        overflow-x: hidden;
-        height: calc(100% - 60px);
-        /* adjust based on your header height */
+        height: calc(100vh - 60px);
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
     }
 
-    .main-menu .main-menu-content {
-        overflow: hidden !important;
-        /* let perfect-scrollbar handle it */
+    /* CHANGED: Hide the buggy Perfect-Scrollbar elements injected by JS */
+    .main-menu .ps__rail-y,
+    .main-menu .ps__rail-x {
+        display: none !important;
+    }
+
+    /* Style the native scrollbar to look sleek like Perfect-Scrollbar */
+    .main-menu .main-menu-content::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .main-menu .main-menu-content::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .main-menu .main-menu-content::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+    }
+
+    .main-menu .main-menu-content::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(0, 0, 0, 0.4);
     }
 </style>
 <!-- BEGIN: Main Menu-->

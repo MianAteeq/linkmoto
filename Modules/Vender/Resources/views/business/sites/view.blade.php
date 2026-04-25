@@ -5,8 +5,8 @@
 
     <style>
         /* ========================================================================
-                   1. MASTER LAYOUT & CONTAINER FOUNDATIONS
-                   ======================================================================== */
+                       1. MASTER LAYOUT & CONTAINER FOUNDATIONS
+                       ======================================================================== */
         .content-wrapper {
             height: auto !important;
             min-height: 84vh !important;
@@ -40,8 +40,8 @@
         }
 
         /* ========================================================================
-                   2. UI ELEMENTS (FOOTERS, BUTTONS, BADGES)
-                   ======================================================================== */
+                       2. UI ELEMENTS (FOOTERS, BUTTONS, BADGES)
+                       ======================================================================== */
         .footers {
             border-top: 2px solid black;
             padding: 15px 20px 25px 20px;
@@ -103,8 +103,8 @@
         }
 
         /* ========================================================================
-                   3. RESPONSIVE MEDIA QUERIES
-                   ======================================================================== */
+                       3. RESPONSIVE MEDIA QUERIES
+                       ======================================================================== */
         @media (max-width: 991.98px) {
             .headerbg {
                 padding-left: 25px !important;
@@ -160,9 +160,17 @@
 
                 <div class="breadcrumb-wrapper p-0">
                     <ol class="breadcrumb" style="padding-left: 0; background-color: transparent; margin-bottom: 10px;">
-                        <li class="breadcrumb-item"><a>Business</a></li>
-                        <li class="breadcrumb-item">Site information</li>
-                        <li class="breadcrumb-item">{{ $site['address_line_1'] }} , {{ $site['address_line_2'] }}</li>
+                        <li class="breadcrumb-item">
+                            <a href="javascript:void(0)" style="text-decoration: none; color: black;">Business</a>
+                        </li>
+
+                        <li class="breadcrumb-item">
+                            <a href="{{ route('vender.site') }}" style="text-decoration: none; color: black;">Site
+                                information</a>
+                        </li>
+
+                        <li class="breadcrumb-item active">{{ $site['address_line_1'] }} , {{ $site['address_line_2'] }}
+                        </li>
                     </ol>
                 </div>
             </div>

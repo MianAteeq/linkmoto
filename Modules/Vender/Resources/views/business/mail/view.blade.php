@@ -5,8 +5,8 @@
 
     <style>
         /* ========================================================================
-                       1. MASTER LAYOUT & CONTAINER FOUNDATIONS
-                       ======================================================================== */
+                                                       1. MASTER LAYOUT & CONTAINER FOUNDATIONS
+                                                       ======================================================================== */
         .content-wrapper {
             height: auto !important;
             min-height: 84vh !important;
@@ -41,8 +41,8 @@
         }
 
         /* ========================================================================
-                       2. UI ELEMENTS (FOOTERS, BUTTONS, BADGES)
-                       ======================================================================== */
+                                                       2. UI ELEMENTS (FOOTERS, BUTTONS, BADGES)
+                                                       ======================================================================== */
         .footers {
             border-top: 2px solid black;
             padding: 15px 20px 25px 20px;
@@ -103,9 +103,14 @@
             color: #333 !important;
         }
 
+        .breadcrumb-item a {
+            text-decoration: none !important;
+            color: #333 !important;
+        }
+
         /* ========================================================================
-                       3. RESPONSIVE MEDIA QUERIES & SCROLL FIX
-                       ======================================================================== */
+                                                       3. RESPONSIVE MEDIA QUERIES & SCROLL FIX
+                                                       ======================================================================== */
         @media (max-width: 991.98px) {
 
             /* Sidebar Double Scrollbar Fix */
@@ -170,9 +175,14 @@
 
                 <div class="breadcrumb-wrapper p-0">
                     <ol class="breadcrumb" style="padding-left: 0; background-color: transparent; margin-bottom: 10px;">
-                        <li class="breadcrumb-item"><a>Business</a></li>
-                        <li class="breadcrumb-item">Email Address</li>
-                        <li class="breadcrumb-item">{{ $site['label'] }}</li>
+                        <li class="breadcrumb-item">
+                            <a href="javascript:void(0)" style="text-decoration: none;">Business</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ route('vender.mail') }}" style="text-decoration: none;">Email Address
+                                Information</a>
+                        </li>
+                        <li class="breadcrumb-item active">{{ $site['label'] }}</li>
                     </ol>
                 </div>
             </div>
@@ -270,7 +280,7 @@
 
                     {{-- Footer with Edit Button --}}
                     @if ($site['status'] != 'Pending')
-                        <div class="footers mt-auto">
+                        <div class="footers" style="margin: 0; padding: 15px 20px 15px 20px;">
                             <a href="{{ route('vender.mail.edit', $site['id']) }}">
                                 <button type="button" class="btn btn-dark round btn-min-width m-0">Edit</button>
                             </a>

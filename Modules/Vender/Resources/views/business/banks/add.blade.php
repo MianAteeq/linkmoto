@@ -256,7 +256,7 @@
 
                     {{-- Help Section Accordion --}}
                     <div id="show_help" style="border-top:2px solid black; background: #fcfdfe;">
-                        <h4 style="padding: 12px 16px 0 16px; color: black; font-weight: 600; margin: 0; font-size: 1rem;">
+                        <h4 style="padding: 13px 16px 13px 13px; color: black; font-weight: 600; margin: 0; font-size: 1rem;">
                             Help information:
                         </h4>
 

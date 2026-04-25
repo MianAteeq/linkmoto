@@ -324,7 +324,7 @@
 
                             <a id="business_VAT" class="card-header info collapsed" data-toggle="collapse"
                                 href="#collapsebusiness_vat" aria-expanded="false" aria-controls="collapsebusiness_vat">
-                                <div class="card-title lead" style="padding-right: 25px;">Role / position&nbsp;(?)</div>
+                                <div class="card-title lead" style="padding-right: 25px;">Role / Position&nbsp;(?)</div>
                             </a>
                             <div id="collapsebusiness_vat" data-parent="#accordionWrap1" role="tabpanel"
                                 aria-labelledby="business_VAT" class="collapse" style="">
@@ -471,7 +471,7 @@
 
                         <div class="form-group row">
                             <label class="col-12 col-md-4 label-control">Role / position <span style="color: red">*</span>
-                                <a style="color: black" href="#collapsebusiness" data-toggle="collapse"
+                                <a style="color: #2b335e" href="#collapsebusiness" data-toggle="collapse"
                                     aria-expanded="false" aria-controls="collapsebusiness">(?)</a></label>
                             <div class="col-12 col-md-8 mx-auto">
                                 <div class="input-group">

@@ -253,7 +253,7 @@
                             </div>
                         </div>
 
-                        <div class="row m-0 mt-1 align-items-center px-2">
+                        <div class="row m-0 mt-1 align-items-center">
                             <div class="col-10 col-md-11 search-col">
                                 <input type="text" class="form-control" id="myInputTextField"
                                     style="border: 2px solid black; border-radius: 6px;" placeholder="Search" name=""

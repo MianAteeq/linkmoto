@@ -2,6 +2,8 @@
  <nav class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-light bg-info navbar-shadow"
      style="border-bottom: 2px solid #ff6600;">
      <div class="navbar-wrapper">
+
+         {{-- NOTE: Because you commented out this mobile header, screens smaller than 768px will have no way to open the menu. --}}
          {{-- <div class="navbar-header">
              <ul class="nav navbar-nav flex-row">
                  <li class="nav-item mobile-menu d-md-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu font-large-1"></i></a></li>
@@ -9,31 +11,42 @@
                  <li class="nav-item d-md-none"><a class="nav-link open-navbar-container" data-toggle="collapse" data-target="#navbar-mobile"><i class="la la-ellipsis-v"></i></a></li>
              </ul>
          </div> --}}
-         <div class="navbar-container content" style="margin-left: 0px;">
-             <div class="collapse navbar-collapse" id="navbar-mobile">
-                 <ul class="nav navbar-nav mr-auto float-left">
-                     <li class="nav-item  d-md-block"><a class="nav-link nav-menu-main menu-toggle hidden-xs"
-                             href="#" style="color: black"><i class="ft-menu"></i></a></li>
-                     <li class="nav-item"><a class="navbar-brand" href="{{ route('admin.dashboard') }}"><img
-                                 class="brand-logo" alt="modern admin logo" style="width: 200px;margin-top: 16px;"
-                                 src="{{ URL::to($setting['headerlogo'] ?? '') }}">
 
-                         </a></li>
+         <div class="navbar-container content" style="margin-left: 0px;">
+             <div class="d-flex flex-row justify-content-between flex-nowrap w-100" id="navbar-mobile">
+
+                 <ul class="nav navbar-nav align-items-center flex-row flex-nowrap">
+                     <li class="nav-item d-md-block">
+                         <a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#" style="color: black">
+                             <i class="ft-menu"></i>
+                         </a>
+                     </li>
+                     <li class="nav-item">
+                         <a class="navbar-brand" href="{{ route('admin.dashboard') }}" style="padding: 0;">
+                             <img class="brand-logo" alt="modern admin logo" style="width: 200px; height: auto;"
+                                 src="{{ URL::to($setting['headerlogo'] ?? '') }}">
+                         </a>
+                     </li>
                  </ul>
-                 <ul class="nav navbar-nav float-right">
+
+                 <ul class="nav navbar-nav align-items-center flex-row flex-nowrap ml-auto">
                      <li class="dropdown dropdown-user nav-item">
-                         <a class="dropdown-toggle nav-link dropdown-user-link" href="javascript:void(0)"
-                             data-toggle="dropdown">
-                             <span class="mr-1 user-name text-bold-700" style="color:black;">
+                         <a class="dropdown-toggle nav-link dropdown-user-link d-flex align-items-center"
+                             href="javascript:void(0)" data-toggle="dropdown" style="padding-right: 15px;">
+
+                             <span class="user-name text-bold-700 d-none d-sm-inline-block"
+                                 style="color:black; padding-right: 10px; margin: 0;">
                                  {{ auth()->user()->name }}
                              </span>
+
                              <span class="avatar avatar-online">
-                                 <img src="{{ asset('logo.png') }}" alt="avatar"><i></i>
+                                 <img src="{{ asset('logo.png') }}" alt="avatar" style="max-height: 35px;"><i></i>
                              </span>
                          </a>
                          <div class="dropdown-menu dropdown-menu-right">
-                             <a class="dropdown-item" href="{{ route('website.vendor.logout.submit') }}"><i
-                                     class="ft-power"></i> Logout</a>
+                             <a class="dropdown-item" href="{{ route('website.vendor.logout.submit') }}">
+                                 <i class="ft-power"></i> Logout
+                             </a>
                          </div>
                      </li>
                  </ul>

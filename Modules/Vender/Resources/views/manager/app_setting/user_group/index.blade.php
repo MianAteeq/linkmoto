@@ -8,8 +8,8 @@
         }
 
         /* ========================================================================
-                                                                       1. TABLE STYLES
-                                                                       ======================================================================== */
+                                                                                       1. TABLE STYLES
+                                                                                       ======================================================================== */
         .dataTables_wrapper .dataTables_length,
         .dataTables_wrapper .dataTables_filter,
         .dataTables_wrapper .dataTables_info {
@@ -70,8 +70,8 @@
         }
 
         /* ========================================================================
-                                                                       2. ICONS & COLLAPSE STYLES
-                                                                       ======================================================================== */
+                                                                                       2. ICONS & COLLAPSE STYLES
+                                                                                       ======================================================================== */
         #headingCollapse1:before {
             position: absolute;
             top: 48%;
@@ -124,8 +124,8 @@
         }
 
         /* ========================================================================
-                                                                       3. FOOTER & BUTTONS
-                                                                       ======================================================================== */
+                                                                                       3. FOOTER & BUTTONS
+                                                                                       ======================================================================== */
         .footers {
             bottom: 0;
             left: 0;
@@ -146,8 +146,8 @@
         }
 
         /* ========================================================================
-                                                                       4. RESPONSIVE MEDIA QUERIES (Tablet & Mobile Stacking)
-                                                                       ======================================================================== */
+                                                                                       4. RESPONSIVE MEDIA QUERIES (Tablet & Mobile Stacking)
+                                                                                       ======================================================================== */
         @media (max-width: 991.98px) {
             .headerbg {
                 padding-left: 25px !important;
@@ -176,6 +176,10 @@
                 width: 100%;
             }
         }
+
+        .dataTables_wrapper .row>.col-sm-12 {
+            padding-left: 0 !important;
+        }
     </style>
 @endsection
 
@@ -202,7 +206,7 @@
 @endsection
 
 @section('content')
-    <div class="container-fluid px-1 px-md-1 mt-1">
+    <div class="container-fluid px-1 px-md-1 mt-1 mb-2">
         <div class="row align-items-start m-0">
 
             {{-- Left Sidebar Profile Card --}}
@@ -217,7 +221,7 @@
             <div class="col-12 col-lg-9 p-0" id="contens">
 
                 {{-- Top Orange Header --}}
-                <div class="row m-0 mb-3">
+                <div class="row m-0 mb-2">
                     <h4 class="h3 d-inline-block m-0"
                         style="border-radius: 7px; border: 2px solid #ff6600; padding: 10px 15px; font-weight: 600; font-size: 17px; color: #ff6600; background-color: white;">
                         App settings
@@ -243,8 +247,8 @@
                             <div class="card-body" style="padding: 20px;">
 
                                 {{-- Search & Filter Row --}}
-                                <div class="row align-items-center mb-3 m-0">
-                                    <div class="col-10 col-md-11 p-0 pr-2">
+                                <div class="row align-items-center mb-2 m-0">
+                                    <div class="col-10 col-md-11 p-0">
                                         <input type="text" class="form-control" id="myInputTextField"
                                             style="border: 2px solid black; border-radius: 6px; width: 100%; height: 40px;"
                                             placeholder="Search">
@@ -257,9 +261,11 @@
 
                                 {{-- Data Table --}}
                                 <div class="row m-0">
-                                    <div class="col-12 p-0">
+                                    <div class="col-12 p-0 m-0">
                                         <div class="table-responsive">
-                                            <table class="table table-striped table-bordered zero-configuration w-100 m-0"
+                                            <table
+                                                class="table table-striped table-bordered zero-configuration w-100 m-0 p-0"
+                                                style="
                                                 width="100%">
                                                 <thead>
                                                     <tr>
@@ -305,7 +311,7 @@
                             </div>
 
                             {{-- Footer Add Button --}}
-                            <div class="footers m-0" style="border-radius: 0 0 5px 5px;">
+                            <div class="footers" style="border-radius: 0 0 5px 5px;">
                                 <a href="{{ route('vender.user.group.add') }}">
                                     <button type="button" class="btn btn-dark round btn-min-width m-0"
                                         style="float: right;">Add</button>
