@@ -120,7 +120,7 @@
     .btn-dark {
         border-color: black !important;
         background-color: black !important;
-        color: #FFFFFF;
+        color: #FFFFFF !important;
     }
 
     .footers {
