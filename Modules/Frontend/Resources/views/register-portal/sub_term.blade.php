@@ -201,7 +201,7 @@
                         </div>
 
                         <div class="footers d-flex flex-wrap justify-content-center justify-content-md-end w-100 mt-auto"
-                            style="gap: 10px; padding: 15px; border-top: 2px solid rgba(0,0,0,0.1);">
+                            style="gap: 10px; padding: 15px; ">
                             <a href="{{ route('vender.profile.back', $user['profile']['step']) }}"
                                 class="btn btn-dark round btn-min-width" style="color: white !important;">
                                 PREVIOUS
