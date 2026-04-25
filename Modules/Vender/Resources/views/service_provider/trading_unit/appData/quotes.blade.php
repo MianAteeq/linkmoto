@@ -316,7 +316,7 @@
                                                     <td>{{ $contact['contact_detail']['contact_no'] ?? '' }} <br>
                                                         {{ $contact['contact_detail']['name'] ?? '' }}
                                                         {{ $contact['contact_detail']['last_name'] ?? '' }}
-                                                        <br> {{ $contact['contact_detail']['mobile_no'] }}
+                                                        <br> {{ $contact['contact_detail']['mobile_no'] ?? '' }}
                                                     </td>
                                                     <td> {{ $contact['service_type'] }} </td>
                                                     <td> {{ $contact['status'] }} </td>
