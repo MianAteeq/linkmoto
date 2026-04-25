@@ -4,8 +4,8 @@
     <link rel="stylesheet" type="text/css" href="/modules/admin/app-assets/vendors/css/tables/datatable/datatables.min.css">
     <style>
         /* ========================================================================
-       1. TABLE STYLES (Preserved for global consistency)
-       ======================================================================== */
+               1. TABLE STYLES (Preserved for global consistency)
+               ======================================================================== */
         .dataTables_wrapper .dataTables_length,
         .dataTables_wrapper .dataTables_filter,
         .dataTables_wrapper .dataTables_info {
@@ -53,8 +53,8 @@
         }
 
         /* ========================================================================
-       2. ICONS & COLLAPSE STYLES
-       ======================================================================== */
+               2. ICONS & COLLAPSE STYLES
+               ======================================================================== */
         #headingCollapse14:before,
         #headingCollapse1:before,
         #headingCollapse2:before {
@@ -93,8 +93,8 @@
         }
 
         /* ========================================================================
-       3. CONTAINER STYLES (Fixed for Responsiveness)
-       ======================================================================== */
+               3. CONTAINER STYLES (Fixed for Responsiveness)
+               ======================================================================== */
         .info-sidebar {
             border-radius: 7px;
             border: 2px solid black;
@@ -138,9 +138,37 @@
             font-weight: bold;
         }
 
+        /* Sidebar Action Buttons */
+        .sidebar-action-btn {
+            width: 100%;
+            padding: 10px 15px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .sidebar-action-btn:hover {
+            background-color: #333 !important;
+            /* Slight lighten on hover */
+            transform: translateY(-1px);
+            /* Professional micro-interaction */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .footers-flex {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            /* Perfectly even spacing between buttons */
+        }
+
         /* ========================================================================
-       4. RESPONSIVE MEDIA QUERIES (Updated to 991.98px for Tablet Stacking)
-       ======================================================================== */
+               4. RESPONSIVE MEDIA QUERIES (Updated to 991.98px for Tablet Stacking)
+               ======================================================================== */
         @media (max-width: 991.98px) {
             .headerbg {
                 padding-left: 25px !important;
@@ -185,10 +213,9 @@
     <div class="container-fluid px-1 px-md-1 mt-1">
         <div class="row align-items-start m-0">
 
-            {{-- Left Sidebar Profile Card (Changed to col-lg-3 to stack on tablets) --}}
-            <div class="col-12 col-lg-3 info-sidebar-wrapper mb-4 mb-lg-0 p-0 pr-lg-3">
+            <div class="col-12 col-lg-3 info-sidebar-wrapper mb-4 mb-lg-0 p-0 pr-lg-3 align-self-start">
                 <div class="info-sidebar">
-                    <div class="info-sidebar-body">
+                    <div class="info-sidebar-body" style="padding: 20px;">
                         <h4 class="h3 d-flex align-items-start m-0"
                             style="font-weight: 600; font-size: 17px; padding-bottom: 15px;">
                             <img src="/user.png" style="width: 22px; margin-top: 2px; margin-right: 10px;">
@@ -213,29 +240,26 @@
                     </div>
 
                     {{-- Action Buttons Footer --}}
-                    <div class="footers">
-                        <a href="{{ route('vender.user.password', $user['id']) }}">
-                            <button type="button" style="width: 80%;" class="btn btn-dark round btn-min-width mb-2">RESET
-                                PASSWORD</button>
+                    <div class="footers footers-flex">
+                        <a href="{{ route('vender.user.password', $user['id']) }}" style="text-decoration: none;">
+                            <button type="button" class="btn btn-dark sidebar-action-btn m-0">Reset Password</button>
                         </a>
-                        <a href="{{ route('vender.user.edit', $user['id']) }}">
-                            <button type="button" style="width: 80%;" class="btn btn-dark round btn-min-width mb-2">UPDATE
-                                USER</button>
+
+                        <a href="{{ route('vender.user.edit', $user['id']) }}" style="text-decoration: none;">
+                            <button type="button" class="btn btn-dark sidebar-action-btn m-0">Update User</button>
                         </a>
-                        <a href="{{ route('vender.user.suspend', $user['id']) }}">
-                            <button type="button" style="width: 80%;" class="btn btn-dark round btn-min-width mb-2">SUSPEND
-                                USER</button>
+
+                        <a href="{{ route('vender.user.suspend', $user['id']) }}" style="text-decoration: none;">
+                            <button type="button" class="btn btn-dark sidebar-action-btn m-0">Suspend User</button>
                         </a>
 
                         @if ($user['status'] != 'ACTIVE')
-                            <a href="{{ route('vender.user.active', $user['id']) }}">
-                                <button type="button" style="width: 80%;"
-                                    class="btn btn-dark round btn-min-width mb-0">ACTIVATE USER</button>
+                            <a href="{{ route('vender.user.active', $user['id']) }}" style="text-decoration: none;">
+                                <button type="button" class="btn btn-dark sidebar-action-btn m-0">Activate User</button>
                             </a>
                         @else
-                            <a href="{{ route('vender.user.in.active', $user['id']) }}">
-                                <button type="button" style="width: 80%;"
-                                    class="btn btn-dark round btn-min-width mb-0">INACTIVATE USER</button>
+                            <a href="{{ route('vender.user.in.active', $user['id']) }}" style="text-decoration: none;">
+                                <button type="button" class="btn btn-dark sidebar-action-btn m-0">Inactivate User</button>
                             </a>
                         @endif
                     </div>

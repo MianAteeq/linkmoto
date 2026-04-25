@@ -112,15 +112,18 @@
 @section('content')
 
     <div class="row">
-        <div class="col-lg-3 col-md-12 mb-4">
-            <div style="border-radius: 7px; border: 2px solid black; height: 100%;">
-                <div style="padding: 15px;">
-                    <div class="d-flex align-items-start font-weight-bold" style="font-size: 17px;">
+        <div class="col-lg-3 col-md-12 mb-4 align-self-start">
+            <div class="info-sidebar d-flex flex-column"
+                style="border-radius: 7px; border: 2px solid black; background-color: white; overflow: hidden;">
+
+                <div class="info-sidebar-body" style="padding: 15px; flex-grow: 1;">
+                    <div class="d-flex align-items-start font-weight-bold"
+                        style="font-size: 1.1rem; padding-bottom: 15px; margin: 0; border-bottom: 2px solid black;">
                         <img src="/trading_unit.png" style="width: 22px; margin-right: 10px; margin-top: 2px;">
-                        <span>Trading Unit : {{ $trading_unit['name'] }}</span>
+                        <span style="word-break: break-word;">Trading Unit : <br>{{ $trading_unit['name'] }}</span>
                     </div>
 
-                    <div style="margin-top: 30px; font-weight: 500; font-size: 13px;">
+                    <div style="margin-top: 20px; font-weight: 500; font-size: 13px;">
                         <span>Trading Name : {{ $trading_unit['trading_name']['name'] ?? '' }}</span>
                     </div>
                     <div style="margin-top: 15px; font-weight: 500; font-size: 13px;">
@@ -129,37 +132,50 @@
                     <div style="margin-top: 15px; font-weight: 500; font-size: 13px;">
                         <span class="success">{{ $trading_unit['active_status'] }}</span>
                     </div>
-                    <div style="margin-top: 15px; font-weight: 500; font-size: 13px; margin-bottom: 20px;">
+                    <div style="margin-top: 15px; font-weight: 500; font-size: 13px;">
                         <span>Created: {{ \Carbon\Carbon::parse($trading_unit['created_at'])->format('d/m/Y') }} at
                             {{ \Carbon\Carbon::parse($trading_unit['created_at'])->format('h:i') }}</span>
                     </div>
                 </div>
 
-                <div class="footers" style="text-align: center; padding-bottom: 10px;">
+                {{-- Action Buttons Footer --}}
+                <div class="footers"
+                    style="padding: 15px; border-top: 2px solid black; background: white; display: flex; flex-direction: column; gap: 12px;">
+
                     @if ($trading_unit['status'] == 'PENDING' || $trading_unit['status'] == 'INACTIVE')
-                        <a href="{{ route('vender.service.provider.trading.unit.active', $trading_unit['id']) }}">
-                            <button type="button" style="width: 80%;"
-                                class="btn btn-dark round btn-min-width mr-1 mb-1">ACTIVATE TRADE UNIT</button>
+                        <a href="{{ route('vender.service.provider.trading.unit.active', $trading_unit['id']) }}"
+                            style="text-decoration: none; display: block; width: 100%;">
+                            <button type="button" class="btn btn-dark m-0"
+                                style="width: 100%; padding: 10px; font-weight: 600; border-radius: 6px;">Activate Trade
+                                Unit</button>
                         </a>
                     @else
-                        <a href="{{ route('vender.service.provider.trading.unit.in.active', $trading_unit['id']) }}">
-                            <button type="button" style="width: 80%;"
-                                class="btn btn-dark round btn-min-width mr-1 mb-1">INACTIVATE TRADE UNIT</button>
+                        <a href="{{ route('vender.service.provider.trading.unit.in.active', $trading_unit['id']) }}"
+                            style="text-decoration: none; display: block; width: 100%;">
+                            <button type="button" class="btn btn-dark m-0"
+                                style="width: 100%; padding: 10px; font-weight: 600; border-radius: 6px;">Inactivate Trade
+                                Unit</button>
                         </a>
                     @endif
 
                     @if ($trading_unit['active_status'] == 'OFFLINE')
-                        <a href="{{ route('vender.service.provider.trading.unit.Online', $trading_unit['id']) }}">
-                            <button type="button" style="width: 80%;"
-                                class="btn btn-dark round btn-min-width mr-1 mb-1">SHOW ONLINE</button>
+                        <a href="{{ route('vender.service.provider.trading.unit.Online', $trading_unit['id']) }}"
+                            style="text-decoration: none; display: block; width: 100%;">
+                            <button type="button" class="btn btn-dark m-0"
+                                style="width: 100%; padding: 10px; font-weight: 600; border-radius: 6px;">Show
+                                Online</button>
                         </a>
                     @else
-                        <a href="{{ route('vender.service.provider.trading.unit.offline', $trading_unit['id']) }}">
-                            <button type="button" style="width: 80%;"
-                                class="btn btn-dark round btn-min-width mr-1 mb-1">SHOW OFFLINE</button>
+                        <a href="{{ route('vender.service.provider.trading.unit.offline', $trading_unit['id']) }}"
+                            style="text-decoration: none; display: block; width: 100%;">
+                            <button type="button" class="btn btn-dark m-0"
+                                style="width: 100%; padding: 10px; font-weight: 600; border-radius: 6px;">Show
+                                Offline</button>
                         </a>
                     @endif
+
                 </div>
+
             </div>
         </div>
 
@@ -344,7 +360,7 @@
                             </div>
                         </div>
 
-                        <div class="footers px-3 pb-3 pt-2" style="text-align: right;">
+                        <div class="footers px-1 pb-1 pt-2" style="text-align: right;">
                             <a href="{{ route('vender.service.provider.trading.unit.edit', $trading_unit['id']) }}">
                                 <button type="button" class="btn btn-dark round btn-min-width">Edit</button>
                             </a>

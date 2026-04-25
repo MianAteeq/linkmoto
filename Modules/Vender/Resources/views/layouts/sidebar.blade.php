@@ -1,3 +1,18 @@
+<style>
+    /* Fix: Only allow scroll on the inner content, not the outer wrapper */
+    .main-menu .main-menu-content {
+        overflow-y: auto;
+        /* scroll here */
+        overflow-x: hidden;
+        height: calc(100% - 60px);
+        /* adjust based on your header height */
+    }
+
+    .main-menu .main-menu-content {
+        overflow: hidden !important;
+        /* let perfect-scrollbar handle it */
+    }
+</style>
 <!-- BEGIN: Main Menu-->
 {{-- @dd(auth()->user()->getPermissionNames()) --}}
 

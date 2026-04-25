@@ -49,6 +49,27 @@
     @yield('css_lib')
     @yield('css_custom')
     <style>
+        /* Prevent double scroll — only one scroll layer */
+        html,
+        body {
+            height: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .app-content.content {
+            overflow: visible !important;
+        }
+
+        .content-wrapper {
+            overflow: visible !important;
+            height: auto !important;
+        }
+
+        .content-body {
+            overflow: visible !important;
+        }
+
         /* Make sidebar content fill available height without forced scroll */
         .main-menu-content {
             height: auto !important;
@@ -254,6 +275,90 @@
             color: black !important;
         }
     </style>
+    <style>
+        /* --- Global Variables --- */
+        :root {
+            --border-color-dark: #000000;
+            --border-color-light: #e0e0e0;
+            --text-muted: #6b7280;
+            --padding-header: 16px 24px;
+            --padding-body: 24px;
+            --padding-row: 16px 0;
+        }
+
+        /* --- Container / Card Styles --- */
+        .page-card {
+            background-color: #ffffff;
+            border: 1px solid var(--border-color-dark);
+            margin-bottom: 24px;
+            /* Space between stacked cards */
+        }
+
+        .page-card-header {
+            padding: var(--padding-header);
+            border-bottom: 1px solid var(--border-color-dark);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: bold;
+        }
+
+        .page-card-body {
+            padding: var(--padding-body);
+        }
+
+        /* --- Data List / Alignment Styles --- */
+        .data-row {
+            display: grid;
+            grid-template-columns: 35% 65%;
+            /* Aligns labels and values perfectly */
+            padding: var(--padding-row);
+            border-bottom: 1px solid var(--border-color-light);
+            align-items: center;
+        }
+
+        .data-row:last-child {
+            border-bottom: none;
+            /* Removes line from the last item */
+        }
+
+        .data-label {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .data-value {
+            color: #000000;
+            font-size: 14px;
+        }
+
+        /* --- Global Action Buttons (View, Edit, Add) --- */
+        .btn-action {
+            background-color: #000000;
+            color: #ffffff;
+            padding: 8px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-action:hover {
+            background-color: #333333;
+        }
+
+        /* Container to align buttons to the right, just like the image */
+        .action-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 16px;
+        }
+    </style>
 </head>
 
 <body class="vertical-layout vertical-menu 2-columns fixed-navbar" data-open="click" data-menu="vertical-menu"
@@ -264,7 +369,8 @@
 
     <div class="app-content content">
         <div class="content-overlay"></div>
-        <div class="content-wrapper" style="padding-left:0px;padding-top: 2px;background: white;height: 84vh; ">
+        <div class="content-wrapper"
+            style="padding-left:0px; padding-top: 2px; background: white; min-height: 84vh; overflow: visible;">
             @yield('header')
             <div class="content-body" style="padding-left: 2rem;padding-top: 2rem">
                 @yield('content')

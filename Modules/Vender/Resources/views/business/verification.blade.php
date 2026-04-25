@@ -172,22 +172,24 @@
     <div class="row">
 
         {{-- Sidebar --}}
-        <div class="col-12 col-lg-3 mb-3 info-sidebar-wrapper">
-            <div class="info-sidebar">
-                <h4 class="h3"
-                    style="font-weight: 600; font-size: 17px; padding: 1rem 0.5rem; border-bottom: 2px solid black; margin: 0;">
-                    <img src="/not-pad.png" style="width: 30px; margin-top: -5px;"> Verifications
+        <div class="col-12 col-lg-3 info-sidebar-wrapper mb-3 mb-lg-0 align-self-start">
+            <div class="info-sidebar d-flex flex-column">
+                <h4
+                    style="font-weight: 600; font-size: 1.1rem; padding: 12px 16px; margin: 0; display: flex; align-items: center; gap: 10px; background-color: white; border-radius: 5px 5px 0 0; border-bottom: 2px solid black;">
+                    <img src="/not-pad.png" style="width: 20px; margin-top: -2px;"> Verifications
                 </h4>
-                <p style="padding: 15px 10px; line-height: 1.5rem; color: black; margin: 0;">
-                    Track the status of key business items that require approval: <br><br>
-                    <strong>• Business Verification</strong> (registration) <br>
-                    <strong>• VAT</strong><br>
-                    <strong>• Main Contacts</strong><br>
-                    <strong>• Sites</strong><br>
-                    <strong>• Bank Accounts</strong><br><br>
-                    Each item may require supporting documents. Statuses:
-                    <strong>To-Do, Pending, Verified, Rejected, Cancelled, Inactive</strong>
-                </p>
+                <div style="padding: 14px 16px; flex-grow: 1;">
+                    <p style="line-height: 1.6; color: #333; font-size: 0.9rem; margin: 0;">
+                        Track the status of key business items that require approval: <br><br>
+                        <strong>• Business Verification</strong> (registration) <br>
+                        <strong>• VAT</strong><br>
+                        <strong>• Main Contacts</strong><br>
+                        <strong>• Sites</strong><br>
+                        <strong>• Bank Accounts</strong><br><br>
+                        Each item may require supporting documents. Statuses:
+                        <strong>To-Do, Pending, Verified, Rejected, Cancelled, Inactive</strong>
+                    </p>
+                </div>
             </div>
         </div>
 
@@ -427,13 +429,13 @@
             if (value === "Limited Liability Partnership (LLP)") {
                 $('.company_name_text').html(
                     `This is the exact LLP name as registered at Companies House. It may be different from your trading name (the name customers see).`
-                    );
+                );
                 $('.company_number_text').html(
                     `This is your unique Companies House registration number (8 characters, usually letters and/or numbers) that officially identifies your LLP.`
-                    );
+                );
                 $('.company_address_text').html(
                     `This is the official address listed at Companies House. It may be different from your trading or garage address where customers drop off vehicles.`
-                    );
+                );
             }
             if (value === "Sole Trader / Self-Employed") {
                 $('.company_name_text').html(`This is the name of the person who legally owns the business.`);
@@ -443,20 +445,20 @@
             if (value === "General Partnership") {
                 $('.company_name_text').html(
                     `This is the official name of your partnership. If your partnership doesn't have a formal name, you can use the owner(s) names or a commonly used garage name. <strong>A trading name will be asked separately later</strong> for customer facing purposes.`
-                    );
+                );
                 $('.company_number_text').html(``);
                 $('.company_address_text').html(`This is the address where your business operates.`);
             }
             if (value === "Limited Company (Ltd)") {
                 $('.company_name_text').html(
                     `This is the exact company name as registered at Companies House. It may be different from your trading name (the name customers see). Check your official registration documents if you're unsure.`
-                    );
+                );
                 $('.company_number_text').html(
                     `This is your unique Companies House registration number (8 characters, usually letters and/or numbers). It identifies your company officially and helps us verify your business.`
-                    );
+                );
                 $('.company_address_text').html(
                     `This is the official address listed at Companies House. It may be different from your trading or garage address where customers drop off vehicles.`
-                    );
+                );
             }
         }
     </script>

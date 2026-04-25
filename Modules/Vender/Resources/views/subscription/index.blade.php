@@ -31,6 +31,24 @@
             font-size: 11px;
         }
 
+        /* Center align the table headings */
+        table.dataTable thead th,
+        table.dataTable thead td {
+            text-align: center !important;
+            vertical-align: middle !important;
+        }
+
+        /* Remove the default DataTables sorting icons (the purple arrows) */
+        table.dataTable thead .sorting::before,
+        table.dataTable thead .sorting::after,
+        table.dataTable thead .sorting_asc::before,
+        table.dataTable thead .sorting_asc::after,
+        table.dataTable thead .sorting_desc::before,
+        table.dataTable thead .sorting_desc::after {
+            display: none !important;
+            content: none !important;
+        }
+
         .btn-dark {
             border-color: black !important;
             background-color: black !important;
@@ -65,6 +83,43 @@
             display: block;
             text-align: center;
             margin-bottom: 10px;
+        }
+
+        /* Remove DataTables default bottom border */
+        table.dataTable.no-footer {
+            border-bottom: none !important;
+        }
+
+        .top-nav-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .nav-btn {
+            border-radius: 7px;
+            border: 2px solid black;
+            padding: 10px 15px;
+            font-weight: 600;
+            font-size: 17px;
+            color: black;
+            text-decoration: none;
+            text-align: center;
+            flex: 1 1 auto;
+            min-width: 160px;
+            transition: 0.2s;
+        }
+
+        .nav-btn.active {
+            border-color: #ff6600;
+            color: #ff6600;
+        }
+
+        @media (max-width: 991px) {
+            .nav-btn {
+                width: 100%;
+            }
         }
 
         /* --- RESPONSIVE MEDIA QUERIES --- */
@@ -140,8 +195,8 @@
 @endsection
 
 @section('content')
-    <div class="row" style="margin-top: 20px;">
-        <div class="col-lg-3 col-12 mb-2">
+    <div class="row">
+        <div class="col-lg-3 col-12 mb-2 align-self-start">
             <div class="sidebar-box">
                 <h4 class="h3 d-flex align-items-center" style="font-weight: 600; font-size: 17px; margin: 0;">
                     <img src="/wallet.png" style="width: 22px; margin-right: 8px;"> Billing
@@ -151,17 +206,9 @@
 
         <div class="col-lg-9 col-12" id="contens">
 
-            <div class="row nav-buttons-row">
-                <div class="col-md-auto col-12">
-                    <a href="{{ route('vender.subscription.index') }}" style="text-decoration: none;">
-                        <span class="nav-link-box" style="border: 2px solid #ff6600; color: #ff6600;">Subscriptions</span>
-                    </a>
-                </div>
-                <div class="col-md-auto col-12">
-                    <a href="{{ route('vender.invoice.index') }}" style="text-decoration: none;">
-                        <span class="nav-link-box" style="border: 2px solid black; color: black;">Invoices</span>
-                    </a>
-                </div>
+            <div class="top-nav-group">
+                <a href="{{ route('vender.subscription.index') }}" class="nav-btn active">Subscriptions</a>
+                <a href="{{ route('vender.invoice.index') }}" class="nav-btn ">Invoices</a>
             </div>
 
             <div style="border: 2px solid black; border-radius: 6px; background: white;">
@@ -180,10 +227,11 @@
                 </div>
 
                 <div class="p-1">
-                    <div class="table-responsive">
+                    {{-- Added mb-4 for extra spacing at the bottom --}}
+                    <div class="table-responsive mb-4">
                         <table class="table table-striped table-bordered zero-configuration" style="width: 100%;">
                             <thead>
-                                <tr>
+                                <tr class="text-center">
                                     <th>ID</th>
                                     <th>Product</th>
                                     <th>Plan</th>
@@ -195,16 +243,18 @@
                             </thead>
                             <tbody>
                                 @foreach ($subscriptions as $account)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>Service Provider App</td>
-                                        <td>{{ $account['plan']['name'] ?? '' }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($account['start_at'])->format('d/m/Y') }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($account['end_at'])->format('d/m/Y') }}</td>
-                                        <td><span class="text-success">Active</span></td>
-                                        <td>
+                                    <tr class="text-center">
+                                        <td class="align-middle">{{ $loop->iteration }}</td>
+                                        <td class="align-middle">Service Provider App</td>
+                                        <td class="align-middle">{{ $account['plan']['name'] ?? '' }}</td>
+                                        <td class="align-middle">
+                                            {{ \Carbon\Carbon::parse($account['start_at'])->format('d/m/Y') }}</td>
+                                        <td class="align-middle">
+                                            {{ \Carbon\Carbon::parse($account['end_at'])->format('d/m/Y') }}</td>
+                                        <td class="align-middle"><span class="text-success">Active</span></td>
+                                        <td class="align-middle">
                                             <a href="{{ route('vender.subscription.detail', $account['id']) }}">
-                                                <i class="ft-eye" style="color: black;"></i>
+                                                <i class="ft-eye" style="color: #ff6600;"></i>
                                             </a>
                                         </td>
                                     </tr>
@@ -223,6 +273,7 @@
     <script>
         $(document).ready(function() {
             var oTable = $('.zero-configuration').DataTable({
+                "destroy": true, // <--- This line fixes the reinitialise error
                 "bPaginate": $('.zero-configuration tbody tr').length > 10,
                 "iDisplayLength": 10,
                 "bAutoWidth": false,

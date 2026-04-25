@@ -4,11 +4,11 @@
     <link rel="stylesheet" type="text/css" href="/modules/admin/app-assets/vendors/css/tables/datatable/datatables.min.css">
     <style>
         /* --- 1. AGGRESSIVE HIDE FOR PURPLE SORTING ICONS --- */
-        table.dataTable thead th.sorting::before, 
+        table.dataTable thead th.sorting::before,
         table.dataTable thead th.sorting::after,
-        table.dataTable thead th.sorting_asc::before, 
+        table.dataTable thead th.sorting_asc::before,
         table.dataTable thead th.sorting_asc::after,
-        table.dataTable thead th.sorting_desc::before, 
+        table.dataTable thead th.sorting_desc::before,
         table.dataTable thead th.sorting_desc::after {
             content: "" !important;
             display: none !important;
@@ -19,6 +19,11 @@
             padding-right: 10px !important;
             color: black !important;
             background-color: #fafbfc !important;
+            border-bottom: 1px solid #111;
+            font-size: 11px;
+            /* Added Center Alignment & Allowed Text Wrap */
+            text-align: center !important;
+            vertical-align: middle !important;
         }
 
         /* --- 2. DataTable UI Clean-up --- */
@@ -30,47 +35,124 @@
 
         /* --- 3. STRETCH FIX: Equal Width for Search & Table --- */
         .dataTables_wrapper {
-            width: 100% !important;
+            width: 99% !important;
+            /* Reduced to 99% to remove scrollbar */
+            margin: 0 auto !important;
+            /* Center the 99% wrapper */
             padding: 0 !important;
-            margin: 0 !important;
         }
+
         .dataTables_wrapper .row {
             margin-left: 0 !important;
             margin-right: 0 !important;
         }
+
         .dataTables_wrapper .col-sm-12 {
             padding-left: 0 !important;
             padding-right: 0 !important;
         }
+
         table.dataTable {
-            width: 100% !important;
-            margin: 0 !important;
+            width: 99% !important;
+            /* Reduced to 99% to remove scrollbar */
+            margin: 0 auto !important;
+            /* Center the table */
         }
 
         /* Standard Padding Alignment (15px) */
-        .search-container { display: flex; align-items: center; gap: 10px; padding: 15px; }
-        .table-container-custom { padding: 0 15px 15px 15px; } 
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+        }
 
-        .search-input { border: 2px solid black !important; border-radius: 6px !important; flex-grow: 1; }
+        .table-container-custom {
+            padding: 0 15px 15px 15px;
+        }
+
+        .search-input {
+            border: 2px solid black !important;
+            border-radius: 6px !important;
+            flex-grow: 1;
+        }
 
         /* --- 4. Sidebar & General Styles --- */
-        .sidebar-title { border-radius: 7px; border: 2px solid black; padding: 10px; font-weight: 600; font-size: 17px; display: flex; align-items: center; gap: 8px; margin-bottom: 15px; }
-        .sidebar-title img { width: 22px; }
+        .sidebar-title {
+            border-radius: 7px;
+            border: 2px solid black;
+            padding: 10px;
+            font-weight: 600;
+            font-size: 17px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
 
-        .top-nav-group { display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; }
-        .nav-btn { border-radius: 7px; border: 2px solid black; padding: 10px 15px; font-weight: 600; font-size: 17px; color: black; text-decoration: none; text-align: center; flex: 1 1 auto; min-width: 160px; transition: 0.2s; }
-        .nav-btn.active { border-color: #ff6600; color: #ff6600; }
+        .sidebar-title img {
+            width: 22px;
+        }
 
-        .table-striped tbody tr:nth-of-type(odd) { background-color: white; }
-        table.dataTable tbody td { padding: 8px 10px; font-size: 10px; color: black; }
-        table.dataTable thead th { border-bottom: 1px solid #111; font-size: 11px; white-space: nowrap; }
+        .top-nav-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .nav-btn {
+            border-radius: 7px;
+            border: 2px solid black;
+            padding: 10px 15px;
+            font-weight: 600;
+            font-size: 17px;
+            color: black;
+            text-decoration: none;
+            text-align: center;
+            flex: 1 1 auto;
+            min-width: 160px;
+            transition: 0.2s;
+        }
+
+        .nav-btn.active {
+            border-color: #ff6600;
+            color: #ff6600;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: white;
+        }
+
+        table.dataTable tbody td {
+            padding: 8px 10px;
+            font-size: 10px;
+            color: black;
+            /* Added Center Alignment */
+            text-align: center !important;
+            vertical-align: middle !important;
+        }
 
         /* Sidebar Scrollbar Fix */
-        .main-menu { -ms-overflow-style: none; scrollbar-width: none; overflow-x: hidden !important; }
-        .main-menu::-webkit-scrollbar { display: none; }
+        .main-menu {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            overflow-x: hidden !important;
+        }
+
+        .main-menu::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Remove DataTables default bottom border */
+        table.dataTable.no-footer {
+            border-bottom: none !important;
+        }
 
         @media (max-width: 991px) {
-            .nav-btn { width: 100%; }
+            .nav-btn {
+                width: 100%;
+            }
         }
     </style>
 @endsection
@@ -93,7 +175,7 @@
 
 @section('content')
     <div class="row mt-1">
-        <div class="col-lg-3 col-12 mb-1">
+        <div class="col-lg-3 col-12 mb-1 align-self-start">
             <h4 class="sidebar-title"><img src="/wallet.png"> Billing</h4>
         </div>
 
@@ -113,11 +195,11 @@
                     <a href="#"><i class="ft-filter" style="font-size: 30px; color: black;"></i></a>
                 </div>
 
-                <div class="table-container-custom">
-                    <div class="table-responsive">
+                <div class="p-1">
+                    <div class="table-responsive mb-4">
                         <table class="table table-striped table-bordered zero-configuration w-100">
                             <thead>
-                                <tr>
+                                <tr class="text-center">
                                     <th>Invoice ID</th>
                                     <th>Subscription ID</th>
                                     <th>Product</th>
@@ -130,15 +212,17 @@
                             </thead>
                             <tbody>
                                 @foreach ($subscriptions as $account)
-                                    <tr>
+                                    <tr class="text-center">
                                         <td>{{ $account->number }}</td>
                                         <td>S-{{ sprintf('%04d', $account['subscription']['id'] ?? 0) }}</td>
                                         <td>Service Provider App</td>
                                         <td>{{ $account['inv_plan']['name'] ?? '' }}</td>
-                                        <td>{{ $account['created_at'] ? \Carbon\Carbon::parse($account['created_at'])->format('d/m/Y') : 'N/A' }}</td>
+                                        <td>{{ $account['created_at'] ? \Carbon\Carbon::parse($account['created_at'])->format('d/m/Y') : 'N/A' }}
+                                        </td>
                                         <td>{{ number_format(($account['amount_due'] ?? 0) / 100, 2) }}</td>
                                         <td>{{ Str::ucfirst($account['status'] ?? 'N/A') }}</td>
-                                        <td><a href="{{ route('vender.invoice.detail', $account['id']) }}"><i class="ft-eye"></i></a></td>
+                                        <td><a href="{{ route('vender.invoice.detail', $account['id']) }}"><i
+                                                    class="ft-eye"></i></a></td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -156,19 +240,21 @@
         $(document).ready(function() {
             // 1. Force Sidebar Open and fix potential layout shifts
             $('body').removeClass('menu-hide menu-collapsed').addClass('menu-expanded menu-open');
-            setTimeout(function() { $(window).trigger('resize'); }, 200);
+            setTimeout(function() {
+                $(window).trigger('resize');
+            }, 200);
 
             // 2. Initialize DataTable with destroy and sorting disabled
             var oTable = $('.zero-configuration').DataTable({
-                "destroy": true,   // Prevents re-initialization warning
-                "order": [],        // Prevents default sort selection
-                "ordering": false,  // Disables sorting feature entirely
+                "destroy": true, // Prevents re-initialization warning
+                "order": [], // Prevents default sort selection
+                "ordering": false, // Disables sorting feature entirely
                 "bPaginate": $('.zero-configuration tbody tr').length > 10,
                 "iDisplayLength": 10,
                 "bAutoWidth": false,
                 "initComplete": function(settings, json) {
-                    // Force table to fill container
-                    $('.dataTables_wrapper, .dataTable').css('width', '100%', 'important');
+                    // Force table to fill container but reduced to 99% to prevent horizontal scrollbar
+                    $('.dataTables_wrapper, .dataTable').css('width', '99%');
                 }
             });
 

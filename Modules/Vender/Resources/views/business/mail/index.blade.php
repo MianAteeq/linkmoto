@@ -17,11 +17,20 @@
             border: 2px solid #000;
             border-radius: 8px;
             box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.05);
-            height: 100%;
-            /* Ensures both boxes take equal height if needed */
+            /* FIX: Removed height: 100% from here so they can behave independently */
             display: flex;
             flex-direction: column;
             overflow: hidden;
+        }
+
+        /* FIX: Ensure only the main content box stretches to 100% */
+        .main-content-box {
+            height: 100%;
+        }
+
+        /* FIX: Force sidebar to only take up as much space as it needs */
+        .info-sidebar {
+            height: max-content;
         }
 
         /* 3. INTERNAL HEADERS */
@@ -132,14 +141,15 @@
 
         <div class="row align-items-stretch">
             {{-- Left Sidebar --}}
-            <div class="col-12 col-lg-3 info-sidebar-wrapper mb-1 mb-lg-0">
-                <div class="info-sidebar">
-                    <div class="box-header">
-                        <img src="/home.png" style="width: 20px;">
-                        <h4>Email Addresses</h4>
-                    </div>
-                    <div class="box-body">
-                        <p style="line-height: 1.6; color: #444; font-size: 0.9rem; margin: 0;">
+            {{-- FIX: Added 'align-self-start' so this specific column ignores the row stretch --}}
+            <div class="col-12 col-lg-3 info-sidebar-wrapper mb-3 mb-lg-0 align-self-start">
+                <div class="info-sidebar d-flex flex-column">
+                    <h4
+                        style="font-weight: 600; font-size: 1.1rem; padding: 12px 16px; margin: 0; display: flex; align-items: center; gap: 10px; background-color: white; border-radius: 5px 5px 0 0; border-bottom: 2px solid black;">
+                        <img src="/home.png" style="width: 20px; margin-top: -2px;"> Email Addresses
+                    </h4>
+                    <div style="padding: 14px 16px; flex-grow: 1;">
+                        <p style="line-height: 1.6; color: #333; font-size: 0.9rem; margin: 0;">
                             Add and manage your business email addresses here. These will be linked in other sections such
                             as remittance advise, invoice settings, and billing notifications.
                         </p>

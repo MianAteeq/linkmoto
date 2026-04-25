@@ -4,8 +4,8 @@
     <link rel="stylesheet" type="text/css" href="/modules/admin/app-assets/vendors/css/tables/datatable/datatables.min.css">
     <style>
         /* ========================================================================
-       1. TABLE STYLES
-       ======================================================================== */
+                           1. TABLE STYLES
+                           ======================================================================== */
         .dataTables_wrapper .dataTables_length,
         .dataTables_wrapper .dataTables_filter,
         .dataTables_wrapper .dataTables_info {
@@ -57,8 +57,8 @@
         }
 
         /* ========================================================================
-       2. ICONS & MENU STYLES
-       ======================================================================== */
+                           2. ICONS & MENU STYLES
+                           ======================================================================== */
         .collapse-icon [data-toggle="collapse"]:before {
             position: absolute;
             top: 48%;
@@ -80,8 +80,8 @@
         }
 
         /* ========================================================================
-       3. CONTAINER & UI STYLES
-       ======================================================================== */
+                           3. CONTAINER & UI STYLES
+                           ======================================================================== */
         body {
             color: black;
         }
@@ -132,9 +132,15 @@
             font-weight: bold;
         }
 
+        /* Remove default Bootstrap padding from DataTables column wrappers */
+        .dataTables_wrapper .row .col-sm-12 {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+
         /* ========================================================================
-       4. RESPONSIVE MEDIA QUERIES
-       ======================================================================== */
+                           4. RESPONSIVE MEDIA QUERIES
+                           ======================================================================== */
         @media (max-width: 991.98px) {
             .headerbg {
                 padding-left: 25px !important;
@@ -208,12 +214,12 @@
                     </div>
 
                     <div style="padding: 20px; flex-grow: 1;">
-                        <div class="mb-3" style="font-weight: 500; font-size: 14px;">
+                        <div class="mb-2" style="font-weight: 500; font-size: 14px;">
                             <span style="color:#ff6600; font-weight: 600;">Trading Name:</span><br>
                             {{ $trading_unit['trading_name']['name'] ?? '' }}
                         </div>
-                        <div class="mb-3"><span class="success">{{ $trading_unit['status'] }}</span></div>
-                        <div class="mb-4"><span class="success">{{ $trading_unit['active_status'] }}</span></div>
+                        <div class="mb-2"><span class="success">{{ $trading_unit['status'] }}</span></div>
+                        <div class="mb-2"><span class="success">{{ $trading_unit['active_status'] }}</span></div>
                         <div style="font-weight: 500; font-size: 13px; color: #555;">
                             Created: {{ \Carbon\Carbon::parse($trading_unit['created_at'])->format('d/m/Y \a\t h:i') }}
                         </div>
@@ -221,7 +227,7 @@
 
                     {{-- Action Buttons Footer (Vertical Fix) --}}
                     <div class="footers"
-                        style="flex-direction: column; gap: 12px; padding: 15px; border-radius: 0 0 5px 5px;">
+                        style="flex-direction: column; gap: 12px; padding: 10px; border-radius: 0 0 5px 5px;">
                         @if ($trading_unit['status'] == 'PENDING' || $trading_unit['status'] == 'INACTIVE')
                             <a href="{{ route('vender.service.provider.trading.unit.active', $trading_unit['id']) }}"
                                 style="width: 100%; text-decoration: none;">
@@ -287,7 +293,7 @@
                         style="border-left: 2px solid black; border-right: 2px solid black; border-bottom: 2px solid black; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; background: white; margin-top: -2px;">
 
                         <div class="card-content">
-                            <div class="card-body" style="padding: 20px;">
+                            <div class="card-body" style="padding: 20px 10px;">
 
                                 {{-- Search Row --}}
                                 <div class="row align-items-center mb-3 m-0">
@@ -303,8 +309,8 @@
                                 </div>
 
                                 <div class="table-responsive">
-                                    <table class="table table-striped table-bordered zero-configuration w-100 m-0"
-                                        width="100%">
+                                    <table class="table table-striped table-bordered zero-configuration w-90 m-0 p-0"
+                                        width="90%">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>

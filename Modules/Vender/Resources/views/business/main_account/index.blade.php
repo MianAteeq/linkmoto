@@ -264,10 +264,10 @@
                             </div>
                         </div>
 
-                        <div class="row m-0 mt-2 mb-2 px-1">
+                        <div class="row m-0 mt-2 mb-2">
                             <div class="col-md-12 p-0">
                                 <div class="table-responsive">
-                                    <table class="table table-striped table-bordered zero-configuration w-120 m-0">
+                                    <table class="table table-striped table-bordered zero-configuration w-120 m-0 p-0">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>

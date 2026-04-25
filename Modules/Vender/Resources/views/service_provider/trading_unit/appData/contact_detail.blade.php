@@ -234,7 +234,7 @@
 
                     {{-- Action Buttons Footer (Vertical Stack Fix) --}}
                     <div class="footers"
-                        style="flex-direction: column; gap: 12px; padding: 15px; border-radius: 0 0 5px 5px;">
+                        style="flex-direction: column; gap: 12px; padding: 10px; border-radius: 0 0 5px 5px;">
                         @if ($trading_unit['status'] == 'PENDING' || $trading_unit['status'] == 'INACTIVE')
                             <a href="{{ route('vender.service.provider.trading.unit.active', $trading_unit['id']) }}"
                                 class="w-100"><button type="button" class="btn btn-dark round w-100 m-0">ACTIVATE TRADE

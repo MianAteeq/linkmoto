@@ -244,15 +244,23 @@
             border-top: 2px solid black;
             padding: 0.5rem 1rem;
             margin-right: -15px;
-            margin-left: -15px;
+            /* margin-left: -15px; */
         }
 
         /* END: Responsive Layout Adjustments */
 
         /* Vertical spacing between info rows */
         .card-body .row {
-            padding-top: 8px;
-            padding-bottom: 8px;
+            padding: 14px 21px;
+        }
+
+        .card-body {
+            padding: 0px !important;
+
+        }
+
+        .col-md-12 {
+            padding-left: 5px !important;
         }
 
         /* BEGIN: Responsive Layout Adjustments */
@@ -418,7 +426,7 @@
                 <div class="row" style="margin-right: 0;margin-left: 0;">
                     <div class="col-md-12" style="border-bottom: 2px solid black;">
                         <h3
-                            style="font-size: 20px; padding: 10px 0; margin-left: 0px !important; color: black;padding-bottom: 0px;">
+                            style="font-size: 20px; padding: 10px 0; margin-left: 5px !important; color: black;padding-bottom: 0px;">
                             Main
                             contact information</h3>
                     </div>

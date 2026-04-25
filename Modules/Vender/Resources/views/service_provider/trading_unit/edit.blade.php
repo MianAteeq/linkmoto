@@ -74,7 +74,7 @@
                    ======================================================================== */
         .footers {
             border-top: 2px solid black;
-            padding: 15px 20px 25px 20px;
+            padding: 15px 20px 15px 20px;
             width: 100%;
             background: white;
             border-bottom-left-radius: 6px;

@@ -4,8 +4,8 @@
     <link rel="stylesheet" type="text/css" href="/modules/admin/app-assets/vendors/css/tables/datatable/datatables.min.css">
     <style>
         /* ========================================================================
-           1. TABLE STYLES
-           ======================================================================== */
+               1. TABLE STYLES
+               ======================================================================== */
         .dataTables_wrapper .dataTables_length,
         .dataTables_wrapper .dataTables_filter,
         .dataTables_wrapper .dataTables_info {
@@ -53,8 +53,8 @@
         }
 
         /* ========================================================================
-           2. ICONS & COLLAPSE STYLES
-           ======================================================================== */
+               2. ICONS & COLLAPSE STYLES
+               ======================================================================== */
         #headingCollapse14:before {
             position: absolute;
             top: 48%;
@@ -91,8 +91,8 @@
         }
 
         /* ========================================================================
-           3. CONTAINER & UI STYLES
-           ======================================================================== */
+               3. CONTAINER & UI STYLES
+               ======================================================================== */
         .info-sidebar {
             border-radius: 7px;
             border: 2px solid black;
@@ -132,9 +132,34 @@
             font-weight: bold;
         }
 
+        /* Sidebar Action Buttons Fixes */
+        .sidebar-action-btn {
+            width: 100%;
+            padding: 10px 15px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .sidebar-action-btn:hover {
+            background-color: #333 !important;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .footers-flex {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
         /* ========================================================================
-           4. RESPONSIVE MEDIA QUERIES (991.98px for Tablet/Mobile Stacking)
-           ======================================================================== */
+               4. RESPONSIVE MEDIA QUERIES (991.98px for Tablet/Mobile Stacking)
+               ======================================================================== */
         @media (max-width: 991.98px) {
             .headerbg {
                 padding-left: 25px !important;
@@ -149,7 +174,8 @@
             .footers a button {
                 width: 100% !important;
                 float: none !important;
-                margin-bottom: 10px !important;
+                margin-bottom: 0px !important;
+                /* Managed by flex gap now */
             }
 
             .text-secondary {
@@ -187,8 +213,8 @@
     <div class="container-fluid px-1 px-md-1 mt-1">
         <div class="row align-items-start m-0">
 
-            {{-- Left Sidebar Profile Card --}}
-            <div class="col-12 col-lg-3 info-sidebar-wrapper mb-4 mb-lg-0 p-0 pr-lg-3">
+            {{-- Left Sidebar Profile Card (Added align-self-start) --}}
+            <div class="col-12 col-lg-3 info-sidebar-wrapper mb-4 mb-lg-0 p-0 pr-lg-3 align-self-start">
                 <div class="info-sidebar">
 
                     <div class="info-sidebar-body">
@@ -215,29 +241,24 @@
                         </div>
                     </div>
 
-                    {{-- Action Buttons Footer --}}
-                    <div class="footers">
-                        <a href="{{ route('vender.user.password', $user['id']) }}">
-                            <button type="button" style="width: 80%;" class="btn btn-dark round btn-min-width mb-2">RESET
-                                PASSWORD</button>
+                    {{-- Action Buttons Footer (Corrected styles and casing) --}}
+                    <div class="footers footers-flex">
+                        <a href="{{ route('vender.user.password', $user['id']) }}" style="text-decoration: none;">
+                            <button type="button" class="btn btn-dark sidebar-action-btn m-0">Reset Password</button>
                         </a>
-                        <a href="{{ route('vender.user.edit', $user['id']) }}">
-                            <button type="button" style="width: 80%;" class="btn btn-dark round btn-min-width mb-2">UPDATE
-                                USER</button>
+                        <a href="{{ route('vender.user.edit', $user['id']) }}" style="text-decoration: none;">
+                            <button type="button" class="btn btn-dark sidebar-action-btn m-0">Update User</button>
                         </a>
-                        <a href="{{ route('vender.user.suspend', $user['id']) }}">
-                            <button type="button" style="width: 80%;" class="btn btn-dark round btn-min-width mb-2">SUSPEND
-                                USER</button>
+                        <a href="{{ route('vender.user.suspend', $user['id']) }}" style="text-decoration: none;">
+                            <button type="button" class="btn btn-dark sidebar-action-btn m-0">Suspend User</button>
                         </a>
                         @if ($user['status'] != 'ACTIVE')
-                            <a href="{{ route('vender.user.active', $user['id']) }}">
-                                <button type="button" style="width: 80%;"
-                                    class="btn btn-dark round btn-min-width mb-0">ACTIVATE USER</button>
+                            <a href="{{ route('vender.user.active', $user['id']) }}" style="text-decoration: none;">
+                                <button type="button" class="btn btn-dark sidebar-action-btn m-0">Activate User</button>
                             </a>
                         @else
-                            <a href="{{ route('vender.user.in.active', $user['id']) }}">
-                                <button type="button" style="width: 80%;"
-                                    class="btn btn-dark round btn-min-width mb-0">INACTIVATE USER</button>
+                            <a href="{{ route('vender.user.in.active', $user['id']) }}" style="text-decoration: none;">
+                                <button type="button" class="btn btn-dark sidebar-action-btn m-0">Inactivate User</button>
                             </a>
                         @endif
                     </div>
@@ -252,7 +273,7 @@
 
                     {{-- FIXED ACCORDION HEADER (Using data-target instead of href) --}}
                     <a id="headingCollapse1" class="card-header info mt-0"
-                        style="border: 2px solid black; border-radius: 7px 7px 0 0 !important; padding: 1.2rem 1rem; color: black !important; background: white; display: block; cursor: pointer;"
+                        style="border: 2px solid black; border-radius: 7px 7px 0 0 !important; padding: 0.7rem 1rem; color: black !important; background: white; display: block; cursor: pointer;"
                         data-toggle="collapse" data-target="#collaptr_businesss_info" aria-expanded="true">
                         <div class="card-title lead m-0">User information</div>
                     </a>
@@ -262,9 +283,10 @@
                         class="collapse show">
 
                         <div class="card-content">
-                            <div class="card-body">
+                            {{-- Added Padding Fix Here --}}
+                            <div class="card-body" style="padding: 10px 15px;">
 
-                                <div class="row align-items-center py-2">
+                                <div class="row align-items-center py-1">
                                     <div class="col-12 col-sm-5">
                                         <h6 class="mb-0">ID</h6>
                                     </div>
@@ -272,7 +294,7 @@
                                 </div>
                                 <hr class="m-0">
 
-                                <div class="row align-items-center py-2">
+                                <div class="row align-items-center py-1">
                                     <div class="col-12 col-sm-5">
                                         <h6 class="mb-0">First name</h6>
                                     </div>
@@ -280,7 +302,7 @@
                                 </div>
                                 <hr class="m-0">
 
-                                <div class="row align-items-center py-2">
+                                <div class="row align-items-center py-1">
                                     <div class="col-12 col-sm-5">
                                         <h6 class="mb-0">Middle name</h6>
                                     </div>
@@ -288,7 +310,7 @@
                                 </div>
                                 <hr class="m-0">
 
-                                <div class="row align-items-center py-2">
+                                <div class="row align-items-center py-1">
                                     <div class="col-12 col-sm-5">
                                         <h6 class="mb-0">Last name</h6>
                                     </div>
@@ -296,7 +318,7 @@
                                 </div>
                                 <hr class="m-0">
 
-                                <div class="row align-items-center py-2">
+                                <div class="row align-items-center py-1">
                                     <div class="col-12 col-sm-5">
                                         <h6 class="mb-0">Email</h6>
                                     </div>
@@ -305,7 +327,7 @@
                                 <hr class="m-0">
 
                                 @if (auth()->user()->id == $user['id'])
-                                    <div class="row align-items-center py-2">
+                                    <div class="row align-items-center py-1">
                                         <div class="col-12 col-sm-5">
                                             <h6 class="mb-0">Mobile</h6>
                                         </div>
@@ -313,7 +335,7 @@
                                         </div>
                                     </div>
                                     <hr class="m-0">
-                                    <div class="row align-items-center py-2">
+                                    <div class="row align-items-center py-1">
                                         <div class="col-12 col-sm-5">
                                             <h6 class="mb-0">Landline</h6>
                                         </div>
@@ -321,14 +343,14 @@
                                         </div>
                                     </div>
                                 @else
-                                    <div class="row align-items-center py-2">
+                                    <div class="row align-items-center py-1">
                                         <div class="col-12 col-sm-5">
                                             <h6 class="mb-0">Mobile</h6>
                                         </div>
                                         <div class="col-12 col-sm-7 text-secondary">{{ $user['phone_no'] }}</div>
                                     </div>
                                     <hr class="m-0">
-                                    <div class="row align-items-center py-2">
+                                    <div class="row align-items-center py-1">
                                         <div class="col-12 col-sm-5">
                                             <h6 class="mb-0">Landline</h6>
                                         </div>
@@ -341,7 +363,7 @@
                             <div class="footers"
                                 style="border-radius: 0 0 5px 5px; text-align: right; border-top: 2px solid black;">
                                 <a href="{{ route('vender.user.edit', $user['id']) }}">
-                                    <button type="button" class="btn btn-dark round btn-min-width m-0">EDIT</button>
+                                    <button type="button" class="btn btn-dark round btn-min-width m-0">Edit</button>
                                 </a>
                             </div>
 

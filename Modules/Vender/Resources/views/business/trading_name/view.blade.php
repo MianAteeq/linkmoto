@@ -155,8 +155,10 @@
     <div class="container-fluid px-1 px-md-1 mt-1">
         <div class="row align-items-stretch" style="padding-left: 0 !important;">
 
-            <div class="col-12 col-lg-3 info-sidebar-wrapper d-flex mb-3 mb-lg-0">
-                <div class="info-sidebar d-flex flex-column h-100">
+            {{-- FIX: Removed 'd-flex' from the wrapper to prevent vertical stretching --}}
+            <div class="col-12 col-lg-3 info-sidebar-wrapper mb-3 mb-lg-0">
+                {{-- FIX: Removed 'h-100' so the card fits its content --}}
+                <div class="info-sidebar d-flex flex-column">
                     <h4
                         style="font-weight: 600; font-size: 1.1rem; padding: 12px 16px; margin: 0; display: flex; align-items: center; gap: 10px; background-color: white; border-radius: 5px 5px 0 0;">
                         <img src="/home.png" style="width: 20px;"> Trading Name
@@ -184,11 +186,12 @@
 
                         {{-- Card Data --}}
                         <div class="card-content">
-                            <div class="card-body" style="padding: 20px;">
+                            {{-- FIX: Increased padding from 20px to '30px 35px' for better spacing --}}
+                            <div class="card-body" style="padding: 25px 15px;">
 
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <h6 class="mb-0">Id</h6>
+                                        <h6 class="mb-0">ID</h6>
                                     </div>
                                     <div class="col-sm-7 text-secondary">
                                         {{ $trading_name['id'] }}

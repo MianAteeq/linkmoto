@@ -173,16 +173,16 @@
                     </div>
 
                     <div style="padding: 20px; flex-grow: 1;">
-                        <div class="mb-3" style="font-weight: 500; font-size: 14px;">
+                        <div class="mb-2" style="font-weight: 500; font-size: 14px;">
                             <span style="color:#ff6600; font-weight: 600;">Trading Name:</span><br>
                             {{ $trading_unit['trading_name']['name'] ?? '' }}
                         </div>
 
-                        <div class="mb-3" style="font-weight: 500; font-size: 14px;">
+                        <div class="mb-2" style="font-weight: 500; font-size: 14px;">
                             <span class="success">{{ $trading_unit['status'] }}</span>
                         </div>
 
-                        <div class="mb-4" style="font-weight: 500; font-size: 14px;">
+                        <div class="mb-2" style="font-weight: 500; font-size: 14px;">
                             <span class="success">{{ $trading_unit['active_status'] }}</span>
                         </div>
 
@@ -193,7 +193,7 @@
 
                     {{-- Action Buttons Footer --}}
                     <div class="footers"
-                        style="flex-direction: column; gap: 12px; padding: 15px; border-radius: 0 0 5px 5px;">
+                        style="flex-direction: column; gap: 12px; padding: 10px; border-radius: 0 0 5px 5px;">
                         @if ($trading_unit['status'] == 'PENDING' || $trading_unit['status'] == 'INACTIVE')
                             <a href="{{ route('vender.service.provider.trading.unit.active', $trading_unit['id']) }}"
                                 style="width: 100%; text-decoration: none;">

@@ -238,11 +238,11 @@
 
 @section('content')
     <div class="row">
-        {{-- Removed col-md-4, added mb-4 mb-lg-0 to space them out when stacked --}}
-        <div class="col-12 col-lg-3 info-sidebar-wrapper mb-4 mb-lg-0">
-            <div class="info-sidebar">
-                <h4 class="h3" style="font-weight: 600; font-size: 17px;padding: 10px; margin: 0;">
-                    <img src="/user.png" style="width: 22px;margin-top: -5px;"> Edit User
+        <div class="col-12 col-lg-3 info-sidebar-wrapper mb-4 mb-lg-0 align-self-start">
+            <div class="info-sidebar d-flex flex-column">
+                <h4 class="h3"
+                    style="font-weight: 600; font-size: 1.1rem; padding: 12px 16px; margin: 0; display: flex; align-items: center; gap: 10px; background-color: white; border-radius: 5px 5px 0 0;">
+                    <img src="/user.png" style="width: 22px; margin-top: -2px;"> Edit User
                 </h4>
             </div>
         </div>
