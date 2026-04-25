@@ -268,7 +268,7 @@
     <div class="content-header bg-white">
         <div class="row" style="border-bottom: 3px solid #949494;">
             <div class="col-xl-12 col-12 bg-white headerbg" style="padding-left: 32px;padding-top: 13px;">
-                <h3 class="h3">Trade unit information</h3>
+                <h3 class="h3">View Products</h3>
                 <div class="breadcrumb-wrapper col-12 p-0">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a>Products</a></li>
@@ -282,8 +282,12 @@
                                 href="{{ route('vender.service.provider.trading.unit.view', $trading_unit['id']) }}">
                                 {{ $trading_unit['name'] }}</a></li>
                         <li class="breadcrumb-item"><a
-                                href="{{ route('vender.service.provider.trading.unit.hub.setting', $trading_unit['id']) }}"
-                                style="color: black">Hub profile settings</a></li>
+                                href="{{ route('vender.service.provider.trading.unit.app.setting', $trading_unit['id']) }}"
+                                style="color: black">App Settings</a></li>
+                        <li class="breadcrumb-item"> <a
+                                href="{{ url('vender/service/provider/trading/unit/app/setting/' . $trading_unit['id']) }}#product_offera"
+                                style="color: black">Products</a>
+                        </li>
                         <li class="breadcrumb-item">View Product</li>
                     </ol>
                 </div>

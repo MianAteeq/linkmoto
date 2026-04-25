@@ -128,15 +128,25 @@
 
 @section('header')
     <div class="content-header bg-white">
-        <div class="row" style="border-bottom: 3px solid #949494;">
-            <div class="col-xl-12 col-12 bg-white headerbg" style="padding-left: 32px;padding-top: 13px;">
+        <div class="row" style="border-bottom: 3px solid #949494; margin: 0;">
+            <div class="col-12 bg-white headerbg" style="padding-left: 14px; padding-top: 13px;">
+
                 <h3 class="h3">Vehicles</h3>
 
-                <div class="breadcrumb-wrapper">
-                    <ol class="breadcrumb p-0 m-0 pb-2 bg-transparent">
-                        <li class="breadcrumb-item"><a>Products</a></li>
-                        <li class="breadcrumb-item">Service Provider</li>
-                        <li class="breadcrumb-item">Vehicles</li>
+                <div class="breadcrumb-wrapper p-0">
+                    <ol class="breadcrumb" style="padding-left: 0; background-color: transparent; margin-bottom: 10px;">
+                        <li class="breadcrumb-item">
+                            <a href="javascript:void(0)" style="text-decoration: none; color: black;">Products</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a style="text-decoration: none; color: black;"
+                                href="{{ route('vender.service.provider.trading.unit') }}">Service Provider</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a style="text-decoration: none; color: black;"
+                                href="{{ route('vender.service.provider.app.data') }}">App data</a>
+                        </li>
+                        <li class="breadcrumb-item active">Vehicles</li>
                     </ol>
                 </div>
 

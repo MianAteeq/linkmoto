@@ -4,8 +4,8 @@
     <link rel="stylesheet" type="text/css" href="/modules/admin/app-assets/vendors/css/tables/datatable/datatables.min.css">
     <style>
         /* ========================================================================
-                           1. TABLE STYLES
-                           ======================================================================== */
+                                   1. TABLE STYLES
+                                   ======================================================================== */
         .dataTables_wrapper .dataTables_length,
         .dataTables_wrapper .dataTables_filter,
         .dataTables_wrapper .dataTables_info {
@@ -57,8 +57,8 @@
         }
 
         /* ========================================================================
-                           2. ICONS & MENU STYLES
-                           ======================================================================== */
+                                   2. ICONS & MENU STYLES
+                                   ======================================================================== */
         .collapse-icon [data-toggle="collapse"]:before {
             position: absolute;
             top: 48%;
@@ -80,8 +80,8 @@
         }
 
         /* ========================================================================
-                           3. CONTAINER & UI STYLES
-                           ======================================================================== */
+                                   3. CONTAINER & UI STYLES
+                                   ======================================================================== */
         body {
             color: black;
         }
@@ -139,8 +139,8 @@
         }
 
         /* ========================================================================
-                           4. RESPONSIVE MEDIA QUERIES
-                           ======================================================================== */
+                                   4. RESPONSIVE MEDIA QUERIES
+                                   ======================================================================== */
         @media (max-width: 991.98px) {
             .headerbg {
                 padding-left: 25px !important;
@@ -188,9 +188,8 @@
                                 href="{{ route('vender.service.provider.trading.unit.view', $trading_unit['id']) }}">{{ $trading_unit['name'] }}</a>
                         </li>
                         <li class="breadcrumb-item"><a style="color: black"
-                                href="{{ route('vender.service.provider.trading.unit.view', $trading_unit['id']) }}">Overview</a>
+                                href="{{ route('vender.service.provider.app.data', $trading_unit['id']) }}">App Data</a>
                         </li>
-                        <li class="breadcrumb-item">Trade unit information</li>
                         <li class="breadcrumb-item active">Contacts</li>
                     </ol>
                 </div>

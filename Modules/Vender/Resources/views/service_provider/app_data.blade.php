@@ -109,8 +109,14 @@
                 <h3 class="h3">Service Provider</h3>
                 <div class="breadcrumb-wrapper">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a>Products</a></li>
-                        <li class="breadcrumb-item">Service Provider</li>
+                        <li class="breadcrumb-item">
+                            <a href="javascript:void(0)" style="text-decoration: none; color: black;">Products</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ route('vender.service.provider.trading.unit') }}"
+                                style="text-decoration: none; color: black;">Service Provider</a>
+                        </li>
+                        <li class="breadcrumb-item active">App data</li>
                     </ol>
                 </div>
             </div>

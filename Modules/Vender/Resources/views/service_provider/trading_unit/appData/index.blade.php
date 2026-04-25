@@ -3,8 +3,8 @@
 @section('css_custom')
     <style>
         /* ========================================================================
-       1. ICONS & MENU STYLES
-       ======================================================================== */
+               1. ICONS & MENU STYLES
+               ======================================================================== */
         .collapse-icon [data-toggle="collapse"]:before {
             position: absolute;
             top: 48%;
@@ -31,8 +31,8 @@
         }
 
         /* ========================================================================
-       2. CONTAINER & UI STYLES
-       ======================================================================== */
+               2. CONTAINER & UI STYLES
+               ======================================================================== */
         body {
             color: black;
         }
@@ -84,8 +84,8 @@
         }
 
         /* ========================================================================
-       3. RESPONSIVE MEDIA QUERIES (Tablet & Mobile Stacking)
-       ======================================================================== */
+               3. RESPONSIVE MEDIA QUERIES (Tablet & Mobile Stacking)
+               ======================================================================== */
         @media (max-width: 991.98px) {
             .headerbg {
                 padding-left: 25px !important;
@@ -129,28 +129,33 @@
 
 @section('header')
     <div class="content-header bg-white">
-        <div class="row m-0" style="border-bottom: 3px solid #949494;">
-            {{-- Single-line flexbox alignment --}}
-            <div class="col-12 bg-white headerbg d-flex align-items-center flex-wrap" style="padding: 15px 32px;">
-                <h3 class="h3 m-0 mr-3" style="font-weight: 600;">Trade unit information</h3>
+        <div class="row" style="border-bottom: 3px solid #949494; margin: 0;">
+
+            <div class="col-12 bg-white headerbg" style="padding-left: 14px; padding-top: 13px;">
+
+                <h3 class="h3">Trade unit information</h3>
 
                 <div class="breadcrumb-wrapper p-0">
-                    <ol class="breadcrumb m-0 p-0" style="background-color: transparent; padding-top: 2px !important;">
-                        <li class="breadcrumb-item"><a>Products</a></li>
-                        <li class="breadcrumb-item"><a style="color: black"
-                                href="{{ route('vender.service.provider') }}">Service Provider</a></li>
-                        <li class="breadcrumb-item"><a style="color: black"
-                                href="{{ route('vender.service.provider.trading.unit') }}">Trade Units</a></li>
-                        <li class="breadcrumb-item"><a style="color: black"
+                    <ol class="breadcrumb" style="padding-left: 0; background-color: transparent; margin-bottom: 10px;">
+                        <li class="breadcrumb-item">
+                            <a href="javascript:void(0)" style="text-decoration: none; color: black;">Products</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a style="text-decoration: none; color: black;"
+                                href="{{ route('vender.service.provider') }}">Service Provider</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a style="text-decoration: none; color: black;"
+                                href="{{ route('vender.service.provider.trading.unit') }}">Trade Units</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a style="text-decoration: none; color: black;"
                                 href="{{ route('vender.service.provider.trading.unit.view', $trading_unit['id']) }}">{{ $trading_unit['name'] }}</a>
                         </li>
-                        <li class="breadcrumb-item"><a style="color: black"
-                                href="{{ route('vender.service.provider.trading.unit.view', $trading_unit['id']) }}">Overview</a>
-                        </li>
-                        <li class="breadcrumb-item">Trade unit information</li>
                         <li class="breadcrumb-item active">App Data</li>
                     </ol>
                 </div>
+
             </div>
         </div>
     </div>

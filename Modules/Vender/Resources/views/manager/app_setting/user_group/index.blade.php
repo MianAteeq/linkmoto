@@ -8,8 +8,8 @@
         }
 
         /* ========================================================================
-                                                                                       1. TABLE STYLES
-                                                                                       ======================================================================== */
+                                                                                               1. TABLE STYLES
+                                                                                               ======================================================================== */
         .dataTables_wrapper .dataTables_length,
         .dataTables_wrapper .dataTables_filter,
         .dataTables_wrapper .dataTables_info {
@@ -69,9 +69,7 @@
             padding: 1px;
         }
 
-        /* ========================================================================
-                                                                                       2. ICONS & COLLAPSE STYLES
-                                                                                       ======================================================================== */
+
         #headingCollapse1:before {
             position: absolute;
             top: 48%;
@@ -124,8 +122,8 @@
         }
 
         /* ========================================================================
-                                                                                       3. FOOTER & BUTTONS
-                                                                                       ======================================================================== */
+                                                                                               3. FOOTER & BUTTONS
+                                                                                               ======================================================================== */
         .footers {
             bottom: 0;
             left: 0;
@@ -146,8 +144,8 @@
         }
 
         /* ========================================================================
-                                                                                       4. RESPONSIVE MEDIA QUERIES (Tablet & Mobile Stacking)
-                                                                                       ======================================================================== */
+                                                                                               4. RESPONSIVE MEDIA QUERIES (Tablet & Mobile Stacking)
+                                                                                               ======================================================================== */
         @media (max-width: 991.98px) {
             .headerbg {
                 padding-left: 25px !important;
@@ -212,8 +210,8 @@
             {{-- Left Sidebar Profile Card --}}
             <div class="col-12 col-lg-3 info-sidebar-wrapper mb-3 mb-lg-0 p-0 pr-lg-3">
                 <h4 class="h3 m-0"
-                    style="border-radius: 7px; border: 2px solid black; padding: 12px 16px; font-weight: 600; font-size: 17px; background-color: white; display: flex; align-items: center;">
-                    <img src="/business_manager.png" style="width: 22px; margin-right: 8px;"> Business Manager
+                    style="border-radius: 7px; border: 2px solid black; padding: 12px 10px; font-weight: 600; font-size: 17px; background-color: white; display: flex; align-items: center; white-space: nowrap;">
+                    <img src="/business_manager.png" style="width: 26px; margin-right: 8px;"> Business Manager
                 </h4>
             </div>
 

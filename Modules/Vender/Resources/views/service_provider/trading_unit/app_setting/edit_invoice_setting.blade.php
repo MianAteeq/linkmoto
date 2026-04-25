@@ -158,13 +158,11 @@
     <div class="content-header bg-white">
         <div class="row" style="border-bottom: 3px solid #949494;">
             <div class="col-xl-12 col-12 bg-white headerbg" style="padding-left: 32px;padding-top: 13px;">
-                <h3 class="h3">Trade unit information</h3>
+                <h3 class="h3">Edit Invoice Settings</h3>
                 <div class="breadcrumb-wrapper col-12">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a>Products</a>
                         </li>
-
-
                         <li class="breadcrumb-item"><a style="color: black"
                                 href="{{ route('vender.service.provider') }}">Service Provider</a>
                         </li>
@@ -176,17 +174,17 @@
                                 {{ $trading_unit['name'] }}</a>
                         </li>
                         <li class="breadcrumb-item"><a style="color: black"
-                                href="{{ route('vender.service.provider.trading.unit.view', $trading_unit['id']) }}">
-                                Overview</a>
+                                href="{{ route('vender.service.provider.trading.unit.app.setting', $trading_unit['id']) }}">
+                                App Settings</a>
                         </li>
-
-                        <li class="breadcrumb-item"> Trade unit information
+                        <li class="breadcrumb-item">
+                            <a style="color: black"
+                                href="{{ url('vender/service/provider/trading/unit/app/setting/' . $trading_unit['id']) }}#invoice_settings">
+                                Invoice Documents
+                            </a>
                         </li>
                         <li class="breadcrumb-item"> Edit Invoice Setting
                         </li>
-
-
-
                     </ol>
                 </div>
             </div>

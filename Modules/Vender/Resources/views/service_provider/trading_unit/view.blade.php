@@ -95,13 +95,18 @@
                 <div class="breadcrumb-wrapper col-12 p-0">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a>Products</a></li>
-                        <li class="breadcrumb-item"><a style="color: black"
-                                href="{{ route('vender.service.provider') }}">Service Provider</a></li>
-                        <li class="breadcrumb-item"><a style="color: black"
-                                href="{{ route('vender.service.provider.trading.unit') }}">Trade Units</a></li>
-                        <li class="breadcrumb-item"> {{ $trading_unit['name'] }}</li>
-                        <li class="breadcrumb-item"> Overview</li>
-                        <li class="breadcrumb-item"> Trade unit information</li>
+                        <li class="breadcrumb-item">
+                            <a style="color: black" href="{{ route('vender.service.provider') }}">Service Provider</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a style="color: black" href="{{ route('vender.service.provider.trading.unit') }}">Trade
+                                Units</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a style="color: black"
+                                href="{{ route('vender.service.provider.trading.unit.view', $trading_unit['id']) }}">{{ $trading_unit['name'] }}</a>
+                        </li>
+                        <li class="breadcrumb-item">Overview</li>
                     </ol>
                 </div>
             </div>
