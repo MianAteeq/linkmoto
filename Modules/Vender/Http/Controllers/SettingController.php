@@ -33,6 +33,11 @@ use Intervention\Image\ImageManagerStatic as Image;
 use Modules\Vender\Entities\VenderVehicleSpecialist;
 use Modules\Vender\Entities\VenderAccreditationScheme;
 
+
+use Illuminate\Support\Facades\DB;
+use Stripe\Exception\ApiConnectionException;
+use Stripe\Exception\ApiErrorException;
+
 class SettingController extends Controller
 {
 
@@ -590,97 +595,107 @@ class SettingController extends Controller
 
         return redirect()->back()->with('message', 'Business Info Save  Successfully ');
     }
+
+
     public function vendorProfileMainAccount(Request $request)
     {
-        // return $request;
-        $validator = \Validator::make($request->all(), [
-            'email' => ['required', 'email', 'max:255'],
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
-        }
-
         $user = auth()->user();
+
+        // ✅ Single validation
         $request->validate([
-            'email' => ['required', Rule::unique('users')->ignore($user->id)],
+            'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'name' => ['required', 'string', 'max:255'],
+            'phone_no' => ['nullable', 'string'],
         ]);
 
-        if ($request['is_save_later'] == 0) {
+        // ✅ Determine step
+        $isSaveLater = $request->input('is_save_later', 0);
 
-            $step = $user['profile']['edit_step'] == 4 ? $user['profile']['step'] : 7;
-        } else {
-            $step = 4;
-        }
+        $step = $isSaveLater == 0
+            ? ($user->profile->edit_step == 4 ? $user->profile->step : 7)
+            : 4;
 
-        $filePath = $user['profile']['proof_of_main_contact'];
-        $fileName = $user['profile']['proof_of_main_contact_name'];;
+        // ✅ Handle file upload safely
+        $filePath = $user->profile->proof_of_main_contact;
+        $fileName = $user->profile->proof_of_main_contact_name;
+
         if ($request->hasFile('proof_of_main_contact')) {
             $file = $request->file('proof_of_main_contact');
-            $fileName = $file->getClientOriginalName();
-            $fileNames = time() . '_' . $file->getClientOriginalName();
-            $filePath = $request->file('proof_of_main_contact')->move('uploads', $fileNames);
+
+            $safeName = time() . '_' . preg_replace('/\s+/', '_', $file->getClientOriginalName());
+            $filePath = $file->move(public_path('uploads'), $safeName);
+
+            $fileName = $safeName;
         }
 
+        DB::beginTransaction();
 
-        if ($user['profile']['customer_id'] == null) {
-            $stripe = new StripeClient(env('STRIPE_SECRET'));
-            $cus = $stripe->customers->create([
-                'name' => $request['name'],
-                'email' => $request['email'],
-            ]);
-            vendorProfile::where('vender_id', $user['id'])->update([
+        try {
+            $customerId = $user->profile->customer_id;
+
+            // ✅ Create Stripe customer only if not exists
+            if (!$customerId) {
+                try {
+                    $stripe = new StripeClient(env('STRIPE_SECRET'));
+
+                    $customer = $stripe->customers->create([
+                        'name' => $request->name,
+                        'email' => $request->email,
+                    ]);
+
+                    $customerId = $customer->id;
+                } catch (ApiConnectionException $e) {
+                    DB::rollBack();
+                    return back()->withErrors([
+                        'stripe' => 'Payment service is currently unreachable. Please try again.'
+                    ]);
+                } catch (ApiErrorException $e) {
+                    DB::rollBack();
+                    return back()->withErrors([
+                        'stripe' => $e->getMessage()
+                    ]);
+                }
+            }
+
+            // ✅ Update vendor profile
+            vendorProfile::where('vender_id', $user->id)->update([
                 'step' => $step,
                 'is_main_account' => 1,
-                'person_authorised' => $request['person_authorised'],
-                'confirm_authorised' => $request['confirm_authorised'],
-                'job_title' => $request['job_title'],
+                'person_authorised' => $request->person_authorised,
+                'confirm_authorised' => $request->confirm_authorised,
+                'job_title' => $request->job_title,
                 'proof_of_main_contact' => $filePath,
                 'proof_of_main_contact_name' => $fileName,
-                'customer_id' => $cus->id,
+                'customer_id' => $customerId,
                 'edit_step' => 0,
-                'phone_no' => $request['phone_no'],
+                'phone_no' => $request->phone_no,
             ]);
-        } else {
-            vendorProfile::where('vender_id', $user['id'])->update([
-                'step' => $step,
-                'person_authorised' => $request['person_authorised'],
-                'confirm_authorised' => $request['confirm_authorised'],
-                'job_title' => $request['job_title'],
-                'proof_of_main_contact' => $filePath,
-                'proof_of_main_contact_name' => $fileName,
-                'edit_step' => 0,
-                'is_main_account' => 1,
-                'phone_no' => $request['phone_no'],
+
+            // ✅ Update user
+            $user->update([
+                'name' => $request->name,
+                'last_name' => $request->last_name,
+                'middle_name' => $request->middle_name,
+                'email' => $request->email,
+                'phone_no' => $request->phone_no,
+            ]);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return back()->withErrors([
+                'error' => 'Failed to save data. Please try again.'
             ]);
         }
-        User::find($user['id'])->update([
-            'name' => $request['name'],
-            'last_name' => $request['last_name'],
-            'middle_name' => $request['middle_name'],
-            'email' => $request['email'],
-            'phone_no' => $request['phone_no'],
 
-
-        ]);
-
-
-
-
-
-
-        if ($request['is_save_later'] == 1) {
-            auth()->guard('web')->logout();
-
-            return redirect('login')->with('message', ' Information Save for later');
+        // ✅ Handle save for later
+        if ($isSaveLater == 1) {
+            auth()->logout();
+            return redirect('login')->with('message', 'Information saved for later');
         }
 
-
-
-
-        return redirect()->back()->with('message', 'Main Account Info Save Successfully ');
+        return back()->with('message', 'Main Account Info Saved Successfully');
     }
     public function vendorProfileBankAccount(Request $request)
     {

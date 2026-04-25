@@ -77,7 +77,7 @@
                                     @csrf
                                     <input type="hidden" id="is_save_later" name="is_save_later" value="0">
 
-                                    <div class="form-group">
+                                    <div class="form-group" style="width:50%">
                                         <label for="name" style="width: 100%;">Trading names <span
                                                 style="color: red">*</span>
                                             <a style="color: black" href="#collapsebusiness_vat" data-toggle="collapse"
@@ -100,7 +100,7 @@
                                 <div id="append_data">
                                     @foreach ($user['trading_names'] as $name)
                                         <div class="form-group rm-{{ $name['id'] }} d-flex flex-wrap align-items-center justify-content-between mb-2"
-                                            style="width: 100%">
+                                            style="width: 51%">
                                             <p class="mb-0 mr-2" style="font-weight: 500;">{{ ucfirst($name['name']) }}</p>
                                             <button class="btn btn-primary btn-sm view-btn-black"
                                                 onclick="deleteAlert(`{{ route('vender.profile.trading.delete', $name['id']) }}`,`{{ $name['id'] }}`)">
@@ -244,7 +244,7 @@
 
                         // Refactored appended HTML to use flexible layout matching the loop above
                         let html = `
-                        <div class="form-group rm-${data.name.id} d-flex flex-wrap align-items-center justify-content-between mb-2" style="width: 100%">
+                        <div class="form-group rm-${data.name.id} d-flex flex-wrap align-items-center justify-content-between mb-2" style="width: 51%">
                             <p class="mb-0 mr-2" style="font-weight: 500;">${data.name.name}</p>
                             <button class="btn btn-primary btn-sm view-btn-black" onclick="deleteAlert('/vender/profile/trading/name/delete/${data.name.id}','${data.name.id}')"> DELETE</button>
                         </div>`;

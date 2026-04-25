@@ -155,7 +155,7 @@
                                     <a style="color: black" href="#collapsebusiness" data-toggle="collapse"
                                         aria-expanded="false" aria-controls="collapsebusiness">(?)</a></label>
                                 <div class="col-12 col-md-8 mx-auto">
-                                    <div class="input-group">
+                                    <div class="input-group" style="width:60%">
                                         <select name="job_title" id="job_title" class="form-control select2"
                                             style="width: 100%!important">
                                             <option value="Director" @if ($user['profile']['job_title'] == 'Director') selected @endif>

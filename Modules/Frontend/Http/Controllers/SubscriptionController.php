@@ -83,10 +83,10 @@ class SubscriptionController extends Controller
             // 'long'=>0,
             'status' => 'NEW'
         ]);
-        
-        
-        
-       $operationTypes = $request['operation_type']; // Example input
+
+
+
+        $operationTypes = $request['operation_type']; // Example input
 
         // Check count and decide output
         if (count($operationTypes) === 2) {
@@ -111,7 +111,7 @@ class SubscriptionController extends Controller
             'city' => $request->city,
             'postcode' => $request->postcode,
             'organization_status' => $request->organization_status,
-            'vat_register' => $request->vat_register,
+            'vat_register' => $request->vat_register ?? 'NO',
 
         ]);
         if (isset($request['service_id'])) {
@@ -146,7 +146,7 @@ class SubscriptionController extends Controller
     }
     public function register()
     {
-        $total_services = Services::where('parent_id',0)->get();
+        $total_services = Services::where('parent_id', 0)->get();
 
         return view('frontend::sign-up', get_defined_vars());
     }
@@ -154,44 +154,44 @@ class SubscriptionController extends Controller
     public function login(Request $request)
     {
 
-        $user=User::where('email',$request['email'])->first();
-        
-        if(!$user){
-             $errors = 'Record Not Found!';
-                return redirect('/sign-in')->withErrors($errors);
+        $user = User::where('email', $request['email'])->first();
+
+        if (!$user) {
+            $errors = 'Record Not Found!';
+            return redirect('/sign-in')->withErrors($errors);
         }
 
 
-        if(isset($user)){
+        if (isset($user)) {
 
-            if($user['status']=='NEW'){
+            if ($user['status'] == 'NEW') {
 
                 $errors = 'Your are not active yet!';
                 return redirect('/sign-in')->withErrors($errors);
             }
-            if( $user['application_status']=="INACTIVE"){
-
-                $errors = 'Your are not active yet!';
-                return redirect('/sign-in')->withErrors($errors);
-            }
-        }
-        if(isset($user)){
-
-            if($user['status']!='ACTIVE' && $user['status']!='ACCEPTED'){
+            if ($user['application_status'] == "INACTIVE") {
 
                 $errors = 'Your are not active yet!';
                 return redirect('/sign-in')->withErrors($errors);
             }
         }
+        if (isset($user)) {
 
-        if($user->vender_id!=0){
+            if ($user['status'] != 'ACTIVE' && $user['status'] != 'ACCEPTED') {
+
+                $errors = 'Your are not active yet!';
+                return redirect('/sign-in')->withErrors($errors);
+            }
+        }
+
+        if ($user->vender_id != 0) {
 
             // return $user['business_app']['status'];
-            if(!isset($user['business_app'])){
+            if (!isset($user['business_app'])) {
                 $errors = 'You does not have Business Manager Access';
                 return redirect('/sign-in')->withErrors($errors);
             }
-            if($user['business_app']['status']==0){
+            if ($user['business_app']['status'] == 0) {
                 $errors = 'You does not have Business Manager Access';
                 return redirect('/sign-in')->withErrors($errors);
             }

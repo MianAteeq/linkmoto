@@ -3,149 +3,253 @@
 @section('css_custom')
     <link rel="stylesheet" type="text/css" href="/modules/admin/app-assets/vendors/css/tables/datatable/datatables.min.css">
     <style>
-        /* ========================================================================
-                   1. GLOBAL SCROLL & ALIGNMENT FIX
-                   ======================================================================== */
-        html,
-        body {
-            overflow-x: hidden !important;
-            overflow-y: auto !important;
-            /* Restore natural page scroll */
-            height: auto !important;
+        .dataTables_wrapper .dataTables_length {
+            display: none;
         }
 
-        .app-content,
-        .content-wrapper,
-        .content-body {
-            overflow: visible !important;
-            height: auto !important;
-            min-height: auto !important;
+        .dataTables_wrapper .dataTables_filter {
+
+            display: none;
         }
 
-        .main-content-box {
-            border: 2px solid black;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            display: flex;
-            flex-direction: column;
+        table.dataTable thead {
+            background: #fafbfc;
+            color: black;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
             background-color: white;
-            width: 100% !important;
-            overflow: visible !important;
-            /* Allow data to push height */
-            height: auto !important;
         }
 
-        /* ========================================================================
-                   2. FORM ALIGNMENT & DATA STANDARDIZATION
-                   ======================================================================== */
-        .main-content-inner {
-            flex-grow: 1;
-            padding-bottom: 0;
-            width: 100%;
+        table.dataTable tbody td {
+            padding: 8px 10px;
+            padding-bottom: 2px;
+            padding-top: 2px;
+            font-size: 10px;
         }
 
-        .form-control {
-            border: 2px solid black !important;
-            border-radius: 7px;
-            height: calc(1.5em + 1.2rem);
-            width: 100% !important;
-            /* Full width inside its column for better alignment */
+        .dataTables_wrapper .dataTables_info {
+            display: none;
+        }
+
+        table.dataTable tbody td {
+
             color: black;
         }
 
-        .label-control {
+        table.dataTable thead th,
+        table.dataTable thead td {
+            padding: 10px 18px;
+            border-bottom: 1px solid #111;
+            font-size: 11px;
+            padding-left: 8px;
+            padding-right: 1px;
+        }
+
+        th {
+            white-space: pre-line;
+        }
+
+        table.dataTable tfoot th,
+        table.dataTable tfoot td {
+            padding: 10px 18px 6px 18px;
+            border-top: 1px solid #111;
+            font-size: 10px;
+            padding-right: 0px;
+            padding-left: 8px;
             color: black;
-            font-weight: 600;
-            font-size: 0.95rem;
-            margin-bottom: 5px;
         }
 
-        .info-sidebar {
-            border-radius: 7px;
-            border: 2px solid black;
-            height: auto;
-            background-color: #fcfdfe;
-            box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.04);
-            width: 100%;
+        #headingCollapse14:before {
+            position: absolute;
+            top: 48%;
+            right: 20px;
+            margin-top: -8px;
+            font-family: 'feather';
+            content: "\e843";
+            transition: all 300ms linear 0s;
         }
 
-        /* ========================================================================
-                   3. FOOTERS & BUTTONS
-                   ======================================================================== */
+        .collapse-icon [data-toggle="collapse"]:before {
+            position: absolute;
+            top: 48%;
+            right: 20px;
+            margin-top: -8px;
+            font-family: 'feather';
+            content: "\e842";
+            transition: all 300ms linear 0s;
+        }
+
+        .collapse-icon [data-toggle="collapse"]:after {
+            position: absolute;
+            top: 48%;
+            right: 20px;
+            margin-top: -8px;
+            font-family: 'feather';
+            content: "\e845";
+            transition: all 300ms linear 0s;
+        }
+
+        .collapsed {
+            border-bottom-left-radius: 0px !important;
+            border-bottom-right-radius: 0px !important;
+        }
+
         .footers {
+            /* position: absolute; */
+            bottom: 0;
+            left: 0;
             border-top: 2px solid black;
-            padding: 15px 20px 15px 20px;
+            padding-top: 5px;
             width: 100%;
-            background: white;
-            border-bottom-left-radius: 6px;
-            border-bottom-right-radius: 6px;
-            margin-top: 20px;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            gap: 10px;
         }
 
         .btn-dark {
             border-color: black !important;
             background-color: black !important;
-            color: #FFFFFF !important;
-            padding: 8px 25px;
+            color: #FFFFFF;
         }
 
         .round {
             border-radius: 0.5rem;
         }
 
-        /* ========================================================================
-                   4. MOBILE FIXES (SIDEBAR & STACKING)
-                   ======================================================================== */
-        @media (max-width: 991.98px) {
+        .form-control {
 
-            /* Sidebar Slider Fix - Hides native scroll track without breaking scroll */
-            .main-menu,
-            .main-menu-content {
-                scrollbar-width: none;
-                -ms-overflow-style: none;
+            border: 2px solid black !important;
+            height: calc(1em + 1.4rem + 0px);
+            border-radius: 7px;
+            width: 60%;
+
+        }
+
+        .form-btn {
+            text-align: left;
+            /* opacity: -0.5; */
+            color: #babfcc;
+            width: 37%;
+            padding: 7px;
+            padding-left: 14px;
+            float: left;
+        }
+
+        .view-btn {
+            float: left;
+            margin-top: 0px;
+            padding: 9px;
+            margin-left: 10px;
+            background-color: #ff822f !important;
+            border-color: #ff822f !important;
+        }
+
+        body {
+            color: black;
+        }
+
+        .view-btn-black {
+            /* float: left; */
+            margin-top: 0px;
+            padding: 9px;
+            margin-left: 10px;
+            background-color: black !important;
+            border-color: black !important;
+        }
+
+        .form-control:focus {
+            color: #4e5154;
+            background-color: #fff;
+            border-color: black;
+            outline: 0;
+            box-shadow: none;
+        }
+
+        body.vertical-layout.vertical-menu.menu-expanded .main-menu {
+            width: 274px;
+            transition: 300ms ease all;
+            backface-visibility: hidden;
+        }
+
+        body.vertical-layout.vertical-menu.menu-expanded .content,
+        body.vertical-layout.vertical-menu.menu-expanded .footer {
+            margin-left: 274px;
+            /* background-color: white; */
+        }
+
+        input:focus:required:invalid {
+            border: 2px solid red;
+        }
+
+        input:required:valid {
+            border: 2px solid black;
+        }
+
+        /* --- NEW RESPONSIVE ENHANCEMENTS --- */
+
+        /* 1. Prevent JS and inline styles from freezing the container and form heights */
+        #contens,
+        form#contens {
+            height: auto !important;
+            min-height: 469px;
+            padding-bottom: 20px;
+            /* Add some breathing room before the footer */
+        }
+
+        /* Mobile Specific Enhancements */
+        @media (max-width: 767px) {
+
+            /* Sidebar spacing */
+            .col-md-3 {
+                margin-bottom: 25px;
             }
 
-            .main-menu::-webkit-scrollbar {
-                display: none;
-            }
-
-            .headerbg {
-                padding-left: 25px !important;
-            }
-
-            .info-sidebar-wrapper {
-                margin-bottom: 20px;
-            }
-
-            /* Stack Form Elements neatly */
+            /* Fix the horizontal form layout to stack vertically */
             .form-group.row {
-                flex-direction: column !important;
-                margin-left: 0 !important;
-                margin-right: 0 !important;
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 1rem;
             }
 
-            .col-md-4,
-            .col-md-8 {
+            /* Align labels to the left instead of right/center */
+            .form-group.row label {
+                text-align: left !important;
+                margin-bottom: 5px;
+                width: 100%;
+                padding-left: 15px;
+            }
+
+            /* Make inputs span the full width instead of 60% */
+            .form-control,
+            select.form-control {
                 width: 100% !important;
-                max-width: 100% !important;
-                padding-left: 0 !important;
-                padding-right: 0 !important;
             }
 
+            /* Make Checkboxes stack neatly */
+            .d-flex.flex-column {
+                align-items: flex-start;
+                padding-left: 15px;
+            }
+
+            /* Ensure action buttons at bottom stack or share space evenly */
             .footers {
+                display: flex;
                 flex-direction: column-reverse;
+                /* Puts Update above Cancel */
                 padding: 15px !important;
             }
 
-            .footers .btn-dark,
-            .footers a {
+            .footers .btn {
                 width: 100% !important;
-                display: block;
-                text-align: center;
+                float: none !important;
+                margin-top: 10px;
+                margin-right: 0 !important;
+            }
+
+            .footers a {
+                width: 100%;
+            }
+
+            .footers a .btn {
+                margin-top: 0;
             }
         }
     </style>
@@ -153,178 +257,686 @@
 
 @section('header')
     <div class="content-header bg-white">
-        <div class="row" style="border-bottom: 3px solid #949494; margin: 0;">
-            <div class="col-12 bg-white headerbg" style="padding-left: 32px; padding-top: 13px;">
+        <div class="row" style="border-bottom: 3px solid #949494;">
+            <div class="col-xl-12 col-12 bg-white headerbg" style="padding-left: 32px;padding-top: 13px;">
                 <h3 class="h3">Edit trade unit</h3>
-                <div class="breadcrumb-wrapper col-12 p-0">
-                    <ol class="breadcrumb" style="padding-left: 0; background-color: transparent; margin-bottom: 10px;">
-                        <li class="breadcrumb-item"><a>Products</a></li>
+                <div class="breadcrumb-wrapper col-12">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a>Products</a>
+                        </li>
                         <li class="breadcrumb-item"><a style="color: black"
-                                href="{{ route('vender.service.provider.trading.unit') }}">Trade Units</a></li>
-                        <li class="breadcrumb-item">Edit trade unit</li>
+                                href="{{ route('vender.service.provider') }}">Service
+                                Provider</a>
+                        </li>
+                        <li class="breadcrumb-item"><a style="color: black"
+                                href="{{ route('vender.service.provider.trading.unit') }}">Trade Units</a>
+                        </li>
+
+
+
+                        <li class="breadcrumb-item">Edit trade unit
+                        </li>
+
+
                     </ol>
                 </div>
             </div>
+
         </div>
     </div>
 @endsection
 
 @section('content')
-    <div class="container-fluid px-1 px-md-1 mt-1">
-        <div class="row align-items-start m-0">
+    <div class="row">
+        <div class="col-md-3">
+            <div style="border-radius: 7px;border: 2px solid black; ">
+                <h4 class="h3" style="font-weight: 600; font-size: 17px;padding: 10px; ">
+                    <img src="/trading_unit.png" style="width: 22px;margin-top: -5px;"> Edit trade unit
+                </h4>
 
-            {{-- Sidebar --}}
-            <div class="col-12 col-md-12 col-lg-3 info-sidebar-wrapper d-flex mb-3 mb-lg-0">
-                <div class="info-sidebar d-flex flex-column">
-                    <h4
-                        style="font-weight: 600; font-size: 1.1rem; padding: 12px 16px; margin: 0; display: flex; align-items: center; gap: 10px; background-color: white; border-radius: 5px 5px 0 0;">
-                        <img src="/trading_unit.png" style="width: 20px;"> Edit trade unit
-                    </h4>
-                </div>
             </div>
+        </div>
+        <div class="col-md-9"
+            style="border: 2px solid black;border-radius: 6px;margin-bottom: 10px;padding-left: 0;padding-right: 0;">
+            <div class="row" style="margin-right: 0;margin-left: 0;">
+                <div class="col-md-12" style="border-bottom: 2px solid black;">
+                    <h3 style="font-size: 20px; padding: 10px; margin-left: -11px; color: black;padding-bottom: 0px;">Trade
+                        unit information</h3>
+                </div>
 
-            {{-- Main Content --}}
-            <div class="col-12 col-md-12 col-lg-9 d-flex ps-lg-3 mb-4">
-                <div class="main-content-box w-100">
-                    <form action="{{ route('vender.service.provider.trading.unit.update') }}" id="unitForm" method="POST"
-                        enctype="multipart/form-data">
-                        @csrf
-                        <input type="hidden" name="id" value="{{ $trading_unit['id'] }}">
 
-                        <div class="main-content-inner">
-                            <div style="border-bottom: 2px solid black; padding: 12px 20px;">
-                                <h3 style="font-size: 20px; color: black; margin: 0;">Trade unit information</h3>
-                            </div>
+            </div>
+            <form action="{{ route('vender.service.provider.trading.unit.update') }}" id="contens" method="POST"
+                enctype="multipart/form-data" id="contens" style="height: 469px;">
+                @csrf
 
-                            <div style="padding: 20px;">
-                                {{-- Trade Unit Name --}}
-                                <div class="form-group row mb-2">
-                                    <div class="col-md-4"><label class="label-control">Trade unit name * (?)</label></div>
-                                    <div class="col-md-8">
-                                        <input type="text" id="name" class="form-control"
-                                            value="{{ $trading_unit['name'] }}" name="name" onkeyup="lookup(this);">
-                                        <p class="text-danger name" style="display:none; margin-top:5px;">This field is
-                                            required!</p>
-                                    </div>
+                <input type="hidden" name="id" value="{{ $trading_unit['id'] }}">
+                <div class="link-body" style="padding: 10px">
+
+                    <div class="form-group row">
+                        <label class="col-md-4 label-control" for="eventRegInput5">Trade unit name * (?)</label>
+                        <div class="col-md-8 mx-auto">
+                            <input type="text" id="name" class="form-control" value="{{ $trading_unit['name'] }}"
+                                onkeyup="lookup(this);" name="name" placeholder="Trade unit name">
+                            @if ($errors->has('name'))
+                                <p class="text-danger name" style="padding-left: 10px;width:100%;margin-bottom: -8px;">
+                                    {{ $errors->first('name') }}</p>
+                            @else
+                                <p class="text-danger name"
+                                    style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This
+                                    Field is
+                                    Required !</p>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 label-control" for="eventRegInput5">Business Name Format * (?)</label>
+                        <div class="col-md-8 mx-auto">
+                            <select id="trading_template" name="trading_template" class="form-control"
+                                onkeyup="lookup(this);" style="width: 60%;border-radius: 7px;">
+                                <option value="none" selected="" disabled="">Select Business Name Format</option>
+
+
+                                @if (auth()->user()->profile['organization_status'] === 'Limited Company (Ltd)' ||
+                                        auth()->user()->profile['organization_status'] === 'Limited Liability Partnership (LLP)')
+                                    <option value="1" @if ($trading_unit['trading_template'] == 1) selected @endif>Registered
+                                        company name</option>
+                                    <option value="2" @if ($trading_unit['trading_template'] == 2) selected @endif>Registered
+                                        company name & trading name</option>
+                                    <option value="3" @if ($trading_unit['trading_template'] == 3) selected @endif>Trading
+                                        name
+                                    </option>
+                                @else
+                                    <option value="1" @if ($trading_unit['trading_template'] == 1) selected @endif>Registered
+                                        {{ $user['profile']['organization_status'] }} name</option>
+                                    <option value="2" @if ($trading_unit['trading_template'] == 2) selected @endif>Registered
+                                        {{ $user['profile']['organization_status'] }} & trading name</option>
+                                    <option value="3" @if ($trading_unit['trading_template'] == 3) selected @endif>Trading
+                                        name
+                                        only</option>
+                                @endif
+
+
+
+
+                            </select>
+                            <p class="text-danger trading_template"
+                                style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This Field is
+                                Required !</p>
+                        </div>
+                    </div>
+                    <div class="form-group row" id="trading_name"
+                        @if ($trading_unit['trading_template'] == 1) style="display: none" @endif>
+                        <label class="col-md-4 label-control" for="eventRegInput5">Trading name * (?)</label>
+                        <div class="col-md-8 mx-auto">
+                            <select id="trading_name_id" name="trading_name_id" class="form-control" onkeyup="lookup(this);"
+                                style="width: 60%;border-radius: 7px;">
+                                <option value="none" selected="" disabled="">Select Trading Name</option>
+                                @foreach ($trading_names as $name)
+                                    {{-- @if ($name['is_change'] == 0) --}}
+                                    <option value="{{ $name['id'] }}" @if ($trading_unit['trading_name_id'] == $name['id']) selected @endif>
+                                        {{ $name['name'] }}</option>
+
+                                    {{-- @endif --}}
+                                @endforeach
+
+
+                            </select>
+                            <p class="text-danger trading_name_id"
+                                style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This Field is
+                                Required !</p>
+                        </div>
+                    </div>
+                    <div class="form-group row " id="company_name">
+                        <label class="col-md-4 label-control" for="eventRegInput5">Business Name</label>
+                        <div class="col-md-8 mx-auto">
+
+                            <p class="company_show">
+                                @if ($trading_unit['trading_template'] == 1)
+                                    {{ auth()->user()->profile->company_name }}
+                                @endif
+                                @if ($trading_unit['trading_template'] == 2)
+                                    {{ auth()->user()->profile->company_name }} Trading as
+                                    {{ $trading_unit['trading_name']['name'] }}
+                                @endif
+                                @if ($trading_unit['trading_template'] == 3)
+                                    {{ $trading_unit['trading_name']['name'] }}
+                                @endif
+                            </p>
+                            <p class="text-danger company"
+                                style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This
+                                Field is
+                                Required !</p>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-4 label-control">How do you provide and offer your services? * (?)
+                        </label>
+                        <div class="col-md-8 mx-auto">
+                            <div class="d-flex flex-column">
+                                <div class="custom-control custom-checkbox mb-2">
+                                    <input type="checkbox" name="operation_type[]" value="On-site"
+                                        class="custom-control-input" id="On-site"
+                                        @if (in_array('On-site', explode(',', $user['profile']['operation_type']))) checked @endif>
+                                    <label class="custom-control-label" for="On-site">On-site</label>
                                 </div>
 
-                                {{-- Business Name Format --}}
-                                <div class="form-group row mb-2">
-                                    <div class="col-md-4"><label class="label-control">Business Name Format * (?)</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <select id="trading_template" name="trading_template" class="form-control">
-                                            <option value="1" @if ($trading_unit['trading_template'] == 1) selected @endif>
-                                                Registered company name</option>
-                                            <option value="2" @if ($trading_unit['trading_template'] == 2) selected @endif>
-                                                Registered company name & trading name</option>
-                                            <option value="3" @if ($trading_unit['trading_template'] == 3) selected @endif>Trading
-                                                name only</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                {{-- Trading Name (Conditional) --}}
-                                <div class="form-group row mb-2" id="trading_name_row"
-                                    @if ($trading_unit['trading_template'] == 1) style="display: none" @endif>
-                                    <div class="col-md-4"><label class="label-control">Trading name * (?)</label></div>
-                                    <div class="col-md-8">
-                                        <select id="trading_name_id" name="trading_name_id" class="form-control">
-                                            @foreach ($trading_names as $name)
-                                                <option value="{{ $name['id'] }}"
-                                                    @if ($trading_unit['trading_name_id'] == $name['id']) selected @endif>{{ $name['name'] }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-
-                                {{-- Preview Box --}}
-                                <div class="form-group row mb-2">
-                                    <div class="col-md-4"><label class="label-control">Preview Business Name</label></div>
-                                    <div class="col-md-8">
-                                        <p class="company_show m-0"
-                                            style="padding: 10px; border: 1px dashed #ccc; background: #f9f9f9; font-weight: 500;">
-                                            {{-- Content filled by JS --}}
-                                        </p>
-                                    </div>
-                                </div>
-
-                                {{-- Mobile/Email fields --}}
-                                <div class="form-group row mb-2">
-                                    <div class="col-md-4"><label class="label-control">Mobile *</label></div>
-                                    <div class="col-md-8">
-                                        <input type="tel" id="mobile" class="form-control"
-                                            value="{{ $trading_unit['mobile'] }}" name="mobile">
-                                    </div>
-                                </div>
-
-                                <div class="form-group row mb-2">
-                                    <div class="col-md-4"><label class="label-control">Email *</label></div>
-                                    <div class="col-md-8">
-                                        <input type="email" id="email" class="form-control"
-                                            value="{{ $trading_unit['email'] }}" name="email">
-                                    </div>
+                                <div class="custom-control custom-checkbox mb-2">
+                                    <input type="checkbox" name="operation_type[]" value="Mobile"
+                                        class="custom-control-input" id="Mobile"
+                                        @if (in_array('Mobile', explode(',', $user['profile']['operation_type']))) checked @endif>
+                                    <label class="custom-control-label" for="Mobile">Mobile</label>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="footers">
-                            <a href="{{ redirect()->back()->getTargetUrl() }}"><button type="button"
-                                    class="btn btn-dark round">Cancel</button></a>
-                            <button type="button" onclick="submitDetailsForm()" class="btn btn-dark round">Update</button>
+                    </div>
+                    <div class="form-group row" id="site_show"
+                        @if ($trading_unit['operation_type'] == 'Mobile') style="display: none" @else @endif>
+                        <label class="col-md-4 label-control" for="eventRegInput5">Address * (?)</label>
+                        <div class="col-md-8 mx-auto">
+                            <select id="site_id" name="site_id" class="form-control"
+                                style="width: 60%;border-radius: 7px;">
+                                <option value="none" selected="" disabled="">Select Address</option>
+                                @foreach ($sites as $site)
+                                    <option value="{{ $site['id'] }}"
+                                        @if ($trading_unit['site_id'] == $site['id']) selected @endif>
+                                        {{ $site['address_line_1'] }}
+                                        {{ $site['address_line_2'] }}</option>
+                                @endforeach
+
+
+                            </select>
+                            <p class="text-danger site_id"
+                                style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This
+                                Field is
+                                Required !</p>
                         </div>
-                    </form>
+                    </div>
+                    <div class="form-group row mobile_show"
+                        @if ($trading_unit['operation_type'] == 'On-site') style="display: none" @endif>
+                        <label class="col-md-4 label-control" for="eventRegInput5">Mobile city / town * (?) </label>
+                        <div class="col-md-8 mx-auto">
+                            <input type="text" @if ($trading_unit['operation_type'] == 'Both') style="display: none" @endif
+                                id="city" class="form-control" value="{{ $trading_unit['city'] }}"
+                                onkeyup="lookup(this);" name="city" placeholder="Mobile city / town">
+                            <p @if ($trading_unit['operation_type'] == 'Both') style="display: block" @else style="display: none" @endif
+                                class="city_show">{{ $trading_unit['city'] }}</p>
+                            <p class="text-danger city"
+                                style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This
+                                Field is
+                                Required !</p>
+
+                        </div>
+                    </div>
+                    <div class="form-group row mobile_show"
+                        @if ($trading_unit['operation_type'] == 'On-site') style="display: none" @endif>
+                        <label class="col-md-4 label-control" for="eventRegInput5">Mobile postcode * (?) </label>
+                        <div class="col-md-8 mx-auto">
+                            <input type="text" id="postcode"
+                                @if ($trading_unit['operation_type'] == 'Both') style="display: none" @endif class="form-control"
+                                value="{{ $trading_unit['postcode'] }}" onkeyup="lookup(this);" name="postcode"
+                                placeholder="Mobile postcode">
+                            <p @if ($trading_unit['operation_type'] == 'Both') style="display: block" @else style="display: none" @endif
+                                class="postcode_show">{{ $trading_unit['postcode'] }}</p>
+                            <p class="text-danger postcode"
+                                style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">
+                                This Field is
+                                Required !</p>
+
+                        </div>
+                    </div>
+                    <div class="form-group row mobile_show"
+                        @if ($trading_unit['operation_type'] == 'On-site') style="display: none" @endif>
+                        <label class="col-md-4 label-control" for="eventRegInput5">Mobile distance / radius (miles) * (?)
+                        </label>
+                        <div class="col-md-8 mx-auto">
+                            <input type="text" id="radius" class="form-control"
+                                value="{{ $trading_unit['radius'] }}" onkeyup="lookup(this);" name="radius"
+                                placeholder="Mobile distance">
+                            <p class="text-danger radious"
+                                style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This
+                                Field is
+                                Required !</p>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-4 label-control" for="eventRegInput5">Mobile * </label>
+                        <div class="col-md-8 mx-auto">
+                            <input type="tel" id="mobile" class="form-control"
+                                value="{{ $trading_unit['mobile'] }}" onkeyup="lookup(this);" name="mobile"
+                                placeholder="Mobile">
+                            <p class="text-danger mobile"
+                                style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This
+                                Field is
+                                Required !</p>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 label-control" for="eventRegInput5">Landline </label>
+                        <div class="col-md-8 mx-auto">
+                            <input type="tel" id="landline" class="form-control"
+                                value="{{ $trading_unit['landline'] }}" onkeyup="lookup(this);" name="landline"
+                                placeholder="Landline">
+                            <p class="text-danger landline"
+                                style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">
+                                This Field is
+                                Required !</p>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 label-control" for="eventRegInput5">Email * </label>
+                        <div class="col-md-8 mx-auto">
+                            <input type="email" id="email" class="form-control"
+                                value="{{ $trading_unit['email'] }}" onkeyup="lookup(this);" name="email"
+                                placeholder="Email">
+                            <p class="text-danger email"
+                                style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">
+                                Invalid Email !
+                            </p>
+                            @if ($errors->has('email'))
+                                <p class="text-danger email" style="padding-left: 10px;width:100%;margin-bottom: -8px;">
+                                    {{ $errors->first('email') }}</p>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 label-control" for="eventRegInput5">Website </label>
+                        <div class="col-md-8 mx-auto">
+                            <input type="text" id="website" class="form-control"
+                                value="{{ $trading_unit['website'] }}" onkeyup="lookup(this);" name="website"
+                                placeholder="Website">
+                            <p class="text-danger website"
+                                style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">
+                                Invalid Website !
+                            </p>
+                            @if ($errors->has('website'))
+                                <p class="text-danger website" style="padding-left: 10px;width:100%;margin-bottom: -8px;">
+                                    {{ $errors->first('website') }}</p>
+                            @endif
+                        </div>
+                    </div>
+
+
+
                 </div>
-            </div>
+                <div class="footers">
+
+                    <button type="button" onclick="submitDetailsForm()"
+                        class="btn btn-dark round btn-min-width mr-1 mb-1" style="float: right;">Update</button>
+                    <a href="{{ redirect()->back()->getTargetUrl() }}"><button type="button"
+                            class="btn btn-dark round btn-min-width mr-1 mb-1" style="float: right;">Cancel</button></a>
+
+
+                </div>
+            </form>
         </div>
     </div>
 @endsection
 
 @section('script')
+    <script src="/modules/admin/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
+    {{-- <script src="/modules/admin/app-assets/js/scripts/tables/datatables/datatable-basic.js"></script> --}}
+
+
     <script>
-        $(window).on('load', function() {
-            if ($(window).width() <= 768) {
-                setTimeout(function() {
-                    $('.nav-toggle, .menu-toggle').trigger('click');
-                    $('body').removeClass('menu-hide menu-collapsed').addClass('menu-expanded menu-open');
-                }, 500);
-            }
-            // Run initial preview
-            updateNamePreview();
-        });
+        oTable = $('.zero-configuration').DataTable({
+            "bPaginate": $('.zero-configuration tbody tr').length > 10,
+            "iDisplayLength": 10,
+            "bAutoWidth": false,
+            "ordering": false,
 
-        // Handle template changes
-        $('#trading_template, #trading_name_id').on('change', function() {
-            if ($('#trading_template').val() == 1) {
-                $('#trading_name_row').hide();
+        }); //pay attention to capital D, which is mandatory to retrieve "api" datatables' object, as @Lionel said
+        $('#myInputTextField').keyup(function() {
+            oTable.search($(this).val()).draw();
+        })
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            var contentHeight = $('#contens').height();
+            $('#contens').height(contentHeight);
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            var contentHeight = $('#contens').height();
+            $('#contens').height(contentHeight);
+        });
+    </script>
+    <script>
+        $('.form-btn').click(function() {
+            $('input[type=file]').trigger('click');
+        });
+    </script>
+    <script>
+        $('input[name="operation_type[]"]').change(function() {
+
+            // Check which options are selected
+            let selected = $('input[name="operation_type[]"]:checked').map(function() {
+                return this.value;
+            }).get();
+
+            // Reset all visibility first
+            $('.mobile_show, #site_show, #city, .city_show, #postcode, .postcode_show').hide();
+
+            if (selected.includes('Mobile') && selected.includes('On-site')) {
+                // Both selected
+                $('.mobile_show').show();
+                $('#site_show').show();
+                $('.city_show').show();
+                $('.postcode_show').show();
+            } else if (selected.includes('Mobile')) {
+                $('.mobile_show').show();
+                $('#city').show();
+                $('#postcode').show();
+            } else if (selected.includes('On-site')) {
+                $('#site_show').show();
+                $('#city').show();
+                $('#postcode').show();
+            }
+            // else none selected → everything stays hidden
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('input[type="file"]').change(function(e) {
+                var fileName = e.target.files[0].name;
+                $('.form-btn').val(fileName);
+
+                $('.view-btn').show();
+                $('#view_file').attr('href', URL.createObjectURL(e.target.files[0]));
+                $('.file_proof').hide();
+                $(`#proof_of_main_contact`).attr('style', 'border:2px solid black!important');
+            });
+        });
+    </script>
+
+    <script>
+        async function lookup(arg) {
+            var id = arg.getAttribute('id');
+            var value = arg.value;
+
+
+            let trading_name = $(`#${id}`).val();
+            if (id !== "address_line_2" && id !== "city" && id !== "postcode") {
+                if (trading_name === "") {
+
+
+                    $(`#${id}`).attr("style", "border:2px solid red!important;");
+                    status = false;
+
+                } else {
+                    $(`#${id}`).attr("style", "border:2px solid black!important;");
+                    $(`.${id}`).hide();
+                }
             } else {
-                $('#trading_name_row').show();
+                if (trading_name === "") {
+
+
+                    $(`#${id}`).attr("style", "border:2px solid red!important;margin-top: 5px ");
+                    status = false;
+
+                } else {
+                    $(`#${id}`).attr("style", "border:2px solid black!important;margin-top: 5px;");
+                    $(`.${id}`).hide();
+                }
             }
-            updateNamePreview();
-        });
 
-        function updateNamePreview() {
-            let company = @json(auth()->user()->profile->company_name);
-            let template = $('#trading_template').val();
-            let tradingName = $("#trading_name_id option:selected").text();
-            let preview = "";
 
-            if (template == 1) preview = company;
-            else if (template == 2) preview = company + " Trading as " + tradingName;
-            else if (template == 3) preview = tradingName;
 
-            $('.company_show').text(preview);
+
+
+
+
+
+
+
+
+
+
+
         }
+    </script>
 
-        function lookup(arg) {
-            if ($(arg).val() == "") $(arg).css('border', '2px solid red');
-            else $(arg).css('border', '2px solid black');
-        }
 
+    <script>
         function submitDetailsForm() {
-            // Add your validation here similar to previous pages
-            $("#unitForm").submit();
+            let status = true;
+
+            // Get selected operation types
+            let selectedOps = $('input[name="operation_type[]"]:checked').map(function() {
+                return this.value;
+            }).get();
+
+            if (selectedOps.length === 0) {
+                alert("Please select at least one operation type.");
+                return false;
+            }
+
+            // Determine required fields
+            let array = [];
+            let tradingTemplate = $('#trading_template').val();
+
+            if (selectedOps.includes('Mobile') && !selectedOps.includes('On-site')) {
+                array = (tradingTemplate == 1) ? ['name', 'email', 'city', 'postcode', 'radius'] : ['name',
+                    'trading_name_id', 'email', 'city', 'postcode', 'radius'
+                ];
+
+            } else if (selectedOps.includes('On-site') && !selectedOps.includes('Mobile')) {
+                array = (tradingTemplate == 1) ? ['name', 'mobile', 'email', 'city', 'site_id'] : ['name',
+                    'trading_name_id', 'mobile', 'email', 'city', 'site_id'
+                ];
+
+            } else if (selectedOps.includes('On-site') && selectedOps.includes('Mobile')) {
+                array = (tradingTemplate == 1) ? ['site_id', 'radius', 'name', 'mobile', 'email'] : ['site_id', 'radius',
+                    'name', 'trading_name_id', 'mobile', 'email'
+                ];
+            }
+
+            // Validate required fields
+            array.forEach(function(item) {
+                let value = $(`#${item}`).val()?.trim();
+
+                if (!value) {
+                    $(`#${item}`).css('border', '2px solid red');
+                    status = false;
+                } else {
+                    $(`#${item}`).css('border', '2px solid black');
+                }
+            });
+
+            // =========================
+            // Mobile / Landline Validation
+            // =========================
+            let mobileVal = $('#mobile').val()?.trim();
+            let landlineVal = $('#landline').val()?.trim();
+
+            // Reset UI
+            // Reset UI
+            $('#mobile, #landline').css('border', '2px solid black');
+            $('.mobile, .landline').hide();
+
+            // ❌ Case 1: BOTH EMPTY
+            // if (!mobileVal && !landlineVal) {
+            //     $('#mobile, #landline').css('border', '2px solid red');
+            //     $('.mobile, .landline').text('Enter either mobile or landline').show();
+            //     status = false;
+            // }
+
+            // ❌ Case 2: BOTH FILLED (NOT allowed)
+            // else if (mobileVal && landlineVal) {
+            //     $('#mobile, #landline').css('border', '2px solid red');
+            //     $('.mobile, .landline').text('Enter only one: mobile OR landline').show();
+            //     status = false;
+            // }
+
+            // ✅ Case 3: ONLY ONE FILLED → valid
+
+            // ✅ If one OR both filled → OK (no restriction)
+
+            // =========================
+            // Email Validation
+            // =========================
+            let email = $('#email').val()?.trim();
+
+            if (!email || validateEmail(email) === null) {
+                $('#email').css('border', '2px solid red');
+                $('.email').show();
+                status = false;
+            } else {
+                $('#email').css('border', '2px solid black');
+                $('.email').hide();
+            }
+
+            // Submit
+            if (status) {
+                $('form').submit();
+            }
+
+            return status;
+        }
+    </script>
+
+    <script>
+        $('#site_id').on('change', function() {
+
+            let sites = @json($sites);
+
+            let site = sites.filter((item) => parseInt(item.id) === parseInt(this.value));
+
+            if (site.length > 0) {
+                $('#city').val(site[0].city);
+                $('.city_show').text(site[0].city);
+                $('#postcode').val(site[0].postcode);
+                $('.postcode_show').text(site[0].postcode);
+            }
+
+
+        });
+        $('#trading_name_id').on('change', function() {
+
+            $id = this.value;
+            let company_name = @json(auth()->user()->profile->company_name)
+
+            let trading_names = @json($trading_names).filter((item) => item.id == $id);
+            console.log(trading_names);
+
+            if (trading_names.length > 0) {
+
+                if ($('#trading_template').val() == 2) {
+
+                    trading_name = `Trading as ${trading_names[0].name}`;
+                    $('.company_show').text(`${company_name} ${trading_name}`);
+                } else {
+
+                    trading_name = `${trading_names[0].name}`;
+                    $('.company_show').text(`${trading_name}`);
+                }
+
+
+            }
+
+
+
+        });
+    </script>
+    <script>
+        const validateEmail = (email) => {
+            return String(email)
+                .toLowerCase()
+                .match(
+                    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                );
+        };
+    </script>
+
+    <script>
+        $('#trading_template').on('change', function() {
+
+            $id = this.value;
+
+            if ($id == 1) {
+                $('#company_name').show();
+                $('#trading_name').hide();
+                showCompanyName();
+            }
+            if ($id == 2) {
+                $('#company_name').show();
+                $('#trading_name').show();
+                showCompanyTradingName();
+
+            }
+            if ($id == 3) {
+                // $('#company_name').hide();
+                $('#trading_name').show();
+
+                showTradingName();
+            }
+
+
+        });
+    </script>
+    <script>
+        function showCompanyName() {
+
+            let company_name = @json(auth()->user()->profile->company_name)
+
+            $('.company_show').text(company_name);
+        }
+
+        function showCompanyTradingName() {
+
+            let company_name = @json(auth()->user()->profile->company_name);
+
+            let trading_id = $('#trading_name_id').val();
+            let trading_name = `< Select Trading Name >`;
+            if (trading_id !== null) {
+
+                let trading_names = @json($trading_names).filter((item) => item.id == trading_id);
+                console.log(trading_names);
+
+                if (trading_names.length > 0) {
+                    trading_name = `trading as ${trading_names[0].name}`;
+                }
+            } else {
+
+                trading_name = `trading as < Select Trading Name >`;
+
+            }
+
+
+            $('.company_show').text(`${company_name} ${trading_name}`);
+        }
+
+        function showTradingName() {
+
+            let company_name = @json(auth()->user()->profile->company_name);
+
+            let trading_id = $('#trading_name_id').val();
+            let trading_name = `< Select Trading Name >`;
+            if (trading_id !== null) {
+
+                let trading_names = @json($trading_names).filter((item) => item.id == trading_id);
+                console.log(trading_names);
+
+                if (trading_names.length > 0) {
+                    trading_name = `${trading_names[0].name}`;
+                }
+            } else {
+
+                trading_name = `< Select Trading Name >`;
+
+            }
+
+
+            $('.company_show').text(`${trading_name}`);
         }
     </script>
 @endsection

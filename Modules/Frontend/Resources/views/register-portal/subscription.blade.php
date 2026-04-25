@@ -33,6 +33,15 @@
             flex-direction: column;
             min-height: 100%;
         }
+
+        .select2-container {
+            box-sizing: border-box;
+            display: inline-block;
+            margin: 0;
+            position: relative;
+            vertical-align: middle;
+            width: 60% !important;
+        }
     </style>
 @endsection
 

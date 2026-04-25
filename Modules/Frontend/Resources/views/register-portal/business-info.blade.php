@@ -14,7 +14,11 @@
             border-radius: 8px;
             padding: 15px;
             height: auto !important;
-            min-height: 530px;
+            min-height: 'auto';
+            padding-right: 0px;
+            padding-left: 0px;
+            padding-bottom: 0px;
+            margin-bottom: 100px;
         }
 
         /* Removed #footers absolute positioning to prevent overlap on mobile */
@@ -126,7 +130,7 @@
                             <label class="col-12 col-lg-4 label-control">Business setup <span style="color: red">*</span>
                             </label>
                             <div class="col-12 col-lg-8 mx-auto">
-                                <div class="input-group">
+                                <div class="input-group" style="width: 60%;">
                                     <select name="organization_status" id="organization_status" class="form-control select2"
                                         style="width:100%!important;">
 
