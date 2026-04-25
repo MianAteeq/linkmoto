@@ -6,7 +6,7 @@
             margin-top: 0rem;
             margin-bottom: 0rem;
             border: 0;
-            border-top: 2px solid rgba(0, 0, 0, 0.1);
+
         }
 
         /* Flexbox helper to push footer to bottom naturally */
