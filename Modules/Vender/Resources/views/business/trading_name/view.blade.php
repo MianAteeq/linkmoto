@@ -60,7 +60,7 @@
         .info-sidebar {
             border-radius: 7px;
             border: 2px solid black;
-            background-color: #fcfdfe;
+
             box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.04);
             width: 100%;
         }
@@ -191,7 +191,7 @@
 
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <h6 class="mb-0">ID</h6>
+                                        <h6 class="mb-0" style="font-weight: 600;">ID</h6>
                                     </div>
                                     <div class="col-sm-7 text-secondary">
                                         {{ $trading_name['id'] }}
@@ -201,7 +201,7 @@
 
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <h6 class="mb-0">Trading name</h6>
+                                        <h6 class="mb-0" style="font-weight: 600;">Trading name</h6>
                                     </div>
                                     <div class="col-sm-7 text-secondary">
                                         {{ $trading_name['name'] }}
@@ -211,7 +211,7 @@
 
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <h6 class="mb-0">Linked trade unit</h6>
+                                        <h6 class="mb-0" style="font-weight: 600;">Linked trade unit</h6>
                                     </div>
                                     <div class="col-sm-7 text-secondary">
                                         {{ $trading_name['trading_unit']['name'] ?? 'None' }}
@@ -221,7 +221,7 @@
 
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <h6 class="mb-0">Linked invoice document templates</h6>
+                                        <h6 class="mb-0" style="font-weight: 600;">Linked invoice document templates</h6>
                                     </div>
                                     <div class="col-sm-7 text-secondary">
                                         {{ $trading_name['trading_unit']['name'] ?? 'None' }}

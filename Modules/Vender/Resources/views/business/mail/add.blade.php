@@ -1,90 +1,75 @@
 @extends('vender::layouts.master')
 
 @section('css_custom')
+    <link rel="stylesheet" type="text/css" href="/modules/admin/app-assets/vendors/css/tables/datatable/datatables.min.css">
     <style>
-        /* ========================================================================
-                       1. MASTER LAYOUT & CONTAINER FOUNDATIONS
-                       ======================================================================== */
-        .content-wrapper {
-            height: auto !important;
-            min-height: 84vh !important;
-        }
-
-        .info-sidebar {
-            border-radius: 7px;
-            border: 2px solid black;
-            height: auto;
-            background-color: #fcfdfe;
-            box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.04);
-            width: 100%;
-            overflow: hidden;
-        }
-
-        .main-content-box {
-            border: 2px solid black;
-            border-radius: 6px;
-            margin-bottom: 10px;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            background-color: white;
-            width: 100% !important;
-            overflow: hidden;
-            height: 100%;
-        }
-
-        .main-content-inner {
-            flex-grow: 1;
-            padding-bottom: 0;
-            width: 100%;
-        }
-
-        /* ========================================================================
-                       2. FORM ELEMENTS
-                       ======================================================================== */
-        .form-control-custom {
-            border: 2px solid black !important;
-            border-radius: 7px;
-            height: calc(1em + 1.4rem + 0px);
-            padding: 8px 12px;
-            width: 100%;
-            box-sizing: border-box;
-            color: black;
-        }
-
-        .form-control-custom:focus {
-            color: #4e5154;
-            background-color: #fff;
-            border-color: black;
-            outline: 0;
-            box-shadow: none;
-        }
-
-        .form-control-custom.is-invalid {
-            border-color: red !important;
-        }
-
-        .label-control {
-            color: black;
-            font-weight: 500;
-        }
-
-        .required-star {
-            color: red;
-        }
-
-        .validation-msg {
-            color: red;
-            font-size: 0.85rem;
-            margin-top: 5px;
-            margin-bottom: 0;
+        .dataTables_wrapper .dataTables_length {
             display: none;
-            padding-left: 5px;
         }
 
-        /* ========================================================================
-                       3. SIDEBAR ACCORDION STYLES
-                       ======================================================================== */
+        .dataTables_wrapper .dataTables_filter {
+
+            display: none;
+        }
+
+        table.dataTable thead {
+            background: #fafbfc;
+            color: black;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: white;
+        }
+
+        table.dataTable tbody td {
+            padding: 8px 10px;
+            padding-bottom: 2px;
+            padding-top: 2px;
+            font-size: 10px;
+        }
+
+        .dataTables_wrapper .dataTables_info {
+            display: none;
+        }
+
+        table.dataTable tbody td {
+
+            color: black;
+        }
+
+        table.dataTable thead th,
+        table.dataTable thead td {
+            padding: 10px 18px;
+            border-bottom: 1px solid #111;
+            font-size: 11px;
+            padding-left: 8px;
+            padding-right: 1px;
+        }
+
+        th {
+            white-space: pre-line;
+        }
+
+        table.dataTable tfoot th,
+        table.dataTable tfoot td {
+            padding: 10px 18px 6px 18px;
+            border-top: 1px solid #111;
+            font-size: 10px;
+            padding-right: 0px;
+            padding-left: 8px;
+            color: black;
+        }
+
+        #headingCollapse14:before {
+            position: absolute;
+            top: 48%;
+            right: 20px;
+            margin-top: -8px;
+            font-family: 'feather';
+            content: "\e843";
+            transition: all 300ms linear 0s;
+        }
+
         .collapse-icon [data-toggle="collapse"]:before {
             position: absolute;
             top: 48%;
@@ -105,281 +90,445 @@
             transition: all 300ms linear 0s;
         }
 
-        .accordion .card-header {
-            color: black !important;
-            padding: 1rem 1rem !important;
-            border-top: 2px solid rgba(0, 0, 0, 0.1);
+        .collapsed {
+            border-bottom-left-radius: 0px !important;
+            border-bottom-right-radius: 0px !important;
         }
 
-        .card .card-title {
-            font-weight: 600;
-            font-size: 0.95rem;
-            margin: 0;
-        }
-
-        .accordion .card-body {
-            color: black;
-            padding-top: 0;
-            font-size: 0.9rem;
-        }
-
-        /* ========================================================================
-                       4. UI ELEMENTS (FOOTERS & BUTTONS)
-                       ======================================================================== */
         .footers {
+            /* position: absolute; */
+            bottom: 0;
+            left: 0;
             border-top: 2px solid black;
-            padding: 15px 20px 25px 20px;
+            padding-top: 5px;
             width: 100%;
-            background: white;
-            border-bottom-left-radius: 6px;
-            border-bottom-right-radius: 6px;
-            margin-top: auto;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            gap: 10px;
         }
 
         .btn-dark {
             border-color: black !important;
             background-color: black !important;
-            color: #FFFFFF !important;
-            margin: 0 !important;
+            color: #FFFFFF;
         }
 
         .round {
             border-radius: 0.5rem;
         }
 
-        /* ========================================================================
-                       5. RESPONSIVE MEDIA QUERIES & SCROLL FIX
-                       ======================================================================== */
-        @media (max-width: 991.98px) {
+        .form-control {
 
-            /* Sidebar Double Scrollbar Fix */
-                body.menu-open {
-                    overflow-x: hidden !important;
-                    /* Change to overflow-x to only prevent horizontal scrolling */
-                }
-            
+            border: 2px solid black !important;
+            height: calc(1em + 1.4rem + 0px);
+            border-radius: 7px;
+            width: 60%;
 
-            .main-menu,
-            .main-menu-content {
-                overflow-y: auto !important;
-                -ms-overflow-style: none;
-                scrollbar-width: none;
-            }
+        }
 
-            .main-menu::-webkit-scrollbar,
-            .main-menu-content::-webkit-scrollbar {
-                display: none !important;
-            }
+        .form-btn {
+            text-align: left;
+            /* opacity: -0.5; */
+            color: #babfcc;
+            width: 60%;
+            padding: 7px;
+            padding-left: 14px;
+            float: left;
+        }
 
-            .headerbg {
-                padding-left: 25px !important;
-            }
+        .view-btn {
+            float: left;
+            margin-top: 0px;
+            padding: 9px;
+            margin-left: 10px;
+            background-color: #ff822f !important;
+            border-color: #ff822f !important;
+        }
 
-            .info-sidebar-wrapper {
-                margin-bottom: 20px;
-            }
+        body {
+            color: black;
+        }
 
-            /* Stack label above input */
-            .form-group.row {
-                flex-direction: column !important;
-                margin-bottom: 12px;
-            }
+        .view-btn-black {
+            /* float: left; */
+            margin-top: 0px;
+            padding: 9px;
+            margin-left: 10px;
+            background-color: black !important;
+            border-color: black !important;
+        }
 
-            .form-group.row .col-md-4,
-            .form-group.row .col-md-8 {
-                width: 100% !important;
-                max-width: 100% !important;
-                flex: 0 0 100% !important;
-                padding-left: 0 !important;
-                padding-right: 0 !important;
-            }
+        .form-control:focus {
+            color: #4e5154;
+            background-color: #fff;
+            border-color: black;
+            outline: 0;
+            box-shadow: none;
+        }
 
-            .form-group.row .col-md-8 {
-                margin-top: 4px;
-            }
+        body.vertical-layout.vertical-menu.menu-expanded .main-menu {
+            width: 274px;
+            transition: 300ms ease all;
+            backface-visibility: hidden;
+        }
 
-            .footers {
-                padding: 15px 20px 25px 20px !important;
-            }
+        body.vertical-layout.vertical-menu.menu-expanded .content,
+        body.vertical-layout.vertical-menu.menu-expanded .footer {
+            margin-left: 274px;
+            /* background-color: white; */
+        }
 
-            .footers .btn-dark {
-                float: none !important;
-                width: 100% !important;
-                display: block !important;
-                text-align: center;
-                margin-top: 10px;
-            }
+        input:focus:required:invalid {
+            border: 2px solid red;
+        }
 
-            .footers a {
-                display: block;
-                width: 100%;
-            }
+        input:required:valid {
+            border: 2px solid black;
+        }
+
+        hr {
+            margin-top: 0rem;
+            margin-bottom: 0rem;
+            border: 0;
+            border-top: 2px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .accordion .card-header,
+        .default-collapse .card-header {
+
+            color: black !important;
+            padding: 1rem 1rem !important;
+        }
+
+        .card>hr {
+            margin-right: 0;
+            margin-left: 0;
+            height: 0px;
+        }
+
+        .card .card-title {
+            font-weight: 500;
+            letter-spacing: 0.05rem;
+            font-size: 1rem;
+        }
+
+        .hr {
+            margin-top: 0rem;
+            margin-bottom: 0rem;
+            border: 0;
+            border-top: 2px solid rgba(0, 0, 0, 0.1);
         }
     </style>
 @endsection
 
 @section('header')
     <div class="content-header bg-white">
-        <div class="row" style="border-bottom: 3px solid #949494; margin: 0;">
-            <div class="col-12 bg-white headerbg" style="padding-left: 32px; padding-top: 13px;">
+        <div class="row" style="border-bottom: 3px solid #949494;">
+            <div class="col-xl-12 col-12 bg-white headerbg" style="padding-left: 32px;padding-top: 13px;">
                 <h3 class="h3">Add New Email Address</h3>
-                <div class="breadcrumb-wrapper p-0">
-                    <ol class="breadcrumb" style="padding-left: 0; background-color: transparent; margin-bottom: 10px;">
-                        <li class="breadcrumb-item"><a>Business</a></li>
-                        <li class="breadcrumb-item"><a style="color: black" href="{{ route('vender.mail') }}">Email
-                                Addresses</a></li>
-                        <li class="breadcrumb-item">Add New Email Address</li>
+                <div class="breadcrumb-wrapper col-12">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a>Business</a>
+                        </li>
+
+
+
+                        <li class="breadcrumb-item"><a style="color: black" href="{{ route('vender.bank') }}">Bank</a></li>
+                        <li class="breadcrumb-item">Add New Email Address
+                        </li>
+
                     </ol>
                 </div>
             </div>
+
         </div>
     </div>
 @endsection
 
 @section('content')
-    <div class="container-fluid px-1 px-md-1 mt-1">
-        <div class="row align-items-start" style="padding-left: 0 !important;">
-
-            {{-- Sidebar --}}
-            <div class="col-12 col-md-12 col-lg-3 info-sidebar-wrapper d-flex mb-3 mb-lg-0">
-                <div class="info-sidebar d-flex flex-column">
+    <div class="row">
+        <div class="col-md-3">
+            <div style="border-radius: 7px;border: 2px solid black; ">
+                <h4 class="h3" style="font-weight: 600; font-size: 17px;padding: 10px; ">
+                    <img src="/home.png" style="width: 22px;margin-top: -5px;"> New Email Address
+                </h4>
+                <div class="footers" id="show_help" style="border-top:2px solid black;">
                     <h4
-                        style="font-weight: 600; font-size: 1.1rem; padding: 12px 16px; margin: 0; display: flex; align-items: center; gap: 10px; background-color: white; border-radius: 5px 5px 0 0;">
-                        <img src="/home.png" alt="Icon" style="width: 20px;"> New Email Address
-                    </h4>
+                        style="padding-left: 13px;
+                        color: black;
+                        font-weight: 600;">
+                        Help information: </h4>
 
-                    {{-- Help Section Accordion --}}
-                    <div id="show_help" style="border-top:2px solid black; background: #fcfdfe;">
-                        <h4 style="padding: 12px 16px 0 16px; color: black; font-weight: 600; margin: 0; font-size: 1rem;">
-                            Help information:
-                        </h4>
+                    <div id="accordionWrap1" role="tablist" aria-multiselectable="true">
+                        <div class="card accordion collapse-icon accordion-icon-rotate" style="box-shadow: none;">
+                            <a id="business_VAT" class="card-header info collapsed" data-toggle="collapse"
+                                href="#collapsebusiness_vat" aria-expanded="false" aria-controls="collapsebusiness_vat">
+                                <div class="card-title lead"> Label (?)
+                                </div>
+                            </a>
+                            <div id="collapsebusiness_vat" data-parent="#accordionWrap1" role="tabpanel"
+                                aria-labelledby="business_VAT" class="collapse" style="">
+                                <div class="card-content">
+                                    <div class="card-body" style="color:black">
+                                        Give this account a short name so you
+                                        can recognise it later when selecting for
+                                        invoices or payouts. For example: Main
+                                        Business Account, Refunds Account,
+                                        Payout Account, or Site A – Payments.
 
-                        <div id="accordionWrap1" role="tablist" aria-multiselectable="true">
-                            <div class="card accordion collapse-icon accordion-icon-rotate mb-0"
-                                style="box-shadow: none; background: transparent;">
-                                <a id="business_VAT" class="card-header info collapsed" data-toggle="collapse"
-                                    href="#collapsebusiness_vat" aria-expanded="false">
-                                    <div class="card-title">Label (?)</div>
-                                </a>
-                                <div id="collapsebusiness_vat" data-parent="#accordionWrap1" class="collapse">
-                                    <div class="card-content">
-                                        <div class="card-body pb-3">
-                                            Give this account a short name so you can recognise it later when selecting for
-                                            invoices or payouts. For example: Main Business Account, Refunds Account, Payout
-                                            Account, or Site A – Payments.
-                                        </div>
+
+
+
                                     </div>
                                 </div>
                             </div>
+
+
+
+
                         </div>
                     </div>
+
                 </div>
+
+
+
             </div>
 
-            {{-- Main Content Box --}}
-            <div class="col-12 col-md-12 col-lg-9 d-flex ps-lg-3 mb-4 w-100">
-                <form action="{{ route('vender.mail.store') }}" id="contens" method="POST" enctype="multipart/form-data"
-                    class="main-content-box w-100" style="display: flex; flex-direction: column; height: 100%;">
-                    @csrf
+        </div>
+        <div class="col-md-9"
+            style="border: 2px solid black;border-radius: 6px;margin-bottom: 10px;padding-left: 0;padding-right: 0;height: 245px;">
+            <div class="row" style="margin-right: 0;margin-left: 0;">
+                <div class="col-md-12" style="border-bottom: 2px solid black;">
+                    <h3 style="font-size: 20px; padding: 10px; margin-left: -11px; color: black;padding-bottom: 0px;">Bank
+                        Account Information </h3>
 
-                    <div class="main-content-inner">
-                        {{-- Title row --}}
-                        <div style="border-bottom: 2px solid black; padding: 12px 20px;">
-                            <h3 style="font-size: 20px; color: black; margin: 0;">
-                                Email Address Information
-                            </h3>
+                </div>
+
+
+            </div>
+            <form action="{{ route('vender.mail.store') }}" id="contens" method="POST" enctype="multipart/form-data"
+                id="contens"> @csrf
+                <div class="link-body" style="padding: 10px">
+
+                    <div class="form-group row">
+                        <label class="col-md-4 label-control" for="eventRegInput5"> Label (?) <span
+                                style="color:red;">*</span></label>
+                        <div class="col-md-8 mx-auto">
+                            <input type="text" id="label" value="" onkeyup="lookup(this);" class="form-control"
+                                name="label" required placeholder="Enter Your Label * ">
+
+
+                            <p class="text-danger label"
+                                style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">Label Field is
+                                Required !</p>
+
                         </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 label-control" for="eventRegInput5"> Email Address <span
+                                style="color:red;">*</span> </label>
+                        <div class="col-md-8 mx-auto">
+                            <input type="email" id="email" class="form-control" name="email" required value=""
+                                style="margin-top: 5px " placeholder="Enter Your Email Address ">
 
-                        {{-- Form Body --}}
-                        <div style="padding: 20px;">
-                            <div class="form-group row align-items-center mb-2">
-                                <label class="col-md-4 label-control">Label (?) <span class="required-star">*</span></label>
-                                <div class="col-md-8">
-                                    <input type="text" id="label" name="label" class="form-control-custom"
-                                        placeholder="Enter Your Label *" onkeyup="lookup(this);" required>
-                                    <p class="validation-msg label-error">Label Field is Required!</p>
-                                </div>
-                            </div>
+                            <p class="text-danger email"
+                                style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">Email Address
+                                Field is
+                                Required !</p>
 
-                            <div class="form-group row align-items-center mb-2">
-                                <label class="col-md-4 label-control">Email Address <span
-                                        class="required-star">*</span></label>
-                                <div class="col-md-8">
-                                    <input type="email" id="email" name="email" class="form-control-custom"
-                                        placeholder="Enter Your Email Address" onkeyup="lookup(this);" required>
-                                    <p class="validation-msg email-error">Email Address Field is Required!</p>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
 
-                    {{-- Flexbox Footer --}}
-                    <div class="footers mt-auto">
-                        <a href="{{ redirect()->back()->getTargetUrl() }}" style="text-decoration: none;">
-                            <button type="button" class="btn btn-dark round btn-min-width">Cancel</button>
-                        </a>
-                        <button type="button" onclick="submitDetailsForm()"
-                            class="btn btn-dark round btn-min-width">Save</button>
-                    </div>
 
-                </form>
-            </div>
+
+
+
+                </div>
+                <div class="footers">
+
+                    <button type="button" onclick="submitDetailsForm()" class="btn btn-dark round btn-min-width mr-1 mb-1"
+                        style="float: right;">Save</button>
+                    <a href="{{ redirect()->back()->getTargetUrl() }}"><button type="button"
+                            class="btn btn-dark round btn-min-width mr-1 mb-1" style="float: right;">Cancel</button></a>
+
+
+                </div>
+            </form>
         </div>
     </div>
 @endsection
 
+
 @section('script')
-    {{-- SIDEBAR FIX: Force open on mobile with a slight delay --}}
+    <script src="/modules/admin/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
+    {{-- <script src="/modules/admin/app-assets/js/scripts/tables/datatables/datatable-basic.js"></script> --}}
+
+
     <script>
-        $(window).on('load', function() {
-            if ($(window).width() <= 768) {
-                setTimeout(function() {
-                    $('.nav-toggle, .menu-toggle').trigger('click');
-                    $('body').removeClass('menu-hide menu-collapsed').addClass('menu-expanded menu-open');
-                }, 500);
+        oTable = $('.zero-configuration').DataTable({
+            "bPaginate": $('.zero-configuration tbody tr').length > 10,
+            "iDisplayLength": 10,
+            "bAutoWidth": false,
+            "ordering": false,
+
+        }); //pay attention to capital D, which is mandatory to retrieve "api" datatables' object, as @Lionel said
+        $('#myInputTextField').keyup(function() {
+            oTable.search($(this).val()).draw();
+        })
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            var contentHeight = $('#contens').height();
+            $('#contens').height(contentHeight);
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            var contentHeight = $('#contens').height();
+            $('#contens').height(contentHeight);
+        });
+    </script>
+    <script>
+        $('.form-btn').click(function() {
+            $('input[type=file]').trigger('click');
+        });
+    </script>
+    <script>
+        $('input[type=radio]').change(function() {
+            if (this.value == 'YES') {
+
+                $('.Poof_div').show();
+                var contentHeight = $('#contens').height();
+                $('#contens').height(contentHeight);
+
+            } else {
+                $('.Poof_div').hide();
+                var contentHeight = $('#contens').height();
+                $('#contens').height('550px');
             }
         });
     </script>
 
     <script>
-        // Real-time validation on keyup
-        function lookup(element) {
-            var id = element.getAttribute('id');
-            var value = element.value.trim();
+        $(document).ready(function() {
+            $('input[type="file"]').change(function(e) {
+                var fileName = e.target.files[0].name;
+                $('.form-btn').val(fileName);
 
-            if (value === "") {
-                $('#' + id).addClass("is-invalid");
-                $('.' + id + '-error').show();
-            } else {
-                $('#' + id).removeClass("is-invalid");
-                $('.' + id + '-error').hide();
-            }
-        }
+                $('.view-btn').show();
+                $('#view_file').attr('href', URL.createObjectURL(e.target.files[0]));
+                $('.file_proof').hide();
+                $(`#proof_of_main_contact`).attr('style', 'border:2px solid black!important');
+            });
+        });
+    </script>
 
-        // Final validation before submission
-        function submitDetailsForm() {
-            let requiredFields = ['label', 'email'];
-            let isValid = true;
+    <script>
+        async function lookup(arg) {
+            var id = arg.getAttribute('id');
+            var value = arg.value;
 
-            requiredFields.forEach(function(item) {
-                let value = $('#' + item).val().trim();
-                if (value === "") {
-                    $('#' + item).addClass('is-invalid');
-                    $('.' + item + '-error').show();
-                    isValid = false;
+
+            let trading_name = $(`#${id}`).val();
+            if (id !== "address_line_2" && id !== "city" && id !== "postcode") {
+                if (trading_name === "") {
+
+
+                    $(`#${id}`).attr("style", "border:2px solid red!important;");
+                    status = false;
+
                 } else {
-                    $('#' + item).removeClass('is-invalid');
-                    $('.' + item + '-error').hide();
+                    $(`#${id}`).attr("style", "border:2px solid black!important;");
+                    $(`.${id}`).hide();
+                }
+            } else {
+                if (trading_name === "") {
+
+
+                    $(`#${id}`).attr("style", "border:2px solid red!important;margin-top: 5px ");
+                    status = false;
+
+                } else {
+                    $(`#${id}`).attr("style", "border:2px solid black!important;margin-top: 5px;");
+                    $(`.${id}`).hide();
+                }
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+    </script>
+
+
+    <script>
+        function submitDetailsForm() {
+
+            let array = ['label', 'email'];
+
+            let status = false;
+            array.some((item) => {
+                let name = $(`#${item}`).val();
+                console.log(name, item);
+
+                if (name === "") {
+
+
+                    $(`#${item}`).attr('style', 'border:2px solid red!important');
+
+                    status = false;
+
+
+                    return false;
+
+                } else {
+
+                    $(`#${item}`).attr('style', 'border:2px solid black!important');
+                    status = true;
+
                 }
             });
 
-            if (isValid) {
-                $("#contens").submit();
+
+
+
+
+
+
+
+            let file = $('input[type=file]').val();
+            console.log(file, "hh");
+            if (file === "") {
+
+                $(`#proof_of_main_contact`).attr('style', 'border:2px solid red!important');
+                status = false;
+                return false;
+
+            } else {
+                $("form").submit();
             }
+
+
+
+
+
+
+
+
+
+
+
         }
     </script>
 @endsection

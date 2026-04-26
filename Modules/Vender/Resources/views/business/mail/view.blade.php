@@ -2,73 +2,118 @@
 
 @section('css_custom')
     <link rel="stylesheet" type="text/css" href="/modules/admin/app-assets/vendors/css/tables/datatable/datatables.min.css">
-
     <style>
-        /* ========================================================================
-                                                       1. MASTER LAYOUT & CONTAINER FOUNDATIONS
-                                                       ======================================================================== */
-        .content-wrapper {
-            height: auto !important;
-            min-height: 84vh !important;
+        .dataTables_wrapper .dataTables_length {
+            display: none;
         }
 
-        .info-sidebar {
-            border-radius: 7px;
-            border: 2px solid black;
-            height: auto;
-            background-color: #fcfdfe;
-            box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.04);
-            width: 100%;
-            overflow: hidden;
+        .dataTables_wrapper .dataTables_filter {
+
+            display: none;
         }
 
-        .main-content-box {
-            border: 2px solid black;
-            border-radius: 6px;
-            margin-bottom: 10px;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
+        table.dataTable thead {
+            background: #fafbfc;
+            color: black;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
             background-color: white;
-            width: 100% !important;
-            overflow: hidden;
         }
 
-        .main-content-inner {
-            flex-grow: 1;
-            padding-bottom: 0;
-            width: 100%;
+        table.dataTable tbody td {
+            padding: 8px 10px;
+            padding-bottom: 2px;
+            padding-top: 2px;
+            font-size: 10px;
         }
 
-        /* ========================================================================
-                                                       2. UI ELEMENTS (FOOTERS, BUTTONS, BADGES)
-                                                       ======================================================================== */
+        .dataTables_wrapper .dataTables_info {
+            display: none;
+        }
+
+        table.dataTable tbody td {
+
+            color: black;
+        }
+
+        table.dataTable thead th,
+        table.dataTable thead td {
+            padding: 10px 18px;
+            border-bottom: 1px solid #111;
+            font-size: 11px;
+            padding-left: 8px;
+            padding-right: 1px;
+        }
+
+        th {
+            white-space: pre-line;
+        }
+
+        table.dataTable tfoot th,
+        table.dataTable tfoot td {
+            padding: 10px 18px 6px 18px;
+            border-top: 1px solid #111;
+            font-size: 10px;
+            padding-right: 0px;
+            padding-left: 8px;
+            color: black;
+        }
+
+        #headingCollapse14:before {
+            position: absolute;
+            top: 48%;
+            right: 20px;
+            margin-top: -8px;
+            font-family: 'feather';
+            content: "\e843";
+            transition: all 300ms linear 0s;
+        }
+
+        .collapse-icon [data-toggle="collapse"]:before {
+            position: absolute;
+            top: 48%;
+            right: 20px;
+            margin-top: -8px;
+            font-family: 'feather';
+            content: "\e842";
+            transition: all 300ms linear 0s;
+        }
+
+        .collapse-icon [data-toggle="collapse"]:after {
+            position: absolute;
+            top: 48%;
+            right: 20px;
+            margin-top: -8px;
+            font-family: 'feather';
+            content: "\e845";
+            transition: all 300ms linear 0s;
+        }
+
+        .collapsed {
+            border-bottom-left-radius: 0px !important;
+            border-bottom-right-radius: 0px !important;
+        }
+
         .footers {
+            /* position: absolute; */
+            bottom: 0;
+            left: 0;
             border-top: 2px solid black;
-            padding: 15px 20px 25px 20px;
+            padding-top: 5px;
             width: 100%;
-            background: white;
-            border-bottom-left-radius: 6px;
-            border-bottom-right-radius: 6px;
-            margin-top: auto;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            gap: 10px;
         }
 
         .btn-dark {
             border-color: black !important;
             background-color: black !important;
-            color: #FFFFFF !important;
-            margin: 0 !important;
+            color: #FFFFFF;
         }
 
         .round {
             border-radius: 0.5rem;
         }
 
-        /* Badge Styles Preserved */
         .badge {
             display: inline-block;
             padding: 0.6em 0.6em;
@@ -80,6 +125,11 @@
             color: white !important;
         }
 
+        .card-footer {
+            border-top: 2px solid black;
+            padding: 0.5rem 1rem;
+        }
+
         .badge-danger {
             background-color: red;
         }
@@ -88,223 +138,162 @@
             background-color: rgb(0 111 192);
         }
 
-        .badge-success {
-            background-color: #28a745;
-            color: white !important;
-        }
-
-        /* Internal Card Elements */
-        .card-body h6 {
-            font-weight: 600;
-            color: black;
-        }
-
-        .text-secondary {
-            color: #333 !important;
-        }
-
-        .breadcrumb-item a {
-            text-decoration: none !important;
-            color: #333 !important;
-        }
-
-        /* ========================================================================
-                                                       3. RESPONSIVE MEDIA QUERIES & SCROLL FIX
-                                                       ======================================================================== */
-        @media (max-width: 991.98px) {
-
-            /* Sidebar Double Scrollbar Fix */
-            body.menu-open {
-                overflow: hidden !important;
-            }
-
-            .main-menu,
-            .main-menu-content {
-                overflow-y: auto !important;
-                -ms-overflow-style: none;
-                scrollbar-width: none;
-            }
-
-            .main-menu::-webkit-scrollbar,
-            .main-menu-content::-webkit-scrollbar {
-                display: none !important;
-            }
-
-            .headerbg {
-                padding-left: 25px !important;
-            }
-
-            .info-sidebar-wrapper {
-                margin-bottom: 20px;
-            }
-
-            #contens {
-                height: auto !important;
-            }
-
-            .footers {
-                padding: 15px 20px 25px 20px !important;
-            }
-
-            .footers .btn-dark {
-                float: none !important;
-                width: 100% !important;
-                display: block !important;
-                text-align: center;
-                margin-top: 10px;
-            }
-
-            .footers a {
-                display: block;
-                width: 100%;
-            }
-
-            .text-secondary {
-                word-break: break-word;
-                margin-top: 5px;
-            }
+        .card-footer {
+            border-top: 2px solid black;
+            padding: 0.5rem 1rem;
+            margin-right: -15px;
+            margin-left: -15px;
         }
     </style>
 @endsection
 
 @section('header')
     <div class="content-header bg-white">
-        <div class="row" style="border-bottom: 3px solid #949494; margin: 0;">
-            <div class="col-12 bg-white headerbg" style="padding-left: 32px; padding-top: 13px;">
+        <div class="row" style="border-bottom: 3px solid #949494;">
+            <div class="col-xl-12 col-12 bg-white headerbg" style="padding-left: 32px;padding-top: 13px;">
                 <h3 class="h3">Email Address</h3>
+                <div class="breadcrumb-wrapper col-12">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a>Business</a>
+                        </li>
 
-                <div class="breadcrumb-wrapper p-0">
-                    <ol class="breadcrumb" style="padding-left: 0; background-color: transparent; margin-bottom: 10px;">
-                        <li class="breadcrumb-item">
-                            <a href="javascript:void(0)" style="text-decoration: none;">Business</a>
+
+
+                        <li class="breadcrumb-item">Email Address
                         </li>
-                        <li class="breadcrumb-item">
-                            <a href="{{ route('vender.mail') }}" style="text-decoration: none;">Email Address
-                                Information</a>
+                        <li class="breadcrumb-item"> {{ $site['label'] }}
                         </li>
-                        <li class="breadcrumb-item active">{{ $site['label'] }}</li>
+
                     </ol>
                 </div>
             </div>
+
         </div>
     </div>
 @endsection
 
 @section('content')
-    <div class="container-fluid px-1 px-md-1 mt-1">
-        <div class="row align-items-start" style="padding-left: 0 !important;">
+    <div class="row">
+        <div class="col-md-3">
+            <div style="border-radius: 7px;border: 2px solid black; ">
+                <h4 class="h3" style="font-weight: 600; font-size: 17px;padding: 10px; ">
+                    <img src="/home.png" style="width: 22px;margin-top: -5px;"> Email Address
 
-            {{-- Sidebar --}}
-            <div class="col-12 col-md-12 col-lg-3 info-sidebar-wrapper d-flex mb-3 mb-lg-0">
-                <div class="info-sidebar d-flex flex-column">
-                    <h4
-                        style="font-weight: 600; font-size: 1.1rem; padding: 12px 16px; margin: 0; display: flex; align-items: center; gap: 10px; background-color: white; border-radius: 5px 5px 0 0;">
-                        <img src="/home.png" style="width: 20px;"> Email Address
-                    </h4>
+                </h4>
+                <p
+                    style="padding-left: 10px; padding-right: 10px; line-height: 1.5rem; color: black; border-top: 2px solid black; ">
+                    <br>
 
-                    <div
-                        style="border-top: 2px solid black; padding: 14px 16px; line-height: 1.6; color: #333; font-size: 0.9rem;">
-                        <strong>{{ $site['email'] }}</strong> <br>
+                    <strong>{{ $site['email'] }} </strong>
+                    <br>
 
-                        @php
-                            $status = $site['status'];
-                            switch ($status) {
-                                case 'Todo':
-                                    $badgeClass = 'badge badge-secondary';
-                                    break;
-                                case 'Pending':
-                                    $badgeClass = 'badge badge-primary text-dark';
-                                    break;
-                                case 'Verified':
-                                    $badgeClass = 'badge badge-success';
-                                    break;
-                                case 'Rejected':
-                                    $badgeClass = 'badge badge-danger';
-                                    break;
-                                default:
-                                    $badgeClass = 'badge badge-light text-dark';
-                                    break;
-                            }
-                        @endphp
 
-                        <span class="{{ $badgeClass }}" style="margin-top:10px; margin-bottom:10px;">
-                            {{ $status }}
-                        </span>
-                        <br>
-                        Created on: {{ $site->created_at->format('d M Y, H:i') }} <br>
-                        Last updated: {{ $site->updated_at->format('d M Y, H:i') }}
-                    </div>
-                </div>
+
+                    Created on: {{ $site->created_at->format('d M Y, H:i') }} <br>
+                    Last updated: {{ $site->updated_at->format('d M Y, H:i') }}
+
+
+
+                </p>
+
             </div>
-
-            {{-- Main Content Box --}}
-            <div class="col-12 col-md-12 col-lg-9 d-flex ps-lg-3 mb-4 w-100">
-                <div class="main-content-box w-100" id="contens">
-
-                    <div class="main-content-inner">
-                        {{-- Title row --}}
-                        <div style="border-bottom: 2px solid black; padding: 12px 20px;">
-                            <h3 style="font-size: 20px; color: black; margin: 0;">
-                                Email Address information
-                            </h3>
-                        </div>
-
-                        {{-- Details Content --}}
+        </div>
+        <div class="col-md-9" id="contens"
+            style="border: 2px solid black;border-radius: 6px;margin-bottom: 10px;padding-left: 0;padding-right: 0;">
+            <div class="row" style="margin-right: 0;margin-left: 0;">
+                <div class="col-md-12" style="border-bottom: 2px solid black;">
+                    <h3 style="font-size: 20px; padding: 10px; margin-left: -11px; color: black;padding-bottom: 0px;">Email
+                        Address
+                        information</h3>
+                </div>
+                <div class="col-md-12">
+                    <div id="collaptr_businesss_info" role="tabpanel" aria-labelledby="headingCollapsebusinesss_info"
+                        style="" class="collapse show" aria-expanded="false">
                         <div class="card-content">
-                            <div class="card-body" style="padding: 20px;">
-                                <div class="row mb-1">
-                                    <div class="col-sm-4">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-5">
                                         <h6 class="mb-0">ID</h6>
                                     </div>
-                                    <div class="col-sm-8 text-secondary">{{ $site['id'] }}</div>
+                                    <div class="col-sm-7 text-secondary">
+                                        {{ $site['id'] }}
+                                    </div>
                                 </div>
-                                <hr style="margin-top: 10px; margin-bottom: 10px;">
-
-                                <div class="row mb-1">
-                                    <div class="col-sm-4">
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-5">
                                         <h6 class="mb-0">Label</h6>
                                     </div>
-                                    <div class="col-sm-8 text-secondary">{{ $site['label'] }}</div>
+                                    <div class="col-sm-7 text-secondary">
+                                        {{ $site['label'] }}
+                                    </div>
                                 </div>
-                                <hr style="margin-top: 10px; margin-bottom: 10px;">
-
-                                <div class="row mb-1">
-                                    <div class="col-sm-4">
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-5">
                                         <h6 class="mb-0">Email Address</h6>
                                     </div>
-                                    <div class="col-sm-8 text-secondary">{{ $site['email'] }}</div>
+                                    <div class="col-sm-7 text-secondary">
+                                        {{ $site['email'] }}
+                                    </div>
                                 </div>
+
+
+
+
+
+
+
+
                             </div>
+                            @if ($site['status'] != 'Pending')
+                                <div class="card-footer">
+                                    <div class="text-secondary" style="text-align: right">
+                                        <a href="{{ route('vender.mail.edit', $site['id']) }}"
+                                            style=" background-color: black !important;
+                                       border-color: black !important;"
+                                            class="btn btn-primary"> Edit</a>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
-
-                    {{-- Footer with Edit Button --}}
-                    @if ($site['status'] != 'Pending')
-                        <div class="footers" style="margin: 0; padding: 15px 20px 15px 20px;">
-                            <a href="{{ route('vender.mail.edit', $site['id']) }}">
-                                <button type="button" class="btn btn-dark round btn-min-width m-0">Edit</button>
-                            </a>
-                        </div>
-                    @endif
-
                 </div>
+
+
             </div>
+
+
+
+
+
         </div>
     </div>
 @endsection
 
+
 @section('script')
     <script src="/modules/admin/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
+    {{-- <script src="/modules/admin/app-assets/js/scripts/tables/datatables/datatable-basic.js"></script> --}}
 
-    {{-- SIDEBAR FIX: Force open on mobile with a slight delay --}}
+
     <script>
-        $(window).on('load', function() {
-            if ($(window).width() <= 768) {
-                setTimeout(function() {
-                    $('.nav-toggle, .menu-toggle').trigger('click');
-                    $('body').removeClass('menu-hide menu-collapsed').addClass('menu-expanded menu-open');
-                }, 500);
-            }
+        oTable = $('.zero-configuration').DataTable({
+            "bPaginate": $('.zero-configuration tbody tr').length > 10,
+            "iDisplayLength": 10,
+            "bAutoWidth": false,
+            "ordering": false,
+
+        }); //pay attention to capital D, which is mandatory to retrieve "api" datatables' object, as @Lionel said
+        $('#myInputTextField').keyup(function() {
+            oTable.search($(this).val()).draw();
+        })
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            var contentHeight = $('#contens').height();
+            $('#contens').height(contentHeight);
         });
     </script>
 @endsection

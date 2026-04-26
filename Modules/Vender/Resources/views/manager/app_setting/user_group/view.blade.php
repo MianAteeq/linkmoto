@@ -4,8 +4,8 @@
     <link rel="stylesheet" type="text/css" href="/modules/admin/app-assets/vendors/css/tables/datatable/datatables.min.css">
     <style>
         /* ========================================================================
-       1. TABLE STYLES
-       ======================================================================== */
+                       1. TABLE STYLES
+                       ======================================================================== */
         .dataTables_wrapper .dataTables_length,
         .dataTables_wrapper .dataTables_filter,
         .dataTables_wrapper .dataTables_info {
@@ -39,8 +39,8 @@
         }
 
         /* ========================================================================
-       2. ICONS & COLLAPSE STYLES
-       ======================================================================== */
+                       2. ICONS & COLLAPSE STYLES
+                       ======================================================================== */
         .collapse-icon [data-toggle="collapse"]:before {
             position: absolute;
             top: 48%;
@@ -62,8 +62,8 @@
         }
 
         /* ========================================================================
-       3. CONTAINER & UI STYLES
-       ======================================================================== */
+                       3. CONTAINER & UI STYLES
+                       ======================================================================== */
         body {
             color: black;
         }
@@ -106,8 +106,8 @@
         }
 
         /* ========================================================================
-       4. RESPONSIVE MEDIA QUERIES
-       ======================================================================== */
+                       4. RESPONSIVE MEDIA QUERIES
+                       ======================================================================== */
         @media (max-width: 991.98px) {
             .headerbg {
                 padding-left: 25px !important;
@@ -188,17 +188,18 @@
                         </div>
                         <hr class="m-0">
 
-                        <div class="row py-3">
+                        <div class="row">
                             <div class="col-12">
-                                <h6 class="mb-2" style="font-weight: 600; font-size: 1.1rem;">Permissions</h6>
+                                <h6 class="mb-2" style="font-weight: 600; font-size: 1.1rem;padding-top: 13px;">
+                                    Permissions</h6>
                             </div>
                         </div>
 
                         {{-- Permissions Loop --}}
                         @foreach ($permissions as $key => $p)
-                            <div class="row py-2 border-bottom">
+                            <div class="row py-2 border-bottom" style="padding-left: 10px;">
                                 <div class="col-12 col-md-5">
-                                    <h6 class="mb-2 mb-md-0 mt-md-1" style="font-weight: 600; color: #333;">
+                                    <h6 class="mb-2 mb-md-0 mt-md-1" style="font-weight: 500; color: #333;">
                                         {{ $key }}</h6>
                                 </div>
                                 <div class="col-12 col-md-7 text-secondary"

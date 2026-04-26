@@ -329,6 +329,13 @@
             }
         }
 
+        .card-footer {
+            border-top: 2px solid black;
+            padding: 0.5rem 1rem;
+            margin-right: -15px;
+            margin-left: -5px;
+        }
+
         /* END: Responsive Layout Adjustments */
     </style>
 @endsection
@@ -425,8 +432,7 @@
                 style="border: 2px solid black;border-radius: 6px;margin-bottom: 10px;padding-left: 0px;padding-right: 0;">
                 <div class="row" style="margin-right: 0;margin-left: 0;">
                     <div class="col-md-12" style="border-bottom: 2px solid black;">
-                        <h3
-                            style="font-size: 20px; padding: 10px 0; margin-left: 5px !important; color: black;padding-bottom: 0px;">
+                        <h3 style="color: black;padding: 1.2rem 0.7rem;">
                             Main
                             contact information</h3>
                     </div>
@@ -437,7 +443,7 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-sm-5">
-                                            <h6 class="mb-0">ID</h6>
+                                            <h6 class="mb-0" style="font-weight: 600;">ID</h6>
                                         </div>
                                         <div class="col-sm-7 text-secondary">
                                             {{ sprintf('%04d', $user['id']) }}
@@ -446,7 +452,7 @@
                                     <hr>
                                     <div class="row">
                                         <div class="col-sm-5">
-                                            <h6 class="mb-0">First name</h6>
+                                            <h6 class="mb-0" style="font-weight: 600;">First name</h6>
                                         </div>
                                         <div class="col-sm-7 text-secondary">
                                             {{ $user['name'] }}
@@ -455,7 +461,7 @@
                                     <hr>
                                     <div class="row">
                                         <div class="col-sm-5">
-                                            <h6 class="mb-0">Middle name</h6>
+                                            <h6 class="mb-0" style="font-weight: 600;">Middle name</h6>
                                         </div>
                                         <div class="col-sm-7 text-secondary">
                                             {{ $user['middle_name'] }}
@@ -464,7 +470,7 @@
                                     <hr>
                                     <div class="row">
                                         <div class="col-sm-5">
-                                            <h6 class="mb-0">Last name</h6>
+                                            <h6 class="mb-0" style="font-weight: 600;">Last name</h6>
                                         </div>
                                         <div class="col-sm-7 text-secondary">
                                             {{ $user['last_name'] }}
@@ -473,7 +479,7 @@
                                     <hr>
                                     <div class="row">
                                         <div class="col-sm-5">
-                                            <h6 class="mb-0">Email</h6>
+                                            <h6 class="mb-0" style="font-weight: 600;">Email</h6>
                                         </div>
                                         <div class="col-sm-7 text-secondary">
                                             {{ $user['email'] }}
@@ -482,7 +488,7 @@
                                     <hr>
                                     <div class="row">
                                         <div class="col-sm-5">
-                                            <h6 class="mb-0">Mobile</h6>
+                                            <h6 class="mb-0" style="font-weight: 600;">Mobile</h6>
                                         </div>
                                         <div class="col-sm-7 text-secondary">
                                             {{ $user['sub_profile']['phone_no'] }}
@@ -491,7 +497,7 @@
                                     <hr>
                                     <div class="row">
                                         <div class="col-sm-5">
-                                            <h6 class="mb-0">Job title / Position</h6>
+                                            <h6 class="mb-0" style="font-weight: 600;">Job title / Position</h6>
                                         </div>
                                         <div class="col-sm-7 text-secondary">
                                             {{ $user['profile']['job_title'] }}
@@ -501,7 +507,7 @@
                                     <hr>
                                     <div class="row">
                                         <div class="col-sm-5">
-                                            <h6 class="mb-0"> Proof of Id</h6>
+                                            <h6 class="mb-0" style="font-weight: 600;"> Proof of Id</h6>
                                         </div>
                                         <div class="col-sm-7 text-secondary">
                                             @if ($user['proof_id'] == null)
@@ -533,7 +539,7 @@
 
                                     <div class="row mb-2">
                                         <div class="col-sm-5">
-                                            <h6 class="mb-0">Proof of Authorisation</h6>
+                                            <h6 class="mb-0" style="font-weight: 600;">Proof of Authorisation</h6>
                                         </div>
                                         <div class="col-sm-7 text-secondary">
                                             @if ($proofRequired)
@@ -556,7 +562,7 @@
                                     <hr>
                                     <div class="row">
                                         <div class="col-sm-5">
-                                            <h6 class="mb-0">Status</h6>
+                                            <h6 class="mb-0" style="font-weight: 600;">Status</h6>
                                         </div>
                                         <div class="col-sm-7 text-secondary">
                                             <p>{{ $user['user_verified'] }}</p>

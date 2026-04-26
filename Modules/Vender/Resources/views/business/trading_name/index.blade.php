@@ -5,8 +5,8 @@
 
     <style>
         /* ========================================================================
-                   1. MASTER LAYOUT & CONTAINER FOUNDATIONS
-                   ======================================================================== */
+                       1. MASTER LAYOUT & CONTAINER FOUNDATIONS
+                       ======================================================================== */
         .content-wrapper {
             height: auto !important;
             min-height: 84vh !important;
@@ -41,8 +41,8 @@
         }
 
         /* ========================================================================
-                   2. SEARCH & FILTER ROW
-                   ======================================================================== */
+                       2. SEARCH & FILTER ROW
+                       ======================================================================== */
         .search-filter-row {
             display: flex;
             align-items: center;
@@ -66,8 +66,8 @@
         }
 
         /* ========================================================================
-                   3. THE "NUCLEAR" DATATABLES STRETCH FIX
-                   ======================================================================== */
+                       3. THE "NUCLEAR" DATATABLES STRETCH FIX
+                       ======================================================================== */
         /* Hide DataTables default controls */
         .dataTables_length,
         .dataTables_filter,
@@ -123,8 +123,8 @@
         }
 
         /* ========================================================================
-                   4. TABLE STYLING & EXACT COLUMN PERCENTAGES
-                   ======================================================================== */
+                       4. TABLE STYLING & EXACT COLUMN PERCENTAGES
+                       ======================================================================== */
         table.dataTable thead {
             background: #fafbfc;
             color: black;
@@ -170,8 +170,8 @@
         }
 
         /* ========================================================================
-                   5. UI ELEMENTS (FOOTERS & BUTTONS)
-                   ======================================================================== */
+                       5. UI ELEMENTS (FOOTERS & BUTTONS)
+                       ======================================================================== */
         .footers {
             border-top: 2px solid black;
             padding: 12px 20px;
@@ -194,8 +194,8 @@
         }
 
         /* ========================================================================
-                   6. RESPONSIVE MEDIA QUERIES
-                   ======================================================================== */
+                       6. RESPONSIVE MEDIA QUERIES
+                       ======================================================================== */
         @media (max-width: 1024px) {
             .search-filter-row {
                 flex-wrap: wrap;
@@ -258,7 +258,7 @@
                         style="font-weight: 600; font-size: 1.1rem; padding: 12px 16px; margin: 0; display: flex; align-items: center; gap: 10px; background-color: white; border-radius: 5px 5px 0 0;">
                         <img src="/home.png" style="width: 20px;"> Trading Names
                     </h4>
-                    <div style="border-top: 2px solid black; padding: 14px 16px;">
+                    <div style="border-top: 2px solid black; padding: 14px 16px;background-color: white;">
                         <p style="line-height: 1.6; color: #333; font-size: 0.9rem; margin: 0;">
                             Add and manage the different names your business operates under. These names can be linked to
                             invoices, trade units, and marketplace listings. Your registered business name is included

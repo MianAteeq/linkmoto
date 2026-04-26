@@ -227,8 +227,9 @@
                     <a href="{{ route('vender.user.suspend', $user['id']) }}"> <button type="button" style="width: 80%;"
                             class="btn btn-dark round btn-min-width mr-1 mb-1">SUSPEND USER</button></a>
                     @if ($user['status'] != 'ACTIVE')
-                        <a href="{{ route('vender.user.active', $user['id']) }}"> <button type="button" style="width: 80%;"
-                                class="btn btn-dark round btn-min-width mr-1 mb-1">ACTIVATE USER</button></a>
+                        <a href="{{ route('vender.user.active', $user['id']) }}"> <button type="button"
+                                style="width: 80%;" class="btn btn-dark round btn-min-width mr-1 mb-1">ACTIVATE
+                                USER</button></a>
                     @else
                         <a href="{{ route('vender.user.in.active', $user['id']) }}"> <button type="button"
                                 style="width: 80%;" class="btn btn-dark round btn-min-width mr-1 mb-1">INACTIVATE
@@ -253,7 +254,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <h6 class="mb-0">App name</h6>
+                                        <h6 class="mb-0" style="font-weight: 600;">App name</h6>
                                     </div>
                                     <div class="col-sm-7 text-secondary">
                                         {{ $app['app_name'] }}
@@ -262,7 +263,7 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <h6 class="mb-0">Status</h6>
+                                        <h6 class="mb-0" style="font-weight: 600;">Status</h6>
                                     </div>
                                     <div class="col-sm-7 text-secondary">
                                         {{ $app['status'] == 1 ? 'On' : 'Off' }}
@@ -271,7 +272,7 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <h6 class="mb-0">Group</h6>
+                                        <h6 class="mb-0" style="font-weight: 600;">Group</h6>
                                     </div>
                                     <div class="col-sm-7 text-secondary">
                                         @if (isset($app['group']))
@@ -290,7 +291,7 @@
                                 @if ($app['app_name'] != 'Business Manager')
                                     <div class="row">
                                         <div class="col-sm-5">
-                                            <h6 class="mb-0">Trade unit</h6>
+                                            <h6 class="mb-0" style="font-weight: 600;">Trade unit</h6>
                                         </div>
                                         <div class="col-sm-7 text-secondary">
 
@@ -309,7 +310,7 @@
                                     <hr>
                                     <div class="row">
                                         <div class="col-sm-5">
-                                            <h6 class="mb-0">Default trade unit</h6>
+                                            <h6 class="mb-0" style="font-weight: 600;">Default trade unit</h6>
                                         </div>
                                         <div class="col-sm-7 text-secondary">
 

@@ -5,8 +5,8 @@
 
     <style>
         /* ========================================================================
-                   1. MASTER LAYOUT & CONTAINER FOUNDATIONS
-                   ======================================================================== */
+                       1. MASTER LAYOUT & CONTAINER FOUNDATIONS
+                       ======================================================================== */
         .content-wrapper {
             height: auto !important;
             min-height: 84vh !important;
@@ -16,7 +16,6 @@
             border-radius: 7px;
             border: 2px solid black;
             height: auto;
-            background-color: #fcfdfe;
             box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.04);
             width: 100%;
         }
@@ -40,8 +39,8 @@
         }
 
         /* ========================================================================
-                   2. SEARCH & FILTER ROW
-                   ======================================================================== */
+                       2. SEARCH & FILTER ROW
+                       ======================================================================== */
         .search-filter-row {
             display: flex;
             align-items: center;
@@ -65,8 +64,8 @@
         }
 
         /* ========================================================================
-                   3. THE "NUCLEAR" DATATABLES STRETCH FIX
-                   ======================================================================== */
+                       3. THE "NUCLEAR" DATATABLES STRETCH FIX
+                       ======================================================================== */
         .dataTables_length,
         .dataTables_filter,
         .dataTables_info,
@@ -127,8 +126,8 @@
         }
 
         /* ========================================================================
-                   4. TABLE STYLING
-                   ======================================================================== */
+                       4. TABLE STYLING
+                       ======================================================================== */
         table.dataTable thead {
             background: #fafbfc;
             color: black;
@@ -166,8 +165,8 @@
         }
 
         /* ========================================================================
-                   5. UI ELEMENTS (FOOTERS & BUTTONS)
-                   ======================================================================== */
+                       5. UI ELEMENTS (FOOTERS & BUTTONS)
+                       ======================================================================== */
         .footers {
             border-top: 2px solid black;
             padding: 15px 20px 25px 20px;
@@ -199,8 +198,8 @@
         }
 
         /* ========================================================================
-                   6. RESPONSIVE MEDIA QUERIES
-                   ======================================================================== */
+                       6. RESPONSIVE MEDIA QUERIES
+                       ======================================================================== */
         @media (max-width: 1024px) {
             .search-filter-row {
                 flex-wrap: wrap;
@@ -274,7 +273,7 @@
             <div class="col-12 col-md-12 col-lg-3 info-sidebar-wrapper d-flex mb-3 mb-lg-0">
                 <div class="info-sidebar d-flex flex-column">
                     <h4
-                        style="font-weight: 600; font-size: 1.1rem; padding: 12px 16px; margin: 0; display: flex; align-items: center; gap: 10px; background-color: white; border-radius: 5px 5px 0 0;">
+                        style="font-weight: 600; font-size: 1.1rem; padding: 12px 16px; margin: 0; display: flex; align-items: center; gap: 10px; border-radius: 5px 5px 0 0;">
                         <img src="/home.png" style="width: 20px;"> Sites
                     </h4>
                     <div style="border-top: 2px solid black; padding: 14px 16px;">

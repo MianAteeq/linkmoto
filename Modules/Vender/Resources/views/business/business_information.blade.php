@@ -120,6 +120,14 @@
                 margin-top: 10px;
             }
         }
+
+        .theme-label {
+            color: black !important;
+            font-size: 0.95rem;
+            font-weight: 400;
+            margin: 0;
+            padding-right: 15px;
+        }
     </style>
 @endsection
 

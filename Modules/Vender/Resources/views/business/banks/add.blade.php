@@ -3,8 +3,8 @@
 @section('css_custom')
     <style>
         /* ========================================================================
-                       1. MASTER LAYOUT & CONTAINER FOUNDATIONS
-                       ======================================================================== */
+                                       1. MASTER LAYOUT & CONTAINER FOUNDATIONS
+                                       ======================================================================== */
         .content-wrapper {
             height: auto !important;
             min-height: 84vh !important;
@@ -14,7 +14,7 @@
             border-radius: 7px;
             border: 2px solid black;
             height: auto;
-            background-color: #fcfdfe;
+
             box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.04);
             width: 100%;
             overflow: hidden;
@@ -40,8 +40,8 @@
         }
 
         /* ========================================================================
-                       2. FORM ELEMENTS & FILE UPLOADS
-                       ======================================================================== */
+                                       2. FORM ELEMENTS & FILE UPLOADS
+                                       ======================================================================== */
         .form-control-custom {
             border: 2px solid black !important;
             border-radius: 7px;
@@ -50,6 +50,7 @@
             width: 100%;
             box-sizing: border-box;
             color: black;
+            width: 60%;
         }
 
         .form-control-custom:focus {
@@ -100,8 +101,8 @@
         }
 
         /* ========================================================================
-                       3. SIDEBAR ACCORDION STYLES
-                       ======================================================================== */
+                                       3. SIDEBAR ACCORDION STYLES
+                                       ======================================================================== */
         .collapse-icon [data-toggle="collapse"]:before {
             position: absolute;
             top: 48%;
@@ -141,8 +142,8 @@
         }
 
         /* ========================================================================
-                       4. UI ELEMENTS (FOOTERS & BUTTONS)
-                       ======================================================================== */
+                                       4. UI ELEMENTS (FOOTERS & BUTTONS)
+                                       ======================================================================== */
         .footers {
             border-top: 2px solid black;
             padding: 15px 20px 25px 20px;
@@ -169,8 +170,8 @@
         }
 
         /* ========================================================================
-                       5. RESPONSIVE MEDIA QUERIES
-                       ======================================================================== */
+                                       5. RESPONSIVE MEDIA QUERIES
+                                       ======================================================================== */
         @media (max-width: 991.98px) {
             .headerbg {
                 padding-left: 25px !important;
@@ -255,8 +256,9 @@
                     </h4>
 
                     {{-- Help Section Accordion --}}
-                    <div id="show_help" style="border-top:2px solid black; background: #fcfdfe;">
-                        <h4 style="padding: 13px 16px 13px 13px; color: black; font-weight: 600; margin: 0; font-size: 1rem;">
+                    <div id="show_help" style="border-top:2px solid black; ">
+                        <h4
+                            style="padding: 13px 16px 13px 13px; color: black; font-weight: 600; margin: 0; font-size: 1rem;">
                             Help information:
                         </h4>
 
@@ -380,7 +382,7 @@
                                 <div class="col-md-8">
                                     <input type="file" name="proof" accept="image/*,.doc,.docx,.pdf" class="d-none"
                                         id="hidden_file_input">
-                                    <div style="display: flex; align-items: center;">
+                                    <div style="display: flex; align-items: center;width: 60%;">
                                         <input type="button" id="proof_of_main_contact"
                                             class="form-control-custom form-btn-file" value="Document Upload"
                                             style="flex-grow: 1;">

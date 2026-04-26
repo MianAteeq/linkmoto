@@ -146,7 +146,7 @@
         .info-sidebar {
             border-radius: 7px;
             border: 2px solid black;
-            background-color: #fcfdfe;
+
             box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.04);
             width: 100%;
         }
@@ -224,7 +224,7 @@
             <div class="col-12 col-lg-3 mb-3 mb-lg-0">
                 <div class="info-sidebar d-flex flex-column">
                     <h4
-                        style="font-weight: 600; font-size: 1.1rem; padding: 12px 16px; margin: 0; display: flex; align-items: center; gap: 10px; background-color: white; border-radius: 5px 5px 0 0; ">
+                        style="font-weight: 600; font-size: 1.1rem; padding: 12px 16px; margin: 0; display: flex; align-items: center; gap: 10px;  border-radius: 5px 5px 0 0; ">
                         <img src="/home.png" style="width: 20px; margin-top: -2px;"> Edit Trading Name
                     </h4>
                 </div>
@@ -235,7 +235,7 @@
 
                     <div class="row" style="margin-right: 0;margin-left: 0;">
                         <div class="col-md-12" style="border-bottom: 2px solid black;">
-                            <h3 style="font-size: 20px; padding: 12px 20px; margin: 0; color: black;">
+                            <h3 style="font-size: 20px; padding: 1.2rem 0.7rem;margin: 0; color: black;">
                                 Trading name Information
                             </h3>
                         </div>
@@ -276,7 +276,7 @@
 
                         </div>
 
-                        <div class="footers mt-auto text-right" style="text-align: right; margin-bottom: 15px;">
+                        <div class="footers mt-auto text-right" style="text-align: right;">
                             <button type="button" onclick="submitDetailsForm()"
                                 class="btn btn-dark round btn-min-width mr-1 mb-1 m-md-0"
                                 style="color: white !important;">Update</button>

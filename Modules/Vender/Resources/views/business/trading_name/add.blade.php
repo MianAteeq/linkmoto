@@ -4,8 +4,8 @@
     <link rel="stylesheet" type="text/css" href="/modules/admin/app-assets/vendors/css/tables/datatable/datatables.min.css">
     <style>
         /* ========================================================================
-               1. MASTER LAYOUT & CONTAINER FOUNDATIONS
-               ======================================================================== */
+                           1. MASTER LAYOUT & CONTAINER FOUNDATIONS
+                           ======================================================================== */
         .content-wrapper {
             height: auto !important;
             min-height: 84vh !important;
@@ -15,7 +15,6 @@
             border-radius: 7px;
             border: 2px solid black;
             height: auto;
-            background-color: #fcfdfe;
             box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.04);
             width: 100%;
         }
@@ -39,8 +38,8 @@
         }
 
         /* ========================================================================
-               2. YOUR ORIGINAL CSS (Preserved)
-               ======================================================================== */
+                           2. YOUR ORIGINAL CSS (Preserved)
+                           ======================================================================== */
         .dataTables_wrapper .dataTables_length {
             display: none;
         }
@@ -266,7 +265,7 @@
             <div class="col-12 col-md-12 col-lg-3 info-sidebar-wrapper d-flex mb-3 mb-lg-0">
                 <div class="info-sidebar d-flex flex-column">
                     <h4
-                        style="font-weight: 600; font-size: 1.1rem; padding: 12px 16px; margin: 0; display: flex; align-items: center; gap: 10px; background-color: white; border-radius: 5px 5px 0 0;">
+                        style="font-weight: 600; font-size: 1.1rem; padding: 12px 16px; margin: 0; display: flex; align-items: center; gap: 10px;  border-radius: 5px 5px 0 0;">
                         <img src="/home.png" style="width: 20px;"> New Trading Name
                     </h4>
                 </div>
@@ -282,8 +281,7 @@
                         <div class="main-content-inner">
                             <div class="row" style="margin-right: 0;margin-left: 0;">
                                 <div class="col-md-12" style="border-bottom: 2px solid black;">
-                                    <h3
-                                        style="font-size: 20px; padding: 10px; margin-left: -11px; color: black;padding-bottom: 0px;">
+                                    <h3 style="font-size: 20px; padding: 1rem 0.7rem; color: black;">
                                         Trading name Information</h3>
                                 </div>
                             </div>

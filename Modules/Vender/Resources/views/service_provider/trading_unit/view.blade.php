@@ -121,23 +121,23 @@
             <div class="info-sidebar d-flex flex-column"
                 style="border-radius: 7px; border: 2px solid black; background-color: white; overflow: hidden;">
 
-                <div class="info-sidebar-body" style="padding: 15px; flex-grow: 1;">
+                <div class="info-sidebar-body" style="flex-grow: 1;">
                     <div class="d-flex align-items-start font-weight-bold"
-                        style="font-size: 1.1rem; padding-bottom: 15px; margin: 0; border-bottom: 2px solid black;">
+                        style="font-size: 1.1rem; padding-bottom: 15px; margin: 0; border-bottom: 2px solid black;padding:10px">
                         <img src="/trading_unit.png" style="width: 22px; margin-right: 10px; margin-top: 2px;">
                         <span style="word-break: break-word;">Trading Unit : <br>{{ $trading_unit['name'] }}</span>
                     </div>
 
-                    <div style="margin-top: 20px; font-weight: 500; font-size: 13px;">
+                    <div style="margin-top: 20px; font-weight: 500; font-size: 13px;padding-left:10px">
                         <span>Trading Name : {{ $trading_unit['trading_name']['name'] ?? '' }}</span>
                     </div>
-                    <div style="margin-top: 15px; font-weight: 500; font-size: 13px;">
+                    <div style="margin-top: 15px; font-weight: 500; font-size: 13px;padding-left:10px">
                         <span class="success">{{ $trading_unit['status'] }}</span>
                     </div>
-                    <div style="margin-top: 15px; font-weight: 500; font-size: 13px;">
+                    <div style="margin-top: 15px; font-weight: 500; font-size: 13px;padding-left:10px">
                         <span class="success">{{ $trading_unit['active_status'] }}</span>
                     </div>
-                    <div style="margin-top: 15px; font-weight: 500; font-size: 13px;">
+                    <div style="margin-top: 15px; font-weight: 500; font-size: 13px;padding-left:10px;padding-bottom:10px">
                         <span>Created: {{ \Carbon\Carbon::parse($trading_unit['created_at'])->format('d/m/Y') }} at
                             {{ \Carbon\Carbon::parse($trading_unit['created_at'])->format('h:i') }}</span>
                     </div>
@@ -221,7 +221,7 @@
 
                             <div class="row">
                                 <div class="col-sm-5">
-                                    <h6 class="mb-0">ID</h6>
+                                    <h6 class="mb-0" style="font-weight: 600;">ID</h6>
                                 </div>
                                 <div class="col-sm-7 text-secondary">SVP{{ sprintf('%07d', $trading_unit['id']) }}</div>
                             </div>
@@ -229,7 +229,7 @@
 
                             <div class="row">
                                 <div class="col-sm-5">
-                                    <h6 class="mb-0">Trade unit name</h6>
+                                    <h6 class="mb-0" style="font-weight: 600;">Trade unit name</h6>
                                 </div>
                                 <div class="col-sm-7 text-secondary">{{ $trading_unit['name'] ?? '' }}</div>
                             </div>
@@ -237,7 +237,7 @@
 
                             <div class="row">
                                 <div class="col-sm-5">
-                                    <h6 class="mb-0">Business Name Format</h6>
+                                    <h6 class="mb-0" style="font-weight: 600;">Business Name Format</h6>
                                 </div>
                                 <div class="col-sm-7 text-secondary">
                                     @if (auth()->user()->profile['organization_status'] === 'Limited Company (Ltd)' ||
@@ -268,7 +268,7 @@
 
                             <div class="row">
                                 <div class="col-sm-5">
-                                    <h6 class="mb-0">Business Name</h6>
+                                    <h6 class="mb-0" style="font-weight: 600;">Business Name</h6>
                                 </div>
                                 <div class="col-sm-7 text-secondary">
                                     @if ($trading_unit['trading_template'] == 1)
@@ -287,7 +287,7 @@
 
                             <div class="row">
                                 <div class="col-sm-5">
-                                    <h6 class="mb-0">Service offerings</h6>
+                                    <h6 class="mb-0" style="font-weight: 600;">Service offerings</h6>
                                 </div>
                                 <div class="col-sm-7 text-secondary">
                                     @if ($trading_unit['operation_type'] === 'Both')
@@ -303,7 +303,7 @@
 
                             <div class="row">
                                 <div class="col-sm-5">
-                                    <h6 class="mb-0">Site address</h6>
+                                    <h6 class="mb-0" style="font-weight: 600;">Site address</h6>
                                 </div>
                                 <div class="col-sm-7 text-secondary">{{ $trading_unit['site']['address_line_1'] ?? '' }}
                                 </div>
@@ -313,28 +313,28 @@
                             @if ($trading_unit['operation_type'] != 'On-site')
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <h6 class="mb-0">Mobile city / town</h6>
+                                        <h6 class="mb-0" style="font-weight: 600;">Mobile city / town</h6>
                                     </div>
                                     <div class="col-sm-7 text-secondary">{{ $trading_unit['city'] }}</div>
                                 </div>
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <h6 class="mb-0">Mobile postcode</h6>
+                                        <h6 class="mb-0" style="font-weight: 600;">Mobile postcode</h6>
                                     </div>
                                     <div class="col-sm-7 text-secondary">{{ $trading_unit['postcode'] }}</div>
                                 </div>
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <h6 class="mb-0">Mobile distance / radius (miles)</h6>
+                                        <h6 class="mb-0" style="font-weight: 600;">Mobile distance / radius (miles)</h6>
                                     </div>
                                     <div class="col-sm-7 text-secondary">{{ $trading_unit['radius'] }}</div>
                                 </div>
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <h6 class="mb-0">Landline</h6>
+                                        <h6 class="mb-0" style="font-weight: 600;">Landline</h6>
                                     </div>
                                     <div class="col-sm-7 text-secondary">{{ $trading_unit['landline'] }}</div>
                                 </div>
@@ -343,7 +343,7 @@
 
                             <div class="row">
                                 <div class="col-sm-5">
-                                    <h6 class="mb-0">Mobile</h6>
+                                    <h6 class="mb-0" style="font-weight: 600;">Mobile</h6>
                                 </div>
                                 <div class="col-sm-7 text-secondary">{{ $trading_unit['mobile'] }}</div>
                             </div>
@@ -351,7 +351,7 @@
 
                             <div class="row">
                                 <div class="col-sm-5">
-                                    <h6 class="mb-0">Email</h6>
+                                    <h6 class="mb-0" style="font-weight: 600;">Email</h6>
                                 </div>
                                 <div class="col-sm-7 text-secondary">{{ $trading_unit['email'] }}</div>
                             </div>
@@ -359,7 +359,7 @@
 
                             <div class="row">
                                 <div class="col-sm-5">
-                                    <h6 class="mb-0">Website</h6>
+                                    <h6 class="mb-0" style="font-weight: 600;">Website</h6>
                                 </div>
                                 <div class="col-sm-7 text-secondary">{{ $trading_unit['website'] }}</div>
                             </div>

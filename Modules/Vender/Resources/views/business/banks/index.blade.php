@@ -4,8 +4,8 @@
     <link rel="stylesheet" type="text/css" href="/modules/admin/app-assets/vendors/css/tables/datatable/datatables.min.css">
     <style>
         /* ========================================================================
-                       1. MASTER LAYOUT & CONTAINER FOUNDATIONS
-                       ======================================================================== */
+                           1. MASTER LAYOUT & CONTAINER FOUNDATIONS
+                           ======================================================================== */
         .content-wrapper {
             height: auto !important;
             min-height: 84vh !important;
@@ -15,7 +15,7 @@
             border-radius: 7px;
             border: 2px solid black;
             height: auto;
-            background-color: #fcfdfe;
+
             box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.04);
             width: 100%;
         }
@@ -39,8 +39,8 @@
         }
 
         /* ========================================================================
-                       2. DATATABLES & TABLE STYLING
-                       ======================================================================== */
+                           2. DATATABLES & TABLE STYLING
+                           ======================================================================== */
         .dataTables_wrapper .dataTables_length,
         .dataTables_wrapper .dataTables_filter,
         .dataTables_wrapper .dataTables_info,
@@ -127,8 +127,8 @@
         }
 
         /* ========================================================================
-                       3. UI ELEMENTS (FOOTERS & BUTTONS)
-                       ======================================================================== */
+                           3. UI ELEMENTS (FOOTERS & BUTTONS)
+                           ======================================================================== */
         .footers {
             border-top: 2px solid black;
             padding: 15px 20px 25px 20px;
@@ -155,8 +155,8 @@
         }
 
         /* ========================================================================
-                       4. RESPONSIVE MEDIA QUERIES
-                       ======================================================================== */
+                           4. RESPONSIVE MEDIA QUERIES
+                           ======================================================================== */
         @media (max-width: 991.98px) {
             .headerbg {
                 padding-left: 25px !important;

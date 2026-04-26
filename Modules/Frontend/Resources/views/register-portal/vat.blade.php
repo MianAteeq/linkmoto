@@ -64,7 +64,7 @@
             <div class="row" style="margin-top: 20px;">
 
                 <div class="col-12 col-lg-4 mb-2 mb-lg-0">
-                    <div class="h-100" style="border-radius: 7px; border: 2px solid black;">
+                    <div class="" style="border-radius: 7px; border: 2px solid black;">
                         <h4 class="h3" style="padding: 10px;font-weight: 600;font-size: 17px; ">
                             <img src="/home.png" style="width: 22px;margin-top: -5px;"> VAT
                         </h4>

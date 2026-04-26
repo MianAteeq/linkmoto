@@ -5,8 +5,8 @@
 
     <style>
         /* ========================================================================
-                       1. MASTER LAYOUT & CONTAINER FOUNDATIONS
-                       ======================================================================== */
+                           1. MASTER LAYOUT & CONTAINER FOUNDATIONS
+                           ======================================================================== */
         .content-wrapper {
             height: auto !important;
             min-height: 84vh !important;
@@ -16,7 +16,7 @@
             border-radius: 7px;
             border: 2px solid black;
             height: auto;
-            background-color: #fcfdfe;
+
             box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.04);
             width: 100%;
         }
@@ -40,8 +40,8 @@
         }
 
         /* ========================================================================
-                       2. UI ELEMENTS (FOOTERS, BUTTONS, BADGES)
-                       ======================================================================== */
+                           2. UI ELEMENTS (FOOTERS, BUTTONS, BADGES)
+                           ======================================================================== */
         .footers {
             border-top: 2px solid black;
             padding: 15px 20px 25px 20px;
@@ -103,8 +103,8 @@
         }
 
         /* ========================================================================
-                       3. RESPONSIVE MEDIA QUERIES
-                       ======================================================================== */
+                           3. RESPONSIVE MEDIA QUERIES
+                           ======================================================================== */
         @media (max-width: 991.98px) {
             .headerbg {
                 padding-left: 25px !important;

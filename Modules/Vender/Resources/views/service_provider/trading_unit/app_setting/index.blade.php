@@ -224,7 +224,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-5">
-                                    <h6 class="mb-0">Booking start time</h6>
+                                    <h6 class="mb-0" style="font-weight: 600;">Booking start time</h6>
                                 </div>
                                 <div class="col-sm-7 text-secondary">
                                     {{ $trading_unit['app_setting']['start_time'] ?? '' }}
@@ -233,7 +233,7 @@
                             <hr>
                             <div class="row">
                                 <div class="col-sm-5">
-                                    <h6 class="mb-0">Last booking time</h6>
+                                    <h6 class="mb-0" style="font-weight: 600;">Last booking time</h6>
                                 </div>
                                 <div class="col-sm-7 text-secondary">
                                     {{ $trading_unit['app_setting']['end_time'] ?? '' }}
@@ -242,7 +242,7 @@
                             <hr>
                             <div class="row">
                                 <div class="col-sm-5">
-                                    <h6 class="mb-0">Booking time intervals</h6>
+                                    <h6 class="mb-0" style="font-weight: 600;">Booking time intervals</h6>
                                 </div>
                                 <div class="col-sm-7 text-secondary">
                                     {{ $trading_unit['app_setting']['interval'] ?? '' }} minutes
@@ -291,7 +291,7 @@
 
                             <div class="row">
                                 <div class="col-sm-5">
-                                    <h6 class="mb-0">Business Name</h6>
+                                    <h6 class="mb-0" style="font-weight: 600;">Business Name</h6>
                                 </div>
                                 <div class="col-sm-7 text-secondary">
                                     @if ($trading_unit['trading_template'] == 1)
@@ -310,7 +310,7 @@
 
                             <div class="row">
                                 <div class="col-sm-5">
-                                    <h6 class="mb-0">Address</h6>
+                                    <h6 class="mb-0" style="font-weight: 600;">Address</h6>
                                 </div>
                                 <div class="col-sm-7 text-secondary">
                                     <p class="address_line1">
@@ -360,7 +360,7 @@
                             <hr>
                             <div class="row">
                                 <div class="col-sm-5">
-                                    <h6 class="mb-0">Contact Info</h6>
+                                    <h6 class="mb-0" style="font-weight: 600;">Contact Info</h6>
                                 </div>
                                 <div class="col-sm-7 text-secondary">
 
@@ -408,7 +408,7 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <h6 class="mb-0">UK VAT Number</h6>
+                                        <h6 class="mb-0" style="font-weight: 600;">UK VAT Number</h6>
                                     </div>
                                     <div class="col-sm-7 text-secondary">
                                         <p>{{ auth()->user()->profile['uk_vat_no'] ?? '' }}</p>
@@ -418,7 +418,7 @@
                             <hr>
                             <div class="row">
                                 <div class="col-sm-5">
-                                    <h6 class="mb-0">Include Bank Transfer Details</h6>
+                                    <h6 class="mb-0" style="font-weight: 600;">Include Bank Transfer Details</h6>
                                 </div>
                                 <div class="col-sm-7 text-secondary">
                                     <p> {{ ucfirst(strtolower($trading_unit['app_setting']['bank_transfer'])) ?? '' }}</p>
@@ -478,7 +478,7 @@
                             @if ($trading_unit['operation_type'] != 'Both' || $trading_unit['operation_type'] != 'On-site')
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <h6 class="mb-0">Job Location (Mobile Service)</h6>
+                                        <h6 class="mb-0" style="font-weight: 600;">Job Location (Mobile Service)</h6>
                                     </div>
                                     <div class="col-sm-7 text-secondary">
                                         <p>Job Mobile Address </p>
@@ -563,7 +563,7 @@
                                     !empty($registeredCompanyNo))
                                 <div class="form-group row align-items-center mb-2">
                                     <div class="col-md-5">
-                                        <h6 class="mb-0">Footer</h6>
+                                        <h6 class="mb-0" style="font-weight: 600;">Footer</h6>
                                     </div>
                                 </div>
                             @endif
@@ -658,7 +658,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-5">
-                                    <h6 class="mb-0">VAT </h6>
+                                    <h6 class="mb-0" style="font-weight: 600;">VAT </h6>
                                 </div>
                                 <div class="col-sm-7 text-secondary">
                                     {{ auth()->user()['profile']['vat_register'] }}
@@ -667,7 +667,7 @@
                             <hr>
                             <div class="row">
                                 <div class="col-sm-5">
-                                    <h6 class="mb-0">VAT Booking </h6>
+                                    <h6 class="mb-0" style="font-weight: 600;">VAT Booking </h6>
                                 </div>
                                 <div class="col-sm-7 text-secondary">
                                     {{ $trading_unit['app_setting']['vat_booking'] ?? '0' == 1 ? 'YES' : 'NO' }}
@@ -676,7 +676,7 @@
                             <hr>
                             <div class="row">
                                 <div class="col-sm-5">
-                                    <h6 class="mb-0">VAT Quote</h6>
+                                    <h6 class="mb-0" style="font-weight: 600;">VAT Quote</h6>
                                 </div>
                                 <div class="col-sm-7 text-secondary">
                                     {{ $trading_unit['app_setting']['vat_quote'] ?? '0' == 1 ? 'YES' : 'NO' }}
@@ -685,7 +685,7 @@
                             <hr>
                             <div class="row">
                                 <div class="col-sm-5">
-                                    <h6 class="mb-0">VAT Jobs</h6>
+                                    <h6 class="mb-0" style="font-weight: 600;">VAT Jobs</h6>
                                 </div>
                                 <div class="col-sm-7 text-secondary">
                                     {{ $trading_unit['app_setting']['vat_job'] ?? '0' == 1 ? 'YES' : 'NO' }}
@@ -801,7 +801,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <h6 class="mb-0">Marketplace</h6>
+                                        <h6 class="mb-0" style="font-weight: 600;">Marketplace</h6>
                                     </div>
                                     <div class="col-sm-7 text-secondary">
                                         @isset($trading_unit['hub_setting'])
@@ -814,7 +814,7 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <h6 class="mb-0">Quotes</h6>
+                                        <h6 class="mb-0" style="font-weight: 600;">Quotes</h6>
                                     </div>
                                     <div class="col-sm-7 text-secondary">
                                         @isset($trading_unit['hub_setting'])
@@ -827,7 +827,7 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <h6 class="mb-0">Bookings</h6>
+                                        <h6 class="mb-0" style="font-weight: 600;">Bookings</h6>
                                     </div>
                                     <div class="col-sm-7 text-secondary">
                                         @isset($trading_unit['hub_setting'])
@@ -875,7 +875,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <h6 class="mb-0">Monday </h6>
+                                        <h6 class="mb-0" style="font-weight: 600;">Monday </h6>
                                     </div>
                                     <div class="col-sm-7 text-secondary">
                                         @if ($trading_unit['hub_setting']['is_monday'] == 1)
@@ -889,7 +889,7 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <h6 class="mb-0">Tuesday </h6>
+                                        <h6 class="mb-0" style="font-weight: 600;">Tuesday </h6>
                                     </div>
                                     <div class="col-sm-7 text-secondary">
                                         @if ($trading_unit['hub_setting']['is_tuesday'] == 1)
@@ -903,7 +903,7 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <h6 class="mb-0">Wednesday</h6>
+                                        <h6 class="mb-0" style="font-weight: 600;">Wednesday</h6>
                                     </div>
                                     <div class="col-sm-7 text-secondary">
                                         @if ($trading_unit['hub_setting']['is_wednesday'] == 1)
@@ -917,7 +917,7 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <h6 class="mb-0">Thursaday</h6>
+                                        <h6 class="mb-0" style="font-weight: 600;">Thursaday</h6>
                                     </div>
                                     <div class="col-sm-7 text-secondary">
                                         @if ($trading_unit['hub_setting']['is_thursday'] == 1)
@@ -931,7 +931,7 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <h6 class="mb-0">Friday</h6>
+                                        <h6 class="mb-0" style="font-weight: 600;">Friday</h6>
                                     </div>
                                     <div class="col-sm-7 text-secondary">
                                         @if ($trading_unit['hub_setting']['is_friday'] == 1)
@@ -945,7 +945,7 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <h6 class="mb-0">Saturday</h6>
+                                        <h6 class="mb-0" style="font-weight: 600;">Saturday</h6>
                                     </div>
                                     <div class="col-sm-7 text-secondary">
                                         @if ($trading_unit['hub_setting']['is_saturday'] == 1)
@@ -959,7 +959,7 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <h6 class="mb-0">Sunday</h6>
+                                        <h6 class="mb-0" style="font-weight: 600;">Sunday</h6>
                                     </div>
                                     <div class="col-sm-7 text-secondary">
                                         @if ($trading_unit['hub_setting']['is_sunday'] == 1)
@@ -1006,7 +1006,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <h6 class="mb-0">Website </h6>
+                                        <h6 class="mb-0" style="font-weight: 600;">Website </h6>
                                     </div>
                                     <div class="col-sm-7 text-secondary">
                                         {{ $trading_unit['hub_setting']['website'] }}
@@ -1015,7 +1015,7 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <h6 class="mb-0">Facebook </h6>
+                                        <h6 class="mb-0" style="font-weight: 600;">Facebook </h6>
                                     </div>
                                     <div class="col-sm-7 text-secondary">
                                         {{ $trading_unit['hub_setting']['facebook'] }}
@@ -1024,7 +1024,7 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <h6 class="mb-0">Instagram</h6>
+                                        <h6 class="mb-0" style="font-weight: 600;">Instagram</h6>
                                     </div>
                                     <div class="col-sm-7 text-secondary">
                                         {{ $trading_unit['hub_setting']['instagram'] }}
@@ -1033,7 +1033,7 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-5">
-                                        <h6 class="mb-0">Trust Pilot</h6>
+                                        <h6 class="mb-0" style="font-weight: 600;">Trust Pilot</h6>
                                     </div>
                                     <div class="col-sm-7 text-secondary">
                                         {{ $trading_unit['hub_setting']['trust_pilot'] }}
@@ -1073,7 +1073,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-3">
-                                    <h6 class="mb-0">Job Type </h6>
+                                    <h6 class="mb-0" style="font-weight: 600;">Job Type </h6>
                                 </div>
                                 <div class="col-sm-8 text-secondary">
                                     <div class="row">
@@ -1231,7 +1231,7 @@
 
                             <div class="row">
                                 <div class="col-sm-3">
-                                    <h6 class="mb-0">Warranty Job </h6>
+                                    <h6 class="mb-0" style="font-weight: 600;">Warranty Job </h6>
                                 </div>
                                 <div class="col-sm-8 text-secondary">
                                     <div class="row">
@@ -1279,7 +1279,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-3">
-                                    <h6 class="mb-0">Vehicle specialist </h6>
+                                    <h6 class="mb-0" style="font-weight: 600;">Vehicle specialist </h6>
                                 </div>
                                 <div class="col-sm-8 text-secondary">
                                     <div class="row">
@@ -1327,7 +1327,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-3">
-                                    <h6 class="mb-0">Accreditation & schemes </h6>
+                                    <h6 class="mb-0" style="font-weight: 600;">Accreditation & schemes </h6>
                                 </div>
                                 <div class="col-sm-8 text-secondary">
                                     <div class="row">
@@ -1376,7 +1376,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-5">
-                                    <h6 class="mb-0">Payment methods </h6>
+                                    <h6 class="mb-0" style="font-weight: 600;">Payment methods </h6>
                                 </div>
                                 <div class="col-sm-7 text-secondary">
                                     <div class="row">

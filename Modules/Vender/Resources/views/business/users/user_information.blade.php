@@ -3,12 +3,12 @@
 @section('css_custom')
     <link rel="stylesheet" type="text/css" href="/modules/admin/app-assets/vendors/css/tables/datatable/datatables.min.css">
     <style>
-        /* ========================================================================
-               1. TABLE STYLES
-               ======================================================================== */
-        .dataTables_wrapper .dataTables_length,
-        .dataTables_wrapper .dataTables_filter,
-        .dataTables_wrapper .dataTables_info {
+        .dataTables_wrapper .dataTables_length {
+            display: none;
+        }
+
+        .dataTables_wrapper .dataTables_filter {
+
             display: none;
         }
 
@@ -26,6 +26,14 @@
             padding-bottom: 2px;
             padding-top: 2px;
             font-size: 10px;
+        }
+
+        .dataTables_wrapper .dataTables_info {
+            display: none;
+        }
+
+        table.dataTable tbody td {
+
             color: black;
         }
 
@@ -52,9 +60,6 @@
             color: black;
         }
 
-        /* ========================================================================
-               2. ICONS & COLLAPSE STYLES
-               ======================================================================== */
         #headingCollapse14:before {
             position: absolute;
             top: 48%;
@@ -90,31 +95,13 @@
             border-bottom-right-radius: 0px !important;
         }
 
-        /* ========================================================================
-               3. CONTAINER & UI STYLES
-               ======================================================================== */
-        .info-sidebar {
-            border-radius: 7px;
-            border: 2px solid black;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            background-color: white;
-            overflow: hidden;
-        }
-
-        .info-sidebar-body {
-            padding: 15px;
-            flex-grow: 1;
-        }
-
         .footers {
+            /* position: absolute; */
+            bottom: 0;
+            left: 0;
             border-top: 2px solid black;
-            padding: 15px;
+            padding-top: 5px;
             width: 100%;
-            background: white;
-            text-align: center;
-            margin-top: auto;
         }
 
         .btn-dark {
@@ -127,272 +114,399 @@
             border-radius: 0.5rem;
         }
 
-        .success {
-            color: #28a745;
-            font-weight: bold;
+        .form-control {
+
+            border: 2px solid black !important;
+            height: calc(1em + 1.4rem + 0px);
+            border-radius: 7px;
+            width: 60%;
+
         }
 
-        /* Sidebar Action Buttons Fixes */
-        .sidebar-action-btn {
-            width: 100%;
-            padding: 10px 15px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            border-radius: 6px;
-            transition: all 0.2s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        .form-btn {
+            text-align: left;
+            /* opacity: -0.5; */
+            color: #babfcc;
+            width: 37%;
+            padding: 7px;
+            padding-left: 14px;
+            float: left;
         }
 
-        .sidebar-action-btn:hover {
-            background-color: #333 !important;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        .view-btn {
+            float: left;
+            margin-top: 0px;
+            padding: 9px;
+            margin-left: 10px;
+            background-color: #ff822f !important;
+            border-color: #ff822f !important;
         }
 
-        .footers-flex {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+        body {
+            color: black;
         }
 
-        /* ========================================================================
-               4. RESPONSIVE MEDIA QUERIES (991.98px for Tablet/Mobile Stacking)
-               ======================================================================== */
-        @media (max-width: 991.98px) {
-            .headerbg {
-                padding-left: 25px !important;
-            }
+        .view-btn-black {
+            /* float: left; */
+            margin-top: 0px;
+            padding: 9px;
+            margin-left: 10px;
+            background-color: black !important;
+            border-color: black !important;
+        }
 
-            .info-sidebar-wrapper {
-                margin-bottom: 25px;
-                /* Adds space between stacked containers */
-            }
+        .form-control:focus {
+            color: #4e5154;
+            background-color: #fff;
+            border-color: black;
+            outline: 0;
+            box-shadow: none;
+        }
 
-            /* Make buttons full width on smaller screens */
-            .footers a button {
-                width: 100% !important;
-                float: none !important;
-                margin-bottom: 0px !important;
-                /* Managed by flex gap now */
-            }
+        body.vertical-layout.vertical-menu.menu-expanded .main-menu {
+            width: 274px;
+            transition: 300ms ease all;
+            backface-visibility: hidden;
+        }
 
-            .text-secondary {
-                word-break: break-word;
-                margin-top: 5px;
-            }
+        body.vertical-layout.vertical-menu.menu-expanded .content,
+        body.vertical-layout.vertical-menu.menu-expanded .footer {
+            margin-left: 274px;
+            /* background-color: white; */
+        }
 
-            .col-sm-5 {
-                font-weight: 600;
-            }
+        input:focus:required:invalid {
+            border: 2px solid red;
+        }
+
+        input:required:valid {
+            border: 2px solid black;
         }
     </style>
 @endsection
 
 @section('header')
     <div class="content-header bg-white">
-        <div class="row m-0" style="border-bottom: 3px solid #949494;">
-            <div class="col-12 bg-white headerbg" style="padding-left: 32px;padding-top: 13px;">
-                <h3 class="h3">User</h3>
-                <div class="breadcrumb-wrapper col-12 p-0">
-                    <ol class="breadcrumb" style="padding-left: 0; background-color: transparent;">
-                        <li class="breadcrumb-item"><a>Directory</a></li>
-                        <li class="breadcrumb-item"><a style="color: black" href="{{ route('vender.user') }}">Users</a></li>
-                        <li class="breadcrumb-item">{{ $user['name'] }} {{ $user['middle_name'] }} {{ $user['last_name'] }}
+        <div class="row" style="border-bottom: 3px solid #949494;">
+            <div class="col-xl-12 col-12 bg-white headerbg" style="padding-left: 32px;padding-top: 13px;">
+                <h3 class="h3">Add new user</h3>
+                <div class="breadcrumb-wrapper col-12">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a>Directory</a>
                         </li>
-                        <li class="breadcrumb-item">User information</li>
+                        <li class="breadcrumb-item"><a style="color: black" href="{{ route('vender.user') }}">Users</a>
+                        </li>
+
+
+
+                        <li class="breadcrumb-item">Add new user
+                        </li>
+
+
                     </ol>
                 </div>
             </div>
+
         </div>
     </div>
 @endsection
 
 @section('content')
-    <div class="container-fluid px-1 px-md-1 mt-1">
-        <div class="row align-items-start m-0">
+    <div class="row">
+        <div class="col-md-3">
+            <div style="border-radius: 7px;border: 2px solid black; ">
+                <h4 class="h3" style="font-weight: 600; font-size: 17px;padding: 10px; ">
+                    <img src="/user.png" style="width: 22px;margin-top: -5px;"> New user
+                </h4>
 
-            {{-- Left Sidebar Profile Card (Added align-self-start) --}}
-            <div class="col-12 col-lg-3 info-sidebar-wrapper mb-4 mb-lg-0 p-0 pr-lg-3 align-self-start">
-                <div class="info-sidebar">
+            </div>
+        </div>
+        <div class="col-md-9"
+            style="border: 2px solid black;border-radius: 6px;margin-bottom: 10px;padding-left: 0;padding-right: 0;">
+            <div class="row" style="margin-right: 0;margin-left: 0;">
+                <div class="col-md-12" style="border-bottom: 2px solid black;">
+                    <h3 style="font-size: 20px; padding: 10px; margin-left: -11px; color: black;padding-bottom: 0px;">User
+                        information</h3>
+                </div>
 
-                    <div class="info-sidebar-body">
-                        <h4 class="h3 d-flex align-items-start m-0"
-                            style="font-weight: 600; font-size: 17px; padding-bottom: 15px;">
-                            <img src="/user.png" style="width: 22px; margin-top: 2px; margin-right: 10px;">
-                            <span style="word-break: break-word;">{{ $user['name'] }} {{ $user['middle_name'] }}
-                                {{ $user['last_name'] }}</span>
-                        </h4>
 
-                        <div style="margin-top: 20px; font-weight: 500; font-size: 13px; word-break: break-all;">
-                            <span>{{ $user['email'] }}</span>
+            </div>
+            <form action="{{ route('vender.user.store') }}" id="contens" method="POST" enctype="multipart/form-data"
+                id="contens"> @csrf
+                <div class="link-body" style="padding: 10px">
+
+                    <div class="form-group row">
+                        <label class="col-md-4 label-control" for="eventRegInput5">First name *</label>
+                        <div class="col-md-8 mx-auto">
+                            <input type="text" id="name" class="form-control" value="" onkeyup="lookup(this);"
+                                name="name" placeholder="First name">
+                            <p class="text-danger name"
+                                style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This Field is
+                                Required !</p>
                         </div>
-                        <div style="margin-top: 15px; font-weight: 500; font-size: 13px;">
-                            <span class="success">{{ $user['status'] }}</span>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 label-control" for="eventRegInput5">Middle name </label>
+                        <div class="col-md-8 mx-auto">
+                            <input type="text" id="middle_name" class="form-control" value="" name="middle_name"
+                                placeholder="Middle name ">
+                            <p class="text-danger middle_name"
+                                style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This Field is
+                                Required !</p>
                         </div>
-                        <div style="margin-top: 15px; font-weight: 500; font-size: 13px;">
-                            <span>Last sign in: {{ \Carbon\Carbon::parse($user['updated_at'])->format('d/m/Y') }} at
-                                {{ \Carbon\Carbon::parse($user['updated_at'])->format('h:i') }}</span>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 label-control" for="eventRegInput5">Last name *</label>
+                        <div class="col-md-8 mx-auto">
+                            <input type="text" id="last_name" class="form-control" value="" onkeyup="lookup(this);"
+                                name="last_name" placeholder="Last name">
+                            <p class="text-danger last_name"
+                                style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This Field is
+                                Required !</p>
+
                         </div>
-                        <div style="margin-top: 15px; font-weight: 500; font-size: 13px;">
-                            <span>Created: {{ \Carbon\Carbon::parse($user['created_at'])->format('d/m/Y') }} at
-                                {{ \Carbon\Carbon::parse($user['created_at'])->format('h:i') }}</span>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 label-control" for="eventRegInput5">Email * </label>
+                        <div class="col-md-8 mx-auto">
+                            <input type="email" id="email" class="form-control" value="" onkeyup="lookup(this);"
+                                name="email" placeholder="Email">
+                            <p class="text-danger email"
+                                style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">Invalid Email !</p>
+                            @if ($errors->has('email'))
+                                <p class="text-danger email" style="padding-left: 10px;width:100%;margin-bottom: -8px;">
+                                    {{ $errors->first('email') }}</p>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 label-control" for="eventRegInput5">Mobile * </label>
+                        <div class="col-md-8 mx-auto">
+                            <input type="tel" id="phone_no" class="form-control" value=""
+                                onkeyup="lookup(this);" name="phone_no" placeholder="Mobile">
+                            <p class="text-danger phone_no"
+                                style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This Field is
+                                Required !</p>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 label-control" for="eventRegInput5">Landline </label>
+                        <div class="col-md-8 mx-auto">
+                            <input type="tel" id="landline" class="form-control" value=""
+                                onkeyup="lookup(this);" name="landline" placeholder="Landline">
+                            <p class="text-danger landline"
+                                style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This Field is
+                                Required !</p>
                         </div>
                     </div>
 
-                    {{-- Action Buttons Footer (Corrected styles and casing) --}}
-                    <div class="footers footers-flex">
-                        <a href="{{ route('vender.user.password', $user['id']) }}" style="text-decoration: none;">
-                            <button type="button" class="btn btn-dark sidebar-action-btn m-0">Reset Password</button>
-                        </a>
-                        <a href="{{ route('vender.user.edit', $user['id']) }}" style="text-decoration: none;">
-                            <button type="button" class="btn btn-dark sidebar-action-btn m-0">Update User</button>
-                        </a>
-                        <a href="{{ route('vender.user.suspend', $user['id']) }}" style="text-decoration: none;">
-                            <button type="button" class="btn btn-dark sidebar-action-btn m-0">Suspend User</button>
-                        </a>
-                        @if ($user['status'] != 'ACTIVE')
-                            <a href="{{ route('vender.user.active', $user['id']) }}" style="text-decoration: none;">
-                                <button type="button" class="btn btn-dark sidebar-action-btn m-0">Activate User</button>
-                            </a>
-                        @else
-                            <a href="{{ route('vender.user.in.active', $user['id']) }}" style="text-decoration: none;">
-                                <button type="button" class="btn btn-dark sidebar-action-btn m-0">Inactivate User</button>
-                            </a>
-                        @endif
-                    </div>
+
 
                 </div>
-            </div>
+                <div class="footers">
 
-            {{-- Right Content Container --}}
-            <div class="col-12 col-lg-9 p-0" id="contens">
-                <div class="card default-collapse collapse-icon accordion-icon-rotate m-0"
-                    style="box-shadow: none; background: transparent;">
-
-                    {{-- FIXED ACCORDION HEADER (Using data-target instead of href) --}}
-                    <a id="headingCollapse1" class="card-header info mt-0"
-                        style="border: 2px solid black; border-radius: 7px 7px 0 0 !important; padding: 0.7rem 1rem; color: black !important; background: white; display: block; cursor: pointer;"
-                        data-toggle="collapse" data-target="#collaptr_businesss_info" aria-expanded="true">
-                        <div class="card-title lead m-0">User information</div>
-                    </a>
-
-                    <div id="collaptr_businesss_info" role="tabpanel" aria-labelledby="headingCollapse1"
-                        style="border-left: 2px solid black; border-right: 2px solid black; border-bottom: 2px solid black; background: white; margin-top: -2px;"
-                        class="collapse show">
-
-                        <div class="card-content">
-                            {{-- Added Padding Fix Here --}}
-                            <div class="card-body" style="padding: 10px 15px;">
-
-                                <div class="row align-items-center py-1">
-                                    <div class="col-12 col-sm-5">
-                                        <h6 class="mb-0">ID</h6>
-                                    </div>
-                                    <div class="col-12 col-sm-7 text-secondary">{{ $user['id'] }}</div>
-                                </div>
-                                <hr class="m-0">
-
-                                <div class="row align-items-center py-1">
-                                    <div class="col-12 col-sm-5">
-                                        <h6 class="mb-0">First name</h6>
-                                    </div>
-                                    <div class="col-12 col-sm-7 text-secondary">{{ $user['name'] }}</div>
-                                </div>
-                                <hr class="m-0">
-
-                                <div class="row align-items-center py-1">
-                                    <div class="col-12 col-sm-5">
-                                        <h6 class="mb-0">Middle name</h6>
-                                    </div>
-                                    <div class="col-12 col-sm-7 text-secondary">{{ $user['middle_name'] }}</div>
-                                </div>
-                                <hr class="m-0">
-
-                                <div class="row align-items-center py-1">
-                                    <div class="col-12 col-sm-5">
-                                        <h6 class="mb-0">Last name</h6>
-                                    </div>
-                                    <div class="col-12 col-sm-7 text-secondary">{{ $user['last_name'] }}</div>
-                                </div>
-                                <hr class="m-0">
-
-                                <div class="row align-items-center py-1">
-                                    <div class="col-12 col-sm-5">
-                                        <h6 class="mb-0">Email</h6>
-                                    </div>
-                                    <div class="col-12 col-sm-7 text-secondary">{{ $user['email'] }}</div>
-                                </div>
-                                <hr class="m-0">
-
-                                @if (auth()->user()->id == $user['id'])
-                                    <div class="row align-items-center py-1">
-                                        <div class="col-12 col-sm-5">
-                                            <h6 class="mb-0">Mobile</h6>
-                                        </div>
-                                        <div class="col-12 col-sm-7 text-secondary">{{ $user['profile']['phone_no'] }}
-                                        </div>
-                                    </div>
-                                    <hr class="m-0">
-                                    <div class="row align-items-center py-1">
-                                        <div class="col-12 col-sm-5">
-                                            <h6 class="mb-0">Landline</h6>
-                                        </div>
-                                        <div class="col-12 col-sm-7 text-secondary">{{ $user['profile']['landline'] }}
-                                        </div>
-                                    </div>
-                                @else
-                                    <div class="row align-items-center py-1">
-                                        <div class="col-12 col-sm-5">
-                                            <h6 class="mb-0">Mobile</h6>
-                                        </div>
-                                        <div class="col-12 col-sm-7 text-secondary">{{ $user['phone_no'] }}</div>
-                                    </div>
-                                    <hr class="m-0">
-                                    <div class="row align-items-center py-1">
-                                        <div class="col-12 col-sm-5">
-                                            <h6 class="mb-0">Landline</h6>
-                                        </div>
-                                        <div class="col-12 col-sm-7 text-secondary">{{ $user['landline'] }}</div>
-                                    </div>
-                                @endif
-
-                            </div>
-
-                            <div class="footers"
-                                style="border-radius: 0 0 5px 5px; text-align: right; border-top: 2px solid black;">
-                                <a href="{{ route('vender.user.edit', $user['id']) }}">
-                                    <button type="button" class="btn btn-dark round btn-min-width m-0">Edit</button>
-                                </a>
-                            </div>
-
-                        </div>
-                    </div>
+                    <button type="button" onclick="submitDetailsForm()"
+                        class="btn btn-dark round btn-min-width mr-1 mb-1" style="float: right;">Save</button>
+                    <a href="{{ redirect()->back()->getTargetUrl() }}"><button type="button"
+                            class="btn btn-dark round btn-min-width mr-1 mb-1" style="float: right;">Cancel</button></a>
 
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 @endsection
 
+
 @section('script')
     <script src="/modules/admin/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
+    {{-- <script src="/modules/admin/app-assets/js/scripts/tables/datatables/datatable-basic.js"></script> --}}
+
 
     <script>
-        // Prevent initialization errors if table doesn't exist
-        if ($('.zero-configuration').length > 0) {
-            var oTable = $('.zero-configuration').DataTable({
-                "destroy": true,
-                "bPaginate": $('.zero-configuration tbody tr').length > 10,
-                "iDisplayLength": 10,
-                "bAutoWidth": false,
-                "ordering": false,
+        oTable = $('.zero-configuration').DataTable({
+            "bPaginate": $('.zero-configuration tbody tr').length > 10,
+            "iDisplayLength": 10,
+            "bAutoWidth": false,
+            "ordering": false,
+
+        }); //pay attention to capital D, which is mandatory to retrieve "api" datatables' object, as @Lionel said
+        $('#myInputTextField').keyup(function() {
+            oTable.search($(this).val()).draw();
+        })
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            var contentHeight = $('#contens').height();
+            $('#contens').height(contentHeight);
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            var contentHeight = $('#contens').height();
+            $('#contens').height(contentHeight);
+        });
+    </script>
+    <script>
+        $('.form-btn').click(function() {
+            $('input[type=file]').trigger('click');
+        });
+    </script>
+    <script>
+        $('input[type=radio]').change(function() {
+            if (this.value == 'YES') {
+
+                $('.Poof_div').show();
+                var contentHeight = $('#contens').height();
+                $('#contens').height(contentHeight);
+
+            } else {
+                $('.Poof_div').hide();
+                var contentHeight = $('#contens').height();
+                $('#contens').height('550px');
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('input[type="file"]').change(function(e) {
+                var fileName = e.target.files[0].name;
+                $('.form-btn').val(fileName);
+
+                $('.view-btn').show();
+                $('#view_file').attr('href', URL.createObjectURL(e.target.files[0]));
+                $('.file_proof').hide();
+                $(`#proof_of_main_contact`).attr('style', 'border:2px solid black!important');
+            });
+        });
+    </script>
+
+    <script>
+        async function lookup(arg) {
+            var id = arg.getAttribute('id');
+            var value = arg.value;
+
+
+            let trading_name = $(`#${id}`).val();
+            if (id !== "address_line_2" && id !== "city" && id !== "postcode") {
+                if (trading_name === "") {
+
+
+                    $(`#${id}`).attr("style", "border:2px solid red!important;");
+                    status = false;
+
+                } else {
+                    $(`#${id}`).attr("style", "border:2px solid black!important;");
+                    $(`.${id}`).hide();
+                }
+            } else {
+                if (trading_name === "") {
+
+
+                    $(`#${id}`).attr("style", "border:2px solid red!important;margin-top: 5px ");
+                    status = false;
+
+                } else {
+                    $(`#${id}`).attr("style", "border:2px solid black!important;margin-top: 5px;");
+                    $(`.${id}`).hide();
+                }
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+    </script>
+
+
+    <script>
+        function submitDetailsForm() {
+            let array = ['name', 'last_name', 'email', 'phone_no'];
+
+            let status = false;
+            array.some((item) => {
+                let name = $(`#${item}`).val();
+                console.log(name, item);
+
+                if (name === "") {
+
+
+                    $(`#${item}`).attr('style', 'border:2px solid red!important');
+
+
+
+                } else {
+
+                    $(`#${item}`).attr('style', 'border:2px solid black!important');
+
+
+                }
+            });
+            array.some((item) => {
+                let name = $(`#${item}`).val();
+                console.log(name, item);
+
+                if (name === "") {
+
+
+                    $(`#${item}`).attr('style', 'border:2px solid red!important');
+
+                    status = false;
+
+
+                    return true;
+
+                } else {
+
+                    $(`#${item}`).attr('style', 'border:2px solid black!important');
+                    status = true;
+
+                }
             });
 
-            $('#myInputTextField').keyup(function() {
-                oTable.search($(this).val()).draw();
-            });
+
+
+            let email = $(`#email`).val();
+
+            console.log(validateEmail(email));
+
+            if (validateEmail(email) === null) {
+                $(`#email`).attr('style', 'border:2px solid red!important');
+                $('.email').show();
+                return false;
+            }
+
+
+            if (status == true) {
+                $("form").submit();
+            }
+
+
+
+
+
+
         }
+    </script>
+    <script>
+        const validateEmail = (email) => {
+            return String(email)
+                .toLowerCase()
+                .match(
+                    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                );
+        };
     </script>
 @endsection

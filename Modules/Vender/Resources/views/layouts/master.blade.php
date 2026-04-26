@@ -274,6 +274,26 @@
         h4 {
             color: black !important;
         }
+
+        .main-menu.menu-light .navigation>li.hover>a {
+            padding-left: 47px;
+        }
+
+        .sidebar-overview {
+            border-radius: 7px;
+            border: 2px solid black;
+            background-color: white;
+            padding-bottom: 20px;
+            box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.04);
+        }
+
+        .theme-label {
+            color: black !important;
+            font-size: 0.95rem;
+            font-weight: 600 !important;
+            margin: 0;
+            padding-right: 15px;
+        }
     </style>
     <style>
         /* --- Global Variables --- */
