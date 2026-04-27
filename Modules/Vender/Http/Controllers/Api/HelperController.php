@@ -274,7 +274,16 @@ class HelperController extends Controller
             $trading_id = User::find($request->user()->id)['default_trading_unit'];
 
 
-            $quick_job = QuickProduct::where('trading_id', $trading_id)->with(['job_type', 'job_coverage', 'job_types'])->with('job_types.jobtype')->where('status', 'ACTIVE')->get();
+            $quick_job = QuickProduct::query()
+                ->where('trading_id', $trading_id)
+                ->where('status', 'ACTIVE')
+                ->with([
+                    'job_type',
+                    'job_coverage',
+                    'job_types.jobtype'
+                ])
+                ->orderBy('product_name', 'asc') // 👈 alphabetical order
+                ->get();
             return response()->json([
                 'status' => true,
                 'quick_job' => $quick_job,
