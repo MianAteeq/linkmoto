@@ -615,7 +615,7 @@
                                                 <label class="form-check-label" for="service_other">Other</label>
                                             </div>
                                             <input type="text" name="other_service" class="form-control mt-2"
-                                                placeholder="Please specify" style="display: none;"
+                                                placeholder="Please specify" style="display: none!important;"
                                                 id="other_service_input">
 
                                             <p class="text-danger service_id" style="padding-left: 10px;display: none">
@@ -627,7 +627,7 @@
                                             // Show/hide text field when "Other" is checked
                                             document.getElementById('service_other').addEventListener('change', function() {
                                                 let input = document.getElementById('other_service_input');
-                                                input.style.display = this.checked ? 'block' : 'none';
+                                                input.style.display = this.checked ? 'block' : 'none!important';
                                             });
                                         </script>
 

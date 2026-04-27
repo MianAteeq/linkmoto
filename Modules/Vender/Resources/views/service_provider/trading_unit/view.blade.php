@@ -332,14 +332,15 @@
                                     <div class="col-sm-7 text-secondary">{{ $trading_unit['radius'] }}</div>
                                 </div>
                                 <hr>
-                                <div class="row">
+                                
+                            @endif
+                            <div class="row">
                                     <div class="col-sm-5">
                                         <h6 class="mb-0" style="font-weight: 600;">Landline</h6>
                                     </div>
                                     <div class="col-sm-7 text-secondary">{{ $trading_unit['landline'] }}</div>
                                 </div>
                                 <hr>
-                            @endif
 
                             <div class="row">
                                 <div class="col-sm-5">

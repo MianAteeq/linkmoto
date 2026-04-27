@@ -285,7 +285,7 @@
                         @endif
                         <p style="margin:0 0 6px 0;">
                             @if (!empty($vender['profile']['uk_vat_no']))
-                                Registered Vat no: {{ $vender['profile']['uk_vat_no'] }}
+                                Vat no: {{ $vender['profile']['uk_vat_no'] }}
                             @else
                                 <span style="visibility:hidden;">VAT placeholder</span>
                             @endif
@@ -1165,7 +1165,7 @@ if($first_item['unit_price_rate']=="Hourly"){
                                 {{ $invoice['trading_name']['app_setting']['website'] }}
                             </p>
                             @if (!empty($vender['profile']['uk_vat_no']))
-                                <p style="line-height: 1.8;font-size: 15px;margin:0;margin-top: -7px;">Registered VAT
+                                <p style="line-height: 1.8;font-size: 15px;margin:0;margin-top: -7px;">VAT
                                     No: {{ $vender['profile']['uk_vat_no'] }}</p>
                             @endif
 
@@ -1845,7 +1845,7 @@ if($first_item['unit_price_rate']=="Hourly"){
                                 {{ $invoice['trading_name']['app_setting']['website'] }}
                             </p>
                             @if (!empty($vender['profile']['uk_vat_no']))
-                                <p style="line-height: 1.8;font-size: 15px;margin:0;margin-top: -7px;">Registered VAT
+                                <p style="line-height: 1.8;font-size: 15px;margin:0;margin-top: -7px;">Vat
                                     No: {{ $vender['profile']['uk_vat_no'] }}</p>
                             @endif
 
