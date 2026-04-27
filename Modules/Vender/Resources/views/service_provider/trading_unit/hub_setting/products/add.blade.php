@@ -133,6 +133,38 @@
             cursor: pointer;
             color: white;
         }
+
+        .textarea-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .textarea-header {
+            position: absolute;
+            top: 8px;
+            left: 12px;
+            right: 12px;
+
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 1.4;
+
+            white-space: normal;
+            word-break: break-word;
+
+            pointer-events: none;
+        }
+
+        .textarea-main {
+            width: 55%;
+            min-height: 150px;
+
+            padding: 12px;
+            /* will be overridden dynamically */
+
+            box-sizing: border-box;
+            resize: vertical;
+        }
     </style>
 @endsection
 
@@ -269,8 +301,14 @@
                                     <label class="col-md-4 label-control" for="eventRegInput5">Job Request Description *
                                     </label>
                                     <div class="col-md-8 mx-auto">
-                                        <textarea type="text" id="description" class="form-control" value="" onkeyup="lookup(this);"
-                                            name="description" placeholder="Product Description"></textarea>
+                                        <div class="textarea-wrapper">
+                                            <div class="textarea-header" id="textareaHeader">
+                                                <p style="width: 50%;" id="description_name"></p>
+                                            </div>
+
+                                            <textarea id="description" class="form-control textarea-main" name="description" placeholder="Product Description"
+                                                onkeyup="lookup(this);"></textarea>
+                                        </div>
                                         <p class="text-danger description"
                                             style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This
                                             Field is Required !</p>
@@ -421,7 +459,7 @@
 @section('script')
     <script>
         function submitDetailsForm() {
-            let array = ['product_name', 'price', 'job_coverage_id', 'price_type', 'job_type_id', 'description'];
+            let array = ['product_name', 'price', 'job_coverage_id', 'price_type', 'job_type_id'];
 
             let status = false;
             array.some((item) => {
@@ -576,10 +614,11 @@
             let text = textArr.join(', ');
 
             $('#content_job_type').html(html);
-            $('#description').val(text);
+            $('#description_name').text(text);
 
             const ids = job_types.map(user => user.id);
             $('#service_id').val(JSON.stringify(ids));
+            addHeight();
 
 
 
@@ -602,9 +641,10 @@
             let text = textArr.join(', ');
 
             $('#content_job_type').html(html);
-            $('#description').val(text);
+            $('#description_name').text(text);
             const ids = job_types.map(user => user.id);
             $('#service_id').val(JSON.stringify(ids));
+            addHeight();
         }
     </script>
     <script>
@@ -666,5 +706,37 @@
                 }
             });
         });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const header = document.getElementById("textareaHeader");
+            const textarea = document.getElementById("description");
+
+            function adjustPadding() {
+                const headerHeight = header.offsetHeight;
+                textarea.style.paddingTop = (headerHeight + 10) + "px";
+            }
+
+            adjustPadding();
+
+            // Optional: re-adjust on window resize
+            window.addEventListener("resize", adjustPadding);
+        });
+
+        function addHeight() {
+            const header = document.getElementById("textareaHeader");
+            const textarea = document.getElementById("description");
+
+            function adjustPadding() {
+                const headerHeight = header.offsetHeight;
+                textarea.style.paddingTop = (headerHeight + 10) + "px";
+            }
+
+            adjustPadding();
+
+            // Optional: re-adjust on window resize
+            window.addEventListener("resize", adjustPadding);
+        }
     </script>
 @endsection

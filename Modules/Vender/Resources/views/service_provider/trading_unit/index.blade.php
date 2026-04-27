@@ -223,7 +223,7 @@
 
         <div class="col-lg-9 col-12" style="border-radius: 6px;margin-bottom: 10px;padding-bottom: 10px;margin-top: 0px;">
 
-            <div class="d-flex align-items-center mb-4 flex-wrap nav-buttons" style="gap: 15px;">
+            <div class="d-flex align-items-center mb-2 flex-wrap nav-buttons" style="gap: 15px;">
 
                 {{-- Button 1 --}}
                 <h4 class="h3 m-0"

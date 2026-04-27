@@ -3,8 +3,8 @@
 @section('css_custom')
     <style>
         /* ========================================================================
-               1. ICONS & MENU STYLES
-               ======================================================================== */
+                       1. ICONS & MENU STYLES
+                       ======================================================================== */
         .collapse-icon [data-toggle="collapse"]:before {
             position: absolute;
             top: 48%;
@@ -31,8 +31,8 @@
         }
 
         /* ========================================================================
-               2. CONTAINER & UI STYLES
-               ======================================================================== */
+                       2. CONTAINER & UI STYLES
+                       ======================================================================== */
         body {
             color: black;
         }
@@ -84,8 +84,8 @@
         }
 
         /* ========================================================================
-               3. RESPONSIVE MEDIA QUERIES (Tablet & Mobile Stacking)
-               ======================================================================== */
+                       3. RESPONSIVE MEDIA QUERIES (Tablet & Mobile Stacking)
+                       ======================================================================== */
         @media (max-width: 991.98px) {
             .headerbg {
                 padding-left: 25px !important;
@@ -166,7 +166,7 @@
         <div class="row align-items-start m-0">
 
             {{-- Left Sidebar Profile Card --}}
-            <div class="col-12 col-lg-3 info-sidebar-wrapper mb-4 mb-lg-0 p-0 pr-lg-3">
+            <div class="col-12 col-lg-3 info-sidebar-wrapper mb-2 mb-lg-0 p-0 pr-lg-3">
                 <div class="info-sidebar">
 
                     {{-- Fixed invalid HTML: changed outer h4 to a div --}}
@@ -231,7 +231,7 @@
             <div class="col-12 col-lg-9 p-0" id="contens">
 
                 {{-- Navigation Buttons Row (Flexbox Spacing Fix) --}}
-                <div class="d-flex align-items-center mb-4 flex-wrap nav-buttons" style="gap: 15px;">
+                <div class="d-flex align-items-center mb-2 flex-wrap nav-buttons" style="gap: 15px;">
                     <a href="{{ route('vender.service.provider.trading.unit.view', $trading_unit['id']) }}"
                         style="text-decoration: none;">
                         <h4 class="h3 m-0"

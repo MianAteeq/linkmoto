@@ -133,6 +133,38 @@
             cursor: pointer;
             color: white;
         }
+
+        .textarea-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .textarea-header {
+            position: absolute;
+            top: 8px;
+            left: 12px;
+            right: 12px;
+
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 1.4;
+
+            white-space: normal;
+            word-break: break-word;
+
+            pointer-events: none;
+        }
+
+        .textarea-main {
+            width: 55%;
+            min-height: 150px;
+
+            padding: 12px;
+            /* will be overridden dynamically */
+
+            box-sizing: border-box;
+            resize: vertical;
+        }
     </style>
 @endsection
 
@@ -300,7 +332,7 @@
                                         </div>
 
                                     </div>
-                                    <div class="form-group row">
+                                    {{-- <div class="form-group row">
                                         <label class="col-md-4 label-control" for="eventRegInput5">Job Request Description
                                             *
                                         </label>
@@ -314,6 +346,31 @@
 
                                             <textarea id="description" class="form-control" name="description" placeholder="Product Description"
                                                 onkeyup="lookup(this);">{{ $jobTypeString }} {{ $cleanDescription }}</textarea>
+                                            <p class="text-danger description"
+                                                style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">
+                                                This
+                                                Field is Required !</p>
+                                        </div>
+                                    </div> --}}
+                                    <div class="form-group row">
+                                        <label class="col-md-4 label-control" for="eventRegInput5">Job Request Description
+                                            *
+                                        </label>
+                                        <div class="col-md-8 mx-auto">
+                                            @php
+                                                $jobTypeString = collect($jobstypes)->pluck('name')->implode(', ');
+                                                $cleanDescription = trim(
+                                                    str_replace($jobTypeString, '', $product['description']),
+                                                );
+                                            @endphp
+                                            <div class="textarea-wrapper">
+                                                <div class="textarea-header" id="textareaHeader">
+                                                    <p style="width: 50%;" id="description_name">{{ $jobTypeString }}</p>
+                                                </div>
+
+                                                <textarea id="description" class="form-control textarea-main" name="description" placeholder="Product Description"
+                                                    onkeyup="lookup(this);">{{ $cleanDescription }}</textarea>
+                                            </div>
                                             <p class="text-danger description"
                                                 style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">
                                                 This
@@ -601,7 +658,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function submitDetailsForm() {
-            let array = ['product_name', 'price', 'job_coverage_id', 'price_type', 'job_type_id', 'description'];
+            let array = ['product_name', 'price', 'job_coverage_id', 'price_type', 'job_type_id'];
 
             let status = false;
             array.some((item) => {
@@ -764,10 +821,11 @@
 
             $('#content_job_type').html(html);
             console.log(text);
-            $('#description').val(text);
+            $('#description_name').text(text);
 
             const ids = job_types.map(user => user.id);
             $('#service_id').val(JSON.stringify(ids));
+            addHeight();
 
 
 
@@ -792,11 +850,12 @@
             // No trailing comma
             text = `${names.join(', ')}`;
             html += `</div>`;
-            $('#description').val(text);
+            $('#description_name').text(text);
 
             $('#content_job_type').html(html);
             const ids = job_types.map(user => user.id);
             $('#service_id').val(JSON.stringify(ids));
+            addHeight();
         }
     </script>
     <script>
@@ -909,6 +968,38 @@
             modal.hide();
 
             submitDetailsForm();
+        }
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const header = document.getElementById("textareaHeader");
+            const textarea = document.getElementById("description");
+
+            function adjustPadding() {
+                const headerHeight = header.offsetHeight;
+                textarea.style.paddingTop = (headerHeight + 10) + "px";
+            }
+
+            adjustPadding();
+
+            // Optional: re-adjust on window resize
+            window.addEventListener("resize", adjustPadding);
+        });
+
+        function addHeight() {
+            const header = document.getElementById("textareaHeader");
+            const textarea = document.getElementById("description");
+
+            function adjustPadding() {
+                const headerHeight = header.offsetHeight;
+                textarea.style.paddingTop = (headerHeight + 10) + "px";
+            }
+
+            adjustPadding();
+
+            // Optional: re-adjust on window resize
+            window.addEventListener("resize", adjustPadding);
         }
     </script>
 @endsection
