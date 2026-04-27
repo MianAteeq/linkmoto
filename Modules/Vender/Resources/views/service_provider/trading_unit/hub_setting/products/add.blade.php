@@ -306,8 +306,7 @@
                                                 <p style="width: 50%;" id="description_name"></p>
                                             </div>
 
-                                            <textarea id="description" class="form-control textarea-main" name="description" placeholder="Product Description"
-                                                onkeyup="lookup(this);"></textarea>
+                                            <textarea id="description" class="form-control textarea-main" name="description" placeholder="Product Description"></textarea>
                                         </div>
                                         <p class="text-danger description"
                                             style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This
