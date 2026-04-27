@@ -221,10 +221,10 @@
             <div style="border-radius: 7px;border: 2px solid black;height: 44px;  ">
                 <h4 class="h3" style="font-weight: 600; font-size: 17px;padding: 10px; ">
                     <div>
-                        <div style="float: left; width: 10%;">
+                        <div style="float: left; width: 20%;">
                             <img src="/gear-black.png" style="width: 38px;margin-top: -5px;">
                         </div>
-                        <div style="float: left; width: 90%;">
+                        <div style="float: left; width: 80%;">
                             <span>Edit Product</span>
                         </div>
 

@@ -515,7 +515,8 @@
                                     You are about to permanently delete this product. This action cannot be undone.
                                 </p>
 
-                                <form id="deleteForm" method="POST">
+                                <form method="POST"
+                                    action="{{ route('vender.service.provider.trading.unit.hub.setting.delete.product.offer', [$product['id'], $trading_unit['id']]) }}">
                                     @csrf
                                     @method('DELETE')
 
@@ -569,15 +570,14 @@
             if (isReferenced) {
                 let modal = new bootstrap.Modal(document.getElementById('cannotDeleteModal'));
                 modal.show();
+
             } else {
-                let form = document.getElementById('deleteForm');
-                form.action = @json(route('vender.service.provider.trading.unit.hub.setting.delete.product.offer', [
-                        $product['id'],
-                        $trading_unit['id'],
-                    ]));
 
                 let modal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
                 modal.show();
+
+
+
             }
         }
     </script>
@@ -606,12 +606,9 @@
                 let modal = new bootstrap.Modal(document.getElementById('cannotDeleteModal'));
                 modal.show();
             } else {
-                form.action = @json(route('vender.service.provider.trading.unit.hub.setting.delete.product.offer', [
-                        $product['id'],
-                        $trading_unit['id'],
-                    ]));
                 let modal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
                 modal.show();
+
             }
         }
     </script>
