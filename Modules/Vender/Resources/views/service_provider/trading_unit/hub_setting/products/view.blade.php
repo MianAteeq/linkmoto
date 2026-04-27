@@ -307,22 +307,23 @@
 
                     <div style="display: flex; flex-direction: column; line-height: 1.2;">
                         <span style="color: #F07D44; font-size: 15px;">Product:</span>
-                        <span style="font-weight: 600; font-size: 18px; color: #000; margin-top: 2px;">MOT</span>
+                        <span
+                            style="font-weight: 600; font-size: 18px; color: #000; margin-top: 2px;">{{ $product['product_name'] }}</span>
                     </div>
                 </div>
 
-                <div style="padding: 16px;">
-
-                    <div style="margin-bottom: 16px; line-height: 1.4;">
-                        <div style="color: #F07D44; font-size: 14px;">Created:</div>
-                        <div style="font-size: 14px; color: #000;">12/07/2024 at 4:59am</div>
+                <div style="margin-bottom: 16px; line-height: 1.4;">
+                    <div style="color: #F07D44; font-size: 14px;">Created:</div>
+                    <div style="font-size: 14px; color: #000;">
+                        {{ \Carbon\Carbon::parse($product['created_at'])->format('d/m/Y \a\t g:ia') }}
                     </div>
+                </div>
 
-                    <div style="line-height: 1.4;">
-                        <div style="color: #F07D44; font-size: 14px;">Last updated:</div>
-                        <div style="font-size: 14px; color: #000;">15/10/2024 at 10am</div>
+                <div style="line-height: 1.4;">
+                    <div style="color: #F07D44; font-size: 14px;">Last updated:</div>
+                    <div style="font-size: 14px; color: #000;">
+                        {{ \Carbon\Carbon::parse($product['updated_at'])->format('d/m/Y \a\t g:ia') }}
                     </div>
-
                 </div>
 
             </div>
