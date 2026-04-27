@@ -568,9 +568,9 @@
                                     <div class="col-md-8 mx-auto">
                                         <select class="form-control" name="status">
                                             <option value="ACTIVE" @if ($product['status'] == 'ACTIVE') selected @endif>
-                                                ACTIVE</option>
+                                                Active</option>
                                             <option value="INACTIVE" @if ($product['status'] == 'INACTIVE') selected @endif>
-                                                INACTIVE</option>
+                                                InActive</option>
 
                                         </select>
 
