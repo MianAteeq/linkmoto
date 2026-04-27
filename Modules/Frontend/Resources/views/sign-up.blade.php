@@ -546,6 +546,10 @@
             bottom: 20px !important;
             right: 20px !important;
         }
+
+        .hidden {
+            display: none !important;
+        }
     </style>
 @endsection
 @section('content')
@@ -614,20 +618,17 @@
                                                     name="service_id[]" value="0">
                                                 <label class="form-check-label" for="service_other">Other</label>
                                             </div>
-                                            <input type="text" name="other_service" class="form-control mt-2"
-                                                placeholder="Please specify" style="display: none!important;"
-                                                id="other_service_input">
-
+                                            <input type="text" name="other_service" class="form-control mt-2 hidden"
+                                                placeholder="Please specify" id="other_service_input">
                                             <p class="text-danger service_id" style="padding-left: 10px;display: none">
                                                 Please select at least
                                                 one service provided or specify in Other.</p>
                                         </div>
 
                                         <script>
-                                            // Show/hide text field when "Other" is checked
                                             document.getElementById('service_other').addEventListener('change', function() {
                                                 let input = document.getElementById('other_service_input');
-                                                input.style.display = this.checked ? 'block' : 'none!important';
+                                                input.classList.toggle('hidden', !this.checked);
                                             });
                                         </script>
 
