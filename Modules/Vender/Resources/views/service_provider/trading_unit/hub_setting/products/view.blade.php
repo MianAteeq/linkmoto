@@ -574,7 +574,7 @@
                 form.action = @json(route('vender.service.provider.trading.unit.hub.setting.delete.product.offer', [
                         $product['id'],
                         $trading_unit['id'],
-                    ])); // adjust route
+                    ]));
 
                 let modal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
                 modal.show();
@@ -606,10 +606,10 @@
                 let modal = new bootstrap.Modal(document.getElementById('cannotDeleteModal'));
                 modal.show();
             } else {
-                document.getElementById('deleteForm').action = @json(route('vender.service.provider.trading.unit.hub.setting.delete.product.offer', [
+                form.action = @json(route('vender.service.provider.trading.unit.hub.setting.delete.product.offer', [
                         $product['id'],
                         $trading_unit['id'],
-                    ]));;
+                    ]));
                 let modal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
                 modal.show();
             }
