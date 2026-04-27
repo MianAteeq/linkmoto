@@ -438,7 +438,7 @@
         /* Ensure ALL form controls stretch fully inside their containers */
         .signup_form .form-group input.form-control,
         .signup_form .form-group .form-control {
-            display: block !important;
+
             width: 100% !important;
             max-width: 100% !important;
             box-sizing: border-box !important;
