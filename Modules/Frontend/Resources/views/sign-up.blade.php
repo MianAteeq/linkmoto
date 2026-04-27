@@ -582,7 +582,8 @@
                                                     data-toggle='tooltip' title=''>(?)</span></label>
                                             <p style="margin: 0px 0;">Enter the name your garage trades under</p>
                                             <input type="text" class="form-control" onkeyup="lookup(this);"
-                                                name="trading_name" id="trading_name" placeholder=" " required>
+                                                name="trading_name" id="trading_name"
+                                                placeholder="Enter Your Business / Trading Name" required>
                                             <p class="text-danger trading_name" style="padding-left: 10px;display: none">
                                                 Please enter your
                                                 business name.</p>
@@ -731,14 +732,16 @@
                                                 <label class="input_title" for="inputName">First Name <span
                                                         style="color: red;padding-right: 3px">*</span></label>
                                                 <input type="text" class="form-control" style="width: 100%"
-                                                    name="name" onkeyup="lookup(this);" id="first_name">
+                                                    name="name" onkeyup="lookup(this);"
+                                                    placeholder="Enter Your First Name" id="first_name">
                                             </div>
 
                                             <div class="form-check form-check-inline form_inline"
                                                 style="padding-left: 0;margin-right: 0;width: 33%;">
                                                 <label class="input_title" for="inputName name_with">Middle Name </label>
                                                 <input type="text" class="form-control" style="width: 100%"
-                                                    name="middle_name" id="middle_name">
+                                                    name="middle_name" id="middle_name"
+                                                    placeholder="Enter Your Middle Name">
                                             </div>
 
                                             <div class="form-check form-check-inline form_inline name_with"
@@ -746,7 +749,8 @@
                                                 <label class="input_title" for="inputName">Last Name<span
                                                         style="color: red;padding-right: 3px">*</span> </label>
                                                 <input type="text" class="form-control" style="width: 100%"
-                                                    name="last_name" onkeyup="lookup(this);" id="last_name">
+                                                    name="last_name" onkeyup="lookup(this);"
+                                                    placeholder="Enter Your Last Name" id="last_name">
                                             </div>
                                             <p class="text-danger name" style="padding-left: 10px;display: none">Please
                                                 enter first and last
@@ -760,7 +764,7 @@
                                                 <div class="form-check form-check-inline" id="phone_number"
                                                     style="padding-left: 0;width: 100%;margin-right: 0">
                                                     <input type="text" class="form-control" onkeyup="lookup(this);"
-                                                        name="phone_no" id="phone_no">
+                                                        name="phone_no" id="phone_no" placeholder="Enter Your Phone No">
                                                 </div>
                                                 <p class="text-danger phone_no" style="padding-left: 10px;display: none">
                                                     This field is required !
@@ -772,7 +776,7 @@
                                             <label class="input_title" for="inputName">Email<span
                                                     style="color: red;padding-right: 3px">*</span></label>
                                             <input type="text" class="form-control" name="email"
-                                                onkeyup="lookup(this);" id="email">
+                                                placeholder="Enter Your Email" onkeyup="lookup(this);" id="email">
                                             <p class="text-danger email" style="padding-left: 10px;display: none">Please
                                                 enter a mobile number.
                                             </p>
