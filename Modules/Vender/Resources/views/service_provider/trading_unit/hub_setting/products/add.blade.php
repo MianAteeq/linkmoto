@@ -406,7 +406,7 @@
                                     <div class="col-md-8 mx-auto">
                                         <select class="form-control" name="status">
                                             <option value="ACTIVE">Active</option>
-                                            <option value="INACTIVE">InActive</option>
+                                            <option value="INACTIVE">Inactive</option>
 
                                         </select>
 

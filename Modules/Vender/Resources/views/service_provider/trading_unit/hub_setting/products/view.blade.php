@@ -485,7 +485,7 @@
                                         @if ($product['status'] == 'ACTIVE')
                                             Active
                                         @else
-                                            InActive
+                                            Inactive
                                         @endif
 
 

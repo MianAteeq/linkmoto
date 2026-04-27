@@ -570,7 +570,7 @@
                                             <option value="ACTIVE" @if ($product['status'] == 'ACTIVE') selected @endif>
                                                 Active</option>
                                             <option value="INACTIVE" @if ($product['status'] == 'INACTIVE') selected @endif>
-                                                InActive</option>
+                                                Inactive</option>
 
                                         </select>
 
