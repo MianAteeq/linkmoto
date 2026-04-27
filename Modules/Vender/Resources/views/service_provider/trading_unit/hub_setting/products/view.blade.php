@@ -312,14 +312,14 @@
                     </div>
                 </div>
 
-                <div style="margin-bottom: 16px; line-height: 1.4;">
+                <div style="margin: 16px; line-height: 1.4;">
                     <div style="color: #F07D44; font-size: 14px;">Created:</div>
                     <div style="font-size: 14px; color: #000;">
                         {{ \Carbon\Carbon::parse($product['created_at'])->format('d/m/Y \a\t g:ia') }}
                     </div>
                 </div>
 
-                <div style="line-height: 1.4;">
+                <div style="margin: 16px;line-height: 1.4;">
                     <div style="color: #F07D44; font-size: 14px;">Last updated:</div>
                     <div style="font-size: 14px; color: #000;">
                         {{ \Carbon\Carbon::parse($product['updated_at'])->format('d/m/Y \a\t g:ia') }}
