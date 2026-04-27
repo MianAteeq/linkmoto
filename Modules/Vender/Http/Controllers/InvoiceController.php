@@ -792,6 +792,76 @@ class InvoiceController extends Controller
                 "status" => "REJECTED"
             ]);
 
+
+            $invoice = Invoice::with([
+                'booking',
+                'booking.contact_detail',
+                'booking.service',
+                'booking.job_requests',
+                'booking.booking_items',
+                'booking.vehicle.vehicle_model',
+                'booking.vehicle.vehicle_make',
+                'booking.vehicle.engine_size',
+                'booking.vehicle.transmission_type',
+                'booking.vehicle.fuel_type',
+                'booking.vehicle.color',
+                'payments'
+            ])->find($invoice->id);
+
+            $items = $invoice->booking->booking_items;
+
+            // SPLIT ITEMS INTO 3 ARRAYS
+            $first_array = [];
+            $second_array = [];
+            $third_array = [];
+
+            foreach ($items as $index => $row) {
+                $row['exlusive_vat'] = $row['sub_total_ex_vat'];
+                $row['totalPrice']    = $row['total_price'];
+
+                if ($index < 10) {
+                    $first_array[] = $row;
+                } elseif ($index < 20) {
+                    $second_array[] = $row;
+                } else {
+                    $third_array[] = $row;
+                }
+            }
+
+            InLog::error('Invoice file not found', ['path' => $first_array]);
+
+            $trading_unit = TradingUnit::find($invoice->booking->trading_id);
+
+
+            $profile = $request->user()['profile'];
+
+            $data = [
+                'invoice'      => $invoice,
+                'vender'       => User::with('profile')->find($invoice->vender_id),
+                'item_array'   => $items,
+                'first_array'  => $first_array,
+                'second_array' => $second_array,
+                'third_array'  => $third_array,
+                'trading_unit' => $trading_unit,
+                'profile'      => $profile
+            ];
+
+            $pdf = Pdf::loadView('pdf.invoice', $data);
+            $content = $pdf->download()->getOriginalContent();
+
+            // SAVE PDF
+            $folder = public_path("pdf/");
+            if (!file_exists($folder)) {
+                mkdir($folder, 0777, true);
+            }
+
+            $filename = $invoice->invoice_no . '_' . time() . ".pdf";
+            file_put_contents($folder . $filename, $content);
+
+            // Store PDF path in invoice
+            $invoice->invoice_path = asset("pdf/" . $filename);
+            $invoice->save();
+
             $latestOrder = Log::orderBy('created_at', 'DESC')->first();
             $data = new stdClass();
             $data->log_no = 'lOG-' . "SVP" . str_pad($request->user()->id, 5, "0", STR_PAD_LEFT) . "-" . str_pad($latestOrder ? $latestOrder->id + 1 : 0 + 1, 5, "0", STR_PAD_LEFT);
