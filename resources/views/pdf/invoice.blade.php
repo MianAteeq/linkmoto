@@ -346,7 +346,7 @@
                         @endif
 
                         <p style="margin:0;">
-                            {{ $invoice['booking']['city'] }} {{ $invoice['booking']['postal_code'] }}
+                            {{ $invoice['booking']['city'] }} {{ $invoice['booking']['post_code'] }}
                         </p>
                     @endif
 
