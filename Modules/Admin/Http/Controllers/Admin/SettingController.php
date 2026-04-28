@@ -18,7 +18,7 @@ class SettingController extends Controller
         return view('admin::admin.setting.add', get_defined_vars());
     }
 
-   
+
 
     public function insert(Request $request)
     {
@@ -62,15 +62,15 @@ class SettingController extends Controller
         foreach ($setting as $key => $value) {
             // return $key;
             if (empty($value))
-            continue;
+                continue;
             $set = Setting::where('key', $key)->first() ?: new Setting();
             $set->key = $key;
             $set->value = $value;
             $set->save();
             if ($request->hasFile($key)) {
-                $existing = Setting::where('key',$key)->first();
+                $existing = Setting::where('key', $key)->first();
                 if ($existing) {
-                    $ex_path = 'uploads/cms/' .$existing->setting;
+                    $ex_path = 'uploads/cms/' . $existing->setting;
                     if (File::exists($ex_path)) {
                         File::delete($ex_path);
                     }
@@ -84,12 +84,12 @@ class SettingController extends Controller
             }
         }
 
-        return redirect('/admin/setting')->with('success', 'Your Settings has been Inserted.');
+        return redirect('/admin/settings')->with('success', 'Your Settings has been Inserted.');
     }
-  
 
-   
- 
+
+
+
 
     public function admin_profile()
     {

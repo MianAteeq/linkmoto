@@ -178,9 +178,11 @@
             if (value == 'YES') {
                 $('#uk_vat_no').attr("required", true);
                 $('#show_help').show();
+                $('.body-height').css('height:250px');
             } else {
                 $('#uk_vat_no').attr("required", false);
                 $('#show_help').hide();
+                $('.body-height').css('height', '180px');
             }
         });
     </script>
@@ -191,10 +193,12 @@
                 $('.uk-vat-form').show();
                 $('#uk_vat_no').attr("required", true);
                 $('#show_help').show();
+                $('.body-height').css('height', '250px');
             } else {
                 $('.uk-vat-form').hide();
                 $('#uk_vat_no').attr("required", false);
                 $('#show_help').hide();
+                $('.body-height').css('height', '180px');
             }
         });
     </script>

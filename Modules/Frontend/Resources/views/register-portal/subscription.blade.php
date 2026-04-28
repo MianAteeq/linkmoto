@@ -42,6 +42,23 @@
             vertical-align: middle;
             width: 60% !important;
         }
+
+        select {
+            padding-right: 30px;
+            /* space for arrow */
+        }
+
+        .custom-select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+
+            padding: 8px 40px 8px 12px;
+
+            background: url("data:image/svg+xml;utf8,<svg fill='black' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 12px center;
+
+            background-size: 14px;
+        }
     </style>
 @endsection
 
@@ -81,7 +98,8 @@
                                         style="color: red">*</span>
                                 </label>
                                 <div class="col-12 col-md-8 mx-auto">
-                                    <select class="form-control" name="product_name" id="product_name">
+                                    <select class="form-control" name="product_name" id="product_name"
+                                        style="padding-left: 9px;">
                                         <option value="Service Provider App">Service Provider App</option>
                                     </select>
                                 </div>
@@ -92,7 +110,8 @@
                                         style="color: red">*</span>
                                 </label>
                                 <div class="col-12 col-md-8 mx-auto">
-                                    <select class="form-control js-example-basic-single" name="package_id" id="package_id">
+                                    <select class="form-control " name="package_id" id="package_id"
+                                        style="padding-left: 9px;">
                                         @foreach ($packages as $package)
                                             <option value="{{ $package['id'] }}"
                                                 @if ($user['profile']['package_id'] == $package['id']) selected @endif>{{ $package['name'] }}

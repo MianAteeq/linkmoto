@@ -33,6 +33,26 @@
         .card-title {
             transition: font-weight 0.2s ease;
         }
+
+        .collapse-icon [data-toggle="collapse"]:before {
+            position: absolute;
+            top: 48%;
+            right: 0px !important;
+            margin-top: -8px;
+            font-family: 'feather';
+            content: "\e842";
+            transition: all 300ms linear 0s;
+            font-size: 18px;
+            font-weight: 900;
+        }
+
+        .input-group>.form-control,
+        .input-group>.form-control-plaintext,
+        .input-group>.custom-select,
+        .input-group>.custom-file {
+
+            padding-left: 9px !important;
+        }
     </style>
 @endsection
 

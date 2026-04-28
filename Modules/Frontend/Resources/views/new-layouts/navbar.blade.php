@@ -5,8 +5,9 @@
             <ul class="nav navbar-nav flex-row">
                 <li class="nav-item mobile-menu d-md-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs"
                         href="#"><i class="ft-menu font-large-1"></i></a></li>
-                <li class="nav-item"><a class="navbar-brand" href="index.html"><img class="brand-logo"
-                            alt="modern admin logo" src="https://motonos.com/uploads/cms/logo%20(1).png">
+                <li class="nav-item"><a class="navbar-brand"> <img
+                            src="@if (!empty($setting['headerlogo'])) {{ asset($setting['headerlogo']) }} @else {{ asset('modules/website/assets/img/logo.png') }} @endif"
+                            alt="Logo" style="width:200px">
                         <!-- <h3 class="brand-text">Modern</h3> -->
                     </a></li>
                 <li class="nav-item d-md-none"><a class="nav-link open-navbar-container" data-toggle="collapse"

@@ -71,6 +71,19 @@
             flex-direction: column;
             min-height: 100%;
         }
+
+        .text-secondary {
+            color: black !important;
+        }
+
+        h6 {
+            color: black;
+            font-weight: 600;
+        }
+
+        .badge-info {
+            background-color: #FF6600 !important;
+        }
     </style>
 @endsection
 
@@ -169,7 +182,7 @@ style="border-radius: 7px;border: 2px solid black;padding: 10px;" @endif>
                                     <span class="badge badge-info" style="background-color: green;"> In review
                                     </span>
                                 </div>
-                                <p class="mt-3"><strong>Thank you for submitting the required information.</strong></p>
+                                <p class="mt-1"><strong>Thank you for submitting the required information.</strong></p>
                                 <p>We have received all the required information. Our team is reviewing your submission, and
                                     we will
                                     be in touch
