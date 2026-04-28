@@ -97,7 +97,7 @@
                                             <font color="#000000" style="">Subscription T&Cs</font>
                                         </span>
                                     </h2>
-                                    <p>{!! $setting['subscription_term_condition'] ?? '' !!}/p>
+                                    <p>{!! $setting['subscription_term_condition'] ?? '' !!}</p>
                                 </div>
 
                                 <div class="form-group row mt-3">
