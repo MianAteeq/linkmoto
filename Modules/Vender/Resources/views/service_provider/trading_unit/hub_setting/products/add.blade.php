@@ -370,8 +370,8 @@
                                 <div class="form-group row" id="price_div">
                                     <label class="col-md-4 label-control" for="eventRegInput5">Price * </label>
                                     <div class="col-md-8 mx-auto">
-                                        <input type="number" id="price" class="form-control" value=""
-                                            onkeyup="lookup(this);" name="price" placeholder="Product Price">
+                                        <input type="text" id="price" class="form-control" name="price"
+                                            placeholder="Product Price">
                                         <p class="text-danger price"
                                             style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This
                                             Field is Required !</p>
@@ -737,5 +737,28 @@
             // Optional: re-adjust on window resize
             window.addEventListener("resize", adjustPadding);
         }
+        $('#price').on('input', function() {
+            let value = this.value;
+
+            // Allow only numbers and dot
+            value = value.replace(/[^0-9.]/g, '');
+
+            // Prevent multiple dots
+            let parts = value.split('.');
+            if (parts.length > 2) {
+                value = parts[0] + '.' + parts[1];
+            }
+
+            this.value = value;
+        });
+        $('#price').on('blur', function() {
+            let value = parseFloat(this.value);
+
+            if (!isNaN(value)) {
+                this.value = value.toFixed(2); // 👉 10 → 10.00
+            } else {
+                this.value = '';
+            }
+        });
     </script>
 @endsection

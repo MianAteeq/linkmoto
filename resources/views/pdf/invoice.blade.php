@@ -308,15 +308,19 @@
                                     {{ $invoice['trading_name']['app_setting']['account_number'] }}
                                 </p>
 
-                                <p style="margin:0;">
-                                    <span>Payment Reference:</span>
-                                    {{ $invoice['invoice_no'] }}
-                                </p>
+                                @if ($trading_unit['app_setting']['is_payment_reference'] === 'YES')
+                                    <p style="margin:0;">
+                                        <span>Payment Reference:</span>
+                                        {{ $invoice['invoice_no'] }}
+                                    </p>
+                                @endif
+                                @if ($trading_unit['app_setting']['show_remittance_email'] === 'YES')
+                                    <p style="margin:0;">
+                                        <span>Remittance Email:</span>
+                                        {{ $trading_unit['email'] }}
+                                    </p>
+                                @endif
 
-                                <p style="margin:0;">
-                                    <span>Remittance Email:</span>
-                                    {{ $trading_unit['email'] }}
-                                </p>
                             </div>
                         @endif
 

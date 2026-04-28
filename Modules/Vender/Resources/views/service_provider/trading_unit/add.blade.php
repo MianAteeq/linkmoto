@@ -204,6 +204,14 @@
                 padding-bottom: 10px !important;
             }
         }
+
+        .input-error {
+            border: 2px solid red !important;
+        }
+
+        .input-normal {
+            border: 2px solid black !important;
+        }
     </style>
 @endsection
 
@@ -320,7 +328,7 @@
                     <div class="form-group row " id="company_name">
                         <label class="col-lg-4 col-12 label-control">Business Name</label>
                         <div class="col-lg-8 col-12 mx-auto">
-                            <p class="company_show pt-2 m-0" style="padding-left: 15px;">&lt; Select Business Name Format
+                            <p class="company_show m-0" style="padding-left: 15px;">&lt; Select Business Name Format
                                 &gt;</p>
                             <p class="text-danger company"
                                 style="padding-left: 15px;width:100%;display: none;margin-bottom: -8px;">This Field is
@@ -332,7 +340,7 @@
                         <label class="col-lg-4 col-12 label-control">How do you provide and offer your services? * (?)
                         </label>
                         <div class="col-lg-8 col-12 mx-auto">
-                            <div class="d-flex flex-column pt-1">
+                            <div class="d-flex flex-column">
                                 <div class="custom-control custom-checkbox mb-2">
                                     <input type="checkbox" name="operation_type[]" value="On-site"
                                         class="custom-control-input" id="On-site"
@@ -396,7 +404,7 @@
                         <div class="col-lg-8 col-12 mx-auto">
                             <input type="text" id="radius" class="form-control" value=""
                                 onkeyup="lookup(this);" name="radius" placeholder="Mobile distance">
-                            <p class="text-danger radious"
+                            <p class="text-danger radius"
                                 style="padding-left: 15px;width:100%;display: none;margin-bottom: -8px;">This Field is
                                 Required !</p>
                         </div>
@@ -523,13 +531,14 @@
         function submitDetailsForm() {
             let status = true;
             const setError = (selector, showMsg = false, msgClass = '') => {
-                $(selector).css('border', '2px solid red');
+                $(selector).removeClass('input-normal').addClass('input-error');
+
                 if (showMsg && msgClass) $(msgClass).show();
                 status = false;
             };
 
             const clearError = (selector, msgClass = '') => {
-                $(selector).css('border', '2px solid black');
+                $(selector).removeClass('input-error').addClass('input-normal');
                 if (msgClass) $(msgClass).hide();
             };
 
@@ -559,12 +568,14 @@
                 ];
             }
 
+            console.log(requiredFields);
+
             requiredFields.forEach((field) => {
                 const value = $(`#${field}`).val()?.trim();
                 if (!value) {
-                    setError(`#${field}`);
+                    setError(`#${field}`, true, `.${field}, .${field}`);
                 } else {
-                    clearError(`#${field}`);
+                    clearError(`#${field}`, true, `.${field}, .${field}`);
                 }
             });
 
@@ -576,9 +587,6 @@
             if (!mobileVal && !landlineVal) {
                 setError('#mobile, #landline', true, '.mobile, .landline');
                 $('.mobile, .landline').text('Please enter mobile or landline');
-            } else if (mobileVal && landlineVal) {
-                setError('#mobile, #landline', true, '.mobile, .landline');
-                $('.mobile, .landline').text('Enter only one: mobile OR landline');
             }
 
             const email = $('#email').val()?.trim();

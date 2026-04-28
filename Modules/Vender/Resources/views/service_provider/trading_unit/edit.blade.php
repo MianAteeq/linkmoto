@@ -252,6 +252,14 @@
                 margin-top: 0;
             }
         }
+
+        .input-error {
+            border: 2px solid red !important;
+        }
+
+        .input-normal {
+            border: 2px solid black !important;
+        }
     </style>
 @endsection
 
@@ -419,14 +427,14 @@
                                 <div class="custom-control custom-checkbox mb-2">
                                     <input type="checkbox" name="operation_type[]" value="On-site"
                                         class="custom-control-input" id="On-site"
-                                        @if (in_array('On-site', explode(',', $user['profile']['operation_type']))) checked @endif>
+                                        @if (in_array('On-site', explode(',', $trading_unit['operation_type']))) checked @endif>
                                     <label class="custom-control-label" for="On-site">On-site</label>
                                 </div>
 
                                 <div class="custom-control custom-checkbox mb-2">
                                     <input type="checkbox" name="operation_type[]" value="Mobile"
                                         class="custom-control-input" id="Mobile"
-                                        @if (in_array('Mobile', explode(',', $user['profile']['operation_type']))) checked @endif>
+                                        @if (in_array('Mobile', explode(',', $trading_unit['operation_type']))) checked @endif>
                                     <label class="custom-control-label" for="Mobile">Mobile</label>
                                 </div>
                             </div>
@@ -496,7 +504,7 @@
                             <input type="text" id="radius" class="form-control"
                                 value="{{ $trading_unit['radius'] }}" onkeyup="lookup(this);" name="radius"
                                 placeholder="Mobile distance">
-                            <p class="text-danger radious"
+                            <p class="text-danger radius"
                                 style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This
                                 Field is
                                 Required !</p>
@@ -709,6 +717,17 @@
     <script>
         function submitDetailsForm() {
             let status = true;
+            const setError = (selector, showMsg = false, msgClass = '') => {
+                $(selector).removeClass('input-normal').addClass('input-error');
+
+                if (showMsg && msgClass) $(msgClass).show();
+                status = false;
+            };
+
+            const clearError = (selector, msgClass = '') => {
+                $(selector).removeClass('input-error').addClass('input-normal');
+                if (msgClass) $(msgClass).hide();
+            };
 
             // Get selected operation types
             let selectedOps = $('input[name="operation_type[]"]:checked').map(function() {
@@ -721,36 +740,34 @@
             }
 
             // Determine required fields
-            let array = [];
             let tradingTemplate = $('#trading_template').val();
+            let requiredFields = [];
 
             if (selectedOps.includes('Mobile') && !selectedOps.includes('On-site')) {
-                array = (tradingTemplate == 1) ? ['name', 'email', 'city', 'postcode', 'radius'] : ['name',
+                requiredFields = tradingTemplate == 1 ? ['name', 'email', 'city', 'postcode', 'radius'] : ['name',
                     'trading_name_id', 'email', 'city', 'postcode', 'radius'
                 ];
-
             } else if (selectedOps.includes('On-site') && !selectedOps.includes('Mobile')) {
-                array = (tradingTemplate == 1) ? ['name', 'mobile', 'email', 'city', 'site_id'] : ['name',
+                requiredFields = tradingTemplate == 1 ? ['name', 'mobile', 'email', 'city', 'site_id'] : ['name',
                     'trading_name_id', 'mobile', 'email', 'city', 'site_id'
                 ];
-
             } else if (selectedOps.includes('On-site') && selectedOps.includes('Mobile')) {
-                array = (tradingTemplate == 1) ? ['site_id', 'radius', 'name', 'mobile', 'email'] : ['site_id', 'radius',
-                    'name', 'trading_name_id', 'mobile', 'email'
+                requiredFields = tradingTemplate == 1 ? ['site_id', 'radius', 'name', 'mobile', 'email'] : ['site_id',
+                    'radius', 'name', 'trading_name_id', 'mobile', 'email'
                 ];
             }
 
-            // Validate required fields
-            array.forEach(function(item) {
-                let value = $(`#${item}`).val()?.trim();
+            console.log(requiredFields);
 
+            requiredFields.forEach((field) => {
+                const value = $(`#${field}`).val()?.trim();
                 if (!value) {
-                    $(`#${item}`).css('border', '2px solid red');
-                    status = false;
+                    setError(`#${field}`, true, `.${field}, .${field}`);
                 } else {
-                    $(`#${item}`).css('border', '2px solid black');
+                    clearError(`#${field}`, true, `.${field}, .${field}`);
                 }
             });
+
 
             // =========================
             // Mobile / Landline Validation
@@ -764,11 +781,11 @@
             $('.mobile, .landline').hide();
 
             // ❌ Case 1: BOTH EMPTY
-            // if (!mobileVal && !landlineVal) {
-            //     $('#mobile, #landline').css('border', '2px solid red');
-            //     $('.mobile, .landline').text('Enter either mobile or landline').show();
-            //     status = false;
-            // }
+            if (!mobileVal && !landlineVal) {
+                $('#mobile, #landline').css('border', '2px solid red');
+                $('.mobile, .landline').text('Enter either mobile or landline').show();
+                status = false;
+            }
 
             // ❌ Case 2: BOTH FILLED (NOT allowed)
             // else if (mobileVal && landlineVal) {

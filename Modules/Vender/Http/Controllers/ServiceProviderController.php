@@ -592,6 +592,8 @@ class ServiceProviderController extends Controller
             $operation = $operationTypes[0] ?? null; // Get first value or null if empty
         }
 
+        // return $operation;
+
         TradingUnit::find($request['id'])->update([
             'vender_id' => $vender_id,
             'name' => $request['name'],

@@ -383,7 +383,7 @@ class ServiceProviderHubSettingController extends Controller
 
 
 
-        return  redirect()->route('vender.service.provider.trading.unit.app.setting', $request['id']);
+        return  redirect()->route('vender.service.provider.trading.unit.hub.setting.view.product.offer', [$obj['id'], $request['id']]);
     }
     public function updateProductOffer(Request $request)
     {

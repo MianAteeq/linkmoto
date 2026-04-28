@@ -693,7 +693,7 @@
                                         Include Payment Reference <span class="text-danger">*</span>
                                     </label>
 
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <div class="pill-toggle">
 
                                             <!-- NO -->
@@ -708,8 +708,14 @@
 
                                         </div>
                                     </div>
+                                    <div class="col-md-6">
+                                        <span class="value-text">
+                                            Invoice Number
+                                            <input type="hidden" name="payment_reference" value="Invoice Number">
+                                        </span>
+                                    </div>
                                 </div>
-                                <div class="form-group row payment_reference_box bank_transfer_info ">
+                                {{-- <div class="form-group row payment_reference_box bank_transfer_info ">
 
                                     <label class="col-md-4 label-control">
 
@@ -732,7 +738,7 @@
                                             This field is required!
                                         </p>
                                     </div>
-                                </div>
+                                </div> --}}
                                 @php
                                     $remittanceEmail = $trading_unit['email'] ?? null;
                                     $isRemittanceEmpty = empty($remittanceEmail);
