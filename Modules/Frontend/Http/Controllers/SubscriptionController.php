@@ -126,9 +126,9 @@ class SubscriptionController extends Controller
                 }
             }
         }
-        // Mail::send('email.registration', get_defined_vars(), function ($send) use ($request) {
-        //     $send->to($request['email'])->subject("Register Email");
-        // });
+        Mail::send('email.registration', get_defined_vars(), function ($send) use ($request) {
+            $send->to($request['email'])->subject("Register Email");
+        });
 
 
 
