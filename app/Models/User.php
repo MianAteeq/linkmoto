@@ -80,7 +80,7 @@ class User extends Authenticatable
 
 public function sub_profile(): HasOne
 {
-    return $this->hasOne(VendorProfile::class, 'vender_id','id');
+    return $this->hasOne(VendorProfile::class, 'vender_id','vender_id');
 }
 
     public function site_address(): HasOne
