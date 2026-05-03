@@ -71,9 +71,8 @@ class User extends Authenticatable
       * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
       */
 
-  public function profile(): HasOne
+ public function profile(): HasOne
 {
-    $foreignKey = $this->vender_id == 0 ? 'id' : 'vender_id';
     $localKey = $this->vender_id == 0 ? 'id' : 'vender_id';
 
     return $this->hasOne(VendorProfile::class, 'vender_id', $localKey);
