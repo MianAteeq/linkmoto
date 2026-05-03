@@ -29,14 +29,20 @@ class ProfileController extends Controller
         'warranty_jobs',
         'accreditation_schemes',
         'profile',
-        'sub_profile', // make sure this exists
+        'sub_profile',
         'trading_unit',
         'trading_unit.trading_name',
         'trading_unit.app_setting'
     )->find($auth_id);
 
-    // ✅ Fallback logic
-    $user->profile = $user->profile ?? $user->sub_profile;
+    // ✅ Always map final profile
+    $finalProfile = $user->profile ?? $user->sub_profile;
+
+    // ✅ Replace profile cleanly
+    $user->setRelation('profile', $finalProfile);
+
+    // ❌ Remove sub_profile from response
+    unset($user->sub_profile);
 
     // ---------------- PERMISSIONS ----------------
     if ($user->vender_id == 0) {
@@ -62,7 +68,6 @@ class ProfileController extends Controller
         $agreements['terms'] &&
         $agreements['privacy'];
 
-    // ---------------- RESPONSE ----------------
     return response()->json([
         'status' => true,
         'profile' => $user,
