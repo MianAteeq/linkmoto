@@ -6,7 +6,6 @@ use File;
 use stdClass;
 use Exception;
 use App\Models\User;
-use App\Models\VendorProfile;
 use Illuminate\Http\Request;
 use Modules\Admin\Entities\FAQ;
 use Illuminate\Routing\Controller;
