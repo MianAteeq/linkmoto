@@ -81,7 +81,7 @@ class User extends Authenticatable
 {
    
 
-    return $this->hasOne(VendorProfile::class, 'vender_id');
+    return $this->hasOne(VendorProfile::class, 'vender_id','id');
 }
 
     public function site_address(): HasOne
