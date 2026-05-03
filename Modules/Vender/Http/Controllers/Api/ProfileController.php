@@ -29,6 +29,7 @@ class ProfileController extends Controller
             'warranty_jobs',
             'accreditation_schemes',
             'profile',
+            'sub_profile',
             'trading_unit',
             'trading_unit.trading_name',
             'trading_unit.app_setting'
@@ -39,6 +40,7 @@ class ProfileController extends Controller
         } else {
             $permissions = collect($user['provider_app']['group']['permissions'])->pluck('name');
         }
+        $user->profile = $user->profile ?? $user->sub_profile;
 
         // ---------------- AGREEMENT STATUS ----------------
 
