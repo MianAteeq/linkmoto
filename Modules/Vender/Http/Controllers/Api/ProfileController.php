@@ -18,59 +18,59 @@ use Illuminate\Contracts\Support\Renderable;
 class ProfileController extends Controller
 {
     public function getProfile(Request $request)
-    {
-        $auth_id = $request->user()->id;
+{
+    $auth_id = $request->user()->id;
 
-        $user = User::with(
-            'payment_methods',
-            'quick_products',
-            'vender_services',
-            'vehicle_specialists',
-            'warranty_jobs',
-            'accreditation_schemes',
-            'profile',
-            'sub_profile',
-            'trading_unit',
-            'trading_unit.trading_name',
-            'trading_unit.app_setting'
-        )->find($auth_id);
+    $user = User::with(
+        'payment_methods',
+        'quick_products',
+        'vender_services',
+        'vehicle_specialists',
+        'warranty_jobs',
+        'accreditation_schemes',
+        'profile',
+        'sub_profile', // make sure this exists
+        'trading_unit',
+        'trading_unit.trading_name',
+        'trading_unit.app_setting'
+    )->find($auth_id);
 
-        if ($user['vender_id'] == 0) {
-            $permissions = Permission::where('group_type', 'APP')->pluck('name');
-        } else {
-            $permissions = collect($user['provider_app']['group']['permissions'])->pluck('name');
-            $user['profile']=VendorProfile::where('vender_id',$user['vender_id'])->first();
-        }
-       
+    // ✅ Fallback logic
+    $user->profile = $user->profile ?? $user->sub_profile;
 
-        // ---------------- AGREEMENT STATUS ----------------
-
-        $accepted = AgreementAcceptance::where('user_id', $auth_id)
-            ->pluck('agreement_type')
-            ->toArray();
-
-        $agreements = [
-            'nda' => in_array('NDA', $accepted),
-            'terms' => in_array('TERMS', $accepted),
-            'privacy' => in_array('PRIVACY', $accepted),
-        ];
-
-        $agreements['all_completed'] =
-            $agreements['nda'] &&
-            $agreements['terms'] &&
-            $agreements['privacy'];
-
-        // ---------------- RESPONSE ----------------
-
-        return response()->json([
-            'status' => true,
-            'profile' => $user,
-            'permissions' => $permissions,
-            'agreements' => $agreements,
-            'message' => "Profile Fetch Successfull",
-        ]);
+    // ---------------- PERMISSIONS ----------------
+    if ($user->vender_id == 0) {
+        $permissions = Permission::where('group_type', 'APP')->pluck('name');
+    } else {
+        $permissions = collect($user->provider_app['group']['permissions'] ?? [])
+            ->pluck('name');
     }
 
+    // ---------------- AGREEMENTS ----------------
+    $accepted = AgreementAcceptance::where('user_id', $auth_id)
+        ->pluck('agreement_type')
+        ->toArray();
+
+    $agreements = [
+        'nda' => in_array('NDA', $accepted),
+        'terms' => in_array('TERMS', $accepted),
+        'privacy' => in_array('PRIVACY', $accepted),
+    ];
+
+    $agreements['all_completed'] =
+        $agreements['nda'] &&
+        $agreements['terms'] &&
+        $agreements['privacy'];
+
+    // ---------------- RESPONSE ----------------
+    return response()->json([
+        'status' => true,
+        'profile' => $user,
+        'permissions' => $permissions,
+        'agreements' => $agreements,
+        'message' => "Profile Fetch Successfully",
+    ]);
+}
     public function getOtherSetting(Request $request)
     {
 
