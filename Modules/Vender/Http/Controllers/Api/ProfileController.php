@@ -64,7 +64,7 @@ class ProfileController extends Controller
             'profile' => $user,
             'permissions' => $permissions,
             'agreements' => $agreements,
-            'message' => "Profile Fetch Successfully",
+            'message' => "Profile Fetch Successfull",
         ]);
     }
 
