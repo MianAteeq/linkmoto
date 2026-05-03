@@ -6,6 +6,7 @@ use File;
 use stdClass;
 use Exception;
 use App\Models\User;
+use App\Models\VendorProfile;
 use Illuminate\Http\Request;
 use Modules\Admin\Entities\FAQ;
 use Illuminate\Routing\Controller;
@@ -39,8 +40,9 @@ class ProfileController extends Controller
             $permissions = Permission::where('group_type', 'APP')->pluck('name');
         } else {
             $permissions = collect($user['provider_app']['group']['permissions'])->pluck('name');
+            $user['profile']=VendorProfile::where('vender_id',$user['vender_id'])->first();
         }
-        $user->profile = $user->profile ?? $user->sub_profile;
+       
 
         // ---------------- AGREEMENT STATUS ----------------
 
