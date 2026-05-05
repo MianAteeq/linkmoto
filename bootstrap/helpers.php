@@ -63,24 +63,29 @@ function getPermission()
 
 function createPermissionServiceProvider()
 {
-
     $roles = ["Manager", "Customer Services", "Operations", "Technician"];
+    $userId = auth()->user()->id;
 
-    foreach ($roles as $key => $role) {
-        $role = Role::create([
-            'name' => $role . "SVP_" . auth()->user()->id,
-            'group_type' => 'System Default',
-            'type' => 'APP',
-            'vender_id' => auth()->user()->id
-        ]);
+    $permissions = Permission::where('group_type', 'APP')->pluck('id');
 
-        $permissions = Permission::where('group_type', 'APP')->get()->pluck('id');
+    foreach ($roles as $roleName) {
+        $role = Role::firstOrCreate(
+            [
+                'name' => $roleName . "SVP_" . $userId,
+                'vender_id' => $userId,
+            ],
+            [
+                'group_type' => 'System Default',
+                'type' => 'APP',
+            ]
+        );
 
         $role->syncPermissions($permissions);
     }
 
     return 1;
 }
+
 function createPermissionServiceBusiness()
 {
 

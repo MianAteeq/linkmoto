@@ -7,135 +7,164 @@ use Illuminate\Routing\Controller;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Support\Facades\DB;
 
 class ServiceProviderGroupController extends Controller
 {
-    public function appSetting() {
+    public function appSetting()
+    {
 
-        $user=auth()->user();
+        $user = auth()->user();
 
 
 
-        return view('vender::service_provider.app_setting.index',get_defined_vars());
+        return view('vender::service_provider.app_setting.index', get_defined_vars());
     }
 
-    public function userGroup() {
+    public function userGroup()
+    {
 
-        $user=auth()->user();
-        $vender_id=0;
+        $user = auth()->user();
+        $vender_id = 0;
 
-        if($user['vender_id']==0){
-            $vender_id=$user['id'];
-        }else{
-            $vender_id=$user['vender_id'];
+        if ($user['vender_id'] == 0) {
+            $vender_id = $user['id'];
+        } else {
+            $vender_id = $user['vender_id'];
         }
 
 
-        if(Role::where('vender_id',$vender_id)->where('group_type','System Default')->where('type','APP')->count()==0){
+       DB::transaction(function () use ($vender_id) {
 
-            createPermissionServiceProvider();
+    $roles = ["Manager", "Customer Services", "Operations", "Technician"];
+    $userId = auth()->user()->id;
+
+    // lock existing roles for this vendor
+    $existingRoles = Role::where('vender_id', $vender_id)
+        ->where('group_type', 'System Default')
+        ->where('type', 'APP')
+        ->lockForUpdate()
+        ->pluck('name')
+        ->toArray();
+
+    $permissions = Permission::where('group_type', 'APP')->pluck('id');
+
+    foreach ($roles as $roleName) {
+
+        $fullName = $roleName . "SVP_" . $userId;
+
+        // create only if missing
+        if (!in_array($fullName, $existingRoles)) {
+
+            $role = Role::create([
+                'name' => $fullName,
+                'group_type' => 'System Default',
+                'type' => 'APP',
+                'vender_id' => $userId
+            ]);
+
+            $role->syncPermissions($permissions);
         }
+    }
+});
 
 
-        $roles=Role::where('vender_id',$vender_id)->where('type','APP')->orderBy('group_type','desc')->get();
+        $roles = Role::where('vender_id', $vender_id)->where('type', 'APP')->orderBy('group_type', 'desc')->get();
 
 
 
-        return view('vender::service_provider.app_setting.user_group.index',get_defined_vars());
+        return view('vender::service_provider.app_setting.user_group.index', get_defined_vars());
     }
 
-    public function userGroupEdit($id) {
+    public function userGroupEdit($id)
+    {
 
-        $user=auth()->user();
-        $role=Role::find($id);
-        $permissions=Permission::where('group_type','APP')->get()->groupBy('type');
+        $user = auth()->user();
+        $role = Role::find($id);
+        $permissions = Permission::where('group_type', 'APP')->get()->groupBy('type');
 
 
 
-        return view('vender::service_provider.app_setting.user_group.edit',get_defined_vars());
+        return view('vender::service_provider.app_setting.user_group.edit', get_defined_vars());
     }
-    public function userGroupView($id) {
+    public function userGroupView($id)
+    {
 
-        $user=auth()->user();
-        $role=Role::find($id);
+        $user = auth()->user();
+        $role = Role::find($id);
 
-        $permissions=collect($role['permissions'])->groupBy('type');
-
-
-        return view('vender::service_provider.app_setting.user_group.view',get_defined_vars());
-    }
-
-    public function addUserGroup() {
+        $permissions = collect($role['permissions'])->groupBy('type');
 
 
-        $permissions=Permission::where('group_type','APP')->get()->groupBy('type');
-
-
-
-        return view('vender::service_provider.app_setting.user_group.add',get_defined_vars());
+        return view('vender::service_provider.app_setting.user_group.view', get_defined_vars());
     }
 
-    public function storeUserGroup (Request $request)  {
-        $user=auth()->user();
-        $vender_id=0;
+    public function addUserGroup()
+    {
 
-        if($user['vender_id']==0){
-            $vender_id=$user['id'];
-        }else{
-            $vender_id=$user['vender_id'];
+
+        $permissions = Permission::where('group_type', 'APP')->get()->groupBy('type');
+
+
+
+        return view('vender::service_provider.app_setting.user_group.add', get_defined_vars());
+    }
+
+    public function storeUserGroup(Request $request)
+    {
+        $user = auth()->user();
+        $vender_id = 0;
+
+        if ($user['vender_id'] == 0) {
+            $vender_id = $user['id'];
+        } else {
+            $vender_id = $user['vender_id'];
         }
-        $request['name']=$request['name']."SVP_".$vender_id;
+        $request['name'] = $request['name'] . "SVP_" . $vender_id;
         $request->validate([
-            'name' => ['required', 'string','max:255','unique:roles'],
+            'name' => ['required', 'string', 'max:255', 'unique:roles'],
         ]);
 
-      $role=Role::create([
-        'name'=>$request['name']."SVP_".$vender_id,
-        'group_type'=>'Custom',
-        'type'=>'APP',
-        'vender_id'=>$vender_id
-      ]);
+        $role = Role::create([
+            'name' => $request['name'] . "SVP_" . $vender_id,
+            'group_type' => 'Custom',
+            'type' => 'APP',
+            'vender_id' => $vender_id
+        ]);
 
 
-      $role->syncPermissions($request['permission_id']);
+        $role->syncPermissions($request['permission_id']);
 
-      return redirect()->route('vender.service.provider.user.group');
-
-
-
-
+        return redirect()->route('vender.service.provider.user.group');
     }
 
-    public function updateUserGroup (Request $request)  {
-        $user=auth()->user();
-        $vender_id=0;
+    public function updateUserGroup(Request $request)
+    {
+        $user = auth()->user();
+        $vender_id = 0;
 
-        if($user['vender_id']==0){
-            $vender_id=$user['id'];
-        }else{
-            $vender_id=$user['vender_id'];
+        if ($user['vender_id'] == 0) {
+            $vender_id = $user['id'];
+        } else {
+            $vender_id = $user['vender_id'];
         }
-        $request['name']=$request['name']."SVP_".$vender_id;
+        $request['name'] = $request['name'] . "SVP_" . $vender_id;
         $request->validate([
             'name' => 'required|unique:roles,name,' . $request->id,
         ]);
 
-      $role=Role::find($request['id'])->update([
-        'name'=>$request['name']."SVP_".$vender_id,
-        // 'group_type'=>'Custom',
-        'type'=>'APP',
-        'vender_id'=>$vender_id
-      ]);
+        $role = Role::find($request['id'])->update([
+            'name' => $request['name'] . "SVP_" . $vender_id,
+            // 'group_type'=>'Custom',
+            'type' => 'APP',
+            'vender_id' => $vender_id
+        ]);
 
-      $roles=Role::find($request['id']);
+        $roles = Role::find($request['id']);
 
-      $roles->revokePermissionTo($roles['permissions']);
-      $roles->syncPermissions($request['permission_id']);
+        $roles->revokePermissionTo($roles['permissions']);
+        $roles->syncPermissions($request['permission_id']);
 
-      return redirect()->route('vender.service.provider.user.group');
-
-
-
-
+        return redirect()->route('vender.service.provider.user.group');
     }
 }
