@@ -177,7 +177,7 @@ class SubscriptionController extends Controller
         }
         if (isset($user)) {
 
-            if ($user['status'] != 'Active' && $user['status'] != 'ACCEPTED') {
+            if ($user['status'] != 'ACTIVE' && $user['status'] != 'ACCEPTED') {
 
                 $errors = 'Your are not active yet!';
                 return redirect('/sign-in')->withErrors($errors);
