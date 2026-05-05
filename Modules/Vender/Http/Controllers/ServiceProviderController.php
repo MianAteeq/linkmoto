@@ -128,7 +128,7 @@ class ServiceProviderController extends Controller
 
         $trading_unit = TradingUnit::with('hub_setting')->find($id);
 
-        $workstreams = WorkStream::where('trading_id', $trading_unit->id)->get();
+        $workstreams = WorkStream::where('trading_id', $trading_unit->id)->where('vender_id',$user['id'])->get();
 
 
         return view('vender::service_provider.trading_unit.app_setting.index', get_defined_vars());
