@@ -566,7 +566,7 @@ class ServiceProviderController extends Controller
         WorkStream::create([
             "vender_id" => $vender_id,
             "trading_id" => $unit['id'],
-            'workstream_name'=> 'Repair',
+            'workstream_name'=> 'Main',
             'status'=> 'ACTIVE',
 
         ]);
