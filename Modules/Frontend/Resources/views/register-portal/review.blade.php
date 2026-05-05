@@ -82,8 +82,11 @@
         }
 
         .badge-info {
-            background-color: #FF6600 !important;
+            background-color: #3B6E9B !important;
         }
+        .badge-success {
+    background-color: #28A745;
+}
     </style>
 @endsection
 
@@ -127,8 +130,8 @@ style="border-radius: 7px;border: 2px solid black;padding: 10px;" @endif>
                                 $user['profile']['main_account_status'] == 3 ||
                                 $user['profile']['subscription_status'] == 3)
                             <div class="link-body">
-                                <div>
-                                    <span class="badge badge-info" style="background-color: darkblue;"> Request
+                                <div style="padding-left: 30px">
+                                    <span class="badge badge-info" style="padding: 0.5em 0.6em;font-size: 13px;"> Request
                                         for Info
                                     </span>
                                 </div>
@@ -171,15 +174,15 @@ style="border-radius: 7px;border: 2px solid black;padding: 10px;" @endif>
                                     $user['profile']['is_subscription'] == 0 ||
                                     $user['profile']['is_term'] == 0 ||
                                     $user['profile']['is_direct_debit'] == 0) class="foote d-none" @else class="foote" @endif
-                                style="border-top: 2px solid black; padding: 10px !important; text-align: center; margin-bottom: -10px; margin-left: -10px; margin-right: -10px;">
-                                <button type="button" class="btn btn-dark round btn-min-width mb-1 mt-2"
+                                style="border-top: 2px solid black;  text-align: center; margin-bottom: -10px; margin-left: -10px; margin-right: -10px;">
+                                <button type="button" class="btn btn-dark round btn-min-width mb-1 mt-1"
                                     onclick="window.location.href=`{{ route('vender.profile.submit') }}`">SUBMIT
                                     APPLICATION</button>
                             </div>
                         @else
                             <div class="link-body">
-                                <div>
-                                    <span class="badge badge-info" style="background-color: green;"> In review
+                                <div style="padding-left: 30px">
+                                    <span class="badge badge-success" style="padding: 0.5em 0.6em;font-size: 13px;"> In review
                                     </span>
                                 </div>
                                 <p class="mt-1"><strong>Thank you for submitting the required information.</strong></p>
@@ -592,7 +595,7 @@ style="border-radius: 7px;border: 2px solid black;padding: 10px;" @endif>
                                 </div>
                             </div>
 
-                            <a id="headingCollapseterm_sub" class="card-header info mt-2"
+                            {{-- <a id="headingCollapseterm_sub" class="card-header info mt-2"
                                 @if ($user['profile']['is_sub'] === 1) style="border: 2px solid black;border-radius: 7px !important;padding: 1.2rem 1rem;color: black !important;"
                             @else
                             style="border: 2px solid red;border-radius: 7px !important;padding: 1.2rem 1rem;color: black !important;" @endif
@@ -623,7 +626,7 @@ style="border-radius: 7px;border: 2px solid black;padding: 10px;" @endif>
                                         @endif
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
                         </div>
                     </div>

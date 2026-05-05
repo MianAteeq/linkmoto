@@ -177,7 +177,11 @@
                                     <h6 class="mb-0">Status</h6>
                                 </div>
                                 <div class="col-sm-7 text-secondary">
-                                    {{ $workstream['status'] ?? '' }}
+                                   @if($workstream['status']=='ACTIVE')
+                                                       Active
+                                                       @else
+                                                       Inactive
+                                                       @endif
                                 </div>
                             </div>
 

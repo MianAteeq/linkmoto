@@ -746,7 +746,14 @@
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $contact['workstream_name'] }}</td>
-                                                    <td>{{ $contact['status'] }}</td>
+                                                    <td>
+                                                        @if($contact['status']=='ACTIVE')
+                                                       Active
+                                                       @else
+                                                       Inactive
+
+                                                       @endif
+                                                    </td>
 
 
 

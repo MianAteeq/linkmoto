@@ -211,10 +211,10 @@
                                     </label>
                                     <div class="col-md-8 mx-auto">
                                         <select class="form-control" name="status">
-                                            <option value="ACTIVE" @if ($workstream['status'] == 'ACTIVE') selected @endif>ACTIVE
+                                            <option value="ACTIVE" @if ($workstream['status'] == 'ACTIVE') selected @endif>Active
                                             </option>
                                             <option value="INACTIVE" @if ($workstream['status'] == 'INACTIVE') selected @endif>
-                                                INACTIVE</option>
+                                                Inactive</option>
 
 
                                         </select>

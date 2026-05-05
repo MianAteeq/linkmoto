@@ -12,8 +12,12 @@ class VenderAddress extends Model
     protected $guarded = [];
 
 
-    protected static function newFactory()
-    {
-        return \Modules\Vender\Database\factories\VenderAddressFactory::new();
+    public function getStatusAttribute($value)
+{
+    if ($value === 'Active') {
+        return 'Todo';
     }
+
+    return $value;
+}
 }

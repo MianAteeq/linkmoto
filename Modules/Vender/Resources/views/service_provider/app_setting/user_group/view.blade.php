@@ -215,7 +215,7 @@
             <div style="border-radius: 7px;border: 2px solid black;">
                 <h4 class="h3 d-flex align-items-center"
                     style="font-weight: 600; font-size: 17px;padding: 10px; margin: 0;">
-                    <img src="/group.png" style="width: 22px; margin-right: 8px;"> {{ $role['name'] }}
+                    <img src="/group.png" style="width: 22px; margin-right: 8px;"> {{ str_replace('SVP_' . auth()->user()->id, '', $role['name']) }}
                 </h4>
             </div>
         </div>

@@ -132,10 +132,10 @@
                         <span>Trading Name : {{ $trading_unit['trading_name']['name'] ?? '' }}</span>
                     </div>
                     <div style="margin-top: 15px; font-weight: 500; font-size: 13px;padding-left:10px">
-                        <span class="success">{{ $trading_unit['status'] }}</span>
+                        <span class="success">{{ ucfirst(strtolower($trading_unit['status'])) }}</span>
                     </div>
                     <div style="margin-top: 15px; font-weight: 500; font-size: 13px;padding-left:10px">
-                        <span class="success">{{ $trading_unit['active_status'] }}</span>
+                        <span class="success">{{ ucfirst(str_replace(['offfline'], ['offline'], strtolower($trading_unit['active_status']))) }}</span>
                     </div>
                     <div style="margin-top: 15px; font-weight: 500; font-size: 13px;padding-left:10px;padding-bottom:10px">
                         <span>Created: {{ \Carbon\Carbon::parse($trading_unit['created_at'])->format('d/m/Y') }} at

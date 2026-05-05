@@ -9,6 +9,7 @@ use Modules\Vender\Entities\TradingName;
 use Modules\Vender\Entities\VenderAddress;
 use Modules\Vender\Entities\VendorProfile;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Support\Facades\Mail;
 
 class ApplicationController extends Controller
 {
@@ -16,7 +17,7 @@ class ApplicationController extends Controller
     {
 
 
-        $users = User::whereIn('application_status', ['IN_REVIEW', 'ACCEPTED','DECLINE'])->where('type', null)->latest()->get();
+        $users = User::whereIn('application_status', ['IN_REVIEW', 'ACCEPTED', 'DECLINE'])->where('type', null)->latest()->get();
 
         return view('admin::admin.registration.application.index', get_defined_vars());
     }
@@ -379,12 +380,20 @@ class ApplicationController extends Controller
             'bank_status' => 1,
         ]);
         $user = User::find($id);
-        
+
         VenderAddress::where('vender_id', $id)->update([
-            'status'=>'Verified'
-            ]);
-            
-            
+            'status' => 'Verified'
+        ]);
+
+        Mail::send('email.vendor_status', [
+            'vendor' => $user,
+            'status' => 1
+        ], function ($message) use ($user) {
+            $message->to($user->email)
+                ->subject(
+                    'Your Profile Has Been Approved'
+                );
+        });
 
         return redirect()->back()->with('success', 'Application Accept Successfully');
     }
@@ -395,6 +404,16 @@ class ApplicationController extends Controller
         User::find($id)->update([
             'application_status' => 'DECLINE'
         ]);
+         $user = User::find($id);
+         Mail::send('email.vendor_status', [
+            'vendor' => $user,
+            'status' => 2
+        ], function ($message) use ($user) {
+            $message->to($user->email)
+                ->subject(
+                    'Your Profile Has Been Decline'
+                );
+        });
 
 
         return redirect()->back()->with('success', 'Application Decline Successfully');

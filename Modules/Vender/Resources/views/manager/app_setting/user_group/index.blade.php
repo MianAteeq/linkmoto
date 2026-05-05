@@ -285,11 +285,14 @@
                                                                 style="text-align: center; white-space: nowrap; vertical-align: middle;">
 
                                                                 {{-- FIXED: Increased font size to 16px and ensured both are #ff6600 --}}
-                                                                <a href="{{ route('vender.user.group.edit', $role['id']) }}"
+                                                               
+                                                              
+                                                               <a href="{{ route('vender.user.group.edit', $role['id']) }}"
                                                                     style="display: inline-block; margin-right: 12px;">
                                                                     <i class="ft-edit"
                                                                         style="color: #ff6600; font-size: 11px;"></i>
                                                                 </a>
+                                                               
 
                                                                 <a href="{{ route('vender.user.group.view', $role['id']) }}"
                                                                     style="display: inline-block;">

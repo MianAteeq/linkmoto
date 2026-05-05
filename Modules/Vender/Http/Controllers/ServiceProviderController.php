@@ -61,7 +61,7 @@ class ServiceProviderController extends Controller
     {
 
         $user = auth()->user();
-        $trading_names = TradingName::where('vender_id', $user['id'])->get();
+        $trading_names = TradingName::where('vender_id', $user['id'])->where('is_change',0)->get();
         $sites = VenderAddress::where('vender_id', $user['id'])->get();
 
 
@@ -128,7 +128,7 @@ class ServiceProviderController extends Controller
 
         $trading_unit = TradingUnit::with('hub_setting')->find($id);
 
-        $workstreams = WorkStream::where('trading_id', $id)->get();
+        $workstreams = WorkStream::where('trading_id', $trading_unit->id)->get();
 
 
         return view('vender::service_provider.trading_unit.app_setting.index', get_defined_vars());
@@ -560,6 +560,14 @@ class ServiceProviderController extends Controller
             'mobile' => $unit['mobile'],
 
 
+
+        ]);
+
+        WorkStream::create([
+            "vender_id" => $vender_id,
+            "trading_id" => $unit['id'],
+            'workstream_name'=> 'Repair',
+            'status'=> 'ACTIVE',
 
         ]);
 

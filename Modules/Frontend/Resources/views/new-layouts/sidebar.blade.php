@@ -141,7 +141,7 @@
                                 @endif
                             </a>
                         </li>
-                        <li style="color: #000;font-family: 'Poppins' !important; "
+                        {{-- <li style="color: #000;font-family: 'Poppins' !important; "
                             class="@if (auth()->user()->profile['step'] == 9.2 || auth()->user()->profile['edit_step'] == 9.2) nav-item active @else p-none @endif">
                             <a href="{{ route('vender.profile.back', 11) }}">
                                 @if (auth()->user()->profile['step'] == 9.2)
@@ -154,7 +154,7 @@
                                     <i class="ft-x" style="color: red;"></i>
                                 @endif
                             </a>
-                        </li>
+                        </li> --}}
 
 
                     </ul>

@@ -192,15 +192,7 @@ table.dataTable tfoot th, table.dataTable tfoot td {
                               {{$user['profile']['phone_no']}}
                             </div>
                         </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-5">
-                                <h6 class="mb-0">Position or Job title</h6>
-                            </div>
-                            <div class="col-sm-7 text-secondary">
-                                {{$user['profile']['job_title']}}
-                            </div>
-                        </div>
+                       
 
 
 

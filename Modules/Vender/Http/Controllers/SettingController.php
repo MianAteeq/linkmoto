@@ -35,6 +35,7 @@ use Modules\Vender\Entities\VenderAccreditationScheme;
 
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Stripe\Exception\ApiConnectionException;
 use Stripe\Exception\ApiErrorException;
 
@@ -395,7 +396,7 @@ class SettingController extends Controller
             $user = auth()->user();
             if ($request['is_save_later'] == 0) {
 
-                $step = 9.2;
+                $step = 11;
             } else {
                 $step = 9.1;
             }
@@ -538,6 +539,14 @@ class SettingController extends Controller
             'bank_status' => $user['profile']['bank_status'] == 3 ? 0 : $user['profile']['bank_status'],
             'is_finish' => 1,
         ]);
+
+       Mail::send('email.profile_submit', [
+    'user' => $user,
+    'vendor' => $user->profile
+], function ($message) use ($user) {
+    $message->to('ateeqadrees83@gmail.com')
+            ->subject('New Profile Submitted - ' . $user->name);
+});
 
 
         return redirect()->back()->with('message', 'Profile has been Submit for Review');

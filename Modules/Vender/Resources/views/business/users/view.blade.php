@@ -227,7 +227,7 @@
                             <span>{{ $user['email'] }}</span>
                         </div>
                         <div style="margin-top: 15px; font-weight: 500; font-size: 13px;">
-                            <span class="success">{{ $user['status'] }}</span>
+                            <span class="success">{{ ucfirst(strtolower($user['status'])) }}</span>
                         </div>
                         <div style="margin-top: 15px; font-weight: 500; font-size: 13px;">
                             <span>Last sign in: {{ \Carbon\Carbon::parse($user['updated_at'])->format('d/m/Y') }} at

@@ -299,10 +299,12 @@
                                                         </td>
                                                         <td>{{ $role['group_type'] }}</td>
                                                         <td>
+                                                            @if($role['group_type'] !='System Default')
                                                             <a
                                                                 href="{{ route('vender.service.provider.user.group.edit', $role['id']) }}">
                                                                 <i class="ft-edit"></i>
                                                             </a>
+                                                            @endif
                                                             <a
                                                                 href="{{ route('vender.service.provider.user.group.view', $role['id']) }}">
                                                                 <i class="ft-eye"></i>

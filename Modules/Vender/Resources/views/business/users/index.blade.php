@@ -241,7 +241,7 @@
                                             <td>{{ $user['last_name'] }}</td>
                                             <td>{{ $user['email'] }}</td>
                                             <td>{{ $user['profile']['phone_no'] }}</td>
-                                            <td>Active</td>
+                                            <td>{{ ucfirst(strtolower($user['status'])) }}</td>
                                             <td>
                                                 <a href="{{ route('vender.user.edit', $user['id']) }}"><i
                                                         class="ft-edit"></i></a>
@@ -257,7 +257,7 @@
                                                 <td>{{ $account['last_name'] }}</td>
                                                 <td>{{ $account['email'] }}</td>
                                                 <td>{{ $account['phone_no'] }}</td>
-                                                <td>{{ $account['status'] }}</td>
+                                                <td>{{ ucfirst(strtolower($account['status'])) }}</td>
                                                 <td>
                                                     <a href="{{ route('vender.user.edit', $account['id']) }}"><i
                                                             class="ft-edit"></i></a>

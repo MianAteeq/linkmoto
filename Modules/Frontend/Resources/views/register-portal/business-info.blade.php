@@ -182,7 +182,7 @@
                                     data-toggle="collapse" aria-expanded="false"
                                     aria-controls="collapsec_name">(?)</a></label>
                             <div class="col-12 col-lg-8 mx-auto">
-                                <input type="tel" id="company_name" value="{{ $user['profile']['company_name'] }}"
+                                <input type="tel" id="company_name" value="{{ $user['profile']['company_name']??$user['profile']['trading_name'] }}"
                                     class="form-control" onkeyup="lookup(this);" name="company_name" required
                                     placeholder=" ">
                                 <p class="text-danger company_name"
