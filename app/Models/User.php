@@ -221,5 +221,14 @@ public function sub_profile(): HasOne
         return $this->belongsTo(TradingUnit::class, 'default_trading_unit', 'id');
     }
 
+    public function getStatusAttribute($value)
+{
+    if ($value === 'Accepted' || $value === 'ACCEPTED') {
+        return 'Active';
+    }
+
+    return $value;
+}
+
 
 }
