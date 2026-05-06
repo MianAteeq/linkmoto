@@ -389,14 +389,14 @@ class SettingController extends Controller
             return redirect()->route('vender.profiles')->with('message', 'Payment Done Successfully');
         }
     }
-    public function termConditionUpdate(Request $request)
+   public function termConditionUpdate(Request $request)
     {
         // return $request;
         if ($request['requestType'] == 'term') {
             $user = auth()->user();
             if ($request['is_save_later'] == 0) {
 
-                $step = 11;
+                $step = 9.2;
             } else {
                 $step = 9.1;
             }
@@ -417,9 +417,9 @@ class SettingController extends Controller
             $user = auth()->user();
             if ($request['is_save_later'] == 0) {
 
-                $step = 9.2;
+                $step = 11;
             } else {
-                $step = 9.1;
+                $step = 9.2;
             }
             vendorProfile::where('vender_id', $user['id'])->update([
                 'step' => $step,
@@ -459,7 +459,6 @@ class SettingController extends Controller
 
         return redirect()->route('vender.profiles')->with('message', 'Term and Condition Agree Successfully');
     }
-
 
 
     public function vendorProfileStart(Request $request)
