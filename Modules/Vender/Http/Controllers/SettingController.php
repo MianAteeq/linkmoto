@@ -417,9 +417,9 @@ class SettingController extends Controller
             $user = auth()->user();
             if ($request['is_save_later'] == 0) {
 
-                $step = 11;
-            } else {
                 $step = 9.2;
+            } else {
+                $step = 9.1;
             }
             vendorProfile::where('vender_id', $user['id'])->update([
                 'step' => $step,
