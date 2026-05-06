@@ -91,11 +91,7 @@
 
                                 <div
                                     style="height: 300px; overflow-y: scroll; border: 3px solid #e0e0e0; padding: 20px; margin-bottom: 10px; scrollbar-width: none;">
-                                    <h2 data-start="190" data-end="211" class="">
-                                        <span data-start="193" data-end="211" style="">
-                                            <font color="#000000" style="">Beta T&Cs</font>
-                                        </span>
-                                    </h2>
+                                    
                                     <p>{!! $setting['term_condition'] ?? '' !!}</p>
                                 </div>
 
