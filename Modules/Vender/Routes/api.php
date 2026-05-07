@@ -205,6 +205,7 @@ Route::group(['middleware' => ['cors']], function () {
                 Route::post('invoice/fetch', [InvoiceController::class, 'getInvoices']);
                 Route::post('get/single/invoice', [InvoiceController::class, 'fetchSingleInvoice']);
                 Route::post('send/email/invoice', [InvoiceController::class, 'sendMail']);
+                Route::post('send/email/booking', [InvoiceController::class, 'sendMailBooking']);
                 Route::post('send/email/payment', [InvoiceController::class, 'sendPaymentMail']);
                 Route::post('get/single/invoice/pdf', [InvoiceController::class, 'fetchInvoicePdf']);
                 Route::post('get/single/payment/pdf', [InvoiceController::class, 'fetchPaymentPdf']);

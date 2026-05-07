@@ -389,7 +389,7 @@ class SettingController extends Controller
             return redirect()->route('vender.profiles')->with('message', 'Payment Done Successfully');
         }
     }
-   public function termConditionUpdate(Request $request)
+    public function termConditionUpdate(Request $request)
     {
         // return $request;
         if ($request['requestType'] == 'term') {
@@ -539,13 +539,13 @@ class SettingController extends Controller
             'is_finish' => 1,
         ]);
 
-       Mail::send('email.profile_submit', [
-    'user' => $user,
-    'vendor' => $user->profile
-], function ($message) use ($user) {
-    $message->to('ateeqadrees83@gmail.com')
-            ->subject('New Profile Submitted - ' . $user->name);
-});
+        Mail::send('email.profile_submit', [
+            'user' => $user,
+            'vendor' => $user->profile
+        ], function ($message) use ($user) {
+            $message->to('ateeqadrees83@gmail.com')
+                ->subject('New Profile Submitted - ' . $user->name);
+        });
 
 
         return redirect()->back()->with('message', 'Profile has been Submit for Review');
@@ -554,9 +554,29 @@ class SettingController extends Controller
     public function vendorProfileBusinessInfo(Request $request)
     {
 
-        // return $request;
+ $user = auth()->user();
+$request->validate([
+    'organization_status' => 'required',
 
-        $user = auth()->user();
+    'registration_no' => [
+        Rule::requiredIf(in_array($request->organization_status, [
+            'Limited Company (Ltd)',
+            'Limited Liability Partnership (LLP)',
+        ])),
+
+        Rule::unique('vendor_profiles', 'registration_no')
+            ->ignore($user->id, 'vender_id')
+            ->when(
+                in_array($request->organization_status, [
+                    'Limited Company (Ltd)',
+                    'Limited Liability Partnership (LLP)',
+                ]),
+                fn ($query) => $query
+            ),
+    ],
+]);
+
+       
         $filePath = $user['profile']['document_proof'];
         $fileName = $user['profile']['document_proof_name'];;
         if ($request->hasFile('document_proof')) {

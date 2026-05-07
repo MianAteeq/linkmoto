@@ -90,15 +90,15 @@ class Booking extends Model
      */
     public function invoice()
     {
-        return $this->hasOne(Invoice::class, 'booking_id', 'id')->orderBy('id','desc');
+        return $this->hasOne(Invoice::class, 'booking_id', 'id')->orderBy('id', 'desc');
     }
     public function invoices(): HasMany
     {
-        return $this->hasMany(Invoice::class, 'booking_id', 'id')->orderBy('id','desc');
+        return $this->hasMany(Invoice::class, 'booking_id', 'id')->orderBy('id', 'desc');
     }
     public function job_invoices()
     {
-        return $this->hasMany(Invoice::class, 'booking_id', 'id')->where('status','!=','REJECTED');
+        return $this->hasMany(Invoice::class, 'booking_id', 'id')->where('status', '!=', 'REJECTED');
     }
 
 
@@ -125,26 +125,26 @@ class Booking extends Model
 
     public function getStatusAttribute($value)
     {
-        if($value=="READ_FOR_COLLECTION"){
+        if ($value == "READ_FOR_COLLECTION") {
 
-            return 'READY_FOR_COLLECTION' ;
-        }else{
+            return 'READY_FOR_COLLECTION';
+        } else {
             return $value;
         }
     }
     public function job_logs(): HasMany
     {
-        return $this->hasMany(Log::class, 'type_id', 'id')->whereIn('type',['Book','Job']);
+        return $this->hasMany(Log::class, 'type_id', 'id')->whereIn('type', ['Book', 'Job']);
     }
     public function getServiceTypeAttribute($value)
     {
-        if($value=="On-Premises"){
+        if ($value == "On-Premises") {
             return 'On-site';
         }
         return ucfirst($value);
     }
 
-     protected $appends = ['booking_no','job_no']; // Optional: include in JSON
+    protected $appends = ['booking_no', 'job_no']; // Optional: include in JSON
     //  protected $appends = ['job_no'];
 
     public function getBookingNoAttribute($value)
@@ -153,23 +153,26 @@ class Booking extends Model
         $id = $this->trading_id;
         $prefix = 'TRU';
 
-        return 'BKG-'."TRU".str_pad($id, 5, "0", STR_PAD_LEFT)."-". str_pad($this->id, 5, "0", STR_PAD_LEFT);
+        return 'BKG-' . "TRU" . str_pad($id, 5, "0", STR_PAD_LEFT) . "-" . str_pad($this->id, 5, "0", STR_PAD_LEFT);
     }
-     // Optional: include in JSON
+    // Optional: include in JSON
 
     public function getJobNoAttribute($value)
     {
         // You can use any attribute from the model
-        if($this->job_id!=0){
+        if ($this->job_id != 0) {
 
 
-        $id = $this->trading_id;
-        $prefix = 'TRU';
+            $id = $this->trading_id;
+            $prefix = 'TRU';
 
-        return 'JOB-'."TRU".str_pad($id, 5, "0", STR_PAD_LEFT)."-". str_pad($this->job_id, 5, "0", STR_PAD_LEFT);
-        }
-        else{
+            return 'JOB-' . "TRU" . str_pad($id, 5, "0", STR_PAD_LEFT) . "-" . str_pad($this->job_id, 5, "0", STR_PAD_LEFT);
+        } else {
             return null;
         }
+    }
+    public function setPostCodeAttribute($value)
+    {
+        $this->attributes['post_code'] = strtoupper(trim($value));
     }
 }

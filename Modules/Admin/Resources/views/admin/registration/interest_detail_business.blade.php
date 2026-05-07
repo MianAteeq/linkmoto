@@ -196,10 +196,18 @@ table.dataTable tfoot th, table.dataTable tfoot td {
                             <div class="col-sm-5">
                                 <h6 class="mb-0">Address</h6>
                             </div>
-                            <div class="col-sm-7 text-secondary">
-                                {{$user['profile']['address_line_1']}} @if($user['profile']['address_line_2']!="" || $user['profile']['address_line_2']!=null) , @endif {{$user['profile']['address_line_2']}} @if($user['profile']['address_line_3']!="" || $user['profile']['address_line_3']!=null) , @endif {{$user['profile']['address_line_3']}} @if($user['profile']['address_line_4']!="" || $user['profile']['address_line_4']!=null) , @endif {{$user['profile']['address_line_4']}}
-                                @if($user['profile']['city']!="" || $user['profile']['city']!=null) , @endif {{$user['profile']['city']}}  @if($user['profile']['postcode']!="" || $user['profile']['postcode']!=null) , @endif {{$user['profile']['postcode']}}
-                            </div>
+                           <div class="col-sm-7 text-secondary">
+    {{
+        implode(', ', array_filter([
+            $user['profile']['address_line_1'],
+            $user['profile']['address_line_2'],
+            $user['profile']['address_line_3'],
+            $user['profile']['address_line_4'],
+            $user['profile']['city'],
+            $user['profile']['postcode'],
+        ]))
+    }}
+</div>
                         </div>
 
                       
@@ -225,8 +233,12 @@ table.dataTable tfoot th, table.dataTable tfoot td {
                             </div>
                             <div class="col-sm-7 text-secondary">
                                 @foreach ($user['services'] as $service)
+                                {{-- @dd($service['service']) --}}
 
-                                <span class="badge badge-success mt-1" style="padding: 0.5em 1.6em;background-color: #ff822f;">{{$service['service']['name']}}</span>
+                              @if(isset($service['service']))  <span class="badge badge-success mt-1" style="padding: 0.5em 1.6em;background-color: #ff822f;">
+                                    {{$service['service']['name']??''}}
+                                </span>
+                                @endif
                                 @endforeach
                             </div>
                         </div>

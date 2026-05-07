@@ -220,6 +220,58 @@ class InvoiceController extends Controller
             ]);
         }
     }
+    public function sendMailBooking(Request $request)
+    {
+        try {
+            // 1️⃣ Validate input
+            $validator = \Validator::make($request->all(), [
+                'booking_id' => ['required'],
+                'email'      => ['required', 'email'],
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => $validator->errors()->first(),
+                ]);
+            }
+
+            // 2️⃣ Determine vendor ID
+            $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
+
+            $booking = Booking::with(['contact_detail', 'service', 'job_requests', 'booking_items', 'vehicle.vehicle_model', 'vehicle.vehicle_make', 'vehicle.engine_size', 'vehicle.transmission_type', 'vehicle.fuel_type', 'vehicle.color'])->where('vender_id', $vender_id)->find($request->booking_id); 
+            if (!$booking) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Booking not found.',
+                ]);
+            }
+            // 4️⃣ Load vendor info
+       Mail::raw('Test Booking Email', function ($message) use ($request) {
+    $message->to($request->email)
+            ->subject('Booking Detail');
+});
+
+            return response()->json([
+                'status' => true,
+                'message' => "Booking Email Sent Successfully",
+            ]);
+        } catch (\Exception $e) {
+            // 10️⃣ Log failure
+            InLog::error('Booking email failed', [
+                'booking_id' => $booking->id ?? null,
+                'vender_id'  => auth()->user()->id ?? null,
+                'email'      => $request->email ?? 'N/A',
+                'error'      => $e->getMessage(),
+            ]);
+
+            return response()->json([
+                'status' => false,
+                'error' => $e->getMessage(),
+                'message' => "Error while sending Booking Email",
+            ]);
+        }
+    }
 
     public function sendPaymentMail(Request $request)
     {

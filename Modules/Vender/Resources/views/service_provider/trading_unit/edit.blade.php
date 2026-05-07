@@ -420,27 +420,52 @@
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-md-4 label-control">How do you provide and offer your services? * (?)
-                        </label>
-                        <div class="col-md-8 mx-auto">
-                            <div class="d-flex flex-column">
-                                <div class="custom-control custom-checkbox mb-2">
-                                    <input type="checkbox" name="operation_type[]" value="On-site"
-                                        class="custom-control-input" id="On-site"
-                                        @if (in_array('On-site', explode(',', $trading_unit['operation_type']))) checked @endif>
-                                    <label class="custom-control-label" for="On-site">On-site</label>
-                                </div>
+    <label class="col-md-4 label-control">
+        How do you provide and offer your services? * (?)
+    </label>
 
-                                <div class="custom-control custom-checkbox mb-2">
-                                    <input type="checkbox" name="operation_type[]" value="Mobile"
-                                        class="custom-control-input" id="Mobile"
-                                        @if (in_array('Mobile', explode(',', $trading_unit['operation_type']))) checked @endif>
-                                    <label class="custom-control-label" for="Mobile">Mobile</label>
-                                </div>
-                            </div>
-                        </div>
+    <div class="col-md-8 mx-auto">
+        <div class="d-flex flex-column">
 
-                    </div>
+            <div class="custom-control custom-checkbox mb-2">
+                <input type="checkbox"
+                    name="operation_type[]"
+                    value="On-site"
+                    class="custom-control-input"
+                    id="On-site"
+                    @if (
+                        in_array('On-site', explode(',', $trading_unit['operation_type'])) ||
+                        $trading_unit['operation_type'] == 'Both'
+                    )
+                        checked
+                    @endif>
+
+                <label class="custom-control-label" for="On-site">
+                    On-site
+                </label>
+            </div>
+
+            <div class="custom-control custom-checkbox mb-2">
+                <input type="checkbox"
+                    name="operation_type[]"
+                    value="Mobile"
+                    class="custom-control-input"
+                    id="Mobile"
+                    @if (
+                        in_array('Mobile', explode(',', $trading_unit['operation_type'])) ||
+                        $trading_unit['operation_type'] == 'Both'
+                    )
+                        checked
+                    @endif>
+
+                <label class="custom-control-label" for="Mobile">
+                    Mobile
+                </label>
+            </div>
+
+        </div>
+    </div>
+</div>
                     <div class="form-group row" id="site_show"
                         @if ($trading_unit['operation_type'] == 'Mobile') style="display: none" @else @endif>
                         <label class="col-md-4 label-control" for="eventRegInput5">Address * (?)</label>

@@ -151,7 +151,7 @@
                     style="border: 2px solid black;border-radius: 7px !important;padding: 1.2rem 1rem;color: black !important;"
                     data-toggle="collapse" href="#collaptr_businesss_info" aria-expanded="true"
                     aria-controls="collaptr_businesss_info">
-                    <div class="card-title lead collapsed">WorkStream information</div>
+                    <div class="card-title lead collapsed">Workstream information</div>
                 </a>
                 <div id="collaptr_businesss_info" role="tabpanel" aria-labelledby="headingCollapsebusinesss_info"
                     style="border-left: 2px solid black;

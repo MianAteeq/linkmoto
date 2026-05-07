@@ -23,7 +23,7 @@ class Vender
             // dd(Auth::user()->application_status);
 
 
-            if (Auth::user()->status == "ACCEPTED" && Auth::user()->application_status == 'PENDING' || Auth::user()->application_status == 'DECLINE' ||  Auth::user()->application_status == 'IN_REVIEW') {
+            if (Auth::user()->status == "ACCEPTED" && Auth::user()->application_status == 'PENDING' || Auth::user()->application_status == 'Request for Info' || Auth::user()->application_status == 'DECLINE' ||  Auth::user()->application_status == 'IN_REVIEW') {
 
                 if ($request->path() == "vender/profile" || $request->path() == "vender/profile/start" || $request->path() == "vender/profile/business/info" || $request->path() == "vender/profile/trading/name" || str_contains($request->path(), 'vender/profile') == true) {
 

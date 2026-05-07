@@ -397,12 +397,13 @@ class ApplicationController extends Controller
 
         return redirect()->back()->with('success', 'Application Accept Successfully');
     }
-    public function applicationDecline($id)
+    public function applicationDecline($id, Request $request)
     {
 
 
         User::find($id)->update([
-            'application_status' => 'DECLINE'
+            'application_status' => 'DECLINE',
+             'note' => $request->reason
         ]);
          $user = User::find($id);
          Mail::send('email.vendor_status', [
@@ -417,6 +418,29 @@ class ApplicationController extends Controller
 
 
         return redirect()->back()->with('success', 'Application Decline Successfully');
+    }
+    public function applicationRequestInfo($id, Request $request)
+    {
+        // return $request->all();
+
+
+        User::find($id)->update([
+            'application_status' => 'Request for Info',
+            'note' => $request->reason
+        ]);
+         $user = User::find($id);
+         Mail::send('email.vendor_status', [
+            'vendor' => $user,
+            'status' => 2
+        ], function ($message) use ($user) {
+            $message->to($user->email)
+                ->subject(
+                    'Your Profile Has Been Request For More Information'
+                );
+        });
+
+
+        return redirect()->back()->with('success', 'Application Request For Info Successfully');
     }
 
 

@@ -55,7 +55,19 @@
         <div class="row" style="border-bottom: 3px solid #949494; margin-bottom: 15px;">
             <div class="col-xl-12 col-12 px-1 px-md-2">
                 <h3 class="h3" style="font-weight: 800; font-size: 18px; color: black; margin-bottom: 14px;">
-                    Business registration application
+                    Business registration application @if($user['application_status'] == 'Request for Info' || $user['application_status'] == 'PENDING')
+                                            <span class="badge badge-info" style="padding: 0.5em 0.6em;font-size: 13px;"> Request
+                                                for Info
+                                            </span>
+                                            @elseif ($user['application_status'] == 'DECLINE')
+                                            <span class="badge badge-info" style="padding: 0.5em 0.6em;font-size: 13px;background-color: black!important; color: white;"> Decline
+                                            </span>
+                                            @else
+                                             <span class="badge badge-success" style="padding: 0.5em 0.6em;font-size: 13px;"> In Review
+                                            </span>
+
+
+                                            @endif
                 </h3>
             </div>
         </div>

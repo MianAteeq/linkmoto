@@ -491,7 +491,7 @@
                                             <h6 class="mb-0" style="font-weight: 600;">Mobile</h6>
                                         </div>
                                         <div class="col-sm-7 text-secondary">
-                                            {{ $user['sub_profile']['phone_no'] }}
+                                            {{ $user['sub_profile']['phone_no']??$user['profile']['phone_no'] }}
                                         </div>
                                     </div>
                                     <hr>

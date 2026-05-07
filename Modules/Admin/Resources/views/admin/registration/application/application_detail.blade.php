@@ -165,8 +165,8 @@
                     <div class="footers" style="border-top: 2px solid black;padding: 10px ">
                         <button class="btn btn-primary btn-block"
                             onclick="window.location.href=`{{ route('admin.application.accept', $user['id']) }}`">ACCEPT</button>
-                        <button class="btn btn-primary btn-block"
-                            onclick="window.location.href=`{{ route('admin.application.decline', $user['id']) }}`">DECLINE</button>
+                        <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#requestInfoModal">  Request For Info</button>
+                        <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#declineModal">DECLINE</button>
 
                     </div>
                 @endif
@@ -281,6 +281,94 @@
 
         </div>
     </div>
+    <div class="modal fade" id="requestInfoModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <form action="{{ route('admin.application.request.info', $user['id']) }}" method="POST">
+            @csrf
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Request For Information</h5>
+
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label>Reason *</label>
+
+                        <textarea name="reason"
+                            class="form-control"
+                            rows="4"
+                            required></textarea>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-warning">
+                        Submit Request
+                    </button>
+
+                    <button type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal">
+                        Cancel
+                    </button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+    <div class="modal fade" id="declineModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <form action="{{ route('admin.application.decline', $user['id']) }}" method="get">
+            @csrf
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Decline Application</h5>
+
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label>Reason *</label>
+
+                        <textarea name="reason"
+                            class="form-control"
+                            rows="4"
+                            required></textarea>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-warning">
+                        Submit Decline
+                    </button>
+
+                    <button type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal">
+                        Cancel
+                    </button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
 @endsection
 
 

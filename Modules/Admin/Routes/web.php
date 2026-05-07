@@ -174,6 +174,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
 
             Route::get('/application/accept/{id}', [ApplicationController::class, 'applicationAccept'])->name('admin.application.accept');
             Route::get('/application/decline/{id}', [ApplicationController::class, 'applicationDecline'])->name('admin.application.decline');
+            Route::post('/application/request-for-info/{id}', [ApplicationController::class, 'applicationRequestInfo'])->name('admin.application.request.info');
         });
 
         /********  Packages ********/

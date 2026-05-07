@@ -131,7 +131,17 @@ table.dataTable tfoot th, table.dataTable tfoot td {
                                 <td>{{$user['profile']['address_line_1']??''}}  </td>
                                 <td>{{$user['profile']['postcode']??''}}</td>
                                 <td>{{$user['profile']['organization_status']??''}}</td>
-                                <td> @if ($user['application_status']=="IN_REVIEW")<span class="badge badge-secondary" style="font-size: 100%;"> Info in Review </span> @elseif($user['application_status']=="ACCEPTED")  <span class="badge badge-success" style="font-size: 100%;"> Accept </span> @endif </td>
+                                <td> @if ($user['application_status']=="IN_REVIEW")
+                                    <span class="badge badge-secondary" style="font-size: 100%;"> Info in Review </span> 
+                                    @elseif($user['application_status']=="ACCEPTED")  
+                                    <span class="badge badge-success" style="font-size: 100%;"> Accept </span> 
+                                    @elseif($user['application_status']=="DECLINE")
+                                    <span class="badge badge-danger" style="font-size: 100%;"> Decline </span>
+                                        @elseif($user['application_status']=="Request for Info")
+                                    <span class="badge badge-info" style="font-size: 100%;"> Request for Info </span>
+                                     
+                                    @endif 
+                                </td>
                                 <td><button class="btn btn-primary" onclick="window.location.href=`{{route('admin.application.detail',$user['id'])}}`"> <i class="ft-eye"></i></button></td>
                             </tr>
                             @endforeach

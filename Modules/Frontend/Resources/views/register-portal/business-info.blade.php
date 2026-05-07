@@ -60,7 +60,19 @@
     <div class="content-body px-2 px-md-2">
         <div class="row" style="border-bottom: 3px solid #949494; margin-bottom: 15px;">
             <div class="col-xl-12 col-12">
-                <h3 class="h3">Business registration application</h3>
+                <h3 class="h3">Business registration application @if($user['application_status'] == 'Request for Info' || $user['application_status'] == 'PENDING')
+                                            <span class="badge badge-info" style="padding: 0.5em 0.6em;font-size: 13px;"> Request
+                                                for Info
+                                            </span>
+                                            @elseif ($user['application_status'] == 'DECLINE')
+                                            <span class="badge badge-info" style="padding: 0.5em 0.6em;font-size: 13px;background-color: black!important; color: white;"> Decline
+                                            </span>
+                                            @else
+                                             <span class="badge badge-success" style="padding: 0.5em 0.6em;font-size: 13px;"> In Review
+                                            </span>
+
+
+                                            @endif</h3>
             </div>
         </div>
 
@@ -203,8 +215,11 @@
                                     value="{{ $user['profile']['registration_no'] }}" onkeyup="lookup(this);"
                                     name="registration_no" required placeholder=" ">
                                 <p class="text-danger registration_no"
-                                    style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This Field is
-                                    Required !</p>
+                                    style="padding-left: 10px;width:100%;margin-bottom: -8px;
+                                    {{ $errors->has('registration_no') ? '' : 'display:none;' }}">
+
+                                        {{ $errors->first('registration_no') }}
+                                    </p>
                             </div>
                         </div>
 

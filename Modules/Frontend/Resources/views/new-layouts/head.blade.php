@@ -282,6 +282,12 @@
     form label {
         color: black;
     }
+       .badge-info {
+            background-color: #3B6E9B !important;
+        }
+        .badge-success {
+    background-color: #28A745;
+}
 
     /*  */
 </style>
