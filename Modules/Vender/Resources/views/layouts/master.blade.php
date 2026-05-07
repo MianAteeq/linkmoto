@@ -385,7 +385,10 @@
     data-col="2-columns">
 
     @include('vender::layouts.header')
+    @if (!request()->routeIs('vender.agreements'))
+   
     @include('vender::layouts.sidebar')
+@endif
 
     <div class="app-content content">
         <div class="content-overlay"></div>

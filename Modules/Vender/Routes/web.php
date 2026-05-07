@@ -41,6 +41,8 @@ use Modules\Vender\Http\Controllers\WorkStreamController;
 Route::name('vender.')->middleware('auth:web')->group(function () {
 
     Route::get('vender', [VenderController::class, 'index'])->name('index');
+    Route::get('vender/agreements', [VenderController::class, 'agreements'])->name('agreements');
+    Route::post('vender/agreements', [VenderController::class, 'agreementSubmit'])->name('agreements.submit');
 
     // Business Route
 

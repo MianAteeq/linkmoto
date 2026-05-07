@@ -2,6 +2,7 @@
 
 namespace Modules\Vender\Http\Controllers;
 
+use App\Models\AgreementAcceptance;
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
@@ -29,6 +30,75 @@ class VenderController extends Controller
      * Display a listing of the resource.
      * @return Renderable
      */
+
+    public function agreements()
+    {
+        $user = Auth::user();
+        $accepted = AgreementAcceptance::where('user_id', $user->id)->pluck('agreement_type')->toArray();
+
+        $agreements = [
+
+            'terms' => in_array('TERMS', $accepted),
+            'privacy' => in_array('PRIVACY', $accepted),
+        ];
+
+        return view('vender::agreements', get_defined_vars());
+    }
+    public function agreementSubmit(Request $request)
+    {
+       if($request->is_privacy_policy != 'on' || $request->is_terms != 'on'){
+        return back()->with('error', 'Please accept all agreements to proceed.');
+       }
+            $user = Auth::user();
+            $accepted = AgreementAcceptance::where('user_id', $user->id)->pluck('agreement_type')->toArray();
+    
+            $agreements = [
+    
+                'terms' => in_array('TERMS', $accepted),
+                'privacy' => in_array('PRIVACY', $accepted),
+            ];
+                if (!$agreements['privacy'] || !$agreements['terms']) {
+                    AgreementAcceptance::firstOrCreate([
+                        'user_id' => $user->id,
+                        'agreement_type' => 'PRIVACY',
+                        'agreement_version' => 1,
+                    ], [
+                        'user_full_name' => trim(
+                            $user->name . ' ' .
+                                ($user->middle_name ?? '') . ' ' .
+                                ($user->last_name ?? '')
+                        ),
+                        'user_email' => $user->email,
+                        'user_role' => 'Owner',
+                        'service_provider_name' => 'BM Provider App',
+                        'acceptance_method' => 'Service Provider App',
+                        'ip_address' => $request->ip(),
+                        'accepted_at' => now()->utc(),
+                    ]);
+        
+                    AgreementAcceptance::firstOrCreate([
+                        'user_id' => $user->id,
+                        'agreement_type' => 'TERMS',
+                        'agreement_version' => 1,
+                    ], [
+                        'user_full_name' => trim(
+                            $user->name . ' ' .
+                                ($user->middle_name ?? '') . ' ' .
+                                ($user->last_name ?? '')
+                        ),
+                        'user_email' => $user->email,
+                        'user_role' => 'Owner',
+                        'service_provider_name' => 'BM Provider App',
+                        'acceptance_method' => 'Service Provider App',
+                        'ip_address' => $request->ip(),
+                        'accepted_at' => now()->utc(),
+                    ]);
+                }
+                
+                return redirect()->route('vender.index')->with('success', 'Agreements accepted successfully.');
+    }
+
+
     public function index()
     {
 
