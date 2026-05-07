@@ -65,15 +65,17 @@ class Vender
     */
 
     if ($user->vender_id != 0) {
-
+        
         $accepted = AgreementAcceptance::where('user_id', $user->id)
-            ->pluck('agreement_type')
-            ->toArray();
-
+        ->pluck('agreement_type')
+        ->toArray();
+        
         $hasTerms = in_array('TERMS', $accepted);
         $hasPrivacy = in_array('PRIVACY', $accepted);
-
+        
+        
         if (!$hasTerms || !$hasPrivacy) {
+            // dd(1);
 
             if (!$request->routeIs('vender.agreements')) {
                 return redirect()->route('vender.agreements');
