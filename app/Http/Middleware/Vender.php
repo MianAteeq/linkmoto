@@ -32,7 +32,7 @@ class Vender
     */
 
     if (
-        $request->routeIs('vender.agreements') ||
+        
         $request->routeIs('vender.agreements.submit')
     ) {
         return $next($request);
@@ -75,7 +75,7 @@ class Vender
         
         
         if (!$hasTerms || !$hasPrivacy) {
-            // dd(1);
+          
 
             if (!$request->routeIs('vender.agreements')) {
                 return redirect()->route('vender.agreements');
