@@ -403,8 +403,9 @@
     </div>
     <div class="sidenav-overlay"></div>
     <div class="drag-target"></div>
-
+ @if (!request()->routeIs('vender.agreements'))
     @include('vender::layouts.footer')
+    @endif
 
     <script src="{{ asset('/modules/admin/app-assets/vendors/js/vendors.min.js') }}"></script>
 
