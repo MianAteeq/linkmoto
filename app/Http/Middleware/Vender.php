@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\AgreementAcceptance;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,120 +18,90 @@ class Vender
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function handle(Request $request, Closure $next)
-    {
-        if (Auth::check()) {
-
-            // dd(Auth::user()->application_status);
-
-
-            if (Auth::user()->status == "ACCEPTED" && Auth::user()->application_status == 'PENDING' || Auth::user()->application_status == 'Request for Info' || Auth::user()->application_status == 'DECLINE' ||  Auth::user()->application_status == 'IN_REVIEW') {
-
-                if ($request->path() == "vender/profile" || $request->path() == "vender/profile/start" || $request->path() == "vender/profile/business/info" || $request->path() == "vender/profile/trading/name" || str_contains($request->path(), 'vender/profile') == true) {
-
-                    return $next($request);
-                } else {
-
-
-
-                    return redirect(route('vender.profiles'));
-                }
-            } else {
-                if ($request->path() == "vender") {
-
-                    return $next($request);
-                }
-
-                if (Auth::user()->application_status == 'ACCEPTED') {
-
-                    return redirect(route('vender.index'));
-                } else {
-                    if ($request->path() == "vender/profile") {
-                        return $next($request);
-                    }
-                    return redirect(route('vender.profiles'));
-                }
-            }
-
-
-
-            return $next($request);
-        }
-        // return $next($request);
-        // if (Auth::check()) {
-
-
-
-        //     if (Auth::user()->status == "INACTIVE") {
-
-        //         if ($request->path() == "vender/under/review") {
-
-        //             return $next($request);
-
-        //         }else{
-
-        //             return redirect(route('vender.comming_soon'));
-        //         }
-
-
-        //     }
-        //     if(Auth::user()->profile['mechanic_docs']==null || Auth::user()->profile['address_proff'] == null){
-
-        //         if ($request->path() == "vender/setting") {
-
-        //             // dd(1);
-
-        //             return $next($request);
-        //         }else {
-
-
-
-        //             return redirect(route('vender.setting'));
-        //         }
-
-
-
-
-
-        //     }
-        //    $services=VenderService::where('vender_id', auth()->user()->id)->get();
-        //    if($services->count()==0){
-        //     if ($request->path() == "vender/service") {
-
-        //         // dd(1);
-
-        //         return $next($request);
-        //     }else {
-
-
-
-        //         return redirect(route('vender.service'));
-        //     }
-        //    }
-        //     if(Auth::user()->subscriptions->count()==0){
-        //         if ($request->path() == "vender/package" || str_contains(url()->current(), 'vender/checkout') !=false ) {
-
-        //             return $next($request);
-        //         }else if(str_contains(url()->current(), 'vender/checkout') != false){
-        //             return $next($request);
-
-        //         }
-        //          else {
-
-
-        //             return redirect(route('vender.package.index'));
-        //         }
-
-        //     }
-
-
-        //     return $next($request);
-
-        // } else {
-
-
-
-        //     return redirect(route('website.sign-in'));
-        // }
-
+{
+    if (!Auth::check()) {
+        return redirect()->route('login');
     }
+
+    $user = Auth::user();
+
+    /*
+    |--------------------------------------------------------------------------
+    | Allowed routes (prevent redirect loops)
+    |--------------------------------------------------------------------------
+    */
+
+    if (
+        $request->routeIs('vender.agreements') ||
+        $request->routeIs('vender.agreements.submit')
+    ) {
+        return $next($request);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Restricted statuses
+    |--------------------------------------------------------------------------
+    */
+
+    $restrictedStatuses = [
+        'PENDING',
+        'Request for Info',
+        'DECLINE',
+        'IN_REVIEW',
+    ];
+
+    if (
+        $user->status === 'ACCEPTED' &&
+        in_array($user->application_status, $restrictedStatuses)
+    ) {
+        return redirect()->route('vender.profiles');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Agreements check
+    |--------------------------------------------------------------------------
+    */
+
+    if ($user->vender_id != 0) {
+
+        $accepted = AgreementAcceptance::where('user_id', $user->id)
+            ->pluck('agreement_type')
+            ->toArray();
+
+        $hasTerms = in_array('TERMS', $accepted);
+        $hasPrivacy = in_array('PRIVACY', $accepted);
+
+        if (!$hasTerms || !$hasPrivacy) {
+
+            if (!$request->routeIs('vender.agreements')) {
+                return redirect()->route('vender.agreements');
+            }
+        }
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Accepted users
+    |--------------------------------------------------------------------------
+    */
+
+    if ($user->application_status === 'ACCEPTED') {
+
+        if (!$request->routeIs('vender.index')) {
+            return redirect()->route('vender.index');
+        }
+
+        return $next($request);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Default fallback
+    |--------------------------------------------------------------------------
+    */
+
+    return redirect()->route('vender.profiles');
+}
 }
