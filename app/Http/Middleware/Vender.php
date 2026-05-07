@@ -32,7 +32,7 @@ class Vender
     */
 
     if (
-        
+        $request->routeIs('vender.agreements') ||
         $request->routeIs('vender.agreements.submit')
     ) {
         return $next($request);
