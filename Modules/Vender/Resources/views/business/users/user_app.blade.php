@@ -159,8 +159,13 @@
                 <div class="breadcrumb-wrapper p-0">
                     <ol class="breadcrumb m-0 p-0" style="background-color: transparent;">
                         <li class="breadcrumb-item"><a>Directory</a></li>
-                        <li class="breadcrumb-item">Users</li>
-                        <li class="breadcrumb-item">{{ $user['name'] }} {{ $user['middle_name'] }} {{ $user['last_name'] }}
+                        <li class="breadcrumb-item"> <a style="color: black" href="{{route('vender.user')}}">
+                                Users
+                            </a></li>
+                        <li class="breadcrumb-item">
+                             <a style="color: black" href="{{route('vender.user.view',$user['id'])}}">
+                                {{ $user['name'] }} {{ $user['middle_name'] }} {{ $user['last_name'] }}
+                            </a>
                         </li>
                         <li class="breadcrumb-item active">Apps</li>
                     </ol>

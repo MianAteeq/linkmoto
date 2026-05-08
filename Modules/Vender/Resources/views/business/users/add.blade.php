@@ -238,7 +238,7 @@
                     <div class="form-group row">
                         <label class="col-md-4 label-control" for="eventRegInput5">First name *</label>
                         <div class="col-md-8 mx-auto">
-                            <input type="text" id="name" class="form-control" value="" onkeyup="lookup(this);"
+                            <input type="text" id="name" class="form-control" value="{{ old('name') }}" onkeyup="lookup(this);"
                                 name="name" placeholder="First name">
                             <p class="text-danger name"
                                 style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This Field is
@@ -248,7 +248,7 @@
                     <div class="form-group row">
                         <label class="col-md-4 label-control" for="eventRegInput5">Middle name </label>
                         <div class="col-md-8 mx-auto">
-                            <input type="text" id="middle_name" class="form-control" value="" name="middle_name"
+                            <input type="text" id="middle_name" class="form-control" value="{{ old('middle_name') }}" name="middle_name"
                                 placeholder="Middle name ">
                             <p class="text-danger middle_name"
                                 style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This Field is
@@ -258,7 +258,7 @@
                     <div class="form-group row">
                         <label class="col-md-4 label-control" for="eventRegInput5">Last name *</label>
                         <div class="col-md-8 mx-auto">
-                            <input type="text" id="last_name" class="form-control" value="" onkeyup="lookup(this);"
+                            <input type="text" id="last_name" class="form-control" value="{{ old('last_name') }}" onkeyup="lookup(this);"
                                 name="last_name" placeholder="Last name">
                             <p class="text-danger last_name"
                                 style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This Field is
@@ -269,7 +269,7 @@
                     <div class="form-group row">
                         <label class="col-md-4 label-control" for="eventRegInput5">Email * </label>
                         <div class="col-md-8 mx-auto">
-                            <input type="email" id="email" class="form-control" value="" onkeyup="lookup(this);"
+                            <input type="email" id="email" class="form-control" value="{{ old('email') }}" onkeyup="lookup(this);"
                                 name="email" placeholder="Email">
                             <p class="text-danger email"
                                 style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">Invalid Email !</p>
@@ -282,7 +282,7 @@
                     <div class="form-group row">
                         <label class="col-md-4 label-control" for="eventRegInput5">Mobile * </label>
                         <div class="col-md-8 mx-auto">
-                            <input type="tel" id="phone_no" class="form-control" value=""
+                            <input type="tel" id="phone_no" class="form-control" value="{{ old('phone_no') }}"
                                 onkeyup="lookup(this);" name="phone_no" placeholder="Mobile">
                             <p class="text-danger phone_no"
                                 style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This Field is
@@ -292,7 +292,7 @@
                     <div class="form-group row">
                         <label class="col-md-4 label-control" for="eventRegInput5">Landline </label>
                         <div class="col-md-8 mx-auto">
-                            <input type="tel" id="landline" class="form-control" value=""
+                            <input type="tel" id="landline" class="form-control" value="{{ old('landline') }}"
                                 onkeyup="lookup(this);" name="landline" placeholder="Landline">
                             <p class="text-danger landline"
                                 style="padding-left: 10px;width:100%;display: none;margin-bottom: -8px;">This Field is

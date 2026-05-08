@@ -169,11 +169,19 @@
 
 
 
-                        <li class="breadcrumb-item">Users
+                        <li class="breadcrumb-item">
+                            <a style="color: black" href="{{route('vender.user')}}">
+                                Users
+                            </a>
                         </li>
-                        <li class="breadcrumb-item">{{ $user['name'] }} {{ $user['middle_name'] }} {{ $user['last_name'] }}
+                        <li class="breadcrumb-item"> <a style="color: black" href="{{route('vender.user.view',$user['id'])}}">
+                                {{ $user['name'] }} {{ $user['middle_name'] }} {{ $user['last_name'] }}
+                            </a>
                         </li>
-                        <li class="breadcrumb-item">App
+                        <li class="breadcrumb-item">
+                            <a style="color: black" href="{{route('vender.user.app',$user['id'])}}">
+                                App
+                            </a>
                         </li>
                         <li class="breadcrumb-item">{{ $app['app_name'] }}
                         </li>

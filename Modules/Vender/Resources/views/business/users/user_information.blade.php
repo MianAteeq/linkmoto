@@ -113,7 +113,10 @@ table.dataTable tfoot th, table.dataTable tfoot td {
 
                 <li class="breadcrumb-item"><a style="color: black" href="{{route('vender.user')}}">Users</a>
                 </li>
-                <li class="breadcrumb-item">{{$user['name']}} {{$user['middle_name']}}  {{$user['last_name']}}
+                <li class="breadcrumb-item">
+                    <a style="color: black" href="{{route('vender.user.view',$user['id'])}}">
+                    {{$user['name']}} {{$user['middle_name']}}  {{$user['last_name']}}
+                    </a>
                 </li>
                 <li class="breadcrumb-item">User information
                 </li>

@@ -139,7 +139,8 @@ class UserController extends Controller
         'phone_no'=>$request['phone_no'],
         'landline'=>$request['landline'],
         'type'=>'App',
-        'application_status'=>'ACCEPTED'
+        'application_status'=>'ACCEPTED',
+        'password'=>Hash::make('12345678')
        ]);
 
        UserApp::create([
