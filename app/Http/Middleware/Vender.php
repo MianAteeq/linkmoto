@@ -18,95 +18,99 @@ class Vender
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function handle(Request $request, Closure $next)
-{
-    if (!Auth::check()) {
-        return redirect()->route('login');
-    }
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
 
-    $user = Auth::user();
+        $user = Auth::user();
 
-    /*
+        /*
     |--------------------------------------------------------------------------
-    | Allowed routes (prevent redirect loops)
-    |--------------------------------------------------------------------------
-    */
-
-    if (
-        $request->routeIs('vender.agreements') ||
-        $request->routeIs('vender.agreements.submit')
-    ) {
-        return $next($request);
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Restricted statuses
+    | Allowed agreement routes
     |--------------------------------------------------------------------------
     */
 
-    $restrictedStatuses = [
-        'PENDING',
-        'Request for Info',
-        'DECLINE',
-        'IN_REVIEW',
-    ];
+        if (
+            $request->routeIs('vender.agreements') ||
+            $request->routeIs('vender.agreements.submit')
+        ) {
+            return $next($request);
+        }
 
-    if (
-        $user->status === 'ACCEPTED' &&
-        in_array($user->application_status, $restrictedStatuses)
-    ) {
-         if (!$request->routeIs('vender.profiles')) {
+        /*
+    |--------------------------------------------------------------------------
+    | Restricted application statuses
+    |--------------------------------------------------------------------------
+    */
+
+        $restrictedStatuses = [
+            'PENDING',
+            'Request for Info',
+            'DECLINE',
+            'IN_REVIEW',
+        ];
+
+        if (
+            $user->status === 'ACCEPTED' &&
+            in_array($user->application_status, $restrictedStatuses)
+        ) {
+
+            /*
+        |--------------------------------------------------------------------------
+        | Allow only profile routes
+        |--------------------------------------------------------------------------
+        */
+
+            if (str_contains($request->path(), 'vender/profile')) {
+                return $next($request);
+            }
+
             return redirect()->route('vender.profiles');
         }
-        return $next($request);
-    }
 
-    /*
+        /*
     |--------------------------------------------------------------------------
     | Agreements check
     |--------------------------------------------------------------------------
     */
 
-    if ($user->vender_id != 0) {
-        
-        $accepted = AgreementAcceptance::where('user_id', $user->id)
-        ->pluck('agreement_type')
-        ->toArray();
-        
-        $hasTerms = in_array('TERMS', $accepted);
-        $hasPrivacy = in_array('PRIVACY', $accepted);
-        
-        
-        if (!$hasTerms || !$hasPrivacy) {
-          
+        if ($user->vender_id != 0) {
 
-            if (!$request->routeIs('vender.agreements')) {
-                return redirect()->route('vender.agreements');
+            $accepted = AgreementAcceptance::where('user_id', $user->id)
+                ->pluck('agreement_type')
+                ->toArray();
+
+            $hasTerms = in_array('TERMS', $accepted);
+            $hasPrivacy = in_array('PRIVACY', $accepted);
+
+            if (!$hasTerms || !$hasPrivacy) {
+
+                if (!$request->routeIs('vender.agreements')) {
+                    return redirect()->route('vender.agreements');
+                }
             }
         }
-    }
 
-    /*
+        /*
     |--------------------------------------------------------------------------
-    | Accepted users
+    | Fully accepted users
     |--------------------------------------------------------------------------
     */
 
-    if ($user->application_status === 'ACCEPTED') {
-
-        if (!$request->routeIs('vender.index')) {
-            return redirect()->route('vender.index');
+        if ($user->application_status === 'ACCEPTED') {
+            if (!$request->routeIs('vender.index')) {
+                return redirect()->route('vender.index');
+            }
+            return $next($request);
         }
 
-        return $next($request);
-    }
-
-    /*
+        /*
     |--------------------------------------------------------------------------
     | Default fallback
     |--------------------------------------------------------------------------
     */
 
-    return redirect()->route('vender.profiles');
-}
+        return redirect()->route('vender.profiles');
+    }
 }
