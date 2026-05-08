@@ -165,7 +165,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-5">
-                                    <h6 class="mb-0">WorkStream name</h6>
+                                    <h6 class="mb-0">Workstream name</h6>
                                 </div>
                                 <div class="col-sm-7 text-secondary">
                                     {{ $workstream['workstream_name'] ?? '' }}
