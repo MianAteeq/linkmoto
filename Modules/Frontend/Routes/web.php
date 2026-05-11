@@ -18,8 +18,6 @@ Route::get('/new/look', function () {
     return view('frontend::register-portal.business-info');
 });
 
-Route::domain('motonos.com')->group(function () {
-
 Route::name('website.')->group(function () {
     Route::get('/', [FrontendController::class, 'index'])->name('index');
     Route::get('/about', [FrontendController::class, 'about'])->name('about');
@@ -53,5 +51,4 @@ Route::name('website.')->group(function () {
     // Route::post('/subscription/register', [SubscriptionController::class, 'register'])->name('subscription.register');
     // Route::get('/subscription/{id}', [SubscriptionController::class, 'index'])->name('subscription');
     // Route::get('/user/logout', [SubscriptionController::class, 'logout'])->name('logout');
-});
 });
