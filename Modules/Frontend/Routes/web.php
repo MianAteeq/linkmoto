@@ -34,12 +34,8 @@ Route::name('website.')->group(function () {
     Route::middleware(['guest'])->group(function () {
         Route::get('/checkout/{id}', [SubscriptionController::class, 'create'])->name('subscription.checkout');
         Route::post('/checkouts/submit', [SubscriptionController::class, 'store'])->name('subscription.checkout.submit');
-
-        Route::get('/register', [SubscriptionController::class, 'register'])->name('vendor.register');
-        Route::get('/login', [SubscriptionController::class, 'loginForm'])->name('vendor.login');
-        Route::get('/thank/you', [SubscriptionController::class, 'thankYou'])->name('vendor.thank.you');
-        Route::post('/login', [SubscriptionController::class, 'login'])->name('vendor.login.submit');
-        Route::post('/validate', [SubscriptionController::class, 'validate'])->name('vender.validate');
+        
+       
     });
     Route::get('/vender/logout', [SubscriptionController::class, 'logout'])->name('vendor.logout.submit');
 
@@ -52,3 +48,12 @@ Route::name('website.')->group(function () {
     // Route::get('/subscription/{id}', [SubscriptionController::class, 'index'])->name('subscription');
     // Route::get('/user/logout', [SubscriptionController::class, 'logout'])->name('logout');
 });
+
+ Route::domain('business.motonos.com')->group(function () {
+        Route::get('/register', [SubscriptionController::class, 'register'])->name('vendor.register');
+
+        Route::get('/login', [SubscriptionController::class, 'loginForm'])->name('vendor.login');
+        Route::get('/thank/you', [SubscriptionController::class, 'thankYou'])->name('vendor.thank.you');
+        Route::post('/login', [SubscriptionController::class, 'login'])->name('vendor.login.submit');
+        Route::post('/validate', [SubscriptionController::class, 'validate'])->name('vender.validate');
+    });
