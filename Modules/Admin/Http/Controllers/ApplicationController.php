@@ -506,7 +506,8 @@ class ApplicationController extends Controller
 
 
         User::find($id)->update([
-            'application_status' => 'ACCEPTED'
+            'application_status' => 'ACCEPTED',
+             'default_trading_unit'=>$unit['id']
         ]);
 
 
