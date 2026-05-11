@@ -112,7 +112,7 @@
                     the
                     registration page and submit your details.</p>
                 <div style="text-align:center">
-                    <a href="https://Motonos-dev.fissionmonster.com/register" class="btn btn-primary px-4 py-2">Register
+                    <a href="{{ route('website.vendor.register') }}" class="btn btn-primary px-4 py-2">Register
                         Your
                         Interest</a>
                 </div>
@@ -134,7 +134,7 @@
                     us.
                 </p>
                 <div style="text-align:center">
-                    <a href="https://Motonos-dev.fissionmonster.com/contact" class="btn btn-secondary px-4 py-2">Get in
+                    <a href="{{ route('website.contact') }}" class="btn btn-secondary px-4 py-2">Get in
                         Touch</a>
                 </div>
             </div>
