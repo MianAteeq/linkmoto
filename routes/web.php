@@ -74,6 +74,8 @@ use GuzzleHttp\Client as CClinet;
 |
 */
 
+
+
 Route::get('/check-product-name', function (\Illuminate\Http\Request $request) {
     return response()->json([
         'exists' => QuickProduct::where('product_name', $request->name)->where('trading_id', $request['trading_id'])->exists()
@@ -337,7 +339,11 @@ Route::get('invoices/view/{id}', function ($id) {
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ResetPasswordController;
 
+Route::domain('motonos.com')->group(function () {
+
 Route::get('/forgot-password', [ForgotPasswordController::class, 'getforgetPassword'])->name('forget.password');
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink'])->name('forget.password.submit');
 Route::get('/reset-password', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
+
+});
