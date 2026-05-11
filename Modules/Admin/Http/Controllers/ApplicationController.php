@@ -9,7 +9,15 @@ use Modules\Vender\Entities\TradingName;
 use Modules\Vender\Entities\VenderAddress;
 use Modules\Vender\Entities\VendorProfile;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Modules\Vender\Entities\TradingUnit;
+use Modules\Vender\Entities\TradingUnitAppSetting;
+use Modules\Vender\Entities\UserApp;
+use Modules\Vender\Entities\UserTradingUnit;
+use Modules\Vender\Entities\WorkStream;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class ApplicationController extends Controller
 {
@@ -357,12 +365,151 @@ class ApplicationController extends Controller
     {
 
 
+
+        $user = User::with('profile')->find($id);
+
+        $site = VenderAddress::where('vender_id', $id)->first();
+
+        if ($user->profile->operation_type == 'On-site') {
+            $operation_type = 'On-site';
+        } elseif ($user->profile->operation_type == 'Mobile') {
+            $operation_type = 'Mobile';
+        } else {
+            $operation_type = 'Both';
+        }
+
+
+        $unit = TradingUnit::create([
+            'vender_id' => $user->id,
+            'name' => 'Main',
+            'trading_name_id' =>  0,
+            'trading_template' => 1,
+            'operation_type' => $operation_type,
+            'city' => $operation_type == 'On-site' ? $site['city'] ?? '' : '',
+            'postcode' => $operation_type == 'On-site' ? $site['postcode'] ?? '' : '',
+            'radius' => 10,
+            'mobile' => '',
+            'landline' => '',
+            'lat' => '',
+            'long' => '',
+            'email' => '',
+            'website' => '',
+            'site_id' => $operation_type == 'On-site' ? $site['id'] ?? '0' : '0',
+            'status' => 'Active'
+
+
+        ]);
+
+        //  Business Manager Group Create
+
+        $roles = ["Manager", "Customer Services", "Operations", "Technician"];
+
+        foreach ($roles as $key => $role) {
+            $role = Role::create([
+                'name' => $role . "SVP_B_" . $user->id,
+                'group_type' => 'System Default',
+                'type' => 'BUSINESS',
+                'guard_name' => 'web',
+                'vender_id' => $user->id
+            ]);
+
+            $permissions = Permission::where('group_type', 'BUSINESS')->where('guard_name', 'web')->get()->pluck('id');
+
+            $role->syncPermissions($permissions);
+        }
+        $business_role = Role::where('vender_id', $user->id)->where('type', 'BUSINESS')->first();
+
+        // User App Role Create
+
+        DB::transaction(function () use ($user) {
+
+            $roles = ["Manager", "Customer Services", "Operations", "Technician"];
+            $userId = $user->id;
+
+            // lock existing roles for this vendor
+            $existingRoles = Role::where('vender_id', $user->id)
+                ->where('group_type', 'System Default')
+                ->where('type', 'APP')
+                ->lockForUpdate()
+                ->pluck('name')
+                ->toArray();
+
+            $permissions = Permission::where('group_type', 'APP')->pluck('id');
+
+            foreach ($roles as $roleName) {
+
+                $fullName = $roleName . "SVP_" . $userId;
+
+                // create only if missing
+                if (!in_array($fullName, $existingRoles)) {
+
+                    $role = Role::create([
+                        'name' => $fullName,
+                        'group_type' => 'System Default',
+                        'type' => 'APP',
+                        'vender_id' => $userId,
+                        'guard_name' => 'web',
+                    ]);
+
+                    $role->syncPermissions($permissions);
+                }
+            }
+        });
+
+        $app_role = Role::where('vender_id', $user->id)->where('type', 'APP')->first();
+
+        WorkStream::create([
+            'vender_id' => $user->id,
+            'workstream_name' => 'Main',
+            'trading_id' => $unit->id,
+            'status' => 'ACTIVE'
+        ]);
+
+        UserApp::create([
+            'app_name' => 'Service Provider',
+            'status' => 1,
+            'vender_id' => $user['id'],
+            'role_id' => $app_role['id']
+        ]);
+        UserApp::create([
+            'app_name' => 'Business Manager',
+            'status' => 1,
+            'vender_id' => $user['id'],
+            'role_id' => $business_role['id']
+        ]);
+
+        UserTradingUnit::create([
+            'user_id' => $user->id,
+            'trading_id' => $unit->id,
+
+        ]);
+
+         TradingUnitAppSetting::create([
+
+            'trading_id' => $unit['id'],
+            'site_id' => $unit['site_id'] ?? '0',
+            'header_option' => $unit['trading_template'],
+            'address_line_1' => $site['address_line_1'] ?? ' ',
+            'address_line_2' => $site['address_line_2'] ?? ' ',
+            'address_line_3' => $site['address_line_3'] ?? ' ',
+            'address_line_4' => $site['address_line_4'] ?? ' ',
+            'city' => $unit['city'],
+            'postcode' => $unit['postcode'],
+            'landline' => $unit['landline'],
+            'mobile' => $unit['mobile'],
+
+
+
+        ]);
+
+
+
+
         User::find($id)->update([
             'application_status' => 'ACCEPTED'
         ]);
 
 
-        $user = User::with('profile')->find($id);
 
 
 
@@ -403,10 +550,10 @@ class ApplicationController extends Controller
 
         User::find($id)->update([
             'application_status' => 'DECLINE',
-             'note' => $request->reason
+            'note' => $request->reason
         ]);
-         $user = User::find($id);
-         Mail::send('email.vendor_status', [
+        $user = User::find($id);
+        Mail::send('email.vendor_status', [
             'vendor' => $user,
             'status' => 2
         ], function ($message) use ($user) {
@@ -428,8 +575,8 @@ class ApplicationController extends Controller
             'application_status' => 'Request for Info',
             'note' => $request->reason
         ]);
-         $user = User::find($id);
-         Mail::send('email.vendor_status', [
+        $user = User::find($id);
+        Mail::send('email.vendor_status', [
             'vendor' => $user,
             'status' => 2
         ], function ($message) use ($user) {
