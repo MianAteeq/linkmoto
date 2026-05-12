@@ -48,15 +48,15 @@
                 <p
                     style="margin: 0 0 30px 0; font-size: 16px; line-height: 1.8; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
                     Please find your booking details with
-                    <strong>>@if ($trading_unit['trading_template'] == 1)
+                    <strong>>@if ($trade_unit['trading_template'] == 1)
                                         {{ $user->profile->company_name }}
                                     @endif
-                                    @if ($trading_unit['trading_template'] == 2)
+                                    @if ($trade_unit['trading_template'] == 2)
                                         {{ $user->profile->company_name }} Trading as
-                                        {{ $trading_unit['trading_name']['name'] }}
+                                        {{ $trade_unit['trading_name']['name'] }}
                                     @endif
-                                    @if ($trading_unit['trading_template'] == 3)
-                                        {{ $trading_unit['trading_name']['name'] ?? '' }}
+                                    @if ($trade_unit['trading_template'] == 3)
+                                        {{ $trade_unit['trading_name']['name'] ?? '' }}
                                     @endif</strong> below.
                 </p>
 
@@ -162,15 +162,15 @@
                 <p
                     style="margin: 40px 0 0 0; font-size: 16px; line-height: 1.7; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
                     Best regards,<br>
-                    <strong>@if ($trading_unit['trading_template'] == 1)
+                    <strong>@if ($trade_unit['trading_template'] == 1)
                                         {{ $user->profile->company_name }}
                                     @endif
-                                    @if ($trading_unit['trading_template'] == 2)
+                                    @if ($trade_unit['trading_template'] == 2)
                                         {{ $user->profile->company_name }} Trading as
-                                        {{ $trading_unit['trading_name']['name'] }}
+                                        {{ $trade_unit['trading_name']['name'] }}
                                     @endif
-                                    @if ($trading_unit['trading_template'] == 3)
-                                        {{ $trading_unit['trading_name']['name'] ?? '' }}
+                                    @if ($trade_unit['trading_template'] == 3)
+                                        {{ $trade_unit['trading_name']['name'] ?? '' }}
                                     @endif</strong>
                 </p>
 

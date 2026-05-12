@@ -251,24 +251,24 @@ class InvoiceController extends Controller
             // 4️⃣ Load vendor info
 
             $tradingName='';
-            $trading_unit = TradingUnit::find($booking->trading_id);
+            $trade_unit = TradingUnit::find($booking->trading_id);
             $user=User::with('profile')->find($vender_id);
 
-            if ($trading_unit['trading_template'] == 1){
+            if ($trade_unit['trading_template'] == 1){
 
                 $tradingName=$user->profile->company_name;
             }
-            if($trading_unit['trading_template'] == 2){
-                $tradingName = $user->profile->company_name . ' Trading as ' . ($trading_unit['trading_name']['name'] ?? '');
-            }else if($trading_unit['trading_template'] == 3){
-                $tradingName = $trading_unit['trading_name']['name'] ?? '';
+            if($trade_unit['trading_template'] == 2){
+                $tradingName = $user->profile->company_name . ' Trading as ' . ($trade_unit['trading_name']['name'] ?? '');
+            }else if($trade_unit['trading_template'] == 3){
+                $tradingName = $trade_unit['trading_name']['name'] ?? '';
             }
                                    
 
 
             Mail::send('email.booking-email', [
                 'booking' => $booking,
-                'trade_unit' => $trading_unit,
+                'trade_unit' => $trade_unit,
                 'user' => $user
             ], function ($message) use ($booking, $request, $tradingName) {
                 $message->to($request->email)
