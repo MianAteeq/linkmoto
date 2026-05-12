@@ -582,7 +582,7 @@
     }
 
     .item-row td {
-        padding: 2px 6px !important;
+        padding: 5px 6px !important;
         vertical-align: middle;
         border: none !important;
     }
