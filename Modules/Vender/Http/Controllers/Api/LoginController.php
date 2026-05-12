@@ -372,8 +372,8 @@ class LoginController extends Controller
 
              $user = User::find($request->user()->id);
 
-              Mail::send('email.password_confirmation', get_defined_vars(), function ($send) use ($request) {
-                $send->to($request['email'])->subject("Your Motonos password has been changed");
+              Mail::send('email.password_confirmation', get_defined_vars(), function ($send) use ($user) {
+                $send->to($user['email'])->subject("Your Motonos password has been changed");
             });
 
 
