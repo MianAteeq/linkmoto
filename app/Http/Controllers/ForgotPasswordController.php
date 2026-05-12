@@ -28,13 +28,19 @@ class ForgotPasswordController extends Controller
         ['token' => $token, 'created_at' => Carbon::now()]
     );
 
+    $user = DB::table('users')->where('email', $request->email)->first();
+
+
+
+
     // Send email
     Mail::send('email.password_reset', [
         'token' => $token,
-        'email' => $request->email
+        'email' => $request->email,
+        'name' => $user ? $user->name : 'User'
     ], function($message) use ($request) {
         $message->to($request->email);
-        $message->subject('Reset Your Password');
+        $message->subject('Reset your Motonos password');
     });
     
     return back()->with('status', 'Password reset link sent to your email.');
