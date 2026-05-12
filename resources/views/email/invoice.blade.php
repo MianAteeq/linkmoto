@@ -49,11 +49,12 @@
         </p>
 
         <p style="margin: 0 0 30px 0; font-size: 16px; line-height: 1.8; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
-            Please find your invoice attached to this email for your records and review.
+          Please find attached your invoice
         </p>
 
         <p style="margin: 0; font-size: 14px; line-height: 1.8; color: #666666; font-family: Arial, Helvetica, sans-serif;text-align: left;">
-                        If you have any questions regarding this invoice, please contact us and our team will be happy to assist you.
+                      If you have any questions, please contact us.
+
                     </p>
 
                      @php
