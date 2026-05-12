@@ -249,14 +249,31 @@ class InvoiceController extends Controller
                 ]);
             }
             // 4️⃣ Load vendor info
+
+            $tradingName='';
+            $trading_unit = TradingUnit::find($booking->trading_id);
+            $user=User::with('profile')->find($vender_id);
+
+            if ($trading_unit['trading_template'] == 1){
+
+                $tradingName=$user->profile->company_name;
+            }
+            if($trading_unit['trading_template'] == 2){
+                $tradingName = $user->profile->company_name . ' Trading as ' . ($trading_unit['trading_name']['name'] ?? '');
+            }else if($trading_unit['trading_template'] == 3){
+                $tradingName = $trading_unit['trading_name']['name'] ?? '';
+            }
+                                   
+
+
             Mail::send('email.booking-email', [
                 'booking' => $booking,
-                'trade_unit' => TradingUnit::find($booking->trading_id),
-                'user' => User::with('profile')->find($vender_id)
-            ], function ($message) use ($booking, $request) {
+                'trade_unit' => $trading_unit,
+                'user' => $user
+            ], function ($message) use ($booking, $request, $tradingName) {
                 $message->to($request->email)
                     ->subject(
-                        'Your booking with ' . $booking->trading_unit->business_name
+                        'Your booking with ' . $tradingName
                     );
             });
 
