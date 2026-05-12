@@ -576,78 +576,107 @@
                 </tr>
 
                 <tbody style="">
-                    @foreach ($first_array as $keys => $first_item)
-                        {{-- @dd($first_item) --}}
-                        <tr class="item-row"
-                            @php
-                            if($first_item['unit_price_rate']=="Hourly"){
+                   <style>
+    table {
+        border-collapse: collapse;
+    }
 
-                        $item_type='H';
-                    }
-                    else{
+    .item-row td {
+        padding: 2px 6px !important;
+        vertical-align: middle;
+        border: none !important;
+    }
 
-                        $item_type='F';
-                    } @endphp
-                            style="border-left:1px solid black !important;border-right: 1px solid black !important;">
-                            <td class="td" style="color: black;border: none!important;font-size: 12px;">
-                                <p style="margin:0px!important;margin-top:10px!important;font-size: 8px!important">
-                                    @php
-                                        $items = collect($first_item->job_types)
-                                            ->map(fn($record) => $record->job_type->name)
-                                            ->filter()
-                                            ->values()
-                                            ->toArray();
+    .item-text {
+        margin: 0 !important;
+        padding: 0 !important;
+        line-height: 12px !important;
+        font-size: 10px !important;
+        color: black;
+    }
 
-                                        if (!empty($first_item->product)) {
-                                            $items[] = \Illuminate\Support\Str::limit($first_item->product, 50);
-                                        }
-                                    @endphp
+    .text-right {
+        text-align: right;
+    }
+</style>
 
-                                    {{ implode(', ', $items) }}
+@foreach ($first_array as $keys => $first_item)
 
+    @php
+        $item_type = $first_item['unit_price_rate'] == 'Hourly' ? 'H' : 'F';
 
-                                </p>
-                            </td>
-                            <td class="td" style="border: none!important;font-size: 12px;">
-                                <p style="margin:0px!important;margin-top:10px!important;font-size: 10px!important">
-                                    {{ $first_item['price_type']['name'] ?? 'N.A' }}</p>
-                            </td>
-                            <td class="td" style="border: none!important;text-align: right;font-size: 12px;">
-                                <p
-                                    style="margin:0px!important;margin-top:10px!important;font-size: 10px!important;margin-right: 5px!important">
-                                    £{{ number_format($first_item['unit_price'], 2) }} ({{ $item_type }}) </p>
-                            </td>
-                            <td class="td" style="border: none!important;text-align: right;font-size: 12px;">
-                                <p
-                                    style="margin:0px!important;margin-top:10px!important;font-size: 10px!important;padding-right: 10px;">
-                                    {{ $first_item['qty'] }} </p>
-                            </td>
-                            <td class="td" style="border: none!important;text-align: right;font-size: 12px;">
-                                <p
-                                    style="margin:0px!important;margin-top:10px!important;font-size: 10px!important;margin-right: 5px!important">
-                                    £{{ number_format($first_item['discount'], 2) }} </p>
-                            </td>
-                            <td class="td" style="border: none!important;text-align: right;font-size: 12px;">
-                                <p
-                                    style="margin:0px!important;margin-top:10px!important;font-size: 10px!important;margin-right: 10px!important">
-                                    £{{ number_format($first_item['exlusive_vat'], 2) }} </p>
-                            </td>
-                            <td class="td" style="border: none!important;text-align: right;font-size: 12px;">
-                                <p
-                                    style="margin:0px!important;margin-top:10px!important;font-size: 10px!important;margin-right: 10px!important">
-                                    {{ number_format($first_item['vat_rate'], 2) }}% </p>
-                            </td>
-                            <td class="td" style="border: none!important;text-align: right;font-size: 12px;">
-                                <p
-                                    style="margin:0px!important;margin-top:10px!important;font-size: 10px!important;padding-right: 10px;margin-right: 5px!important">
-                                    £{{ number_format($first_item['vat_price'], 2) }} </p>
-                            </td>
-                            <td class="td" style="border: none!important;text-align: right;font-size: 12px;">
-                                <p style="margin:0px!important;margin-top:10px!important;font-size: 10px!important;">
-                                    £{{ number_format($first_item['totalPrice'], 2) }} </p>
-                            </td>
-                        </tr>
-                    @endforeach
+        $items = collect($first_item->job_types)
+            ->map(fn($record) => $record->job_type->name)
+            ->filter()
+            ->unique()
+            ->values()
+            ->toArray();
+
+        if (!empty($first_item->product)) {
+            $items[] = \Illuminate\Support\Str::limit($first_item->product, 50);
+        }
+    @endphp
+
+    <tr class="item-row"
+        style="border-left:1px solid black !important;border-right:1px solid black !important;height:24px;">
+
+        <td class="td">
+            <p class="item-text">
+                {{ implode(', ', $items) }}
+            </p>
+        </td>
+
+        <td class="td">
+            <p class="item-text">
+                {{ $first_item['price_type']['name'] ?? 'N.A' }}
+            </p>
+        </td>
+
+        <td class="td text-right">
+            <p class="item-text">
+                £{{ number_format($first_item['unit_price'], 2) }}
+                ({{ $item_type }})
+            </p>
+        </td>
+
+        <td class="td text-right">
+            <p class="item-text">
+                {{ $first_item['qty'] }}
+            </p>
+        </td>
+
+        <td class="td text-right">
+            <p class="item-text">
+                £{{ number_format($first_item['discount'], 2) }}
+            </p>
+        </td>
+
+        <td class="td text-right">
+            <p class="item-text">
+                £{{ number_format($first_item['exlusive_vat'], 2) }}
+            </p>
+        </td>
+
+        <td class="td text-right">
+            <p class="item-text">
+                {{ number_format($first_item['vat_rate'], 2) }}%
+            </p>
+        </td>
+
+        <td class="td text-right">
+            <p class="item-text">
+                £{{ number_format($first_item['vat_price'], 2) }}
+            </p>
+        </td>
+
+        <td class="td text-right">
+            <p class="item-text">
+                £{{ number_format($first_item['totalPrice'], 2) }}
+            </p>
+        </td>
+
+    </tr>
+@endforeach
                     {{-- @for ($i = count($first_array); $i < 10; $i++)
                         <tr class="item-row"
                             style="border-left:1px solid black !important;border-right: 1px solid black !important;">
