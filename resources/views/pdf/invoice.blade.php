@@ -582,7 +582,7 @@
     }
 
     .item-row td {
-        padding: 8px 6px !important;
+        padding: 7px 6px !important;
         vertical-align: middle;
         border: none !important;
     }
@@ -689,7 +689,7 @@
             <td class="td"
                 style="
                     border:none !important;
-                    padding:8px 6px !important;
+                    padding:7px 6px !important;
                     vertical-align:middle;
                     text-align:{{ $j > 1 ? 'right' : 'left' }};
                 ">
