@@ -185,7 +185,7 @@ class InvoiceController extends Controller
             Mail::send('email.invoice', $data, function ($message) use ($data, $files, $request, $CNAME) {
                 $message->to($request->email)
                     ->from(config('mail.from.address'), $CNAME) // ✅ static
-                    ->subject('Invoice');
+                    ->subject('Your invoice');
 
                 foreach ($files as $file) {
                     $message->attach($file);
@@ -397,7 +397,7 @@ class InvoiceController extends Controller
             Mail::send('email.payment', $data, function ($message) use ($data, $files, $request, $CNAME) {
                 $message->to($request->email)
                     ->from(config('mail.from.address'), $CNAME) // ✅ static
-                    ->subject('Payment Receipt');
+                    ->subject('Your payment receipt');
 
                 foreach ($files as $file) {
                     $message->attach($file);
