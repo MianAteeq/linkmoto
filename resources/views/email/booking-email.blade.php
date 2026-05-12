@@ -48,7 +48,7 @@
                 <p
                     style="margin: 0 0 30px 0; font-size: 16px; line-height: 1.8; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
                     Please find your booking details with
-                    <strong>>@if ($trade_unit['trading_template'] == 1)
+                    <strong> @if ($trade_unit['trading_template'] == 1)
                                         {{ $user->profile->company_name }}
                                     @endif
                                     @if ($trade_unit['trading_template'] == 2)
@@ -113,7 +113,7 @@
 
 
                 <p
-                    style="margin: 0 0 16px 0; font-size: 15px; color: #111111; font-weight: bold; font-family: Arial, Helvetica, sans-serif; text-align: left;">
+                    style="margin: 10px 0 16px 0; font-size: 15px; color: #111111; font-weight: bold; font-family: Arial, Helvetica, sans-serif; text-align: left;">
                     Location Information
                 </p>
 
