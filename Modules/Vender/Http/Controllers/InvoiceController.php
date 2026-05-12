@@ -239,7 +239,9 @@ class InvoiceController extends Controller
             // 2️⃣ Determine vendor ID
             $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
 
-            $booking = Booking::with(['contact_detail', 'service', 'job_requests', 'booking_items', 'vehicle.vehicle_model', 'vehicle.vehicle_make', 'vehicle.engine_size', 'vehicle.transmission_type', 'vehicle.fuel_type', 'vehicle.color'])->where('vender_id', $vender_id)->find($request->booking_id); 
+            $booking = Booking::with(['contact_detail', 'service', 'job_requests',
+             'booking_items', 'vehicle.vehicle_model', 'vehicle.vehicle_make',
+              'vehicle.engine_size', 'vehicle.transmission_type', 'vehicle.fuel_type', 'vehicle.color'])->where('vender_id', $vender_id)->find($request->booking_id);
             if (!$booking) {
                 return response()->json([
                     'status' => false,
@@ -247,10 +249,16 @@ class InvoiceController extends Controller
                 ]);
             }
             // 4️⃣ Load vendor info
-       Mail::raw('Test Booking Email', function ($message) use ($request) {
-    $message->to($request->email)
-            ->subject('Booking Detail');
-});
+            Mail::send('email.booking-email', [
+                'booking' => $booking,
+                'trade_unit' => TradingUnit::find($booking->trading_id),
+                'user' => User::with('profile')->find($vender_id)
+            ], function ($message) use ($booking, $request) {
+                $message->to($request->email)
+                    ->subject(
+                        'Your booking with ' . $booking->trading_unit->business_name
+                    );
+            });
 
             return response()->json([
                 'status' => true,

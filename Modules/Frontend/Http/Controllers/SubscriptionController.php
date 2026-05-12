@@ -79,8 +79,6 @@ class SubscriptionController extends Controller
             'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make(12345678),
-            // 'lat'=>0,
-            // 'long'=>0,
             'status' => 'NEW'
         ]);
 
@@ -126,8 +124,12 @@ class SubscriptionController extends Controller
                 }
             }
         }
+
+
+        $user = User::with('profile')->find($user->id);
+
         Mail::send('email.registration', get_defined_vars(), function ($send) use ($request) {
-            $send->to($request['email'])->subject("Register Email");
+            $send->to($request['email'])->subject("We’ve received your application");
         });
 
 

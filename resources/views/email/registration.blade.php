@@ -1,90 +1,140 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Motonos</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motonos Email Template</title>
+    <style>
+        /* Loading your local Coolvetica font for the heading */
+        @font-face {
+            font-family: 'Coolvetica';
+            src: url('coolvetica.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+    </style>
 </head>
 
-<body style="margin:0; padding:0; background:#f4f4f4; font-family:Arial, sans-serif;">
+<body style="margin: 0; padding: 0; background-color: #ffffff;">
 
-  <table width="100%" cellpadding="0" cellspacing="0" style="padding:30px 0;">
-    <tr>
-      <td align="center">
+    <table align="center" border="0" cellpadding="0" cellspacing="0" width="600"
+        style="border-collapse: collapse; max-width: 600px; width: 100%; font-family: Arial, Helvetica, sans-serif; background-color: #ffffff; margin: 20px auto;">
 
-        <!-- Container -->
-        <table width="520" cellpadding="0" cellspacing="0" style="background:#ffffff; border-radius:10px; overflow:hidden;">
+        <tr>
+            <td height="4" style="background-color: #f26522; line-height: 0; font-size: 0;">&nbsp;</td>
+        </tr>
 
-          <!-- Header -->
-          <tr>
-            <td align="center" style="background:#f26622; padding:40px 20px; color:#ffffff;">
-              <h1 style="margin:0; font-size:26px;">Welcome to Motonos</h1>
-              <p style="margin-top:15px; font-size:16px; line-height:1.6;">
-                Thank you for your interest.<br>
-                Our team will contact you shortly.
-              </p>
+        <tr>
+            <td align="center" style="padding: 25px 0;">
+                <img src="https://motonos.com/uploads/cms/minilogo.png" alt="MOTONOS" width="160" style="display: block; border: 0;">
             </td>
-          </tr>
+        </tr>
 
-          <!-- MAIN CONTENT (FIXED AREA) -->
-          <tr>
-            <td align="center" style="padding:30px 25px; color:#333;">
+        <tr>
+            <td height="4" style="background-color: #f26522; line-height: 0; font-size: 0;">&nbsp;</td>
+        </tr>
+<!-- APPLICATION RECEIVED CONTENT -->
+<tr>
+    <td align="center" style="padding: 50px 40px; background-color: #ffffff;">
 
-              <p style="margin:0; font-size:15px; line-height:1.6;">
-                We’ve successfully received your request. Our team is currently reviewing your details and will reach out to you as soon as possible.
-              </p>
+        <h1 style="margin: 0 0 20px 0; font-size: 28px; color: #111111; font-family: Arial, Helvetica, sans-serif;">
+            We’ve Received Your Application
+        </h1>
 
-              <!-- CTA Button -->
-              <table cellpadding="0" cellspacing="0" style="margin-top:25px;">
-                <tr>
-                  <td align="center" bgcolor="#f26622" style="border-radius:6px;">
-                    <a href="https://www.motonos.com"
-                       style="display:inline-block; padding:12px 22px; color:#ffffff; text-decoration:none; font-size:14px;">
-                       Visit Website
-                    </a>
-                  </td>
-                </tr>
-              </table>
+        <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.7; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
+            Hi {{$user->name}},
+        </p>
 
-            </td>
-          </tr>
+        <p style="margin: 0 0 25px 0; font-size: 16px; line-height: 1.7; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
+            Thank you for your interest in Motonos.
+        </p>
 
-          <!-- Divider -->
-          <tr>
-            <td style="padding:0 40px;">
-              <hr style="border:none; border-top:1px solid #eee;">
-            </td>
-          </tr>
+        <p style="margin: 0 0 30px 0; font-size: 16px; line-height: 1.7; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
+            We’ve successfully received your expression of interest for joining 
+            <strong>{{$user->profile->trading_name}}</strong> to the Motonos platform.
+        </p>
 
-          <!-- Website -->
-          <tr>
-            <td align="center" style="padding:20px 20px 10px; font-size:16px;">
-              <a href="https://motonos.com" style="color:#111; text-decoration:none; font-weight:500;">
-                www.motonos.com
-              </a>
-            </td>
-          </tr>
+        <!-- STATUS BOX -->
+        <table width="100%" border="0" cellspacing="0" cellpadding="0"
+               style="background-color: #f8f8f8; border-left: 4px solid #f26522; border-radius: 6px; margin-bottom: 30px;">
+            <tr>
+                <td style="padding: 20px;">
 
-          <!-- Social -->
-          <tr>
-            <td align="center" style="padding:10px 20px 20px; font-size:14px; color:#555;">
-              <a href="https://facebook.com" style="margin:0 10px; color:#555; text-decoration:none;">Facebook</a> |
-              <a href="https://wa.me/your-number" style="margin:0 10px; color:#555; text-decoration:none;">WhatsApp</a> |
-              <a href="https://twitter.com" style="margin:0 10px; color:#555; text-decoration:none;">Twitter</a>
-            </td>
-          </tr>
+                    <p style="margin: 0 0 12px 0; font-size: 15px; color: #111111; font-weight: bold; font-family: Arial, Helvetica, sans-serif;">
+                        What Happens Next
+                    </p>
 
-          <!-- Footer -->
-          <tr>
-            <td align="center" style="padding:20px; font-size:12px; color:#999;">
-              © 2026 Motonos. All Rights Reserved.
-            </td>
-          </tr>
+                    <ul style="padding-left: 18px; margin: 0; color: #555555; font-size: 14px; line-height: 1.9; font-family: Arial, Helvetica, sans-serif;">
+                        <li>We review your submitted details</li>
+                        <li>We assess suitability for the platform</li>
+                        <li>Our team contacts you with the next steps</li>
+                    </ul>
 
+                </td>
+            </tr>
         </table>
 
-      </td>
-    </tr>
-  </table>
+        <!-- CTA BUTTON -->
+        <table border="0" cellspacing="0" cellpadding="0" align="center" style="margin-bottom: 35px;">
+            <tr>
+                <td align="center" bgcolor="#f26522" style="border-radius: 6px;">
+                    <a href="https://motonos.com" target="_blank"
+                       style="font-size: 16px; font-family: Arial, Helvetica, sans-serif; color: #ffffff; text-decoration: none; padding: 14px 32px; display: inline-block; font-weight: bold;">
+                        Visit Motonos
+                    </a>
+                </td>
+            </tr>
+        </table>
+
+        <p style="margin: 0; font-size: 14px; line-height: 1.7; color: #777777; font-family: Arial, Helvetica, sans-serif; text-align: left;">
+            We appreciate your interest and look forward to connecting with you soon.
+        </p>
+
+        <p style="margin: 40px 0 0 0; font-size: 16px; line-height: 1.7; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
+            Best regards,<br>
+            <strong>Motonos Team</strong>
+        </p>
+
+    </td>
+</tr>
+
+<!-- FOOTER -->
+ <tr>
+    <td height="4"
+        style="background-color: #f26522; line-height: 0; font-size: 0;">
+        &nbsp;
+    </td>
+</tr>
+<tr>
+    <td align="center" style="padding: 30px 20px; background-color: #ffffff;">
+
+        <img src="https://motonos.com/uploads/cms/minilogo.png" alt="MOTONOS" width="140"
+             style="display: block; border: 0; margin-bottom: 20px;">
+
+        <p style="margin: 0; font-size: 13px; line-height: 1.6; color: #777777; font-family: Arial, Helvetica, sans-serif; text-align: center;">
+            © {{date('Y')}} Motonos. All rights reserved.
+        </p>
+
+    </td>
+</tr>
+
+<!-- BOTTOM BORDER -->
+
+
+<!-- BOTTOM BORDER -->
+
+
+<!-- BOTTOM BORDER -->
+<tr>
+    <td height="4"
+        style="background-color: #f26522; line-height: 0; font-size: 0;">
+        &nbsp;
+    </td>
+</tr>
+
+    </table>
 
 </body>
+
 </html>

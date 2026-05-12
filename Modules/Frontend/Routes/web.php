@@ -49,7 +49,7 @@ Route::name('website.')->group(function () {
     // Route::get('/user/logout', [SubscriptionController::class, 'logout'])->name('logout');
 });
 
- Route::name('website.')->group(function () {
+ Route::domain('business.motonos.com')->name('website.')->group(function () {
         Route::get('/register', [SubscriptionController::class, 'register'])->name('vendor.register');
 
         Route::get('/login', [SubscriptionController::class, 'loginForm'])->name('vendor.login');

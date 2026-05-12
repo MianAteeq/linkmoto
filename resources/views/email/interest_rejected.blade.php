@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,44 +36,52 @@
             <td height="4" style="background-color: #f26522; line-height: 0; font-size: 0;">&nbsp;</td>
         </tr>
         <!-- APPLICATION RECEIVED CONTENT -->
-    <tr>
-    <td align="center" style="padding: 50px 40px; background-color: #ffffff;">
+        <tr>
+            <td align="center" style="padding: 50px 40px; background-color: #ffffff;">
 
-      
+               
 
-        <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.7; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
-            Hi {{ $invoice['booking']['contact_detail']['name'] }},
-        </p>
+                <p
+                    style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.7; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
+                    Hi {{$user->name}},
+                </p>
 
-        <p style="margin: 0 0 30px 0; font-size: 16px; line-height: 1.8; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
-            Please find your invoice attached to this email for your records and review.
-        </p>
+                <p
+                    style="margin: 0 0 25px 0; font-size: 16px; line-height: 1.8; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
+                    Thank you for your interest in joining Motonos.
+                </p>
 
-        <p style="margin: 0; font-size: 14px; line-height: 1.8; color: #666666; font-family: Arial, Helvetica, sans-serif;text-align: left;">
-                        If you have any questions regarding this invoice, please contact us and our team will be happy to assist you.
-                    </p>
+             
 
-                     @php
-                    $profile = optional($vender->profile);
-                    $tradingName = optional($invoice->trading_name);
-                    $appSetting = optional($tradingName->app_setting);
-                @endphp
+                            <p
+                                style="margin: 0 0 25px 0; font-size: 16px; line-height: 1.8; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
+                                After carefully reviewing your application, we’re unable to proceed with your
+                                registration at this time.
+                            </p>
 
-    
+                <p
+                    style="margin: 0 0 25px 0; font-size: 15px; line-height: 1.9; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
+                    This decision is based on our current platform requirements and the type of businesses we are
+                    onboarding during this phase.
+                </p>
 
-        <p style="margin: 40px 0 0 0; font-size: 16px; line-height: 1.7; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
-            Best regards,<br>
-            <strong> @if ($appSetting->header_option == 1)
-            {{ ucfirst($profile->company_name) }}
-        @elseif($appSetting->header_option == 2)
-            {{ ucfirst($profile->company_name) }} trading as {{ $tradingName->trading_name->name ?? '' }}
-        @else
-            {{ $tradingName->trading_name->name ?? '' }}
-        @endif</strong>
-        </p>
+                <p
+                    style="margin: 0 0 25px 0; font-size: 15px; line-height: 1.9; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
+                    We truly appreciate your interest and may reach out again in the future as Motonos continues to
+                    expand.
+                </p>
 
-    </td>
-</tr>
+                <!-- APPRECIATION BOX -->
+               
+
+                <p
+                    style="margin: 40px 0 0 0; font-size: 16px; line-height: 1.7; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
+                    Best regards,<br>
+                    <strong>Motonos Team</strong>
+                </p>
+
+            </td>
+        </tr>
 
         <!-- FOOTER -->
         <tr>

@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,40 +36,54 @@
             <td height="4" style="background-color: #f26522; line-height: 0; font-size: 0;">&nbsp;</td>
         </tr>
         <!-- APPLICATION RECEIVED CONTENT -->
-    <tr>
+     <tr>
     <td align="center" style="padding: 50px 40px; background-color: #ffffff;">
 
-      
+       
 
         <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.7; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
-            Hi {{ $invoice['booking']['contact_detail']['name'] }},
+            Hi {{$user->name}},
         </p>
 
-        <p style="margin: 0 0 30px 0; font-size: 16px; line-height: 1.8; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
-            Please find your invoice attached to this email for your records and review.
+        <p style="margin: 0 0 25px 0; font-size: 16px; line-height: 1.9; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
+            Thank you for your interest in Motonos and for taking the time to submit your application for 
+            <strong>{{$user->profile->company_name}}</strong>.
         </p>
 
-        <p style="margin: 0; font-size: 14px; line-height: 1.8; color: #666666; font-family: Arial, Helvetica, sans-serif;text-align: left;">
-                        If you have any questions regarding this invoice, please contact us and our team will be happy to assist you.
+        <p style="margin: 0 0 30px 0; font-size: 16px; line-height: 1.9; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
+            After careful review, we’re unable to proceed with your application at this time.
+        </p>
+
+        <!-- DECLINE REASON BOX -->
+         <p style="margin: 0 0 16px 0; font-size: 15px; color: #111111; font-weight: bold; font-family: Arial, Helvetica, sans-serif;text-align: left;">
+                        Reason for Decision
                     </p>
 
-                     @php
-                    $profile = optional($vender->profile);
-                    $tradingName = optional($invoice->trading_name);
-                    $appSetting = optional($tradingName->app_setting);
-                @endphp
+                    <p style="margin: 0; font-size: 14px; line-height: 1.9; color: #555555; font-family: Arial, Helvetica, sans-serif;text-align: left;">
+                        {{$reason}}
+                    </p>
+                    <br>
+                    <br>
 
-    
+        <p style="margin: 0 0 22px 0; font-size: 15px; line-height: 1.9; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
+           This decision is based on our current onboarding criteria.
+
+        </p>
+
+        <p style="margin: 0 0 30px 0; font-size: 15px; line-height: 1.9; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
+            You’re welcome to apply again in the future if your circumstances change.
+        </p>
+        <p style="margin: 0 0 30px 0; font-size: 15px; line-height: 1.9; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
+            If you need any help, just reply to this email or contact us at support@motonos.com - we’re happy to assist.
+
+        </p>
+
+        <!-- SUPPORT BOX -->
+     
 
         <p style="margin: 40px 0 0 0; font-size: 16px; line-height: 1.7; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
             Best regards,<br>
-            <strong> @if ($appSetting->header_option == 1)
-            {{ ucfirst($profile->company_name) }}
-        @elseif($appSetting->header_option == 2)
-            {{ ucfirst($profile->company_name) }} trading as {{ $tradingName->trading_name->name ?? '' }}
-        @else
-            {{ $tradingName->trading_name->name ?? '' }}
-        @endif</strong>
+            <strong>Motonos Team</strong>
         </p>
 
     </td>

@@ -543,8 +543,8 @@ class SettingController extends Controller
             'user' => $user,
             'vendor' => $user->profile
         ], function ($message) use ($user) {
-            $message->to('ateeqadrees83@gmail.com')
-                ->subject('New Profile Submitted - ' . $user->name);
+            $message->to($user->email)
+                ->subject('Your Motonos application is under review');
         });
 
 

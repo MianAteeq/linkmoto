@@ -534,12 +534,11 @@ class ApplicationController extends Controller
         ]);
 
         Mail::send('email.vendor_status', [
-            'vendor' => $user,
-            'status' => 1
+            'user' => $user
         ], function ($message) use ($user) {
             $message->to($user->email)
                 ->subject(
-                    'Your Profile Has Been Approved'
+                    'You’re approved - complete your setup'
                 );
         });
 
@@ -554,13 +553,13 @@ class ApplicationController extends Controller
             'note' => $request->reason
         ]);
         $user = User::find($id);
-        Mail::send('email.vendor_status', [
-            'vendor' => $user,
-            'status' => 2
+        Mail::send('email.vendor_decline', [
+            'user' => $user,
+            'reason' => $request->reason
         ], function ($message) use ($user) {
             $message->to($user->email)
                 ->subject(
-                    'Your Profile Has Been Decline'
+                    'Your Motonos application has not been approved'
                 );
         });
 
@@ -577,13 +576,13 @@ class ApplicationController extends Controller
             'note' => $request->reason
         ]);
         $user = User::find($id);
-        Mail::send('email.vendor_status', [
-            'vendor' => $user,
-            'status' => 2
+        Mail::send('email.vendor_info', [
+            'user' => $user,
+            'reason' => $request->reason
         ], function ($message) use ($user) {
             $message->to($user->email)
                 ->subject(
-                    'Your Profile Has Been Request For More Information'
+                    'Your application needs an update to continue'
                 );
         });
 

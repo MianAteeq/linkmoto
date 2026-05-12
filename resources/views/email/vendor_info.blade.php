@@ -39,35 +39,77 @@
         <tr>
             <td align="center" style="padding: 50px 40px; background-color: #ffffff;">
 
-               
+
 
                 <p
                     style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.7; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
-                    Hi {{ $user->name }},
+                    Hi {{$user->name}},
                 </p>
 
                 <p
                     style="margin: 0 0 25px 0; font-size: 16px; line-height: 1.8; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
-                    Thank you for submitting your application to Motonos.
+                    Thank you for your application to join Motonos.
                 </p>
 
-                <!-- REVIEW STATUS BOX -->
+                <p
+                    style="margin: 0 0 30px 0; font-size: 16px; line-height: 1.8; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
+                    We’ve reviewed the submission for <strong>{{$user->profile->business_name}}</strong> and need a few updates before
+                    we can continue processing your application.
+                </p>
+
+                <!-- UPDATE DETAILS BOX -->
+                <table width="100%" border="0" cellspacing="0" cellpadding="0"
+                    style="background-color: #f8f8f8; border-left: 4px solid #f26522; border-radius: 6px; margin-bottom: 30px;">
+                    <tr>
+                        <td style="padding: 22px;">
+
+                            <p
+                                style="margin: 0 0 16px 0; font-size: 15px; color: #111111; font-weight: bold; font-family: Arial, Helvetica, sans-serif;">
+                                What Needs Updating
+                            </p>
+
+                            <p
+                                style="margin: 0; font-size: 14px; line-height: 1.9; color: #555555; font-family: Arial, Helvetica, sans-serif;">
+                                {{$reason}}
+                            </p>
+
+                        </td>
+                    </tr>
+                </table>
+
+                <p
+                    style="margin: 0 0 30px 0; font-size: 15px; line-height: 1.9; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
+                    Once you’ve made the changes, you can resubmit your application for review.
+                </p>
+                <p
+                    style="margin: 0 0 30px 0; font-size: 15px; line-height: 1.9; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
+                    CTA <br>
+                    Review & Update Application →  <a href="{{route('website.vendor.login')}}" target="_blank"
+                       style="font-size: 16px; font-family: Arial, Helvetica, sans-serif; color: #ffffff; background: #f26522; text-decoration: none; padding: 10px 13px; display: inline-block; font-weight: bold; border-radius: 7px; margin-left: 17px;">
+                        Application Edit Link
+                    </a>
+
+                </p>
+
+                <!-- CTA BUTTON -->
+
+
+                <!-- SUPPORT BOX -->
 
 
                 <p
-                    style="margin: 0; font-size: 14px; line-height: 1.9; color: #555555; font-family: Arial, Helvetica, sans-serif;">
-                    Our team is now reviewing your details, and we’ll be in touch once this is complete. </p>
+                    style="margin: 0; font-size: 14px; line-height: 1.8; color: #666666; font-family: Arial, Helvetica, sans-serif;text-align: left;">
+                    If you need any help, just reply to this email or contact us at support@motonos.com - we’re happy to
+                    assist.
+
+                </p>
 
 
-
-
-                <!-- INFO BOX -->
-              
 
                 <p
-                    style="margin: 40px 0 0 0; font-size: 16px; line-height: 1.7; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;margin-top: 17px;">
+                    style="margin: 40px 0 0 0; font-size: 16px; line-height: 1.7; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
                     Best regards,<br>
-                    Motonos Team
+                    <strong>Motonos Team</strong>
                 </p>
 
             </td>

@@ -213,10 +213,10 @@ class RegistrationController extends Controller
         User::find($id)->update([
             'status' => 'ACCEPTED'
         ]);
-        $user = User::find($id);
+        $user = User::with('profile')->find($id);
 
         Mail::send('email.interest_accept', get_defined_vars(), function ($send) use ($user) {
-            $send->to($user['email'])->subject("Interest Accepted Email");
+            $send->to($user['email'])->subject("Complete your Motonos registration");
         });
 
         return redirect()->back()->with('success', 'Interest Accept Successfully');
@@ -230,9 +230,6 @@ class RegistrationController extends Controller
         ]);
         $user = User::find($id);
 
-        // Mail::send('email.interest_accept', get_defined_vars(), function ($send) use ($user) {
-        //     $send->to($user['email'])->subject("Interest Accepted Email");
-        // });
 
         return redirect()->back()->with('success', 'Profile IN ACTIVE Successfully');
     }
@@ -259,6 +256,13 @@ class RegistrationController extends Controller
         User::find($id)->update([
             'status' => 'DECLINE'
         ]);
+
+        $user = User::find($id);
+
+
+          Mail::send('email.interest_rejected', get_defined_vars(), function ($send) use ($user) {
+            $send->to($user['email'])->subject("Update on your Motonos application ");
+        });
 
 
         return redirect()->back()->with('success', 'Interest Decline Successfully');

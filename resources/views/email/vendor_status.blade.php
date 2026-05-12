@@ -1,87 +1,143 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motonos Email Template</title>
+    <style>
+        /* Loading your local Coolvetica font for the heading */
+        @font-face {
+            font-family: 'Coolvetica';
+            src: url('coolvetica.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+    </style>
 </head>
 
-<body style="margin:0; padding:0; background:#f6f7f9; font-family:Arial, sans-serif;">
+<body style="margin: 0; padding: 0; background-color: #ffffff;">
 
-<table width="100%" cellpadding="0" cellspacing="0" style="padding:40px 0;">
-<tr>
-<td align="center">
+    <table align="center" border="0" cellpadding="0" cellspacing="0" width="600"
+        style="border-collapse: collapse; max-width: 600px; width: 100%; font-family: Arial, Helvetica, sans-serif; background-color: #ffffff; margin: 20px auto;">
 
-<table width="520" cellpadding="0" cellspacing="0" style="background:#ffffff; border-radius:12px; overflow:hidden;">
-
-  <!-- Top Bar -->
-  <tr>
-    <td style="background:{{ $status == 1 ? '#28a745' : '#dc3545' }}; height:6px;"></td>
-  </tr>
-
-  <!-- Header -->
-  <tr>
-    <td align="center" style="padding:30px;">
-
-      <h2 style="margin:0; font-size:20px; color:#111;">
-        Hello {{ $vendor->name }},
-      </h2>
-
-      <!-- STATUS BADGE -->
-      <div style="margin-top:10px;">
-        <span style="display:inline-block; 
-                     background:{{ $status == 1 ? '#eaf7ee' : '#fdecea' }};
-                     color:{{ $status == 1 ? '#2e7d32' : '#c62828' }};
-                     padding:6px 14px; font-size:12px; border-radius:20px;">
-          {{ $status == 1 ? 'Approved' : 'Declined' }}
-        </span>
-      </div>
-
-    </td>
-  </tr>
-
-  <!-- Message -->
-  <tr>
-    <td align="center" style="padding:0 30px 25px; font-size:15px; color:#555; line-height:1.6;">
-
-      @if($status == 1)
-        Your profile has been successfully approved. You can now access your account and start using our platform.
-      @else
-        Unfortunately, your profile has been declined. Please review your information and update your details.
-      @endif
-
-    </td>
-  </tr>
-
-  <!-- CTA -->
-  <tr>
-    <td align="center" style="padding-bottom:30px;">
-      <table cellpadding="0" cellspacing="0">
         <tr>
-          <td bgcolor="#000000" style="border-radius:8px;">
-            <a href="https://motonos.com/login"
-               style="display:inline-block; padding:12px 24px; color:#ffffff; text-decoration:none; font-size:14px;">
-               {{ $status == 1 ? 'Go to Dashboard' : 'Update Profile' }}
-            </a>
-          </td>
+            <td height="4" style="background-color: #f26522; line-height: 0; font-size: 0;">&nbsp;</td>
         </tr>
-      </table>
+
+        <tr>
+            <td align="center" style="padding: 25px 0;">
+                <img src="https://motonos.com/uploads/cms/minilogo.png" alt="MOTONOS" width="160"
+                    style="display: block; border: 0;">
+            </td>
+        </tr>
+
+        <tr>
+            <td height="4" style="background-color: #f26522; line-height: 0; font-size: 0;">&nbsp;</td>
+        </tr>
+        <!-- APPLICATION RECEIVED CONTENT -->
+       <tr>
+    <td align="center" style="padding: 50px 40px; background-color: #ffffff;">
+
+       
+
+        <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.7; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
+            Hi {{ $user->name }},
+        </p>
+
+        <p style="margin: 0 0 25px 0; font-size: 17px; line-height: 1.8; color: #333333; font-family: Arial, Helvetica, sans-serif; text-align: left;">
+            Your application has been approved — welcome to Motonos.
+        </p>
+
+        <p style="margin: 0 0 30px 0; font-size: 16px; line-height: 1.8; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
+            To activate your account and start managing your business with Motonos, please complete the final setup steps below.
+        </p>
+
+        <!-- CTA BUTTON -->
+        <table border="0" cellspacing="0" cellpadding="0" align="center" style="margin-bottom: 35px;">
+            <tr>
+                <td align="center" bgcolor="#f26522" style="border-radius: 6px;">
+                    <a href="{{route('website.vendor.login')}}" target="_blank"
+                       style="font-size: 16px; font-family: Arial, Helvetica, sans-serif; color: #ffffff; text-decoration: none; padding: 14px 34px; display: inline-block; font-weight: bold;">
+                        Business Manager
+                    </a>
+                </td>
+            </tr>
+        </table>
+
+        <!-- NEXT STEPS BOX -->
+        <table width="100%" border="0" cellspacing="0" cellpadding="0"
+               style="background-color: #f8f8f8; border-left: 4px solid #f26522; border-radius: 6px; margin-bottom: 30px;">
+            <tr>
+                <td style="padding: 22px;">
+
+                    <p style="margin: 0 0 16px 0; font-size: 15px; color: #111111; font-weight: bold; font-family: Arial, Helvetica, sans-serif;">
+                        What You Need To Do Next
+                    </p>
+
+                    <ul style="padding-left: 18px; margin: 0; color: #555555; font-size: 14px; line-height: 1.9; font-family: Arial, Helvetica, sans-serif;">
+                        <li>Verify your business by uploading the required documents</li>
+                        <li>Set up your trade unit (to start managing quotes, bookings, jobs, and invoicing in one place)</li>
+                       
+                    </ul>
+
+                </td>
+            </tr>
+        </table>
+
+        <!-- SUPPORT BOX -->
+        
+
+        <p style="margin: 0 0 20px 0; font-size: 15px; line-height: 1.8; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
+           You’re just a couple of steps away from being fully set up.
+        </p>
+        <p style="margin: 0 0 20px 0; font-size: 15px; line-height: 1.8; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
+          If you need any help, just reply to this email or contact us at support@motonos.com - we’re happy to assist.
+        </p>
+
+        <p style="margin: 40px 0 0 0; font-size: 16px; line-height: 1.7; color: #555555; font-family: Arial, Helvetica, sans-serif; text-align: left;">
+            Best regards,<br>
+           Motonos Team
+        </p>
+
     </td>
-  </tr>
-
-  <!-- Footer -->
-  <tr>
-    <td style="padding:25px; text-align:center; font-size:12px; color:#999; border-top:1px solid #eee;">
-      <a href="https://motonos.com/" style="color:#000; text-decoration:none; font-weight:600;">
-        www.motonos.com
-      </a>
-      <div style="margin-top:8px;">© 2026 Motonos. All rights reserved.</div>
-    </td>
-  </tr>
-
-</table>
-
-</td>
 </tr>
-</table>
+
+        <!-- FOOTER -->
+        <tr>
+            <td height="4" style="background-color: #f26522; line-height: 0; font-size: 0;">
+                &nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td align="center" style="padding: 30px 20px; background-color: #ffffff;">
+
+                <img src="https://motonos.com/uploads/cms/minilogo.png" alt="MOTONOS" width="140"
+                    style="display: block; border: 0; margin-bottom: 20px;">
+
+                <p
+                    style="margin: 0; font-size: 13px; line-height: 1.6; color: #777777; font-family: Arial, Helvetica, sans-serif; text-align: center;">
+                    © {{date('Y')}} Motonos. All rights reserved.
+                </p>
+
+            </td>
+        </tr>
+
+        <!-- BOTTOM BORDER -->
+
+
+        <!-- BOTTOM BORDER -->
+
+
+        <!-- BOTTOM BORDER -->
+        <tr>
+            <td height="4" style="background-color: #f26522; line-height: 0; font-size: 0;">
+                &nbsp;
+            </td>
+        </tr>
+
+    </table>
 
 </body>
+
 </html>
