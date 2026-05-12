@@ -689,7 +689,7 @@
             <td class="td"
                 style="
                     border:none !important;
-                    padding:2px 6px !important;
+                    padding:5px 6px !important;
                     vertical-align:middle;
                     text-align:{{ $j > 1 ? 'right' : 'left' }};
                 ">
