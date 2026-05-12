@@ -677,56 +677,37 @@
 
     </tr>
 @endforeach
-                    {{-- @for ($i = count($first_array); $i < 10; $i++)
-                        <tr class="item-row"
-                            style="border-left:1px solid black !important;border-right: 1px solid black !important;">
-                            <td class="td" style="color: black;border: none!important;font-size: 12px;">
-                                <p
-                                    style="margin:0px!important;margin-top:10px!important;font-size: 10px!important;color:white">
-                                    N/A</p>
-                            </td>
-                            <td class="td" style="border: none!important;font-size: 12px;">
-                                <p
-                                    style="margin:0px!important;margin-top:10px!important;font-size: 10px!important;color:white">
-                                    N/A</p>
-                            </td>
-                            <td class="td" style="border: none!important;text-align: right;font-size: 12px;">
-                                <p
-                                    style="margin:0px!important;margin-top:10px!important;font-size: 10px!important;color:white">
-                                    N/A </p>
-                            </td>
-                            <td class="td" style="border: none!important;text-align: right;font-size: 12px;">
-                                <p
-                                    style="margin:0px!important;margin-top:10px!important;font-size: 10px!important;color:white">
-                                    N/A</p>
-                            </td>
-                            <td class="td" style="border: none!important;text-align: right;font-size: 12px;">
-                                <p
-                                    style="margin:0px!important;margin-top:10px!important;font-size: 10px!important;color:white">
-                                    N/A </p>
-                            </td>
-                            <td class="td" style="border: none!important;text-align: right;font-size: 12px;">
-                                <p
-                                    style="margin:0px!important;margin-top:10px!important;font-size: 10px!important;color:white">
-                                    N/A </p>
-                            </td>
-                            <td class="td" style="border: none!important;text-align: right;font-size: 12px;">
-                                <p
-                                    style="margin:0px!important;margin-top:10px!important;font-size: 10px!important;color:white">
-                                    N/A </p>
-                            </td>
-                            <td class="td" style="border: none!important;text-align: right;font-size: 12px;">
-                                <p
-                                    style="margin:0px!important;margin-top:10px!important;font-size: 10px!important;color:white">
-                                    N/A </p>
-                            </td>
-                            <td class="td" style="border: none!important;text-align: right;font-size: 12px;">
-                                <p
-                                    style="margin:0px!important;margin-top:10px!important;font-size: 10px!important;color:white">
-                                    N/A </p>
-                            </td>
-                        </tr>
-                    @endfor --}}
+                   @for ($i = count($first_array); $i < 10; $i++)
+    <tr class="item-row"
+        style="
+            border-left:1px solid black !important;
+            border-right:1px solid black !important;
+            height:24px;
+        ">
+
+        @for ($j = 0; $j < 9; $j++)
+            <td class="td"
+                style="
+                    border:none !important;
+                    padding:2px 6px !important;
+                    vertical-align:middle;
+                    text-align:{{ $j > 1 ? 'right' : 'left' }};
+                ">
+                <p
+                    style="
+                        margin:0 !important;
+                        padding:0 !important;
+                        line-height:12px !important;
+                        font-size:10px !important;
+                        color:white;
+                    ">
+                    N/A
+                </p>
+            </td>
+        @endfor
+
+    </tr>
+@endfor
 
                 </tbody>
 
