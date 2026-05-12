@@ -289,8 +289,8 @@ class LoginController extends Controller
                 'body' => 'Your OTP is : ' . $otp,
             ];
 
-            Mail::send('email.otp', get_defined_vars(), function ($send) use ($request) {
-                $send->to($request['email'])->subject("Otp Email");
+            Mail::send('email.otp', get_defined_vars(), function ($send) use ($request, $otp) {
+                $send->to($request['email'])->subject("Your Motonos OTP security code - {$otp}");
             });
 
 
