@@ -580,7 +580,7 @@
                         {{-- @dd($first_item) --}}
                         <tr class="item-row"
                             @php
-if($first_item['unit_price_rate']=="Hourly"){
+                            if($first_item['unit_price_rate']=="Hourly"){
 
                         $item_type='H';
                     }
@@ -648,7 +648,7 @@ if($first_item['unit_price_rate']=="Hourly"){
                             </td>
                         </tr>
                     @endforeach
-                    @for ($i = count($first_array); $i < 10; $i++)
+                    {{-- @for ($i = count($first_array); $i < 10; $i++)
                         <tr class="item-row"
                             style="border-left:1px solid black !important;border-right: 1px solid black !important;">
                             <td class="td" style="color: black;border: none!important;font-size: 12px;">
@@ -697,7 +697,7 @@ if($first_item['unit_price_rate']=="Hourly"){
                                     N/A </p>
                             </td>
                         </tr>
-                    @endfor
+                    @endfor --}}
 
                 </tbody>
 
