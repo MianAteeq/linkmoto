@@ -46,7 +46,7 @@ class VenderController extends Controller
     }
     public function agreementSubmit(Request $request)
     {
-       if($request->is_privacy_policy != 'on' || $request->is_terms != 'on'){
+       if($request->is_privacy_policy != 'on' &&  $request->is_terms != 'on' && $request->is_nda != 'on'){
         return back()->with('error', 'Please accept all agreements to proceed.');
        }
             $user = Auth::user();
@@ -79,6 +79,23 @@ class VenderController extends Controller
                     AgreementAcceptance::firstOrCreate([
                         'user_id' => $user->id,
                         'agreement_type' => 'TERMS',
+                        'agreement_version' => 1,
+                    ], [
+                        'user_full_name' => trim(
+                            $user->name . ' ' .
+                                ($user->middle_name ?? '') . ' ' .
+                                ($user->last_name ?? '')
+                        ),
+                        'user_email' => $user->email,
+                        'user_role' => 'Owner',
+                        'service_provider_name' => 'BM Provider App',
+                        'acceptance_method' => 'Service Provider App',
+                        'ip_address' => $request->ip(),
+                        'accepted_at' => now()->utc(),
+                    ]);
+                    AgreementAcceptance::firstOrCreate([
+                        'user_id' => $user->id,
+                        'agreement_type' => 'NDA',
                         'agreement_version' => 1,
                     ], [
                         'user_full_name' => trim(

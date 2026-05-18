@@ -2,6 +2,7 @@
 
 namespace Modules\Admin\Http\Controllers;
 
+use App\Models\AgreementAcceptance;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -361,7 +362,7 @@ class ApplicationController extends Controller
         return redirect()->back()->with('success', 'Subscription Decline Successfully');
     }
 
-    public function applicationAccept($id)
+    public function applicationAccept($id,Request $request)
     {
 
 
@@ -484,7 +485,7 @@ class ApplicationController extends Controller
 
         ]);
 
-         TradingUnitAppSetting::create([
+        TradingUnitAppSetting::create([
 
             'trading_id' => $unit['id'],
             'site_id' => $unit['site_id'] ?? '0',
@@ -502,12 +503,63 @@ class ApplicationController extends Controller
 
         ]);
 
+        AgreementAcceptance::firstOrCreate([
+            'user_id' => $user->id,
+            'agreement_type' => 'PRIVACY',
+            'agreement_version' => 1,
+        ], [
+            'user_full_name' => trim(
+                $user->name . ' ' .
+                    ($user->middle_name ?? '') . ' ' .
+                    ($user->last_name ?? '')
+            ),
+            'user_email' => $user->email,
+            'user_role' => 'Owner',
+            'service_provider_name' => 'BM Provider App',
+            'acceptance_method' => 'Service Provider App',
+            'ip_address' => $request->ip(),
+            'accepted_at' => now()->utc(),
+        ]);
 
+        AgreementAcceptance::firstOrCreate([
+            'user_id' => $user->id,
+            'agreement_type' => 'TERMS',
+            'agreement_version' => 1,
+        ], [
+            'user_full_name' => trim(
+                $user->name . ' ' .
+                    ($user->middle_name ?? '') . ' ' .
+                    ($user->last_name ?? '')
+            ),
+            'user_email' => $user->email,
+            'user_role' => 'Owner',
+            'service_provider_name' => 'BM Provider App',
+            'acceptance_method' => 'Service Provider App',
+            'ip_address' => $request->ip(),
+            'accepted_at' => now()->utc(),
+        ]);
+        AgreementAcceptance::firstOrCreate([
+            'user_id' => $user->id,
+            'agreement_type' => 'NDA',
+            'agreement_version' => 1,
+        ], [
+            'user_full_name' => trim(
+                $user->name . ' ' .
+                    ($user->middle_name ?? '') . ' ' .
+                    ($user->last_name ?? '')
+            ),
+            'user_email' => $user->email,
+            'user_role' => 'Owner',
+            'service_provider_name' => 'BM Provider App',
+            'acceptance_method' => 'Service Provider App',
+            'ip_address' => $request->ip(),
+            'accepted_at' => now()->utc(),
+        ]);
 
 
         User::find($id)->update([
             'application_status' => 'ACCEPTED',
-             'default_trading_unit'=>$unit['id']
+            'default_trading_unit' => $unit['id']
         ]);
 
 
@@ -532,6 +584,8 @@ class ApplicationController extends Controller
         VenderAddress::where('vender_id', $id)->update([
             'status' => 'Verified'
         ]);
+
+
 
         Mail::send('email.vendor_status', [
             'user' => $user

@@ -258,9 +258,12 @@
                                                     <td>{{ $app['app_name'] }}</td>
                                                     <td>
                                                         @if (isset($app['group']))
-                                                            {{-- FIXED: Using auth()->user()->id if $vender_id is missing --}}
-                                                            {{ str_replace('SVP_B_' . ($vender_id ?? auth()->user()->id), '', $app['group']['name']) }}
-                                                        @endif
+                                            @if ($app['group']['type'] == 'BUSINESS')
+                                                {{ str_replace('SVP_B_' . ($vender_id ?? auth()->user()->id), '', $app['group']['name']) }}
+                                            @else
+                                                {{ str_replace('SVP_' . ($vender_id ?? auth()->user()->id), '', $app['group']['name']) }}
+                                            @endif
+                                        @endif
                                                     </td>
                                                     <td>{{ $app['status'] == 1 ? 'ON' : 'OFF' }}</td>
                                                     <td

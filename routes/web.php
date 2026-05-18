@@ -340,11 +340,11 @@ use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ResetPasswordController;
 
 
-Route::domain('business.motonos.com')->group(function () {
+// Route::domain('business.motonos.com')->group(function () {
 
 Route::get('/forgot-password', [ForgotPasswordController::class, 'getforgetPassword'])->name('forget.password');
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink'])->name('forget.password.submit');
 Route::get('/reset-password', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
 
-});
+// });
