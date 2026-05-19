@@ -18,7 +18,7 @@ Route::get('/new/look', function () {
     return view('frontend::register-portal.business-info');
 });
 
-Route::name('website.')->group(function () {
+Route::domain('business.motonos.com')->name('website.')->group(function () {
     Route::get('/', [FrontendController::class, 'index'])->name('index');
     Route::get('/about', [FrontendController::class, 'about'])->name('about');
     Route::get('/service', [FrontendController::class, 'service'])->name('service');
