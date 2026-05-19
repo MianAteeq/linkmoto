@@ -52,7 +52,7 @@
           Please find attached your invoice
         </p>
 
-        <p style="margin: 0; font-size: 14px; line-height: 1.8; color: #666666; font-family: Arial, Helvetica, sans-serif;text-align: left;">
+        <p style="margin: 0; font-size: 16px; line-height: 1.8; color: #666666; font-family: Arial, Helvetica, sans-serif;text-align: left;">
                       If you have any questions, please contact us.
 
                     </p>
