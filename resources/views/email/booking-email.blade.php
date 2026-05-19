@@ -118,7 +118,7 @@
                 </p>
 
 
-                @if ($booking->service_type == 'On-Premises')
+                @if ($booking->service_type != 'Mobile')
                  <p
                     style="margin: 0; font-size: 14px; line-height: 1.9; color: #555555; font-family: Arial, Helvetica, sans-serif;text-align: left;">
                     <strong>Address:</strong> {{ collect([
