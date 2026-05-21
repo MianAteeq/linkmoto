@@ -354,6 +354,16 @@ class InvoiceController extends Controller
 
                 $count++;
             }
+             $data = [
+                'invoice'    => $invoices,
+                'trading_unit' => $trading_unit,
+                'profile' => $profile,
+                'vender' => User::with('profile')->find(auth()->user()->id),
+                'item_array' => $item_array,
+                'first_array' => $first_array,
+                'second_array' => $second_array,
+                'third_array' => $third_array,
+            ];
 
            
             $pdf = Pdf::loadView('pdf.payment', $data);
@@ -390,16 +400,7 @@ class InvoiceController extends Controller
             }
 
 
-             $data = [
-                'invoice'    => $invoices,
-                'trading_unit' => $trading_unit,
-                'profile' => $profile,
-                'vender' => User::with('profile')->find(auth()->user()->id),
-                'item_array' => $item_array,
-                'first_array' => $first_array,
-                'second_array' => $second_array,
-                'third_array' => $third_array,
-            ];
+            
             
 
 
