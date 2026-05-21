@@ -106,32 +106,27 @@
         &nbsp;
     </td>
 </tr>
-<tr>
-    <td align="center" style="padding: 30px 20px; background-color: #ffffff;">
 
-        <img src="https://motonos.com/uploads/cms/minilogo.png" alt="MOTONOS" width="140"
-             style="display: block; border: 0; margin-bottom: 20px;">
+        <tr>
+            <td align="center" style="padding: 15px 20px 5px 20px">
+                <p style="font-family: Arial, Helvetica, sans-serif; font-weight: normal; font-size: 12px; color: #555555; line-height: 1.5; margin: 0 0 5px 0; text-align: center;">
+                    Need help?
+                </p>
 
-        <p style="margin: 0; font-size: 13px; line-height: 1.6; color: #777777; font-family: Arial, Helvetica, sans-serif; text-align: center;">
-            © {{date('Y')}} Motonos. All rights reserved.
-        </p>
+                <p style="font-family: Arial, Helvetica, sans-serif; font-weight: normal; font-size: 12px; color: #555555; margin: 0 0 15px 0; text-align: center;">
+                    Reply to this email or contact us at support@motonos.com
+                </p>
 
-    </td>
-</tr>
+                <p style="font-family: Arial, Helvetica, sans-serif; font-weight: normal; font-size: 12px; color: #555555; margin: 0 0 5px 0; text-align: center;">
+                   © 2026 Motonos. All rights reserved.
+                </p>
 
-<!-- BOTTOM BORDER -->
+            </td>
+        </tr>
 
-
-<!-- BOTTOM BORDER -->
-
-
-<!-- BOTTOM BORDER -->
-<tr>
-    <td height="4"
-        style="background-color: #f26522; line-height: 0; font-size: 0;">
-        &nbsp;
-    </td>
-</tr>
+        <tr>
+            <td height="4" style="background-color: #f26522; line-height: 0; font-size: 0;">&nbsp;</td>
+        </tr>
 
     </table>
 

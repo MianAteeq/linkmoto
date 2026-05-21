@@ -25,10 +25,19 @@
             <td height="4" style="background-color: #f26522; line-height: 0; font-size: 0;">&nbsp;</td>
         </tr>
 
-        <tr>
+        {{-- <tr>
             <td align="center" style="padding: 25px 0;">
                 <img src="https://motonos.com/uploads/cms/minilogo.png" alt="MOTONOS" width="160"
                     style="display: block; border: 0;">
+            </td>
+        </tr> --}}
+
+        <tr>
+            <td align="center" style="padding: 5px 0;">
+               <h2 style="color: #f26522; font-family: Arial, Helvetica, sans-serif; font-weight: 800;">
+              {{$tradingName}}
+            
+            </h2>
             </td>
         </tr>
 
@@ -183,7 +192,7 @@
                 &nbsp;
             </td>
         </tr>
-        <tr>
+        {{-- <tr>
             <td align="center" style="padding: 30px 20px; background-color: #ffffff;">
 
                 <img src="https://motonos.com/uploads/cms/minilogo.png" alt="MOTONOS" width="140"
@@ -192,6 +201,19 @@
                 <p
                     style="margin: 0; font-size: 13px; line-height: 1.6; color: #777777; font-family: Arial, Helvetica, sans-serif; text-align: center;">
                     © {{date('Y')}} Motonos. All rights reserved.
+                </p>
+
+            </td>
+        </tr> --}}
+
+        <tr>
+            <td align="center" style="padding: 15px 20px 5px 20px">
+               <p style="font-family: Arial, Helvetica, sans-serif; font-weight: normal; font-size: 12px; color: #555555; line-height: 1.5; margin: 0 0 5px 0; text-align: center;">
+    Powered by <img src="https://motonos.com/uploads/cms/minilogo.png" alt="MOTONOS" width="100" style="display: inline-block; vertical-align: middle; border: 0; margin-left: 5px;">
+</p>
+
+                <p style="font-family: Arial, Helvetica, sans-serif; font-weight: normal; font-size: 12px; color: #555555; margin: 10px 0 5px 0; text-align: center;">
+                   © 2026 Motonos. All rights reserved.
                 </p>
 
             </td>

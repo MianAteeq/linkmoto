@@ -263,15 +263,18 @@ class InvoiceController extends Controller
             }else if($trade_unit['trading_template'] == 3){
                 $tradingName = $trade_unit['trading_name']['name'] ?? '';
             }
+
+             
                                    
 
 
             Mail::send('email.booking-email', [
                 'booking' => $booking,
                 'trade_unit' => $trade_unit,
-                'user' => $user
-            ], function ($message) use ($booking, $request, $tradingName) {
-                $message->to($request->email)
+                'user' => $user,
+                'tradingName' => $tradingName,
+            ], function ($message) use ($booking, $request, $tradingName, ) {
+                $message->to($request->email)->from(config('mail.from.address'), $tradingName) 
                     ->subject(
                         'Your booking with ' . $tradingName
                     );
