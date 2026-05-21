@@ -171,7 +171,7 @@ class ContactController extends Controller
             $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
             $trading_id = User::find($request->user()->id)['default_trading_unit'];
 
-            $contacts = ContactDetail::with('vehicles', 'quotes', 'bookings', 'vehicles.vehicle_make')->withCount('quotes')->withCount('bookings')->withCount('jobs')->where('vender_id', $vender_id)->where('contact_no', '!=', null)->orderBy('id', 'desc')->get();
+            $contacts = ContactDetail::with('vehicles', 'quotes', 'bookings', 'vehicles.vehicle_make')->withCount('quotes')->withCount('bookings')->withCount('jobs')->where('vender_id', $vender_id)->where('contact_no', '!=', null)->orderBy('id', 'asc')->paginate(10);
             return response()->json([
                 'status' => true,
                 'contact_details' => $contacts,
