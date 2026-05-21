@@ -75,7 +75,7 @@ class VehicleController extends Controller
                 'type' => "Vender",
                 'trading_id' => $trading_id,
                 'year' => $request['year'] ?? ' ',
-                ...$request->except('year'),
+                ...$request->except('year','is_unique'),
             ]);
 
             $vehicles = Vehicle::with(['vehicle_make', 'vehicle_model', 'engine_size', 'transmission_type', 'fuel_type', 'color', 'contact'])->with('jobs', 'quotes', 'bookings')->withCount('quotes')->withCount('bookings')->withCount('jobs')->where('vender_id', $vender_id)->find($veh['id']);
