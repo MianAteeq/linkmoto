@@ -102,12 +102,12 @@
                         <td style="font-weight: bold;">Requested Work:</td>
                         <td>
                            {{ 
-    collect($booking['job_requests'])
-        ->flatMap(fn($job_request) => $job_request['job_types'])
-        ->pluck('job_type.name')
-        ->unique()
-        ->implode(', ')
-}}
+                            collect($booking['job_requests'])
+                                ->flatMap(fn($job_request) => $job_request['job_types'])
+                                ->pluck('job_type.name')
+                                ->unique()
+                                ->implode(', ')
+                        }}
                         </td>
                     </tr>
 
