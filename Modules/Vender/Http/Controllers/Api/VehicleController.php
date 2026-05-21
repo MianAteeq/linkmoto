@@ -38,6 +38,24 @@ class VehicleController extends Controller
                 return response()->json($responseArr);
             }
 
+            $exists = Vehicle::where('vrm', $request['vrm'])
+                ->where('vehicle_make_id', $request['vehicle_make_id'])
+                ->where('vehicle_model_id', $request['vehicle_model_id'])
+                ->first();
+
+            // Check duplicate only when is_unique is NOT passed
+            if (!$request->filled('is_unique') || $request->is_unique != 1) {
+
+                if ($exists) {
+
+                    return response()->json([
+                        'status' => false,
+                        'is_duplicate' => true,
+                        'message' => 'This registration number is already linked to an existing vehicle. Adding another will create duplicate records.',
+                    ]);
+                }
+            }
+
 
             $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
             $trading_id = User::find($request->user()->id)['default_trading_unit'];
