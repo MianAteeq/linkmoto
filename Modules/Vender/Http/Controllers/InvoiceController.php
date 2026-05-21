@@ -354,6 +354,23 @@ class InvoiceController extends Controller
 
                 $count++;
             }
+
+             $vender = User::with('profile')->find(auth()->user()->id);
+
+            $profile = optional($vender->profile);
+            $tradingName = optional($invoices->invoice->trading_name);
+            $appSetting = optional($tradingName->app_setting);
+
+            $company = ucfirst($profile->company_name ?? '');
+            $trading = optional($tradingName->trading_name)->name ?? '';
+
+            if ($appSetting->header_option == 1) {
+                $CNAME = $company;
+            } elseif ($appSetting->header_option == 2) {
+                $CNAME = $company . ' trading as ' . $trading;
+            } else {
+                $CNAME = $trading;
+            }
              $data = [
                 'invoice'    => $invoices,
                 'trading_unit' => $trading_unit,
@@ -363,6 +380,7 @@ class InvoiceController extends Controller
                 'first_array' => $first_array,
                 'second_array' => $second_array,
                 'third_array' => $third_array,
+                'CNAME' => $CNAME,
             ];
 
            
@@ -382,22 +400,7 @@ class InvoiceController extends Controller
             //     }
             // });
 
-            $vender = User::with('profile')->find(auth()->user()->id);
-
-            $profile = optional($vender->profile);
-            $tradingName = optional($invoices->invoice->trading_name);
-            $appSetting = optional($tradingName->app_setting);
-
-            $company = ucfirst($profile->company_name ?? '');
-            $trading = optional($tradingName->trading_name)->name ?? '';
-
-            if ($appSetting->header_option == 1) {
-                $CNAME = $company;
-            } elseif ($appSetting->header_option == 2) {
-                $CNAME = $company . ' trading as ' . $trading;
-            } else {
-                $CNAME = $trading;
-            }
+           
 
 
             
