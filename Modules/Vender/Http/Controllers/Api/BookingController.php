@@ -1016,6 +1016,7 @@ class BookingController extends Controller
             $booking->booking_date = $request['booking_date'];
             $booking->booking_time = $request['booking_time'];
             $booking->workstream_id = $request['workstream_id'];
+            $booking->status = 'BOOKED';
 
 
 
