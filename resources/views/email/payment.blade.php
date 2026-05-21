@@ -34,15 +34,15 @@
           <tr>
             <td align="center" style="padding: 5px 0;">
                <h2 style="color: #f26522; font-family: Arial, Helvetica, sans-serif; font-weight: 800;">
-               @if ($trade_unit['trading_template'] == 1)
+               @if ($trading_unit['trading_template'] == 1)
                                         {{ $user->profile->company_name }}
                                     @endif
-                                    @if ($trade_unit['trading_template'] == 2)
+                                    @if ($trading_unit['trading_template'] == 2)
                                         {{ $user->profile->company_name }} Trading as
-                                        {{ $trade_unit['trading_name']['name'] }}
+                                        {{ $trading_unit['trading_name']['name'] }}
                                     @endif
-                                    @if ($trade_unit['trading_template'] == 3)
-                                        {{ $trade_unit['trading_name']['name'] ?? '' }}
+                                    @if ($trading_unit['trading_template'] == 3)
+                                        {{ $trading_unit['trading_name']['name'] ?? '' }}
                                     @endif
             
             </h2>
