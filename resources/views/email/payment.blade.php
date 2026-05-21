@@ -34,7 +34,7 @@
           <tr>
             <td align="center" style="padding: 5px 0;">
                <h2 style="color: #f26522; font-family: Arial, Helvetica, sans-serif; font-weight: 800;">
-              {{$CNAME}}
+             {{$CNAME}}
             
             </h2>
             </td>
