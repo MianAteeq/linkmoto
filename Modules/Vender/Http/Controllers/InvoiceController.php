@@ -152,10 +152,7 @@ class InvoiceController extends Controller
             }
 
             // 6️⃣ Prepare data for email (keep objects for Blade)
-            $data = [
-                'invoice' => $invoice, // object for optional() in Blade
-                'vender'  => $vender,  // object
-            ];
+          
 
             // 7️⃣ Log info safely (convert trading_name to array for logging)
             $tradingName = $invoice->trading_name ? $invoice->trading_name->toArray() : [];
@@ -179,6 +176,12 @@ class InvoiceController extends Controller
             } else {
                 $CNAME = $trading;
             }
+
+              $data = [
+                'invoice' => $invoice, // object for optional() in Blade
+                'vender'  => $vender,
+                'CNAME'   => $CNAME,   // string
+            ];
 
 
             // 8️⃣ Send email
@@ -352,16 +355,7 @@ class InvoiceController extends Controller
                 $count++;
             }
 
-            $data = [
-                'invoice'    => $invoices,
-                'trading_unit' => $trading_unit,
-                'profile' => $profile,
-                'vender' => User::with('profile')->find(auth()->user()->id),
-                'item_array' => $item_array,
-                'first_array' => $first_array,
-                'second_array' => $second_array,
-                'third_array' => $third_array,
-            ];
+           
             $pdf = Pdf::loadView('pdf.payment', $data);
             $content = $pdf->download()->getOriginalContent();
             file_put_contents('pdf/' . $invoices['pay_no'] . time()  . ".pdf", $content);
@@ -394,6 +388,17 @@ class InvoiceController extends Controller
             } else {
                 $CNAME = $trading;
             }
+ $data = [
+                'invoice'    => $invoices,
+                'trading_unit' => $trading_unit,
+                'profile' => $profile,
+                'vender' => User::with('profile')->find(auth()->user()->id),
+                'item_array' => $item_array,
+                'first_array' => $first_array,
+                'second_array' => $second_array,
+                'third_array' => $third_array,
+                'CNAME'   => $CNAME,   // string
+            ];
 
 
             // 8️⃣ Send email
