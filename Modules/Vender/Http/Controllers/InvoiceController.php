@@ -388,7 +388,9 @@ class InvoiceController extends Controller
             } else {
                 $CNAME = $trading;
             }
- $data = [
+
+
+             $data = [
                 'invoice'    => $invoices,
                 'trading_unit' => $trading_unit,
                 'profile' => $profile,
@@ -397,8 +399,8 @@ class InvoiceController extends Controller
                 'first_array' => $first_array,
                 'second_array' => $second_array,
                 'third_array' => $third_array,
-                'CNAME'   => $CNAME,   // string
             ];
+            
 
 
             // 8️⃣ Send email
