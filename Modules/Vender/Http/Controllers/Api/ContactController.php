@@ -265,7 +265,7 @@ class ContactController extends Controller
         */
 
         if (!empty($vehicle['contact_id'])) {
-            $query->where('contact_id', $vehicle['contact_id']);
+            $query->where('contact_no', $vehicle['contact_id']);
         }
 
         /*
