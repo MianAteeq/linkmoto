@@ -186,6 +186,29 @@ class ContactController extends Controller
             ]);
         }
     }
+    public function getAllContactDetail(Request $request)
+    {
+
+        try {
+
+            $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
+            $trading_id = User::find($request->user()->id)['default_trading_unit'];
+
+            $contacts = ContactDetail::with('vehicles', 'quotes', 'bookings', 'vehicles.vehicle_make')->withCount('quotes')->withCount('bookings')->withCount('jobs')->where('vender_id', $vender_id)->where('contact_no', '!=', null)->orderBy('id', 'desc')->get();
+            return response()->json([
+                'status' => true,
+                'contact_details' => $contacts,
+                'message' => "ContactDetail Fetch Successfully",
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'status' => false,
+                'error' => $e->getMessage(),
+                'message' => "Error while getting Contact",
+            ]);
+        }
+    }
 
     // Search Contact Detail
 

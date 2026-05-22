@@ -68,6 +68,7 @@ Route::group(['middleware' => ['cors']], function () {
                 Route::post('contact/detail/save', [ContactController::class, 'saveContactDetail']);
                 Route::post('contact/detail/update', [ContactController::class, 'updateContactDetail']);
                 Route::post('contact/detail', [ContactController::class, 'getContactDetail']);
+                Route::post('contact/all/detail', [ContactController::class, 'getAllContactDetail']);
                 Route::post('contact/single/detail', [ContactController::class, 'getSingleContactDetail']);
                 Route::post('contact/detail/search', [ContactController::class, 'searchContactDetail']);
                 Route::post('contact/details/delete', [ContactController::class, 'contactDelete']);
