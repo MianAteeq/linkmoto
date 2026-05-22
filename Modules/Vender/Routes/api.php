@@ -98,6 +98,7 @@ Route::group(['middleware' => ['cors']], function () {
 
                 Route::post('vehicle/detail/save', [VehicleController::class, 'saveVehicleDetail']);
                 Route::post('vehicle/detail/update', [VehicleController::class, 'updateVehicleDetail']);
+                Route::post('all/vehicle/detail', [VehicleController::class, 'getAllVehicleDetail']);
                 Route::post('vehicle/detail', [VehicleController::class, 'getVehicleDetail']);
                 Route::post('vehicle/single/detail', [VehicleController::class, 'getSingleVehicleDetail']);
                 Route::post('vehicle/detail/search', [VehicleController::class, 'searchVehicleDetail']);

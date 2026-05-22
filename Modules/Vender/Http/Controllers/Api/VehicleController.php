@@ -122,6 +122,32 @@ class VehicleController extends Controller
             ]);
         }
     }
+    public function getAllVehicleDetail(Request $request)
+    {
+
+
+        try {
+
+            $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
+            $trading_id = User::find($request->user()->id)['default_trading_unit'];
+
+            $contacts = Vehicle::with(['vehicle_make', 'vehicle_model', 'engine_size', 'transmission_type', 'fuel_type', 'color', 'contact'])
+                ->with('quotes', 'bookings', 'jobs')->withCount('quotes')->withCount('bookings')->withCount('jobs')->where('vender_id', $vender_id)
+                ->where('vehicle_no', '!=', null)->orderBy('id', 'desc')->get();
+            return response()->json([
+                'status' => true,
+                'contact_details' => $contacts,
+                'message' => "Vehicles Fetch Successfully",
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'status' => false,
+                'error' => $e->getMessage(),
+                'message' => "Error while getting Vehicles",
+            ]);
+        }
+    }
     public function getSingleVehicleDetail(Request $request)
     {
 
