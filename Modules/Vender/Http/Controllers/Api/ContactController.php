@@ -253,7 +253,8 @@ class ContactController extends Controller
                 $q->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"])
                     ->orWhereRaw('LOWER(last_name) LIKE ?', ["%{$search}%"])
                     ->orWhereRaw('LOWER(email) LIKE ?', ["%{$search}%"])
-                    ->orWhereRaw('LOWER(mobile_no) LIKE ?', ["%{$search}%"]);
+                    ->orWhereRaw('LOWER(mobile_no) LIKE ?', ["%{$search}%"])
+                    ->orWhereRaw('LOWER(contact_no) LIKE ?', ["%{$search}%"]);
 
             });
         }
