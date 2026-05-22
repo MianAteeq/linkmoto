@@ -241,13 +241,14 @@ class VehicleController extends Controller
 
     // Search Vehicle Detail
 
-  public function searchVehicleDetail(Request $request)
+ public function searchVehicleDetail(Request $request)
 {
     try {
 
         $validator = \Validator::make($request->all(), [
             'search' => ['nullable', 'string', 'max:255'],
             'sort'   => ['nullable', 'string'],
+            'vehcile' => ['nullable', 'array'],
         ]);
 
         if ($validator->fails()) {
@@ -261,8 +262,9 @@ class VehicleController extends Controller
             ? $request->user()->id
             : $request->user()->vender_id;
 
-        $search = strtolower(trim($request->search ?? ''));
-        $sort   = $request->sort;
+        $search   = strtolower(trim($request->search ?? ''));
+        $sort     = $request->sort;
+        $vehcile  = $request->vehcile ?? [];
 
         $query = Vehicle::with([
             'vehicle_make',
@@ -271,9 +273,11 @@ class VehicleController extends Controller
             'transmission_type',
             'fuel_type',
             'color',
-            'contact'
+            'contact',
+            'jobs',
+            'quotes',
+            'bookings'
         ])
-        ->with(['jobs', 'quotes', 'bookings'])
         ->withCount(['quotes', 'bookings', 'jobs'])
         ->where('vender_id', $vendor_id);
 
@@ -307,7 +311,28 @@ class VehicleController extends Controller
                     });
 
             });
+        }
 
+        /*
+        |--------------------------------------------------------------------------
+        | VEHICLE FILTERS
+        |--------------------------------------------------------------------------
+        */
+
+        if (!empty($vehcile['vehcileID'])) {
+            $query->where('vehicle_no', $vehcile['vehcileID']);
+        }
+
+        if (!empty($vehcile['vrm'])) {
+            $query->where('vrm', $vehcile['vrm']);
+        }
+
+        if (!empty($vehcile['vin'])) {
+            $query->where('vin_number', $vehcile['vin']);
+        }
+
+        if (!empty($vehcile['year'])) {
+            $query->where('year', $vehcile['year']);
         }
 
         /*
@@ -355,15 +380,7 @@ class VehicleController extends Controller
                 break;
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | FETCH
-        |--------------------------------------------------------------------------
-        */
-
-        $vehicles = $query
-            ->distinct()
-            ->get();
+        $vehicles = $query->distinct()->get();
 
         return response()->json([
             'status' => true,
