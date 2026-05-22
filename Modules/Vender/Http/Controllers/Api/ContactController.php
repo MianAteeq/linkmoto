@@ -190,40 +190,123 @@ class ContactController extends Controller
     // Search Contact Detail
 
     public function searchContactDetail(Request $request)
-    {
-        try {
-            $validator = \Validator::make($request->all(), [
-                'search' =>  ['required', 'string', 'max:255'],
+{
+    try {
 
+        $validator = \Validator::make($request->all(), [
+            'search'  => ['nullable', 'string', 'max:255'],
+            'sort'    => ['nullable', 'string'],
+            'vehcile' => ['nullable', 'array'],
+        ]);
 
-
-            ]);
-
-            if ($validator->fails()) {
-
-                $responseArr['message'] = $validator->errors()->first();
-                $responseArr['token'] = '';
-                return response()->json($responseArr);
-            }
-
-            $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
-
-            $contacts = ContactDetail::with('vehicles')->where('name', 'Like', '%' . request('search') . '%')->orWhere('last_name', 'Like', '%' . request('search') . '%')
-                ->orWhere('email', 'Like', '%' . request('search') . '%')->orWhere('mobile_no', 'Like', '%' . request('search') . '%')->where('vender_id', $vender_id)->get();
-            return response()->json([
-                'status' => true,
-                'contact_details' => $contacts,
-                'message' => "ContactDetail Fetch Successfully",
-            ]);
-        } catch (Exception $e) {
-
+        if ($validator->fails()) {
             return response()->json([
                 'status' => false,
-                'error' => $e->getMessage(),
-                'message' => "Error while getting Contact",
+                'message' => $validator->errors()->first(),
             ]);
         }
+
+        $vender_id = $request->user()->vender_id == 0
+            ? $request->user()->id
+            : $request->user()->vender_id;
+
+        $search  = strtolower(trim($request->search ?? ''));
+        $sort    = $request->sort;
+        $vehicle = $request->vehcile ?? [];
+
+        $query = ContactDetail::with('vehicles')
+            ->where('vender_id', $vender_id);
+
+        /*
+        |--------------------------------------------------------------------------
+        | SEARCH
+        |--------------------------------------------------------------------------
+        */
+
+        if (!empty($search)) {
+
+            $query->where(function ($q) use ($search) {
+
+                $q->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"])
+                    ->orWhereRaw('LOWER(last_name) LIKE ?', ["%{$search}%"])
+                    ->orWhereRaw('LOWER(email) LIKE ?', ["%{$search}%"])
+                    ->orWhereRaw('LOWER(mobile_no) LIKE ?', ["%{$search}%"]);
+
+            });
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | VEHICLE FILTER
+        |--------------------------------------------------------------------------
+        */
+
+        if (!empty($vehicle['contact_id'])) {
+            $query->where('contact_id', $vehicle['contact_id']);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | SORTING
+        |--------------------------------------------------------------------------
+        */
+
+        switch ($sort) {
+
+            case 'CID_HL':
+                $query->orderBy('id', 'DESC');
+                break;
+
+            case 'CID_LH':
+                $query->orderBy('id', 'ASC');
+                break;
+
+            case 'FN_AZ':
+                $query->orderBy('name', 'ASC');
+                break;
+
+            case 'FN_ZA':
+                $query->orderBy('name', 'DESC');
+                break;
+
+            case 'LN_AZ':
+                $query->orderBy('last_name', 'ASC');
+                break;
+
+            case 'LN_ZA':
+                $query->orderBy('last_name', 'DESC');
+                break;
+
+            case 'EM_AZ':
+                $query->orderBy('email', 'ASC');
+                break;
+
+            case 'EM_ZA':
+                $query->orderBy('email', 'DESC');
+                break;
+
+            default:
+                $query->orderBy('id', 'DESC');
+                break;
+        }
+
+        $contacts = $query->get();
+
+        return response()->json([
+            'status' => true,
+            'contact_details' => $contacts,
+            'message' => 'ContactDetail Fetch Successfully',
+        ]);
+
+    } catch (\Exception $e) {
+
+        return response()->json([
+            'status' => false,
+            'error' => $e->getMessage(),
+            'message' => 'Error while getting Contact',
+        ]);
     }
+}
 
     //  Update Contact Detail
 

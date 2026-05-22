@@ -75,7 +75,7 @@ class VehicleController extends Controller
                 'type' => "Vender",
                 'trading_id' => $trading_id,
                 'year' => $request['year'] ?? ' ',
-                ...$request->except('year','is_unique'),
+                ...$request->except('year', 'is_unique'),
             ]);
 
             $vehicles = Vehicle::with(['vehicle_make', 'vehicle_model', 'engine_size', 'transmission_type', 'fuel_type', 'color', 'contact'])->with('jobs', 'quotes', 'bookings')->withCount('quotes')->withCount('bookings')->withCount('jobs')->where('vender_id', $vender_id)->find($veh['id']);
@@ -241,162 +241,160 @@ class VehicleController extends Controller
 
     // Search Vehicle Detail
 
- public function searchVehicleDetail(Request $request)
-{
-    try {
+    public function searchVehicleDetail(Request $request)
+    {
+        try {
 
-        $validator = \Validator::make($request->all(), [
-            'search' => ['nullable', 'string', 'max:255'],
-            'sort'   => ['nullable', 'string'],
-            'vehcile' => ['nullable', 'array'],
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'message' => $validator->errors()->first(),
+            $validator = \Validator::make($request->all(), [
+                'search' => ['nullable', 'string', 'max:255'],
+                'sort'   => ['nullable', 'string'],
+                'vehcile' => ['nullable', 'array'],
             ]);
-        }
 
-        $vendor_id = $request->user()->vender_id == 0
-            ? $request->user()->id
-            : $request->user()->vender_id;
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => $validator->errors()->first(),
+                ]);
+            }
 
-        $search   = strtolower(trim($request->search ?? ''));
-        $sort     = $request->sort;
-        $vehcile  = $request->vehcile ?? [];
+            $vendor_id = $request->user()->vender_id == 0
+                ? $request->user()->id
+                : $request->user()->vender_id;
 
-        $query = Vehicle::with([
-            'vehicle_make',
-            'vehicle_model',
-            'engine_size',
-            'transmission_type',
-            'fuel_type',
-            'color',
-            'contact',
-            'jobs',
-            'quotes',
-            'bookings'
-        ])
-        ->withCount(['quotes', 'bookings', 'jobs'])
-        ->where('vender_id', $vendor_id);
+            $search   = strtolower(trim($request->search ?? ''));
+            $sort     = $request->sort;
+            $vehcile  = $request->vehcile ?? [];
 
-        /*
+            $query = Vehicle::with([
+                'vehicle_make',
+                'vehicle_model',
+                'engine_size',
+                'transmission_type',
+                'fuel_type',
+                'color',
+                'contact',
+                'jobs',
+                'quotes',
+                'bookings'
+            ])
+                ->withCount(['quotes', 'bookings', 'jobs'])
+                ->where('vender_id', $vendor_id);
+
+            /*
         |--------------------------------------------------------------------------
         | SEARCH
         |--------------------------------------------------------------------------
         */
 
-        if (!empty($search)) {
+            if (!empty($search)) {
 
-            $query->where(function ($q) use ($search) {
+                $query->where(function ($q) use ($search) {
 
-                $q->whereRaw('LOWER(vrm) LIKE ?', ["%{$search}%"])
-                    ->orWhereRaw('LOWER(vin_number) LIKE ?', ["%{$search}%"])
-                    ->orWhereRaw('LOWER(vehicle_no) LIKE ?', ["%{$search}%"])
-                    ->orWhereRaw('LOWER(year) LIKE ?', ["%{$search}%"])
+                    $q->whereRaw('LOWER(vrm) LIKE ?', ["%{$search}%"])
+                        ->orWhereRaw('LOWER(vin_number) LIKE ?', ["%{$search}%"])
+                        ->orWhereRaw('LOWER(vehicle_no) LIKE ?', ["%{$search}%"])
+                        ->orWhereRaw('LOWER(year) LIKE ?', ["%{$search}%"])
 
-                    ->orWhereHas('vehicle_make', function ($q2) use ($search) {
-                        $q2->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"]);
-                    })
+                        ->orWhereHas('vehicle_make', function ($q2) use ($search) {
+                            $q2->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"]);
+                        })
 
-                    ->orWhereHas('vehicle_model', function ($q2) use ($search) {
-                        $q2->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"]);
-                    })
+                        ->orWhereHas('vehicle_model', function ($q2) use ($search) {
+                            $q2->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"]);
+                        })
 
-                    ->orWhereHas('contact', function ($q2) use ($search) {
-                        $q2->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"])
-                           ->orWhereRaw('LOWER(last_name) LIKE ?', ["%{$search}%"])
-                           ->orWhereRaw('LOWER(mobile_no) LIKE ?', ["%{$search}%"]);
-                    });
+                        ->orWhereHas('contact', function ($q2) use ($search) {
+                            $q2->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"])
+                                ->orWhereRaw('LOWER(last_name) LIKE ?', ["%{$search}%"])
+                                ->orWhereRaw('LOWER(mobile_no) LIKE ?', ["%{$search}%"]);
+                        });
+                });
+            }
 
-            });
-        }
-
-        /*
+            /*
         |--------------------------------------------------------------------------
         | VEHICLE FILTERS
         |--------------------------------------------------------------------------
         */
 
-        if (!empty($vehcile['vehcileID'])) {
-            $query->where('vehicle_no', $vehcile['vehcileID']);
-        }
+            if (!empty($vehcile['vehcileID'])) {
+                $query->where('vehicle_no', $vehcile['vehcileID']);
+            }
 
-        if (!empty($vehcile['vrm'])) {
-            $query->where('vrm', $vehcile['vrm']);
-        }
+            if (!empty($vehcile['vrm'])) {
+                $query->where('vrm', $vehcile['vrm']);
+            }
 
-        if (!empty($vehcile['vin'])) {
-            $query->where('vin_number', $vehcile['vin']);
-        }
+            if (!empty($vehcile['vin'])) {
+                $query->where('vin_number', $vehcile['vin']);
+            }
 
-        if (!empty($vehcile['year'])) {
-            $query->where('year', $vehcile['year']);
-        }
+            if (!empty($vehcile['year'])) {
+                $query->where('year', $vehcile['year']);
+            }
 
-        /*
+            /*
         |--------------------------------------------------------------------------
         | SORTING
         |--------------------------------------------------------------------------
         */
 
-        switch ($sort) {
+            switch ($sort) {
 
-            case 'VID_HL':
-                $query->orderBy('id', 'DESC');
-                break;
+                case 'VID_HL':
+                    $query->orderBy('id', 'DESC');
+                    break;
 
-            case 'VID_LH':
-                $query->orderBy('id', 'ASC');
-                break;
+                case 'VID_LH':
+                    $query->orderBy('id', 'ASC');
+                    break;
 
-            case 'VRM_AZ':
-                $query->orderBy('vrm', 'ASC');
-                break;
+                case 'VRM_AZ':
+                    $query->orderBy('vrm', 'ASC');
+                    break;
 
-            case 'VRM_ZA':
-                $query->orderBy('vrm', 'DESC');
-                break;
+                case 'VRM_ZA':
+                    $query->orderBy('vrm', 'DESC');
+                    break;
 
-            case 'VIN_AZ':
-                $query->orderBy('vin_number', 'ASC');
-                break;
+                case 'VIN_AZ':
+                    $query->orderBy('vin_number', 'ASC');
+                    break;
 
-            case 'VIN_ZA':
-                $query->orderBy('vin_number', 'DESC');
-                break;
+                case 'VIN_ZA':
+                    $query->orderBy('vin_number', 'DESC');
+                    break;
 
-            case 'Y_NO':
-                $query->orderBy('year', 'DESC');
-                break;
+                case 'Y_NO':
+                    $query->orderBy('year', 'DESC');
+                    break;
 
-            case 'Y_ON':
-                $query->orderBy('year', 'ASC');
-                break;
+                case 'Y_ON':
+                    $query->orderBy('year', 'ASC');
+                    break;
 
-            default:
-                $query->orderBy('id', 'DESC');
-                break;
+                default:
+                    $query->orderBy('id', 'DESC');
+                    break;
+            }
+
+            $vehicles = $query->distinct()->get();
+
+            return response()->json([
+                'status' => true,
+                'contact_details' => $vehicles,
+                'message' => 'Vehicles Fetch Successfully',
+            ]);
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Error while getting Vehicles',
+                'error' => $e->getMessage(),
+            ]);
         }
-
-        $vehicles = $query->distinct()->get();
-
-        return response()->json([
-            'status' => true,
-            'contact_details' => $vehicles,
-            'message' => 'Vehicles Fetch Successfully',
-        ]);
-
-    } catch (\Exception $e) {
-
-        return response()->json([
-            'status' => false,
-            'message' => 'Error while getting Vehicles',
-            'error' => $e->getMessage(),
-        ]);
     }
-}
 
     //  Update Vehicle Detail
 
