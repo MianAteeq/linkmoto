@@ -215,67 +215,145 @@ class VehicleController extends Controller
 
     // Search Vehicle Detail
 
-    public function searchVehicleDetail(Request $request)
-    {
-        try {
-            $validator = \Validator::make($request->all(), [
-                'search' =>  ['required', 'string', 'max:255'],
+  public function searchVehicleDetail(Request $request)
+{
+    try {
 
+        $validator = \Validator::make($request->all(), [
+            'search' => ['nullable', 'string', 'max:255'],
+            'sort'   => ['nullable', 'string'],
+        ]);
 
-
-            ]);
-
-            if ($validator->fails()) {
-
-                $responseArr['message'] = $validator->errors()->first();
-                $responseArr['token'] = '';
-                return response()->json($responseArr);
-            }
-
-            $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
-
-            $search = strtolower(request('search'));
-
-            $contacts = Vehicle::with([
-                'vehicle_make',
-                'vehicle_model',
-                'engine_size',
-                'transmission_type',
-                'fuel_type',
-                'color',
-                'contact'
-            ])
-                ->with('jobs', 'quotes', 'bookings')
-                ->withCount(['quotes', 'bookings', 'jobs'])
-                ->where('vender_id', $vender_id)
-                ->where(function ($query) use ($search) {
-                    $query->whereRaw('LOWER(vrm) LIKE ?', ["%{$search}%"])
-                        ->orWhereRaw('LOWER(vin_number) LIKE ?', ["%{$search}%"])
-                        ->orWhereRaw('LOWER(vehicle_no) LIKE ?', ["%{$search}%"])
-                        ->orWhereHas('vehicle_make', function ($q) use ($search) {
-                            $q->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"]);
-                        })
-                        ->orWhereHas('vehicle_model', function ($q) use ($search) {
-                            $q->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"]);
-                        });
-                })
-                ->get();
-
-            $vehilces = collect($contacts)->where('vender_id', $vender_id)->toArray();
-            return response()->json([
-                'status' => true,
-                'contact_details' => $vehilces,
-                'message' => "Vehicles Fetch Successfully",
-            ]);
-        } catch (Exception $e) {
-
+        if ($validator->fails()) {
             return response()->json([
                 'status' => false,
-                'error' => $e->getMessage(),
-                'message' => "Error while getting Vehicles",
+                'message' => $validator->errors()->first(),
             ]);
         }
+
+        $vendor_id = $request->user()->vender_id == 0
+            ? $request->user()->id
+            : $request->user()->vender_id;
+
+        $search = strtolower(trim($request->search ?? ''));
+        $sort   = $request->sort;
+
+        $query = Vehicle::with([
+            'vehicle_make',
+            'vehicle_model',
+            'engine_size',
+            'transmission_type',
+            'fuel_type',
+            'color',
+            'contact'
+        ])
+        ->with(['jobs', 'quotes', 'bookings'])
+        ->withCount(['quotes', 'bookings', 'jobs'])
+        ->where('vender_id', $vendor_id);
+
+        /*
+        |--------------------------------------------------------------------------
+        | SEARCH
+        |--------------------------------------------------------------------------
+        */
+
+        if (!empty($search)) {
+
+            $query->where(function ($q) use ($search) {
+
+                $q->whereRaw('LOWER(vrm) LIKE ?', ["%{$search}%"])
+                    ->orWhereRaw('LOWER(vin_number) LIKE ?', ["%{$search}%"])
+                    ->orWhereRaw('LOWER(vehicle_no) LIKE ?', ["%{$search}%"])
+                    ->orWhereRaw('LOWER(year) LIKE ?', ["%{$search}%"])
+
+                    ->orWhereHas('vehicle_make', function ($q2) use ($search) {
+                        $q2->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"]);
+                    })
+
+                    ->orWhereHas('vehicle_model', function ($q2) use ($search) {
+                        $q2->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"]);
+                    })
+
+                    ->orWhereHas('contact', function ($q2) use ($search) {
+                        $q2->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"])
+                           ->orWhereRaw('LOWER(last_name) LIKE ?', ["%{$search}%"])
+                           ->orWhereRaw('LOWER(mobile_no) LIKE ?', ["%{$search}%"]);
+                    });
+
+            });
+
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | SORTING
+        |--------------------------------------------------------------------------
+        */
+
+        switch ($sort) {
+
+            case 'VID_HL':
+                $query->orderBy('id', 'DESC');
+                break;
+
+            case 'VID_LH':
+                $query->orderBy('id', 'ASC');
+                break;
+
+            case 'VRM_AZ':
+                $query->orderBy('vrm', 'ASC');
+                break;
+
+            case 'VRM_ZA':
+                $query->orderBy('vrm', 'DESC');
+                break;
+
+            case 'VIN_AZ':
+                $query->orderBy('vin_number', 'ASC');
+                break;
+
+            case 'VIN_ZA':
+                $query->orderBy('vin_number', 'DESC');
+                break;
+
+            case 'Y_NO':
+                $query->orderBy('year', 'DESC');
+                break;
+
+            case 'Y_ON':
+                $query->orderBy('year', 'ASC');
+                break;
+
+            default:
+                $query->orderBy('id', 'DESC');
+                break;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | FETCH
+        |--------------------------------------------------------------------------
+        */
+
+        $vehicles = $query
+            ->distinct()
+            ->get();
+
+        return response()->json([
+            'status' => true,
+            'contact_details' => $vehicles,
+            'message' => 'Vehicles Fetch Successfully',
+        ]);
+
+    } catch (\Exception $e) {
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Error while getting Vehicles',
+            'error' => $e->getMessage(),
+        ]);
     }
+}
 
     //  Update Vehicle Detail
 
