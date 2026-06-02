@@ -581,7 +581,7 @@ class BookingController extends Controller
             foreach ($bookings as $key => $value) {
                 $data = new stdClass();
                 $data = $value;
-                $data['status'] = "BOOKED";
+                $data['status'] = "ARRIVED";
                 $data['is_booked'] = 1;
 
                 array_push($booking_array, $data);
