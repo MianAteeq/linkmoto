@@ -525,112 +525,105 @@ class BookingController extends Controller
     }
 
 
-    public function getBookingDetailTest(Request $request)
-    {
+   public function getBookingDetailTest(Request $request)
+{
+    try {
 
-        try {
+        $vendorId = $request->user()->vender_id == 0
+            ? $request->user()->id
+            : $request->user()->vender_id;
 
+        $tradingId = $request->user()->default_trading_unit;
 
-            $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
-            $trading_id = User::find($request->user()->id)['default_trading_unit'];
+        $relations = [
+            'vehicle.vehicle_model',
+            'vehicle.vehicle_make',
+            'vehicle.engine_size',
+            'vehicle.transmission_type',
+            'vehicle.fuel_type',
+            'vehicle.color',
+            'work_stream',
+            'contact_detail',
+            'contact_detail.hub',
+            'service',
+            'job_requests',
+            'job_requests.product',
+            'job_requests.price_type',
+            'booking_items',
+            'booking_items.price_type',
+            'job_requests.job_types',
+            'job_requests.job_types.job_type',
+            'booking_items.job_types',
+            'booking_items.job_types.job_type',
+        ];
 
-            $quotations = Booking::with([
-                'vehicle.vehicle_model',
-                'vehicle.vehicle_make',
-                'vehicle.engine_size',
-                'vehicle.transmission_type',
-                'vehicle.fuel_type',
-                'vehicle.color',
-                'work_stream',
-                'contact_detail',
-                'contact_detail.hub',
-                'service',
-                'job_requests',
-                'job_requests.product',
-                'job_requests.price_type',
-                'booking_items',
-                'booking_items.price_type',
-                'job_requests.job_types',
-                'job_requests.job_types.job_type',
-                'booking_items.job_types',
-                'booking_items.job_types.job_type'
-            ])->where('vender_id', $vender_id)->where('trading_id', $trading_id)->whereIn('status', ['DRAFT', 'BOOKING_REQUEST', 'CUSTOMER_PENDING', 'BOOKED', 'RE_SCHEDULE', 'MISSED', 'DECLINE'])
-                ->orderBy('id', 'desc')->get();
-            $bookings = Booking::with([
-                'vehicle.vehicle_model',
-                'vehicle.vehicle_make',
-                'vehicle.engine_size',
-                'vehicle.transmission_type',
-                'vehicle.fuel_type',
-                'vehicle.color',
-                'work_stream',
-                'contact_detail',
-                'service',
-                'job_requests',
-                'job_requests.product',
-                'job_requests.price_type',
-                'booking_items',
-                'booking_items.price_type',
-                'job_requests.job_types',
-                'job_requests.job_types.job_type',
-                'booking_items.job_types',
-                'booking_items.job_types.job_type'
-            ])->where('vender_id', $vender_id)->where('trading_id', $trading_id)->whereIn('status', ['ARRIVED', 'INPROGRESS', 'FINAL_CHECKS', 'DUE', 'COMPLETED', 'READ_FOR_COLLECTION', 'READ_FOR_DELIVERY', 'COLLECTED', 'DELIVERED', 'VOID'])
-                ->orderBy('id', 'desc')->get();
-            $booking_array = [];
-            foreach ($bookings as $key => $value) {
-                $data = new stdClass();
-                $data = $value;
-                $data['status'] = "ARRIVED";
-                $data['is_booked'] = 1;
+        $quotations = Booking::with($relations)
+            ->where('vender_id', $vendorId)
+            ->where('trading_id', $tradingId)
+            ->whereIn('status', [
+                'DRAFT',
+                'BOOKING_REQUEST',
+                'CUSTOMER_PENDING',
+                'BOOKED',
+                'RE_SCHEDULE',
+                'MISSED',
+                'DECLINE'
+            ])
+            ->orderByDesc('id')
+            ->get();
 
-                array_push($booking_array, $data);
-            }
-            $cancelled_jobs = Booking::with([
-                'vehicle.vehicle_model',
-                'vehicle.vehicle_make',
-                'vehicle.engine_size',
-                'vehicle.transmission_type',
-                'vehicle.fuel_type',
-                'vehicle.color',
-                'work_stream',
-                'contact_detail',
-                'contact_detail.hub',
-                'service',
-                'job_requests',
-                'job_requests.product',
-                'job_requests.price_type',
-                'booking_items',
-                'booking_items.price_type',
-                'job_requests.job_types',
-                'job_requests.job_types.job_type',
-                'booking_items.job_types',
-                'booking_items.job_types.job_type'
-            ])->where('vender_id', $vender_id)->where('trading_id', $trading_id)->whereIn('status', ['CANCELLED'])->where('job_id', 0)->orderBy('id', 'desc')->get();
-            foreach ($cancelled_jobs as $key => $value) {
-                $data = new stdClass();
-                $data = $value;
+        $bookings = Booking::with($relations)
+            ->where('vender_id', $vendorId)
+            ->where('trading_id', $tradingId)
+            ->whereIn('status', [
+                'ARRIVED',
+                'INPROGRESS',
+                'FINAL_CHECKS',
+                'DUE',
+                'COMPLETED',
+                'READ_FOR_COLLECTION',
+                'READ_FOR_DELIVERY',
+                'COLLECTED',
+                'DELIVERED',
+                'VOID'
+            ])
+            ->orderByDesc('id')
+            ->get()
+            ->map(function ($booking) {
+                $booking->is_booked = 1;
+                return $booking;
+            });
 
+        $cancelledJobs = Booking::with($relations)
+            ->where('vender_id', $vendorId)
+            ->where('trading_id', $tradingId)
+            ->where('status', 'CANCELLED')
+            ->where('job_id', 0)
+            ->orderByDesc('id')
+            ->get();
 
-                array_push($booking_array, $data);
-            }
-            $custom_array = array_merge($quotations->toArray(), $booking_array);
-            return response()->json([
-                'status' => true,
-                'bookings' => $custom_array,
-                'booking_s' => $bookings,
+        $allBookings = collect()
+            ->concat($quotations)
+            ->concat($bookings)
+            ->concat($cancelledJobs)
+            ->values();
 
-                'message' => "Booking Fetch Successfully",
-            ]);
-        } catch (Exception $e) {
+        return response()->json([
+            'status' => true,
+            'bookings' => $allBookings,
+            'booking_s' => $bookings,
+            'message' => 'Booking Fetch Successfully',
+        ]);
 
-            return response()->json([
-                'status' => false,
-                'error' => $e->getMessage(),
-                'message' => "Error while getting Booking",
-            ]);
-        }
+    } catch (\Exception $e) {
+
+        return response()->json([
+            'status' => false,
+            'error' => $e->getMessage(),
+            'message' => 'Error while getting Booking',
+        ], 500);
     }
+}
 
     /***********  Get Single Booking    ***************/
 
