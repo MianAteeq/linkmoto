@@ -497,7 +497,7 @@ class BookingController extends Controller
                     'VOID'
                 ])) {
                     $booking->is_booked = 1;
-                    $booking->status = 'BOOKED';
+                    $booking->status = 'ARRIVED';
                 }
 
                 return $booking;
