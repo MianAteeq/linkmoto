@@ -612,7 +612,7 @@ class BookingController extends Controller
         return response()->json([
             'status' => true,
             'bookings' => $allBookings,
-            'booking_s' => $bookings,
+            'booking_s' => [],
             'message' => 'Booking Fetch Successfully',
         ]);
 
