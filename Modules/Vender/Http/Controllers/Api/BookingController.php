@@ -572,28 +572,31 @@ class BookingController extends Controller
             ->orderByDesc('id')
             ->get();
 
-        // $bookings = Booking::with($relations)
-        //     ->where('vender_id', $vendorId)
-        //     ->where('trading_id', $tradingId)
-        //     ->whereIn('status', [
-        //         'ARRIVED',
-        //         'INPROGRESS',
-        //         'FINAL_CHECKS',
-        //         'DUE',
-        //         'COMPLETED',
-        //         'READ_FOR_COLLECTION',
-        //         'READ_FOR_DELIVERY',
-        //         'COLLECTED',
-        //         "COLLECTED",
-        //         'DELIVERED',
-        //         'VOID'
-        //     ])
-        //     ->orderByDesc('id')
-        //     ->get()
-        //     ->map(function ($booking) {
-        //         $booking->is_booked = 1;
-        //         return $booking;
-        //     });
+        $bookings = Booking::with($relations)
+            ->where('vender_id', $vendorId)
+            ->where('trading_id', $tradingId)
+            ->whereIn('status', [
+                'ARRIVED',
+                'INPROGRESS',
+                'FINAL_CHECKS',
+                'DUE',
+                'COMPLETED',
+                'READ_FOR_COLLECTION',
+                'READ_FOR_DELIVERY',
+                'COLLECTED',
+                "COLLECTED",
+                'DELIVERED',
+                'VOID'
+            ])
+            ->orderByDesc('id')
+            ->get()
+            ->map(function ($booking) {
+                $booking->is_booked = 1;
+                $booking->status = 'ARRIVED';
+                return $booking;
+            });
+
+            
 
         $cancelledJobs = Booking::with($relations)
             ->where('vender_id', $vendorId)
@@ -605,14 +608,14 @@ class BookingController extends Controller
 
         $allBookings = collect()
             ->concat($quotations)
-            // ->concat($bookings)
+            ->concat($bookings)
             ->concat($cancelledJobs)
             ->values();
 
         return response()->json([
             'status' => true,
             'bookings' => $allBookings,
-            'booking_s' => [],
+            'booking_s' => $bookings,
             'message' => 'Booking Fetch Successfully',
         ]);
 
