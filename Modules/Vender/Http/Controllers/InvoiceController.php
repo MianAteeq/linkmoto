@@ -46,33 +46,65 @@ class InvoiceController extends Controller
             ]);
         }
     }
-    public function getInvoicesLoadMore(Request $request)
-    {
-        try {
+  public function getInvoicesLoadMore(Request $request)
+{
+    try {
 
+        $user = $request->user();
 
-            $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
-            $trading_id = User::find($request->user()->id)['default_trading_unit'];
+        $vendorId = $user->vender_id == 0
+            ? $user->id
+            : $user->vender_id;
 
-            $invoices = Invoice::with(['booking', 'booking.contact_detail', 'booking.service', 'booking.job_requests', 'booking.booking_items', 'booking.vehicle.vehicle_model', 'booking.vehicle.vehicle_make', 'booking.vehicle.engine_size', 'booking.vehicle.transmission_type', 'booking.vehicle.fuel_type', 'booking.vehicle.color', 'payment', 'payments'])->where('vender_id', $vender_id)->where('trading_id', $trading_id)->orderBy('invoice_date', 'desc')->paginate(20);
-            $dueCount=Invoice::with(['booking', 'booking.contact_detail', 'booking.service', 'booking.job_requests', 'booking.booking_items', 'booking.vehicle.vehicle_model', 'booking.vehicle.vehicle_make', 'booking.vehicle.engine_size', 'booking.vehicle.transmission_type', 'booking.vehicle.fuel_type', 'booking.vehicle.color', 'payment', 'payments'])->where('vender_id', $vender_id)->where('trading_id', $trading_id)->where('status','DUE')->count();
-            $allCount=Invoice::with(['booking', 'booking.contact_detail', 'booking.service', 'booking.job_requests', 'booking.booking_items', 'booking.vehicle.vehicle_model', 'booking.vehicle.vehicle_make', 'booking.vehicle.engine_size', 'booking.vehicle.transmission_type', 'booking.vehicle.fuel_type', 'booking.vehicle.color', 'payment', 'payments'])->where('vender_id', $vender_id)->where('trading_id', $trading_id)->count();
-            return response()->json([
-                'status' => true,
-                'invoices' => $invoices,
-                'dueCount' => $dueCount,
-                'allCount' => $allCount,
-                'message' => "Invoice Fetch Successfully",
-            ]);
-        } catch (Exception $e) {
+        $tradingId = $user->default_trading_unit;
 
-            return response()->json([
-                'status' => false,
-                'error' => $e->getMessage(),
-                'message' => "Error while getting Invoice",
-            ]);
-        }
+        $baseQuery = Invoice::where([
+            'vender_id' => $vendorId,
+            'trading_id' => $tradingId,
+        ]);
+
+        $invoices = (clone $baseQuery)
+            ->with([
+                'booking.contact_detail',
+                'booking.service',
+                'booking.job_requests',
+                'booking.booking_items',
+                'booking.vehicle.vehicle_model',
+                'booking.vehicle.vehicle_make',
+                'booking.vehicle.engine_size',
+                'booking.vehicle.transmission_type',
+                'booking.vehicle.fuel_type',
+                'booking.vehicle.color',
+                'payment',
+                'payments',
+            ])
+            ->orderByDesc('invoice_date')
+            ->paginate(10);
+
+        $counts = (clone $baseQuery)
+            ->selectRaw("
+                COUNT(*) as allCount,
+                SUM(CASE WHEN status = 'DUE' THEN 1 ELSE 0 END) as dueCount
+            ")
+            ->first();
+
+        return response()->json([
+            'status'    => true,
+            'invoices'  => $invoices,
+            'dueCount'  => (int) $counts->dueCount,
+            'allCount'  => (int) $counts->allCount,
+            'message'   => 'Invoice Fetch Successfully',
+        ]);
+
+    } catch (\Exception $e) {
+
+        return response()->json([
+            'status'  => false,
+            'error'   => $e->getMessage(),
+            'message' => 'Error while getting Invoice',
+        ], 500);
     }
+}
     public function fetchSingleInvoice(Request $request)
     {
         try {
