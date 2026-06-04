@@ -1085,7 +1085,7 @@
                                 <div class="col-sm-8 text-secondary">
                                     <div class="row">
                                         @foreach ($trading_unit['job_types'] as $job_type)
-                                            <div class="col-md-3 mt-1">
+                                            <div class="col-md-3">
                                                 <span
                                                     class="badge badge-primary-1">{{ $job_type['job_type']['name'] }}</span>
                                             </div>

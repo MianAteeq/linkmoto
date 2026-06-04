@@ -331,7 +331,7 @@
 
         <div class="col-md-9" id="contens" style="border-radius: 6px;margin-bottom: 10px;padding-bottom: 10px;">
             <div class="row">
-                <a href="{{ redirect()->back()->getTargetUrl() }} ">
+                <a href="{{ url('vender/service/provider/trading/unit/app/setting/' . $trading_unit['id']) }}#product_offera ">
                     <h4 class="h3"
                         style="border-radius: 7px; border: 2px solid black; padding: 10px; font-weight: 600; font-size: 17px; color: white!important;margin-left: 15px;background-color:black">
                         &lt; Back
@@ -341,7 +341,7 @@
 
             <div class="card default-collapse collapse-icon accordion-icon-rotate" style="box-shadow: none;">
 
-                <a id="headingCollapse1" href="{{ redirect()->back()->getTargetUrl() }}" class="card-header info mt-0"
+                <a id="headingCollapse1" href="{{ url('vender/service/provider/trading/unit/app/setting/' . $trading_unit['id']) }}#product_offera" class="card-header info mt-0"
                     style="border: 2px solid black;border-radius: 7px; padding: 0.8rem 0.8rem;color: black;">
                     <div class="card-title lead collapsed" style="text-align: left; color: black; padding-top: 20px;">
                         Product Information

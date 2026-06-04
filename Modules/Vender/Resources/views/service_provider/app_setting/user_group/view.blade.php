@@ -198,10 +198,18 @@
                 <div class="breadcrumb-wrapper">
                     <ol class="breadcrumb p-0 m-0 pb-2 bg-transparent">
                         <li class="breadcrumb-item"><a>Products</a></li>
-                        <li class="breadcrumb-item">Business Manager</li>
-                        <li class="breadcrumb-item">App settings</li>
-                        <li class="breadcrumb-item">User groups</li>
-                        <li class="breadcrumb-item">{{ $role['name'] }}</li>
+                        <li class="breadcrumb-item">
+                            <a style="text-decoration: none; color: black;"
+                                href="{{ route('vender.service.provider.trading.unit') }}">Service Provider</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a style="text-decoration: none; color: black;"
+                                href="{{ route('vender.service.provider.app.setting') }}">App settings</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{route('vender.service.provider.user.group')}}">User groups</a>
+                        </li>
+                        <li class="breadcrumb-item">{{ str_replace('SVP_B_' . auth()->user()->id, '', $role['name']) }}</li>
                     </ol>
                 </div>
             </div>

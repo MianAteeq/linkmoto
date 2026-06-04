@@ -61,7 +61,10 @@
                 <div class="breadcrumb-wrapper col-12 p-0">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a>Products</a></li>
-                        <li class="breadcrumb-item">Service Provider</li>
+                       <li class="breadcrumb-item">
+                            <a style="text-decoration: none; color: black;"
+                                href="{{ route('vender.service.provider.trading.unit') }}">Service Provider</a>
+                        </li>
                         <li class="breadcrumb-item">App settings</li>
                     </ol>
                 </div>

@@ -219,10 +219,18 @@
                 <div class="breadcrumb-wrapper">
                     <ol class="breadcrumb p-0 m-0 pb-2 bg-transparent">
                         <li class="breadcrumb-item"><a>Products</a></li>
-                        <li class="breadcrumb-item"><a>Business Manager</a></li>
-                        <li class="breadcrumb-item"><a>App settings</a></li>
-                        <li class="breadcrumb-item"><a> User groups</a></li>
-                        <li class="breadcrumb-item"><a> Edit user group</a></li>
+                        <li class="breadcrumb-item">
+                            <a style="text-decoration: none; color: black;"
+                                href="{{ route('vender.service.provider.trading.unit') }}">Service Provider</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a style="text-decoration: none; color: black;"
+                                href="{{ route('vender.service.provider.app.setting') }}">App settings</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{route('vender.service.provider.user.group')}}">User groups</a>
+                        </li>
+                        <li class="breadcrumb-item">Edit user group</li>
                     </ol>
                 </div>
 

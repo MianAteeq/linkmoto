@@ -188,7 +188,7 @@
                                 href="{{ route('vender.service.provider.trading.unit.view', $trading_unit['id']) }}">{{ $trading_unit['name'] }}</a>
                         </li>
                         <li class="breadcrumb-item"><a style="color: black"
-                                href="{{ route('vender.service.provider.app.data', $trading_unit['id']) }}">App Data</a>
+                                href="{{ route('vender.service.provider.trading.unit.app.data', $trading_unit['id']) }}">App Data</a>
                         </li>
                         <li class="breadcrumb-item active">Contacts</li>
                     </ol>
