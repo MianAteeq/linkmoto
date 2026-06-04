@@ -228,7 +228,7 @@
                                 href="{{ route('vender.service.provider.app.setting') }}">App settings</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="{{route('vender.service.provider.user.group')}}">User groups</a>
+                            <a  style="text-decoration: none; color: black;" href="{{route('vender.service.provider.user.group')}}">User groups</a>
                         </li>
                         <li class="breadcrumb-item">Edit user group</li>
                     </ol>
