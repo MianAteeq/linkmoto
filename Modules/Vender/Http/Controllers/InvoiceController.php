@@ -46,6 +46,29 @@ class InvoiceController extends Controller
             ]);
         }
     }
+    public function getInvoicesLoadMore(Request $request)
+    {
+        try {
+
+
+            $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
+            $trading_id = User::find($request->user()->id)['default_trading_unit'];
+
+            $invoices = Invoice::with(['booking', 'booking.contact_detail', 'booking.service', 'booking.job_requests', 'booking.booking_items', 'booking.vehicle.vehicle_model', 'booking.vehicle.vehicle_make', 'booking.vehicle.engine_size', 'booking.vehicle.transmission_type', 'booking.vehicle.fuel_type', 'booking.vehicle.color', 'payment', 'payments'])->where('vender_id', $vender_id)->where('trading_id', $trading_id)->orderBy('invoice_date', 'desc')->paginate(20);
+            return response()->json([
+                'status' => true,
+                'invoices' => $invoices,
+                'message' => "Invoice Fetch Successfully",
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'status' => false,
+                'error' => $e->getMessage(),
+                'message' => "Error while getting Invoice",
+            ]);
+        }
+    }
     public function fetchSingleInvoice(Request $request)
     {
         try {
