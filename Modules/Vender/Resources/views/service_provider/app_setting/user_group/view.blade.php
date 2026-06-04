@@ -209,7 +209,7 @@
                         <li class="breadcrumb-item">
                             <a href="{{route('vender.service.provider.user.group')}}">User groups</a>
                         </li>
-                        <li class="breadcrumb-item">{{ str_replace('SVP_B_' . auth()->user()->id, '', $role['name']) }}</li>
+                        <li class="breadcrumb-item">{{ str_replace('SVP_' . auth()->user()->id, '', $role['name']) }}</li>
                     </ol>
                 </div>
             </div>
