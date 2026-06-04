@@ -63,23 +63,29 @@ class InvoiceController extends Controller
             'trading_id' => $tradingId,
         ]);
 
-        $invoices = (clone $baseQuery)
-            ->with([
-                'booking.contact_detail',
-                'booking.service',
-                'booking.job_requests',
-                'booking.booking_items',
-                'booking.vehicle.vehicle_model',
-                'booking.vehicle.vehicle_make',
-                'booking.vehicle.engine_size',
-                'booking.vehicle.transmission_type',
-                'booking.vehicle.fuel_type',
-                'booking.vehicle.color',
-                'payment',
-                'payments',
-            ])
-            ->orderByDesc('invoice_date')
-            ->paginate(10);
+       $invoices = (clone $baseQuery)
+    ->with([
+        'booking.contact_detail',
+        'booking.service',
+        'booking.job_requests',
+        'booking.booking_items',
+        'booking.vehicle.vehicle_model',
+        'booking.vehicle.vehicle_make',
+        'booking.vehicle.engine_size',
+        'booking.vehicle.transmission_type',
+        'booking.vehicle.fuel_type',
+        'booking.vehicle.color',
+        'payment',
+        'payments',
+    ])
+    ->orderByRaw("
+        CASE
+            WHEN status = 'DUE' THEN 0
+            ELSE 1
+        END
+    ")
+    ->orderByDesc('invoice_date')
+    ->paginate(10);
 
         $counts = (clone $baseQuery)
             ->selectRaw("
