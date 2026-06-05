@@ -639,9 +639,16 @@ $request->validate([
         // ✅ Determine step
         $isSaveLater = $request->input('is_save_later', 0);
 
-        $step = $isSaveLater == 0
-            ? ($user->profile->edit_step == 4 ? $user->profile->step : 7)
-            : 4;
+        // $step = $isSaveLater == 0
+        //     ? ($user->profile->edit_step == 4 ? $user->profile->step : 7)
+        //     : 4;
+
+                if ($request['is_save_later'] == 0) {
+
+            $step = $user['profile']['edit_step'] == 4 ? $user['profile']['step'] : 7;
+        } else {
+            $step = 5;
+        }
 
         // ✅ Handle file upload safely
         $filePath = $user->profile->proof_of_main_contact;
