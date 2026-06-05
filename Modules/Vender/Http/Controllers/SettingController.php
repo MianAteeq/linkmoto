@@ -652,6 +652,8 @@ $request->validate([
             $step = 7;
         }
 
+        return $step;
+
         // ✅ Handle file upload safely
         $filePath = $user->profile->proof_of_main_contact;
         $fileName = $user->profile->proof_of_main_contact_name;
