@@ -670,7 +670,8 @@ $request->validate([
         DB::beginTransaction();
 
         try {
-            $customerId = $user->profile->customer_id;
+          return  $customerId = $user->profile->customer_id;
+
 
             // ✅ Create Stripe customer only if not exists
             if (!$customerId) {
@@ -696,7 +697,7 @@ $request->validate([
                 }
             }
 
-            return 1;
+            // return 1;
 
             // ✅ Update vendor profile
             vendorProfile::where('vender_id', $user->id)->update([
