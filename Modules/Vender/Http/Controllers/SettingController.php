@@ -674,35 +674,30 @@ $request->validate([
 
 
             // ✅ Create Stripe customer only if not exists
-            if (!$customerId) {
+            // if (!$customerId) {
 
-             $stripe = new StripeClient(env('STRIPE_SECRET'));
+            
+            //     try {
+            //         $stripe = new StripeClient(env('STRIPE_SECRET'));
 
-                   return $customer = $stripe->customers->create([
-                        'name' => $request->name,
-                        'email' => $request->email,
-                    ]);
-                try {
-                    $stripe = new StripeClient(env('STRIPE_SECRET'));
+            //         $customer = $stripe->customers->create([
+            //             'name' => $request->name,
+            //             'email' => $request->email,
+            //         ]);
 
-                    $customer = $stripe->customers->create([
-                        'name' => $request->name,
-                        'email' => $request->email,
-                    ]);
-
-                    $customerId = $customer->id;
-                } catch (ApiConnectionException $e) {
-                    DB::rollBack();
-                    return back()->withErrors([
-                        'stripe' => 'Payment service is currently unreachable. Please try again.'
-                    ]);
-                } catch (ApiErrorException $e) {
-                    DB::rollBack();
-                    return back()->withErrors([
-                        'stripe' => $e->getMessage()
-                    ]);
-                }
-            }
+            //         $customerId = $customer->id;
+            //     } catch (ApiConnectionException $e) {
+            //         DB::rollBack();
+            //         return back()->withErrors([
+            //             'stripe' => 'Payment service is currently unreachable. Please try again.'
+            //         ]);
+            //     } catch (ApiErrorException $e) {
+            //         DB::rollBack();
+            //         return back()->withErrors([
+            //             'stripe' => $e->getMessage()
+            //         ]);
+            //     }
+            // }
 
             // return 1;
 
