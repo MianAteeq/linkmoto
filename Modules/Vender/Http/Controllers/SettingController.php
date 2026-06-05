@@ -652,7 +652,7 @@ $request->validate([
             $step = 7;
         }
 
-        return $step;
+        // return $step;
 
         // ✅ Handle file upload safely
         $filePath = $user->profile->proof_of_main_contact;
@@ -695,6 +695,8 @@ $request->validate([
                     ]);
                 }
             }
+
+            return 1;
 
             // ✅ Update vendor profile
             vendorProfile::where('vender_id', $user->id)->update([
