@@ -670,11 +670,18 @@ $request->validate([
         DB::beginTransaction();
 
         try {
-          return  $customerId = $user->profile->customer_id;
+            $customerId = $user->profile->customer_id;
 
 
             // ✅ Create Stripe customer only if not exists
             if (!$customerId) {
+
+             $stripe = new StripeClient(env('STRIPE_SECRET'));
+
+                   return $customer = $stripe->customers->create([
+                        'name' => $request->name,
+                        'email' => $request->email,
+                    ]);
                 try {
                     $stripe = new StripeClient(env('STRIPE_SECRET'));
 
