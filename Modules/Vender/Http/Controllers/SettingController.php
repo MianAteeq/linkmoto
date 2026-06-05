@@ -643,13 +643,13 @@ $request->validate([
         //     ? ($user->profile->edit_step == 4 ? $user->profile->step : 7)
         //     : 4;
 
-        return $user['profile']['edit_step'];
+        //  $user['profile']['edit_step'];
 
                 if ($request['is_save_later'] == 0) {
 
             $step = $user['profile']['edit_step'] == 4 ? $user['profile']['step'] : 7;
         } else {
-            $step = 5;
+            $step = 7;
         }
 
         // ✅ Handle file upload safely
