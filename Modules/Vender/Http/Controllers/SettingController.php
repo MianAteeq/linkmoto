@@ -643,6 +643,8 @@ $request->validate([
         //     ? ($user->profile->edit_step == 4 ? $user->profile->step : 7)
         //     : 4;
 
+        return $user['profile']['edit_step'];
+
                 if ($request['is_save_later'] == 0) {
 
             $step = $user['profile']['edit_step'] == 4 ? $user['profile']['step'] : 7;
