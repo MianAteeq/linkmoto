@@ -131,6 +131,12 @@ class InvoiceController extends Controller
 
             $invoices = Invoice::with(['booking', 'booking.contact_detail', 'booking.service', 'booking.job_requests', 'booking.booking_items', 'booking.booking_items.price_type', 'booking.vehicle.vehicle_model', 'booking.vehicle.vehicle_make', 'booking.vehicle.engine_size', 'booking.vehicle.transmission_type', 'booking.vehicle.fuel_type', 'booking.vehicle.color', 'payment', 'payments', 'job_logs', 'booking.booking_items.job_types', 'booking.booking_items.job_types.job_type'])->where('vender_id', $vender_id)->find($request['invoice_id']);
 
+            foreach($invoices['booking']['booking_items'] as $item){
+                if($item->is_inclusive){
+                   $item['unit_price'] = $item->unit_price - ($item->vat_price / $item->qty);
+                }
+            }
+
             $invoices['invoice_item'] = $invoices['booking']['booking_items'];
             $invoices['invoice_item'] = $invoices['booking']['booking_items'];
             return response()->json([
