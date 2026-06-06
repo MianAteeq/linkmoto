@@ -1661,19 +1661,30 @@ class BookingController extends Controller
         $third_array = [];
         $count = 0;
 
+        
+
         foreach ($item_array as $key => $value) {
             if ($count <= 9) {
                 $first_array[$key] = $value;
                 $first_array[$key]['exlusive_vat'] = $value['sub_total_ex_vat'];
                 $first_array[$key]['totalPrice'] = $value['total_price'];
+                 if($value['is_inclusive']==1){
+                            $first_array[$key]['unit_price'] = $value['unit_price'] - ($value['vat_price'] / $value['qty']);
+                        }
             } else if ($count <= 19) {
                 $second_array[$key] = $value;
                 $second_array[$key]['exlusive_vat'] = $value['sub_total_ex_vat'];
                 $second_array[$key]['totalPrice'] = $value['total_price'];
+                 if($value['is_inclusive']==1){
+                            $second_array[$key]['unit_price'] = $value['unit_price'] - ($value['vat_price'] / $value['qty']);
+                        }
             } else {
                 $third_array[$key] = $value;
                 $third_array[$key]['exlusive_vat'] = $value['sub_total_ex_vat'];
                 $third_array[$key]['totalPrice'] = $value['total_price'];
+                 if($value['is_inclusive']==1){
+                            $third_array[$key]['unit_price'] = $value['unit_price'] - ($value['vat_price'] / $value['qty']);
+                        }
             }
 
             $count++;
