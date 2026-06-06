@@ -525,109 +525,108 @@ class BookingController extends Controller
     }
 
 
-   public function getBookingDetailTest(Request $request)
-{
-    try {
+    public function getBookingDetailTest(Request $request)
+    {
+        try {
 
-        $vendorId = $request->user()->vender_id == 0
-            ? $request->user()->id
-            : $request->user()->vender_id;
+            $vendorId = $request->user()->vender_id == 0
+                ? $request->user()->id
+                : $request->user()->vender_id;
 
-        $tradingId = $request->user()->default_trading_unit;
+            $tradingId = $request->user()->default_trading_unit;
 
-        $relations = [
-            'vehicle.vehicle_model',
-            'vehicle.vehicle_make',
-            'vehicle.engine_size',
-            'vehicle.transmission_type',
-            'vehicle.fuel_type',
-            'vehicle.color',
-            'work_stream',
-            'contact_detail',
-            'contact_detail.hub',
-            'service',
-            'job_requests',
-            'job_requests.product',
-            'job_requests.price_type',
-            'booking_items',
-            'booking_items.price_type',
-            'job_requests.job_types',
-            'job_requests.job_types.job_type',
-            'booking_items.job_types',
-            'booking_items.job_types.job_type',
-        ];
+            $relations = [
+                'vehicle.vehicle_model',
+                'vehicle.vehicle_make',
+                'vehicle.engine_size',
+                'vehicle.transmission_type',
+                'vehicle.fuel_type',
+                'vehicle.color',
+                'work_stream',
+                'contact_detail',
+                'contact_detail.hub',
+                'service',
+                'job_requests',
+                'job_requests.product',
+                'job_requests.price_type',
+                'booking_items',
+                'booking_items.price_type',
+                'job_requests.job_types',
+                'job_requests.job_types.job_type',
+                'booking_items.job_types',
+                'booking_items.job_types.job_type',
+            ];
 
-        $quotations = Booking::with($relations)
-            ->where('vender_id', $vendorId)
-            ->where('trading_id', $tradingId)
-            ->whereIn('status', [
-                'DRAFT',
-                'BOOKING_REQUEST',
-                'CUSTOMER_PENDING',
-                'BOOKED',
-                'RE_SCHEDULE',
-                'MISSED',
-                'DECLINE'
-            ])
-            ->orderByDesc('id')
-            ->get();
+            $quotations = Booking::with($relations)
+                ->where('vender_id', $vendorId)
+                ->where('trading_id', $tradingId)
+                ->whereIn('status', [
+                    'DRAFT',
+                    'BOOKING_REQUEST',
+                    'CUSTOMER_PENDING',
+                    'BOOKED',
+                    'RE_SCHEDULE',
+                    'MISSED',
+                    'DECLINE'
+                ])
+                ->orderByDesc('id')
+                ->get();
 
-        $bookings = Booking::with($relations)
-            ->where('vender_id', $vendorId)
-            ->where('trading_id', $tradingId)
-            ->whereIn('status', [
-                'ARRIVED',
-                'INPROGRESS',
-                'FINAL_CHECKS',
-                'DUE',
-                'COMPLETED',
-                'READ_FOR_COLLECTION',
-                'READ_FOR_DELIVERY',
-                'COLLECTED',
-                "COLLECTED",
-                'DELIVERED',
-                'VOID'
-            ])
-            ->orderByDesc('id')
-            ->get()
-            ->map(function ($booking) {
-                $booking->is_booked = 1;
-                $booking->status = 'ARRIVED';
-                return $booking;
-            });
+            $bookings = Booking::with($relations)
+                ->where('vender_id', $vendorId)
+                ->where('trading_id', $tradingId)
+                ->whereIn('status', [
+                    'ARRIVED',
+                    'INPROGRESS',
+                    'FINAL_CHECKS',
+                    'DUE',
+                    'COMPLETED',
+                    'READ_FOR_COLLECTION',
+                    'READ_FOR_DELIVERY',
+                    'COLLECTED',
+                    "COLLECTED",
+                    'DELIVERED',
+                    'VOID'
+                ])
+                ->orderByDesc('id')
+                ->get()
+                ->map(function ($booking) {
+                    $booking->is_booked = 1;
+                    $booking->status = 'ARRIVED';
+                    return $booking;
+                });
 
-            
 
-        $cancelledJobs = Booking::with($relations)
-            ->where('vender_id', $vendorId)
-            ->where('trading_id', $tradingId)
-            ->where('status', 'CANCELLED')
-            ->where('job_id', 0)
-            ->orderByDesc('id')
-            ->get();
 
-        $allBookings = collect()
-            ->concat($quotations)
-            ->concat($bookings)
-            ->concat($cancelledJobs)
-            ->values();
+            $cancelledJobs = Booking::with($relations)
+                ->where('vender_id', $vendorId)
+                ->where('trading_id', $tradingId)
+                ->where('status', 'CANCELLED')
+                ->where('job_id', 0)
+                ->orderByDesc('id')
+                ->get();
 
-        return response()->json([
-            'status' => true,
-            'bookings' => $allBookings,
-            'booking_s' => $bookings,
-            'message' => 'Booking Fetch Successfully',
-        ]);
+            $allBookings = collect()
+                ->concat($quotations)
+                ->concat($bookings)
+                ->concat($cancelledJobs)
+                ->values();
 
-    } catch (\Exception $e) {
+            return response()->json([
+                'status' => true,
+                'bookings' => $allBookings,
+                'booking_s' => $bookings,
+                'message' => 'Booking Fetch Successfully',
+            ]);
+        } catch (\Exception $e) {
 
-        return response()->json([
-            'status' => false,
-            'error' => $e->getMessage(),
-            'message' => 'Error while getting Booking',
-        ], 500);
+            return response()->json([
+                'status' => false,
+                'error' => $e->getMessage(),
+                'message' => 'Error while getting Booking',
+            ], 500);
+        }
     }
-}
 
     /***********  Get Single Booking    ***************/
 
@@ -1661,30 +1660,30 @@ class BookingController extends Controller
         $third_array = [];
         $count = 0;
 
-        
+
 
         foreach ($item_array as $key => $value) {
             if ($count <= 9) {
                 $first_array[$key] = $value;
                 $first_array[$key]['exlusive_vat'] = $value['sub_total_ex_vat'];
                 $first_array[$key]['totalPrice'] = $value['total_price'];
-                 if($value['is_inclusive']==1){
-                            $first_array[$key]['unit_price'] = $value['unit_price'] - ($value['vat_price'] / $value['qty']);
-                        }
+                if ($value['is_inclusive'] == 1) {
+                    $first_array[$key]['unit_price'] = $value['unit_price'] - ($value['vat_price'] / $value['qty']);
+                }
             } else if ($count <= 19) {
                 $second_array[$key] = $value;
                 $second_array[$key]['exlusive_vat'] = $value['sub_total_ex_vat'];
                 $second_array[$key]['totalPrice'] = $value['total_price'];
-                 if($value['is_inclusive']==1){
-                            $second_array[$key]['unit_price'] = $value['unit_price'] - ($value['vat_price'] / $value['qty']);
-                        }
+                if ($value['is_inclusive'] == 1) {
+                    $second_array[$key]['unit_price'] = $value['unit_price'] - ($value['vat_price'] / $value['qty']);
+                }
             } else {
                 $third_array[$key] = $value;
                 $third_array[$key]['exlusive_vat'] = $value['sub_total_ex_vat'];
                 $third_array[$key]['totalPrice'] = $value['total_price'];
-                 if($value['is_inclusive']==1){
-                            $third_array[$key]['unit_price'] = $value['unit_price'] - ($value['vat_price'] / $value['qty']);
-                        }
+                if ($value['is_inclusive'] == 1) {
+                    $third_array[$key]['unit_price'] = $value['unit_price'] - ($value['vat_price'] / $value['qty']);
+                }
             }
 
             $count++;

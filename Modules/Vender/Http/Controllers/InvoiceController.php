@@ -879,10 +879,19 @@ class InvoiceController extends Controller
 
                 if ($index < 10) {
                     $first_array[] = $row;
+                     if($row['is_inclusive']==1){
+                            $first_array[$key]['unit_price'] = $row['unit_price'] - ($row['vat_price'] / $row['qty']);
+                        }
                 } elseif ($index < 20) {
                     $second_array[] = $row;
+                       if($row['is_inclusive']==1){
+                            $second_array[$key]['unit_price'] = $row['unit_price'] - ($row['vat_price'] / $row['qty']);
+                        }
                 } else {
                     $third_array[] = $row;
+                      if($row['is_inclusive']==1){
+                            $third_array[$key]['unit_price'] = $row['unit_price'] - ($row['vat_price'] / $row['qty']);
+                        }
                 }
             }
 
