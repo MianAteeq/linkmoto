@@ -132,7 +132,7 @@ class InvoiceController extends Controller
             $invoices = Invoice::with(['booking', 'booking.contact_detail', 'booking.service', 'booking.job_requests', 'booking.booking_items', 'booking.booking_items.price_type', 'booking.vehicle.vehicle_model', 'booking.vehicle.vehicle_make', 'booking.vehicle.engine_size', 'booking.vehicle.transmission_type', 'booking.vehicle.fuel_type', 'booking.vehicle.color', 'payment', 'payments', 'job_logs', 'booking.booking_items.job_types', 'booking.booking_items.job_types.job_type'])->where('vender_id', $vender_id)->find($request['invoice_id']);
 
             foreach($invoices['booking']['booking_items'] as $item){
-                if($item->is_inclusive){
+                if($item->is_inclusive==1){
                    $item['unit_price'] = $item->unit_price - ($item->vat_price / $item->qty);
                 }
             }
@@ -543,12 +543,21 @@ class InvoiceController extends Controller
                     if ($count <= 9) {
                         $first_array[$key] = $value;
                         $first_array[$key]['totalPrice'] = $value['total_price'];
+                        if($value['is_inclusive']==1){
+                            $first_array[$key]['unit_price'] = $value['unit_price'] - ($value['vat_price'] / $value['qty']);
+                        }
                     } else if ($count <= 19) {
                         $second_array[$key] = $value;
                         $second_array[$key]['totalPrice'] = $value['total_price'];
+                         if($value['is_inclusive']==1){
+                            $second_array[$key]['unit_price'] = $value['unit_price'] - ($value['vat_price'] / $value['qty']);
+                        }
                     } else {
                         $third_array[$key] = $value;
                         $third_array[$key]['totalPrice'] = $value['total_price'];
+                         if($value['is_inclusive']==1){
+                            $third_array[$key]['unit_price'] = $value['unit_price'] - ($value['vat_price'] / $value['qty']);
+                        }
                     }
 
                     $count++;
