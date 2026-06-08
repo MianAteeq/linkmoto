@@ -37,10 +37,12 @@ class VehicleController extends Controller
                 $responseArr['token'] = '';
                 return response()->json($responseArr);
             }
+             $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
+            $trading_id = User::find($request->user()->id)['default_trading_unit'];
 
             $exists = Vehicle::where('vrm', $request['vrm'])
                 ->where('vehicle_make_id', $request['vehicle_make_id'])
-                ->where('vehicle_model_id', $request['vehicle_model_id'])
+                ->where('vehicle_model_id', $request['vehicle_model_id'])->where('vender_id',$vender_id)
                 ->first();
 
             // Check duplicate only when is_unique is NOT passed
