@@ -426,6 +426,7 @@
 
     <div class="col-md-8 mx-auto">
         <div class="d-flex flex-column">
+             @if(auth()->user()->profile['operation_type'] == 'On-site')
 
             <div class="custom-control custom-checkbox mb-2">
                 <input type="checkbox"
@@ -444,6 +445,9 @@
                     On-site
                 </label>
             </div>
+            @endif
+
+             @if(auth()->user()->profile['operation_type'] == 'Mobile')
 
             <div class="custom-control custom-checkbox mb-2">
                 <input type="checkbox"
@@ -462,6 +466,7 @@
                     Mobile
                 </label>
             </div>
+            @endif
 
         </div>
     </div>
