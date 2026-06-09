@@ -341,18 +341,23 @@
                         </label>
                         <div class="col-lg-8 col-12 mx-auto">
                             <div class="d-flex flex-column">
+                                @if(auth()->user()->profile['operation_type'] == 'On-site')
+                                   
                                 <div class="custom-control custom-checkbox mb-2">
                                     <input type="checkbox" name="operation_type[]" value="On-site"
                                         class="custom-control-input" id="On-site"
                                         @if (in_array('On-site', explode(',', $user['profile']['operation_type']))) checked @endif>
                                     <label class="custom-control-label" for="On-site">On-site</label>
                                 </div>
+                                @endif
+                                  @if(auth()->user()->profile['operation_type'] == 'Mobile')
                                 <div class="custom-control custom-checkbox mb-2">
                                     <input type="checkbox" name="operation_type[]" value="Mobile"
                                         class="custom-control-input" id="Mobile"
                                         @if (in_array('Mobile', explode(',', $user['profile']['operation_type']))) checked @endif>
                                     <label class="custom-control-label" for="Mobile">Mobile</label>
                                 </div>
+                                @endif
                             </div>
                         </div>
                     </div>
