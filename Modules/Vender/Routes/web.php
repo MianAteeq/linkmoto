@@ -38,7 +38,7 @@ use Modules\Vender\Http\Controllers\WorkStreamController;
 
 // routes under the writer
 
-Route::group(function () {
+
 
 Route::name('vender.')->middleware('auth:web')->group(function () {
 
@@ -331,4 +331,4 @@ Route::name('vender.')->middleware('auth:web')->group(function () {
     Route::get('vender/invoice/detail/{id}', [SubscriptionController::class, 'invoiceDetail'])->name('invoice.detail');
     Route::get('vender/invoice/pay/{id}', [SubscriptionController::class, 'invoicePay'])->name('invoice.pay');
 });
-});
+
