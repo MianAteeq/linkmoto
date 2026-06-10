@@ -38,7 +38,7 @@ use Modules\Vender\Http\Controllers\WorkStreamController;
 
 // routes under the writer
 
-Route::domain('business.motonos.com')->group(function () {
+Route::group(function () {
 
 Route::name('vender.')->middleware('auth:web')->group(function () {
 
