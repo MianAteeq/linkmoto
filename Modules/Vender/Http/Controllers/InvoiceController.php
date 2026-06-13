@@ -529,7 +529,17 @@ class InvoiceController extends Controller
 
             $profile = $request->user()['profile'];
 
-            if ($invoices['invoice_path'] == null) {
+            $fileExists = false;
+
+            if (!empty($invoices->invoice_path)) {
+
+                $fileName = basename($invoices->invoice_path);
+                $filePath = public_path('pdf/' . $fileName);
+
+                $fileExists = file_exists($filePath);
+            }
+
+            if ($invoices['invoice_path'] == null || !$fileExists) {
 
 
                 $item_array = $invoices['booking']['booking_items'];
