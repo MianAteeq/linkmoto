@@ -31,12 +31,7 @@ Route::name('website.')->group(function () {
     Route::get('/subscription-acknowledgment', [FrontendController::class, 'subscriptionAcknowledgment'])->name('subscription.Acknowledgment');
     // Route::get('/sign-up', [FrontendController::class, 'sign_up'])->name('sign-up');
 
-    Route::middleware(['guest'])->group(function () {
-        Route::get('/checkout/{id}', [SubscriptionController::class, 'create'])->name('subscription.checkout');
-        Route::post('/checkouts/submit', [SubscriptionController::class, 'store'])->name('subscription.checkout.submit');
-        
-       
-    });
+   
     Route::get('/vender/logout', [SubscriptionController::class, 'logout'])->name('vendor.logout.submit');
 
     Route::group(['middleware' => 'auth:user'], function () {
@@ -56,4 +51,11 @@ Route::name('website.')->group(function () {
         Route::get('/thank/you', [SubscriptionController::class, 'thankYou'])->name('vendor.thank.you');
         Route::post('/login', [SubscriptionController::class, 'login'])->name('vendor.login.submit');
         Route::post('/validate', [SubscriptionController::class, 'validate'])->name('vender.validate');
+    });
+
+    Route::middleware(['guest', 'throttle:5,10'])->group(function () {
+        Route::get('/checkout/{id}', [SubscriptionController::class, 'create'])->name('subscription.checkout');
+        Route::post('/checkouts/submit', [SubscriptionController::class, 'store'])->name('subscription.checkout.submit');
+        
+       
     });

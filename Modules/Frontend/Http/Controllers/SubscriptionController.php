@@ -83,6 +83,11 @@ class SubscriptionController extends Controller
         ]);
 
 
+        if (preg_match('/^[a-z0-9]{12,}@/', strtolower($request->email))) {
+    abort(403);
+}
+
+
 
         $operationTypes = $request['operation_type']; // Example input
 
