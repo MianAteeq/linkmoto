@@ -53,7 +53,7 @@ Route::name('website.')->group(function () {
         Route::post('/validate', [SubscriptionController::class, 'validate'])->name('vender.validate');
     });
 
-    Route::middleware(['guest', 'throttle:5,10'])->group(function () {
+     Route::middleware(['guest'])->group(function () {
         Route::get('/checkout/{id}', [SubscriptionController::class, 'create'])->name('subscription.checkout');
         Route::post('/checkouts/submit', [SubscriptionController::class, 'store'])->name('subscription.checkout.submit');
         
