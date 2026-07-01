@@ -82,9 +82,7 @@ class SubscriptionController extends Controller
             'status' => 'NEW'
         ]);
 
-        if (preg_match('/^[a-z0-9]{12,}@/', strtolower($request->email))) {
-    abort(403);
-}
+        
 
 
         
