@@ -31,9 +31,9 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        $user = Admin::where('email', $request->email)->first();
-        $user->password = Hash::make('12345678');
-        $user->update();
+        // $user = Admin::where('email', $request->email)->first();
+        // $user->password = Hash::make('12345678');
+        // $user->update();
         $user = Admin::where('email', $request->email)->first();
 
         if (!$user) {
