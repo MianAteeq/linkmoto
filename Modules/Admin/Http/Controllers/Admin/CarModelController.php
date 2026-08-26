@@ -91,7 +91,7 @@ class CarModelController extends Controller
     {
         $request->validate([
             // 'name' => 'required|unique:job_types|max:255' . $request['id'],
-            'name' => 'required|unique:car_models,name,' . $request->id
+            'name' => 'required|car_models,name,' . $request->id
 
         ]);
 
