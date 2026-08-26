@@ -45,7 +45,7 @@ class CarModelController extends Controller
     {
 
         $request->validate([
-            'name' => ['required', 'unique:car_models', 'max:255'],
+            'name' => ['required', 'car_models', 'max:255'],
 
         ]);
 
