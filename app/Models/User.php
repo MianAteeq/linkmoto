@@ -221,5 +221,8 @@ public function sub_profile(): HasOne
         return $this->belongsTo(TradingUnit::class, 'default_trading_unit', 'id');
     }
 
-
+    public function parent_vendor(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'vender_id', 'id');
+    }
 }

@@ -20,22 +20,23 @@ class ServiceController extends Controller
     try {
         $userId = $request->user() ? $request->user()->id : null;
 
-        // Query all approved/active vendors, latest first
+        // Query approved/active vendors and trading units, latest first
         $query = TradingUnit::query()
-            ->where(function ($q) {
-                // Check status on TradingUnit
-                $q->whereIn('status', ['ACTIVE', 'APPROVED', 'approved', 'active'])
-                  // OR check status on the associated vendor/user
-                  ->orWhereHas('vender', function ($vq) {
-                      $vq->whereIn('status', ['ACTIVE', 'APPROVED', 'approved', 'active']);
-                  });
+            ->whereIn('status', ['ACTIVE', 'APPROVED', 'ACCEPTED', 'approved', 'active', 'accepted'])
+            ->whereHas('vender', function ($vq) {
+                $vq->where(function ($subQ) {
+                    $subQ->whereIn('status', ['ACCEPTED', 'ACTIVE', 'APPROVED', 'approved', 'active', 'accepted'])
+                         ->orWhereIn('application_status', ['ACCEPTED', 'APPROVED', 'approved']);
+                });
             })
             // Commented out marketplace filter so all approved vendors show up:
             // ->whereHas('hub_setting', function ($q) {
             //     $q->where('is_marketplace', 1);
             // })
             ->with([
-                'vender',
+                'vender.profile',
+                'vender.parent_vendor.profile',
+                'parent_vendor.profile',
                 'hub_setting',
                 'trading_name',
                 'job_types.job_type',
@@ -52,13 +53,65 @@ class ServiceController extends Controller
         foreach ($services as $service) {
             $service->distance = 0.00;
             if ($userId) {
-                $linked = LinkVender::where('vender_id', $service->vender_id ?? $service->id)
+                $linked = LinkVender::where(function ($q) use ($service) {
+                        $q->where('vender_id', $service->id)
+                          ->orWhere('vender_id', $service->vender_id);
+                    })
                     ->where('hub_id', $userId)
                     ->first();
                 $service->is_linked = $linked ? 1 : 0;
             } else {
                 $service->is_linked = 0;
             }
+
+            // Resolve Vendor & Parent Vendor
+            $vender = $service->vender;
+            $parentVendor = null;
+            if ($vender) {
+                if ($vender->vender_id != 0) {
+                    $parentVendor = $vender->parent_vendor ?? User::with('profile')->find($vender->vender_id);
+                } else {
+                    $parentVendor = $vender;
+                }
+            }
+            $service->parent_vendor = $parentVendor;
+
+            // Business name as shown in invoice based on trading_template:
+            // 1: Registered Company Name (from vendor/parent profile)
+            // 2: Registered Company Name & Trading Name
+            // 3: Trading Name only
+            $companyName = trim($parentVendor->profile->company_name ?? ($vender->profile->company_name ?? ''));
+            $tradingName = trim($service->trading_name->name ?? '');
+            $template = (int) ($service->trading_template ?? 0);
+
+            if ($template === 1) {
+                $invoiceName = $companyName ?: ($tradingName ?: $service->name);
+            } elseif ($template === 2) {
+                if (!empty($companyName) && !empty($tradingName)) {
+                    $invoiceName = $companyName . ' Trading as ' . $tradingName;
+                } else {
+                    $invoiceName = $tradingName ?: ($companyName ?: $service->name);
+                }
+            } elseif ($template === 3) {
+                $invoiceName = $tradingName ?: ($companyName ?: $service->name);
+            } else {
+                // Fallback when template is not explicitly 1, 2, or 3
+                if (!empty($companyName) && !empty($tradingName)) {
+                    $invoiceName = $companyName . ' Trading as ' . $tradingName;
+                } elseif (!empty($tradingName)) {
+                    $invoiceName = $tradingName;
+                } elseif (!empty($companyName)) {
+                    $invoiceName = $companyName;
+                } else {
+                    $invoiceName = $service->name;
+                }
+            }
+
+            $service->unit_name = $service->name;
+            $service->invoice_name = $invoiceName;
+            $service->display_name = $invoiceName;
+            $service->business_name = $invoiceName;
+            $service->name = $invoiceName ?: $service->name;
         }
 
         return response()->json([

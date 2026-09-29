@@ -34,6 +34,11 @@ class TradingUnit extends Model
         return $this->belongsTo(User::class, 'vender_id', 'id');
     }
 
+    public function parent_vendor(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'vender_id', 'id');
+    }
+
     /**
      * Get the user that owns the TradingUnit
      *
