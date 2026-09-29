@@ -158,9 +158,22 @@ public function fetchByServicesID(Request $request)
                          ->orWhereIn('application_status', ['ACCEPTED', 'approved', 'APPROVED']);
                 });
             })
-            ->whereHas('job_types', function ($jq) use ($serviceId) {
-                $jq->where('job_type_id', $serviceId);
+                       ->whereHas('job_types', function ($jq) use ($serviceId) {
+                $jq->whereHas('job_type', function ($sub) use ($serviceId) {
+                    $sub->where(function ($w) use ($serviceId) {
+                        if (\Illuminate\Support\Facades\Schema::hasColumn('job_types', 'category_id')) {
+                            $w->where('category_id', $serviceId);
+                        } elseif (\Illuminate\Support\Facades\Schema::hasColumn('job_types', 'service_category_id')) {
+                            $w->where('service_category_id', $serviceId);
+                        } elseif (\Illuminate\Support\Facades\Schema::hasColumn('job_types', 'service_id')) {
+                            $w->where('service_id', $serviceId);
+                        } else {
+                            $w->where('id', $serviceId);
+                        }
+                    });
+                });
             })
+
             ->with([
                 'vender.profile',
                 'hub_setting',
