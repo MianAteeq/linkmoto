@@ -20,17 +20,14 @@ class ServiceController extends Controller
     try {
         $userId = $request->user() ? $request->user()->id : null;
 
-        // Query active trading units of active/accepted vendors, latest first
+        // Query all active/approved marketplace trading units, latest first
         $query = TradingUnit::query()
-            ->whereIn('status', ['ACTIVE', 'Active', 'active'])
-            ->whereHas('vender', function ($vq) {
-                $vq->where(function ($subQ) {
-                    $subQ->whereIn('status', ['ACTIVE', 'ACCEPTED', 'active', 'accepted'])
-                         ->orWhereIn('application_status', ['ACCEPTED', 'approved', 'APPROVED'])
-                         ->orWhereHas('parent_vendor', function ($pvq) {
-                             $pvq->whereIn('status', ['ACTIVE', 'ACCEPTED', 'active', 'accepted']);
-                         });
-                });
+            ->where(function ($q) {
+                $q->whereIn('status', ['ACTIVE', 'Active', 'active', 'APPROVED', 'approved', 'ACCEPTED', 'accepted'])
+                  ->orWhereHas('vender', function ($vq) {
+                      $vq->whereIn('status', ['ACTIVE', 'ACCEPTED', 'active', 'accepted', 'APPROVED', 'approved'])
+                         ->orWhereIn('application_status', ['ACCEPTED', 'approved', 'APPROVED']);
+                  });
             })
             // Commented out marketplace filter so all approved vendors show up:
             // ->whereHas('hub_setting', function ($q) {
@@ -66,10 +63,14 @@ class ServiceController extends Controller
             }
 
             // Resolve Vendor & Parent Vendor
-            $vender = $service->vender;
+            $vender = $service->vender ?? ($service->vender_id ? User::with('profile')->find($service->vender_id) : null);
+            if ($vender && !$service->relationLoaded('vender')) {
+                $service->setRelation('vender', $vender);
+            }
+
             $parentVendor = null;
             if ($vender) {
-                if ($vender->vender_id != 0) {
+                if (!empty($vender->vender_id) && $vender->vender_id != 0) {
                     $parentVendor = User::with('profile')->find($vender->vender_id);
                 } else {
                     $parentVendor = $vender;
