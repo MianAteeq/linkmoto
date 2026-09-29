@@ -20,16 +20,20 @@ class ServiceController extends Controller
     try {
         $userId = $request->user() ? $request->user()->id : null;
 
-        // Query TradingUnits (approved/active, marketplace enabled, latest first, ignore location)
+        // Query all approved/active vendors, latest first
         $query = TradingUnit::query()
             ->where(function ($q) {
-                $q->where('status', 'ACTIVE')
-                  ->orWhere('status', 'APPROVED')
-                  ->orWhere('status', 'approved');
+                // Check status on TradingUnit
+                $q->whereIn('status', ['ACTIVE', 'APPROVED', 'approved', 'active'])
+                  // OR check status on the associated vendor/user
+                  ->orWhereHas('vender', function ($vq) {
+                      $vq->whereIn('status', ['ACTIVE', 'APPROVED', 'approved', 'active']);
+                  });
             })
-            ->whereHas('hub_setting', function ($q) {
-                $q->where('is_marketplace', 1);
-            })
+            // Commented out marketplace filter so all approved vendors show up:
+            // ->whereHas('hub_setting', function ($q) {
+            //     $q->where('is_marketplace', 1);
+            // })
             ->with([
                 'vender',
                 'hub_setting',
@@ -41,11 +45,10 @@ class ServiceController extends Controller
                 'accreditations.accreditation',
                 'warranty_jobs.warranty_job'
             ])
-            ->latest('id'); // Latest first
+            ->latest('id');
 
         $services = $query->paginate(10);
 
-        // Set is_linked and default distance (0.00)
         foreach ($services as $service) {
             $service->distance = 0.00;
             if ($userId) {
