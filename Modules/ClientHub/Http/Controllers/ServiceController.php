@@ -158,8 +158,8 @@ public function fetchByServicesID(Request $request)
                          ->orWhereIn('application_status', ['ACCEPTED', 'approved', 'APPROVED']);
                 });
             })
-            ->whereHas('job_types.job_type', function ($jq) use ($serviceId) {
-                $jq->where('service_id', $serviceId);
+            ->whereHas('job_types', function ($jq) use ($serviceId) {
+                $jq->where('job_type_id', $serviceId);
             })
             ->with([
                 'vender.profile',
@@ -219,6 +219,7 @@ public function fetchByServicesID(Request $request)
 
             if ($template === 1) {
                 $invoiceName = $companyName ?: ($tradingName ?: $service->name);
+                $invoiceName = trim(preg_replace('/\s*-\s*$/', '', $invoiceName));
             } elseif ($template === 2) {
                 if (!empty($companyName) && !empty($tradingName)) {
                     $invoiceName = $companyName . ' Trading as ' . $tradingName;
