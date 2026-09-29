@@ -72,10 +72,11 @@ class ServiceController extends Controller
             if ($vender) {
                 if (!empty($vender->vender_id) && $vender->vender_id != 0) {
                     $parentVendor = User::with('profile')->find($vender->vender_id);
+                    $vender->setRelation('parent_vendor', $parentVendor);
                 } else {
                     $parentVendor = $vender;
+                    $vender->unsetRelation('parent_vendor');
                 }
-                $vender->setRelation('parent_vendor', $parentVendor);
             }
             $service->setRelation('parent_vendor', $parentVendor);
             $service->parent_vendor = $parentVendor;
