@@ -14,37 +14,65 @@ use Illuminate\Contracts\Support\Renderable;
 
 class ServiceController extends Controller
 {
-  public function fetchServices(Request $request)
+
+    public function fetchServices(Request $request)
 {
     try {
-        // Query vendors that are approved, eager load relationships, latest first, ignore location/distance
-        $query = Vendor::query()
-            ->with(['trading_name', 'job_types.job_type']) // adjust relation names if camelCase
+        $userId = $request->user() ? $request->user()->id : null;
+
+        // Query TradingUnits (approved/active, marketplace enabled, latest first, ignore location)
+        $query = TradingUnit::query()
             ->where(function ($q) {
-                // Adjust to your table's approved column (e.g., status, is_approved, or approval_status)
-                $q->where('status', 'APPROVED')
-                  ->orWhere('status', 'approved')
-                  ->orWhere('is_approved', 1)
-                  ->orWhere('status', 1);
+                $q->where('status', 'ACTIVE')
+                  ->orWhere('status', 'APPROVED')
+                  ->orWhere('status', 'approved');
             })
+            ->whereHas('hub_setting', function ($q) {
+                $q->where('is_marketplace', 1);
+            })
+            ->with([
+                'vender',
+                'hub_setting',
+                'trading_name',
+                'job_types.job_type',
+                'payment_methods.payment_method',
+                'product_offers',
+                'vehicle_specialists.vehicle_specialist',
+                'accreditations.accreditation',
+                'warranty_jobs.warranty_job'
+            ])
             ->latest('id'); // Latest first
 
-        // Paginate (10 or 15 per page to match mobile app pagination)
         $services = $query->paginate(10);
+
+        // Set is_linked and default distance (0.00)
+        foreach ($services as $service) {
+            $service->distance = 0.00;
+            if ($userId) {
+                $linked = LinkVender::where('vender_id', $service->vender_id ?? $service->id)
+                    ->where('hub_id', $userId)
+                    ->first();
+                $service->is_linked = $linked ? 1 : 0;
+            } else {
+                $service->is_linked = 0;
+            }
+        }
 
         return response()->json([
             'status' => true,
             'services' => $services,
-            'message' => 'Vendors fetched successfully'
+            'message' => 'Services Fetch Successfully',
         ], 200);
 
     } catch (\Exception $e) {
         return response()->json([
             'status' => false,
-            'message' => $e->getMessage()
+            'error' => $e->getMessage(),
+            'message' => 'Error while getting Services',
         ], 500);
     }
 }
+
 
    public function fetchByServicesID(Request $request)
    {
