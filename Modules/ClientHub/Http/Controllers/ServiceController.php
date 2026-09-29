@@ -143,12 +143,13 @@ class ServiceController extends Controller
 }
 
 
- public function fetchByServicesID(Request $request)
+public function fetchByServicesID(Request $request)
 {
     try {
-        $serviceId = $request->service_id;
+        $serviceId = (int) $request->service_id;
         $userId = $request->user() ? $request->user()->id : null;
 
+        // Query active trading units whose job types belong to this service
         $query = TradingUnit::query()
             ->whereIn('status', ['ACTIVE', 'Active', 'active', 'APPROVED', 'approved'])
             ->whereHas('vender', function ($vq) {
@@ -157,15 +158,8 @@ class ServiceController extends Controller
                          ->orWhereIn('application_status', ['ACCEPTED', 'approved', 'APPROVED']);
                 });
             })
-            ->where(function ($q) use ($serviceId) {
-                $q->whereHas('job_types', function ($jq) use ($serviceId) {
-                    $jq->where('service_id', $serviceId)
-                       ->orWhere('job_type_id', $serviceId);
-                })
-                ->orWhereHas('job_types.job_type', function ($jq) use ($serviceId) {
-                    $jq->where('service_id', $serviceId)
-                       ->orWhere('id', $serviceId);
-                });
+            ->whereHas('job_types.job_type', function ($jq) use ($serviceId) {
+                $jq->where('service_id', $serviceId);
             })
             ->with([
                 'vender.profile',
@@ -182,7 +176,7 @@ class ServiceController extends Controller
 
         $services = $query->paginate(10);
 
-        // Deduplicate
+        // Deduplicate and resolve names
         $uniqueCollection = collect();
         $seen = [];
 
@@ -277,6 +271,7 @@ class ServiceController extends Controller
         ], 500);
     }
 }
+
 
    public function fetchCategories(Request $request)
    {
