@@ -72,18 +72,18 @@ class JobRequestController extends Controller
 
             ]);
 
-            if (isset($request['job_types'])) {
+            // if (isset($request['job_types'])) {
 
-                foreach ($request['job_types'] as $key => $job_type) {
+            //     foreach ($request['job_types'] as $key => $job_type) {
 
-                    BookingJobRequestJobType::create([
-                        "job_request_id" => $obj['id'],
-                        "job_type_id" => $job_type['id'],
+            //         BookingJobRequestJobType::create([
+            //             "job_request_id" => $obj['id'],
+            //             "job_type_id" => $job_type['id'],
 
-                    ]);
-                    # code...
-                }
-            }
+            //         ]);
+            //         # code...
+            //     }
+            // }
 
             $job_request = JobRequest::with(['quotation', 'job_type', 'price_type'])->find($obj->id);
 
