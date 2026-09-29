@@ -14,60 +14,38 @@ use Illuminate\Contracts\Support\Renderable;
 
 class ServiceController extends Controller
 {
-   public function fetchServices(Request $request)
-   {
+  public function fetchServices(Request $request)
+{
+    try {
+        // Query vendors that are approved, eager load relationships, latest first, ignore location/distance
+        $query = Vendor::query()
+            ->with(['trading_name', 'job_types.job_type']) // adjust relation names if camelCase
+            ->where(function ($q) {
+                // Adjust to your table's approved column (e.g., status, is_approved, or approval_status)
+                $q->where('status', 'APPROVED')
+                  ->orWhere('status', 'approved')
+                  ->orWhere('is_approved', 1)
+                  ->orWhere('status', 1);
+            })
+            ->latest('id'); // Latest first
 
-        try {
+        // Paginate (10 or 15 per page to match mobile app pagination)
+        $services = $query->paginate(10);
 
+        return response()->json([
+            'status' => true,
+            'services' => $services,
+            'message' => 'Vendors fetched successfully'
+        ], 200);
 
-            $latitude=$request->user()->lat;
-            $longtitude=$request->user()->long;
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => false,
+            'message' => $e->getMessage()
+        ], 500);
+    }
+}
 
-            $vender_ids=User::pluck('id');
-
-            $services=TradingUnit::where('status','ACTIVE')->whereIn('vender_id',$vender_ids)->with('vender')->whereHas("hub_setting",function($q) {
-                $q->where("is_marketplace",1);
-            })->with(['hub_setting','trading_name','job_types.job_type','payment_methods.payment_method','product_offers','vehicle_specialists.vehicle_specialist','accreditations.accreditation','warranty_jobs.warranty_job'])
-        //     ->select("trading_units.*" ,DB::raw("3959* acos(cos(radians(" . $latitude . "))
-        //     * cos(radians(trading_units.lat))
-        //    * cos(radians(trading_units.long) - radians(" . $longtitude . "))
-        //     + sin(radians(" .$latitude. "))
-        //     * sin(radians(trading_units.lat))) AS distance"))->havingRaw("distance < 25")
-            ->take(10)->get();
-
-            // $services = User::where('status', 'ACTIVE')->whereHas('vender_services')->with('profile', 'services', 'vender_services')->select("users.*" ,DB::raw("3959* acos(cos(radians(" . $latitude . "))
-            // * cos(radians(users.lat))
-            // * cos(radians(users.long) - radians(" . $longtitude . "))
-            // + sin(radians(" .$latitude. "))
-            // * sin(radians(users.lat))) AS distance"))->paginate(1);
-
-            // foreach ($services as $key => $service) {
-            //     $linked = LinkVender::where('vender_id', $service['id'])->where('hub_id', $request->user()->id)->first();
-
-            //     if(isset($linked)){
-
-            //         $services[$key]['is_linked']=1;
-
-            //     }else{
-            //         $services[$key]['is_linked'] = 0;
-            //     }
-            // }
-            return response()->json([
-                'status' => true,
-                'services' => $services,
-                'message' => "Services Fetch Successfully",
-            ]);
-        } catch (Exception $e) {
-
-            return response()->json([
-                'status' => false,
-                'error' => $e->getMessage(),
-                'message' => "Error while getting Services",
-            ]);
-        }
-
-
-   }
    public function fetchByServicesID(Request $request)
    {
 
