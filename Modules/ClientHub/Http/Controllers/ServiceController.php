@@ -143,50 +143,141 @@ class ServiceController extends Controller
 }
 
 
-   public function fetchByServicesID(Request $request)
-   {
+ public function fetchByServicesID(Request $request)
+{
+    try {
+        $serviceId = $request->service_id;
+        $userId = $request->user() ? $request->user()->id : null;
 
-        try {
+        $query = TradingUnit::query()
+            ->whereIn('status', ['ACTIVE', 'Active', 'active', 'APPROVED', 'approved'])
+            ->whereHas('vender', function ($vq) {
+                $vq->where(function ($subQ) {
+                    $subQ->whereIn('status', ['ACTIVE', 'ACCEPTED', 'active', 'accepted', 'APPROVED', 'approved'])
+                         ->orWhereIn('application_status', ['ACCEPTED', 'approved', 'APPROVED']);
+                });
+            })
+            ->where(function ($q) use ($serviceId) {
+                $q->whereHas('job_types', function ($jq) use ($serviceId) {
+                    $jq->where('service_id', $serviceId)
+                       ->orWhere('job_type_id', $serviceId);
+                })
+                ->orWhereHas('job_types.job_type', function ($jq) use ($serviceId) {
+                    $jq->where('service_id', $serviceId)
+                       ->orWhere('id', $serviceId);
+                });
+            })
+            ->with([
+                'vender.profile',
+                'hub_setting',
+                'trading_name',
+                'job_types.job_type',
+                'payment_methods.payment_method',
+                'product_offers',
+                'vehicle_specialists.vehicle_specialist',
+                'accreditations.accreditation',
+                'warranty_jobs.warranty_job'
+            ])
+            ->latest('id');
 
-            $latitude=$request->user()->lat;
-            $longtitude=$request->user()->long;
+        $services = $query->paginate(10);
 
-            $vender_ids=User::where('status', 'ACCEPTED')->pluck('id');
+        // Deduplicate
+        $uniqueCollection = collect();
+        $seen = [];
 
-            $services=TradingUnit::where('status','ACTIVE')->whereIn('vender_id',$vender_ids)->with('vender')->whereHas("hub_setting",function($q) {
-                $q->where("is_marketplace",1);
-            })->whereHas('job_types', function($query) use ($request) {
-                    $query->where('job_type_id',$request['service_id']);
-                })->with(['hub_setting','trading_name','job_types.job_type','payment_methods.payment_method','product_offers','vehicle_specialists.vehicle_specialist','accreditations.accreditation','warranty_jobs.warranty_job'])
-                ->select("trading_units.*" ,DB::raw("3959* acos(cos(radians(" . $latitude . "))
-            * cos(radians(trading_units.lat))
-           * cos(radians(trading_units.long) - radians(" . $longtitude . "))
-            + sin(radians(" .$latitude. "))
-            * sin(radians(trading_units.lat))) AS distance"))->havingRaw("distance < 25")->take(10)->get();
+        foreach ($services as $service) {
+            $service->distance = 0.00;
+            if ($userId) {
+                $linked = LinkVender::where(function ($q) use ($service) {
+                        $q->where('vender_id', $service->id)
+                          ->orWhere('vender_id', $service->vender_id);
+                    })
+                    ->where('hub_id', $userId)
+                    ->first();
+                $service->is_linked = $linked ? 1 : 0;
+            } else {
+                $service->is_linked = 0;
+            }
 
-            // $services = User::where('status', 'ACTIVE')->whereHas('vender_services', function($query) use ($request) {
-            //     $query->where('service_id',$request['service_id']);
-            // })->with('profile', 'services', 'vender_services')->select("users.*" ,DB::raw("3959* acos(cos(radians(" . $latitude . "))
-            // * cos(radians(users.lat))
-            // * cos(radians(users.long) - radians(" . $longtitude . "))
-            // + sin(radians(" .$latitude. "))
-            // * sin(radians(users.lat))) AS distance"))->take(10)->get();
-            return response()->json([
-                'status' => true,
-                'services' => $services,
-                'message' => "Services Fetch Successfully",
-            ]);
-        } catch (Exception $e) {
+            // Resolve Vendor & Parent Vendor
+            $vender = $service->vender ?? ($service->vender_id ? User::with('profile')->find($service->vender_id) : null);
+            if ($vender && !$service->relationLoaded('vender')) {
+                $service->setRelation('vender', $vender);
+            }
 
-            return response()->json([
-                'status' => false,
-                'error' => $e->getMessage(),
-                'message' => "Error while getting Services",
-            ]);
+            $parentVendor = null;
+            if ($vender) {
+                if (!empty($vender->vender_id) && $vender->vender_id != 0) {
+                    $parentVendor = User::with('profile')->find($vender->vender_id);
+                    $vender->setRelation('parent_vendor', $parentVendor);
+                } else {
+                    $parentVendor = $vender;
+                    $vender->unsetRelation('parent_vendor');
+                }
+            }
+            $service->setRelation('parent_vendor', $parentVendor);
+            $service->parent_vendor = $parentVendor;
+
+            $companyName = trim($parentVendor->profile->company_name ?? ($vender->profile->company_name ?? ''));
+            $tradingName = trim($service->trading_name->name ?? '');
+            $template = (int) ($service->trading_template ?? 0);
+
+            if ($template === 1) {
+                $invoiceName = $companyName ?: ($tradingName ?: $service->name);
+            } elseif ($template === 2) {
+                if (!empty($companyName) && !empty($tradingName)) {
+                    $invoiceName = $companyName . ' Trading as ' . $tradingName;
+                } else {
+                    $invoiceName = $tradingName ?: ($companyName ?: $service->name);
+                }
+            } elseif ($template === 3) {
+                $invoiceName = $tradingName ?: ($companyName ?: $service->name);
+            } else {
+                if (!empty($companyName) && !empty($tradingName)) {
+                    $invoiceName = $companyName . ' Trading as ' . $tradingName;
+                } elseif (!empty($tradingName)) {
+                    $invoiceName = $tradingName;
+                } elseif (!empty($companyName)) {
+                    $invoiceName = $companyName;
+                } else {
+                    $invoiceName = $service->name;
+                }
+            }
+
+            $service->unit_name = $service->name;
+            $service->invoice_name = $invoiceName;
+            $service->display_name = $invoiceName;
+            $service->business_name = $invoiceName;
+            $service->name = $invoiceName ?: $service->name;
+
+            $masterVendorId = $parentVendor ? $parentVendor->id : ($service->vender_id ?? $service->id);
+            $dedupKey = $masterVendorId . '_' . strtolower(trim($invoiceName));
+
+            if (isset($seen[$dedupKey])) {
+                continue;
+            }
+            $seen[$dedupKey] = true;
+            $uniqueCollection->push($service);
         }
 
+        $services->setCollection($uniqueCollection);
 
-   }
+        return response()->json([
+            'status' => true,
+            'services' => $services,
+            'message' => 'Services Fetch Successfully',
+        ], 200);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => false,
+            'error' => $e->getMessage(),
+            'message' => 'Error while getting Services',
+        ], 500);
+    }
+}
+
    public function fetchCategories(Request $request)
    {
 
