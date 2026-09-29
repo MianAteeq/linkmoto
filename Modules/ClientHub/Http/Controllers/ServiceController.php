@@ -98,6 +98,7 @@ class ServiceController extends Controller
 
             if ($template === 1) {
                 $invoiceName = $companyName ?: ($tradingName ?: $service->name);
+                $invoiceName = trim(preg_replace('/\s*-\s*$/', '', $invoiceName));
             } elseif ($template === 2) {
                 if (!empty($companyName) && !empty($tradingName)) {
                     $invoiceName = $companyName . ' Trading as ' . $tradingName;
