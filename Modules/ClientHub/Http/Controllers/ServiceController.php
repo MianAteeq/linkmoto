@@ -20,13 +20,15 @@ class ServiceController extends Controller
     try {
         $userId = $request->user() ? $request->user()->id : null;
 
-        // Query approved/active vendors and trading units, latest first
+        // Query active trading units of active users/vendors, latest first
         $query = TradingUnit::query()
-            ->whereIn('status', ['ACTIVE', 'APPROVED', 'ACCEPTED', 'approved', 'active', 'accepted'])
+            ->whereIn('status', ['ACTIVE', 'Active', 'active'])
             ->whereHas('vender', function ($vq) {
                 $vq->where(function ($subQ) {
-                    $subQ->whereIn('status', ['ACCEPTED', 'ACTIVE', 'APPROVED', 'approved', 'active', 'accepted'])
-                         ->orWhereIn('application_status', ['ACCEPTED', 'APPROVED', 'approved']);
+                    $subQ->whereIn('status', ['ACTIVE', 'active'])
+                         ->orWhereHas('parent_vendor', function ($pvq) {
+                             $pvq->whereIn('status', ['ACTIVE', 'active']);
+                         });
                 });
             })
             // Commented out marketplace filter so all approved vendors show up:
