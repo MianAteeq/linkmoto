@@ -20,14 +20,21 @@ class ServiceController extends Controller
     try {
         $userId = $request->user() ? $request->user()->id : null;
 
-        // Query all active/approved marketplace trading units, latest first
+        // Query approved trading units by vendor (one approved unit per approved vendor, no duplicates)
         $query = TradingUnit::query()
-            ->where(function ($q) {
-                $q->whereIn('status', ['ACTIVE', 'Active', 'active', 'APPROVED', 'approved', 'ACCEPTED', 'accepted'])
-                  ->orWhereHas('vender', function ($vq) {
-                      $vq->whereIn('status', ['ACTIVE', 'ACCEPTED', 'active', 'accepted', 'APPROVED', 'approved'])
+            ->whereIn('status', ['ACTIVE', 'Active', 'active', 'APPROVED', 'approved'])
+            ->whereHas('vender', function ($vq) {
+                $vq->where(function ($subQ) {
+                    $subQ->whereIn('status', ['ACTIVE', 'ACCEPTED', 'active', 'accepted', 'APPROVED', 'approved'])
                          ->orWhereIn('application_status', ['ACCEPTED', 'approved', 'APPROVED']);
-                  });
+                });
+            })
+            ->whereIn('id', function ($sub) {
+                $sub->selectRaw('MAX(id)')
+                    ->from('trading_units')
+                    ->whereIn('status', ['ACTIVE', 'Active', 'active', 'APPROVED', 'approved'])
+                    ->whereNotNull('vender_id')
+                    ->groupBy('vender_id');
             })
             // Commented out marketplace filter so all approved vendors show up:
             // ->whereHas('hub_setting', function ($q) {
