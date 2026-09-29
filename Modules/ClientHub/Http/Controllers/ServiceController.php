@@ -20,14 +20,15 @@ class ServiceController extends Controller
     try {
         $userId = $request->user() ? $request->user()->id : null;
 
-        // Query active trading units of active users/vendors, latest first
+        // Query active trading units of active/accepted vendors, latest first
         $query = TradingUnit::query()
             ->whereIn('status', ['ACTIVE', 'Active', 'active'])
             ->whereHas('vender', function ($vq) {
                 $vq->where(function ($subQ) {
-                    $subQ->whereIn('status', ['ACTIVE', 'active'])
+                    $subQ->whereIn('status', ['ACTIVE', 'ACCEPTED', 'active', 'accepted'])
+                         ->orWhereIn('application_status', ['ACCEPTED', 'approved', 'APPROVED'])
                          ->orWhereHas('parent_vendor', function ($pvq) {
-                             $pvq->whereIn('status', ['ACTIVE', 'active']);
+                             $pvq->whereIn('status', ['ACTIVE', 'ACCEPTED', 'active', 'accepted']);
                          });
                 });
             })
@@ -37,8 +38,6 @@ class ServiceController extends Controller
             // })
             ->with([
                 'vender.profile',
-                'vender.parent_vendor.profile',
-                'parent_vendor.profile',
                 'hub_setting',
                 'trading_name',
                 'job_types.job_type',
@@ -71,11 +70,13 @@ class ServiceController extends Controller
             $parentVendor = null;
             if ($vender) {
                 if ($vender->vender_id != 0) {
-                    $parentVendor = $vender->parent_vendor ?? User::with('profile')->find($vender->vender_id);
+                    $parentVendor = User::with('profile')->find($vender->vender_id);
                 } else {
                     $parentVendor = $vender;
                 }
+                $vender->setRelation('parent_vendor', $parentVendor);
             }
+            $service->setRelation('parent_vendor', $parentVendor);
             $service->parent_vendor = $parentVendor;
 
             // Business name as shown in invoice based on trading_template:
