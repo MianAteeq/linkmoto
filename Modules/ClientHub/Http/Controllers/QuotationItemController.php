@@ -71,15 +71,15 @@ class QuotationItemController extends Controller
 
             ]);
 
-            if (isset($request['job_type_id'])) {
-                foreach ($request['job_types'] as $key => $job_type) {
-                    QuotationJobRequestJobType::create([
-                        "job_request_id" => $obj['id'],
-                        "job_type_id" => $job_type['id'],
+            // if (isset($request['job_type_id'])) {
+            //     foreach ($request['job_types'] as $key => $job_type) {
+            //         QuotationJobRequestJobType::create([
+            //             "job_request_id" => $obj['id'],
+            //             "job_type_id" => $job_type['id'],
 
-                    ]);
-                }
-            }
+            //         ]);
+            //     }
+            // }
 
             $job_request = JobRequest::with(['quotation', 'job_type', 'price_type'])->find($obj->id);
 
