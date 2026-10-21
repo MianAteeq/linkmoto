@@ -100,6 +100,7 @@ class Vender
     |--------------------------------------------------------------------------
     */
 
+    dd($user->v_profile);
   
 
         if ($user->application_status === 'ACCEPTED' || $user->v_profile->application_status === 'ACCEPTED') {
