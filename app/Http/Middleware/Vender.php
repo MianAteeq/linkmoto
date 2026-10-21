@@ -105,6 +105,7 @@ class Vender
                 return redirect()->route('vender.index');
             }
             return $next($request);
+            dd(1);
         }
 
         /*
