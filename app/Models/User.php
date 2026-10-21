@@ -78,11 +78,9 @@ class User extends Authenticatable
     return $this->hasOne(VendorProfile::class, 'vender_id', $localKey);
 }
 
-public function v_profile(): HasOne
+public function v_profile(): BelongsTo
 {
-  
-
-    return $this->hasOne(User::class, 'vender_id', 'id');
+    return $this->belongsTo(User::class, 'vender_id', 'id');
 }
 
 public function sub_profile(): HasOne
