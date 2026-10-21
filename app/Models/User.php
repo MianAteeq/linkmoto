@@ -80,11 +80,9 @@ class User extends Authenticatable
 
 public function v_profile(): HasOne
 {
-    $localKey = $this->vender_id == 0
-        ? 'id'
-        : 'vender_id';
+  
 
-    return $this->hasOne(VendorProfile::class, 'vender_id', $localKey);
+    return $this->hasOne(User::class, 'vender_id', 'id');
 }
 
 public function sub_profile(): HasOne
