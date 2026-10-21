@@ -100,7 +100,7 @@ class Vender
     |--------------------------------------------------------------------------
     */
 
-        if ($user->application_status === 'ACCEPTED') {
+        if ($user->application_status === 'ACCEPTED' || $user->profile->application_status === 'ACCEPTED') {
             if (!$request->routeIs('vender.index')) {
                 return redirect()->route('vender.index');
             }
@@ -113,7 +113,7 @@ class Vender
     |--------------------------------------------------------------------------
     */
      if ($user->vender_id != 0) {
- return $next($request);
+        return redirect()->route('vender.index');
      }
 
         return redirect()->route('vender.profiles');
