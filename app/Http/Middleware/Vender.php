@@ -100,7 +100,7 @@ class Vender
     |--------------------------------------------------------------------------
     */
 
-    dd($user->application_status);
+    dd($user->profile->application_status);
 
         if ($user->application_status === 'ACCEPTED' || $user->profile->application_status === 'ACCEPTED') {
             if (!$request->routeIs('vender.index')) {
