@@ -100,6 +100,8 @@ class Vender
     |--------------------------------------------------------------------------
     */
 
+    dd(1);
+
         if ($user->application_status === 'ACCEPTED' || $user->profile->application_status === 'ACCEPTED') {
             if (!$request->routeIs('vender.index')) {
                 return redirect()->route('vender.index');
