@@ -20,7 +20,7 @@ class Vender
     public function handle(Request $request, Closure $next)
     {
 
-        return $next($request);
+        
         if (!Auth::check()) {
             return redirect()->route('login');
         }
@@ -112,6 +112,9 @@ class Vender
     | Default fallback
     |--------------------------------------------------------------------------
     */
+     if ($user->vender_id != 0) {
+ return $next($request);
+     }
 
         return redirect()->route('vender.profiles');
     }
