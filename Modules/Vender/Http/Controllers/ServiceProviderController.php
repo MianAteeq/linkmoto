@@ -61,7 +61,8 @@ class ServiceProviderController extends Controller
     {
 
         $user = auth()->user();
-        $trading_names = TradingName::where('vender_id', $user['id'])->where('is_change',0)->get();
+        $vender_id=$user['vender_id']==0?$user['id']:$user['vender_id'];
+        $trading_names = TradingName::where('vender_id', $vender_id)->where('is_change',0)->get();
         $sites = VenderAddress::where('vender_id', $user['id'])->get();
 
 
@@ -71,8 +72,9 @@ class ServiceProviderController extends Controller
     {
 
         $user = auth()->user();
-        $trading_names = TradingName::where('vender_id', $user['id'])->get();
-        $sites = VenderAddress::where('vender_id', $user['id'])->get();
+        $vender_id=$user['vender_id']==0?$user['id']:$user['vender_id'];
+        $trading_names = TradingName::where('vender_id', $vender_id)->get();
+        $sites = VenderAddress::where('vender_id', $vender_id)->get();
 
         $trading_unit = TradingUnit::find($id);
 
@@ -128,7 +130,9 @@ class ServiceProviderController extends Controller
 
         $trading_unit = TradingUnit::with('hub_setting')->find($id);
 
-        $workstreams = WorkStream::where('trading_id', $trading_unit->id)->where('vender_id',$user['id'])->get();
+           $vender_id=$user['vender_id']==0?$user['id']:$user['vender_id'];
+
+        $workstreams = WorkStream::where('trading_id', $trading_unit->id)->where('vender_id',$vender_id)->get();
 
 
         return view('vender::service_provider.trading_unit.app_setting.index', get_defined_vars());
