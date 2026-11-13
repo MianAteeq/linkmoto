@@ -113,6 +113,11 @@ class VehicleController extends Controller
                 'color',
             ])->find($veh->id);
 
+            if ($request->has('checks') && is_array($request->input('checks'))) {
+                Cache::put("vehicle_checks_{$veh->id}", $request->input('checks'), 86400 * 30);
+                Cache::put("vehicle_checks_{$cleanVrm}", $request->input('checks'), 86400 * 30);
+            }
+
             $isFirstVehicle = Vehicle::where('vender_id', $clientId)->count() === 1;
             if ($isFirstVehicle || !Cache::has("client_{$clientId}_default_vehicle")) {
                 Cache::forever("client_{$clientId}_default_vehicle", (int) $veh->id);
@@ -441,14 +446,17 @@ class VehicleController extends Controller
                 ], 404);
             }
 
+            Cache::forget("vehicle_checks_{$vehicle->id}");
+            Cache::forget("vehicle_checks_{$vehicle->vrm}");
+
             $lookup = $this->dvsaService->lookupVehicle($vehicle->vrm);
-            $checks = $lookup['vehicle']['checks'] ?? [
-                'motStatus'     => 'Valid',
-                'motExpiryDate' => '18 Nov 2026',
-                'taxStatus'     => 'Taxed',
-                'taxExpiryDate' => '01 Nov 2026',
-                'lastChecked'   => 'Just now',
-            ];
+            $checks = !empty($lookup['vehicle']['checks'])
+                ? $lookup['vehicle']['checks']
+                : $this->dvsaService->computeDynamicChecksForVrm($vehicle->vrm, (string)$vehicle->year);
+
+            $checks['lastChecked'] = 'Just now';
+            Cache::put("vehicle_checks_{$vehicle->id}", $checks, 86400 * 30);
+            Cache::put("vehicle_checks_{$vehicle->vrm}", $checks, 86400 * 30);
 
             return response()->json([
                 'status' => true,
@@ -481,6 +489,10 @@ class VehicleController extends Controller
         $engine = $v->engine_size?->eng_size ?? '';
         $trans = $v->transmission_type?->transmission_types ?? 'Automatic';
 
+        $checks = Cache::get("vehicle_checks_{$v->id}")
+            ?? Cache::get("vehicle_checks_{$v->vrm}")
+            ?? $this->dvsaService->computeDynamicChecksForVrm($v->vrm, (string)$v->year);
+
         return [
             'id'                 => (string) $v->id,
             'vehicleId'          => $v->vehicle_no ?: ('VEH-HUB' . str_pad((string)$v->vender_id, 7, '0', STR_PAD_LEFT) . '-' . str_pad((string)$v->id, 6, '0', STR_PAD_LEFT)),
@@ -495,13 +507,7 @@ class VehicleController extends Controller
             'colour'             => $colour,
             'isDefault'          => $isDefault,
             'createdAt'          => $v->created_at?->toIso8601String() ?? now()->toIso8601String(),
-            'checks'             => [
-                'motStatus'     => 'Valid',
-                'motExpiryDate' => '18 Nov 2026',
-                'taxStatus'     => 'Taxed',
-                'taxExpiryDate' => '01 Nov 2026',
-                'lastChecked'   => 'Today',
-            ],
+            'checks'             => $checks,
             'linkedInfo'         => [
                 'quotesCount'   => 0,
                 'quotes'        => [],
