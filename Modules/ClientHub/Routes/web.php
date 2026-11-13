@@ -11,6 +11,6 @@
 |
 */
 
-Route::prefix('$LOWER_NAME$')->group(function() {
-    Route::get('/', '$STUDLY_NAME$Controller@index');
-});
+// Route::prefix('clienthub')->group(function() {
+//     Route::get('/', 'ClientHubController@index');
+// });

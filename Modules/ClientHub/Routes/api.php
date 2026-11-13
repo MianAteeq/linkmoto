@@ -39,6 +39,14 @@ Route::group(['middleware' => ['cors']], function () {
         Route::post('register', [LoginController::class, 'register']);
         Route::post('send/email/otp', [LoginController::class, 'sendOtp']);
         Route::post('verify/otp', [LoginController::class, 'verifyOtp']);
+        Route::post('forgot-password/send-otp', [LoginController::class, 'sendOtp']);
+        Route::post('forgot-password/verify-otp', [LoginController::class, 'verifyOtp']);
+        Route::post('forgot-password/reset', [LoginController::class, 'resetPassword']);
+        Route::post('reset/password', [LoginController::class, 'resetPassword']);
+        Route::match(['get', 'post'], 'vehicle/lookup', [VehicleController::class, 'lookupVehicle']);
+        Route::get('vehicle/lookup/{vrm}', [VehicleController::class, 'lookupVehicle']);
+        Route::match(['get', 'post'], 'vehicles/lookup', [VehicleController::class, 'lookupVehicle']);
+        Route::get('vehicles/lookup/{vrm}', [VehicleController::class, 'lookupVehicle']);
 
         Route::middleware('auth:sanctum')->group(function () {
 
@@ -54,6 +62,13 @@ Route::group(['middleware' => ['cors']], function () {
              Route::post('update/token', [ProfileController::class, 'updateToken']);
              Route::post('profile/update', [ProfileController::class, 'updateProfile']);
              Route::post('update/lat/long', [ProfileController::class, 'updateLatLong']);
+             Route::post('set/location', [ProfileController::class, 'updateLatLong']);
+             Route::post('set-location', [ProfileController::class, 'updateLatLong']);
+             Route::post('location/update', [ProfileController::class, 'updateLatLong']);
+             Route::post('email/change/send-otp', [ProfileController::class, 'sendEmailChangeOtp']);
+             Route::post('email/change/verify-otp', [ProfileController::class, 'verifyEmailChangeOtp']);
+             Route::post('mobile/change/send-otp', [ProfileController::class, 'sendMobileChangeOtp']);
+             Route::post('mobile/change/verify-otp', [ProfileController::class, 'verifyMobileChangeOtp']);
 
 
 
@@ -62,6 +77,15 @@ Route::group(['middleware' => ['cors']], function () {
             Route::post('vehicle/detail', [VehicleController::class, 'getVehicleDetail']);
             Route::post('vehicle/detail/search', [VehicleController::class, 'searchVehicleDetail']);
             Route::post('vehicle/delete', [VehicleController::class, 'vehicleDelete']);
+            Route::get('vehicles', [VehicleController::class, 'getVehicleDetail']);
+            Route::get('vehicles/{id}', [VehicleController::class, 'getSingleVehicle']);
+            Route::post('vehicles/add', [VehicleController::class, 'saveVehicleDetail']);
+            Route::post('vehicles/update', [VehicleController::class, 'updateVehicleDetail']);
+            Route::post('vehicles/delete', [VehicleController::class, 'vehicleDelete']);
+            Route::post('vehicles/{id}/set-default', [VehicleController::class, 'setDefaultVehicle']);
+            Route::post('vehicles/{id}/refresh-checks', [VehicleController::class, 'refreshVehicleChecks']);
+            Route::post('vehicle/{id}/set-default', [VehicleController::class, 'setDefaultVehicle']);
+            Route::post('vehicle/{id}/refresh-checks', [VehicleController::class, 'refreshVehicleChecks']);
 
             Route::post('quotation/save', [QuotationController::class, 'saveQuotation']);
             Route::post('quotation/confirm', [QuotationController::class, 'confirmQuotation']);

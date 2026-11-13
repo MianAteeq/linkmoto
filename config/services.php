@@ -36,4 +36,14 @@ return [
         'secret' => env('Secret_key'),
     ],
 
+    'dvsa' => [
+        'client_id'     => env('DVSA_CLIENT_ID'),
+        'client_secret' => env('DVSA_CLIENT_SECRET'),
+        'api_key'       => env('DVSA_API_KEY'),
+        'scope'         => env('DVSA_SCOPE'),
+        'token_url'     => env('DVSA_TOKEN_URL'),
+        'base_url'      => env('DVSA_BASE_URL'),
+        'proxy'         => env('DVSA_PROXY', null),
+    ],
+
 ];
