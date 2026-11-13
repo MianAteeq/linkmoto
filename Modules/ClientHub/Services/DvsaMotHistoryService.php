@@ -549,5 +549,18 @@ class DvsaMotHistoryService
         );
         return $eng->id;
     }
+
+    public static function findOrCreateTransmission(?string $transmission): ?int
+    {
+        if (empty(trim((string)$transmission))) return 2; // Default Automatic
+        $clean = trim($transmission);
+        $trans = TransmissionType::where('transmission_types', 'like', $clean)->first();
+        if (!$trans) {
+            $trans = TransmissionType::firstOrCreate(
+                ['transmission_types' => ucwords(strtolower($clean))]
+            );
+        }
+        return $trans->id ?? 2;
+    }
 }
 

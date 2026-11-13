@@ -7,6 +7,12 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Cache;
+use Modules\Admin\Entities\CarMaker;
+use Modules\Admin\Entities\CarModel;
+use Modules\Admin\Entities\EngineSize;
+use Modules\Admin\Entities\FuelType;
+use Modules\Admin\Entities\TransmissionType;
+use Modules\Admin\Entities\VehicleColor;
 use Modules\ClientHub\Services\DvsaMotHistoryService;
 use Modules\Vender\Entities\Vehicle;
 
@@ -83,7 +89,8 @@ class VehicleController extends Controller
             $engineId = $request->input('engine_size_id')
                 ?? DvsaMotHistoryService::findOrCreateEngineSize($request->input('engineSize', $request->input('engine_size')));
 
-            $transId = $request->input('transmission_type_id', 2); // Default Automatic
+            $transId = $request->input('transmission_type_id')
+                ?? DvsaMotHistoryService::findOrCreateTransmission($request->input('transmissionType', $request->input('transmission_type')));
 
             $vinNumber = $request->input('vin_number', $request->input('vin', ''));
             $year = $request->input('year', date('Y'));
@@ -338,8 +345,9 @@ class VehicleController extends Controller
                 $vehicle->engine_size_id = $request->input('engine_size_id')
                     ?? DvsaMotHistoryService::findOrCreateEngineSize($request->input('engineSize', $request->input('engine_size')));
             }
-            if ($request->filled('transmission_type_id')) {
-                $vehicle->transmission_type_id = $request->input('transmission_type_id');
+            if ($request->filled('transmissionType') || $request->filled('transmission_type') || $request->filled('transmission_type_id')) {
+                $vehicle->transmission_type_id = $request->input('transmission_type_id')
+                    ?? DvsaMotHistoryService::findOrCreateTransmission($request->input('transmissionType', $request->input('transmission_type')));
             }
 
             $vehicle->save();
@@ -518,6 +526,192 @@ class VehicleController extends Controller
             ],
             'documents'          => [],
         ];
+    }
+
+    /**
+     * Get dynamic vehicle reference data:
+     * makes, years, engine sizes, transmission types, fuel types, and colours.
+     */
+    public function getReferenceData(Request $request)
+    {
+        try {
+            $data = Cache::remember('client_vehicle_ref_data_v1', 86400, function () {
+                // 1. Makes
+                $makes = CarMaker::whereNotNull('name')
+                    ->where('name', '!=', '')
+                    ->orderBy('name', 'ASC')
+                    ->pluck('name')
+                    ->unique()
+                    ->values()
+                    ->all();
+
+                if (empty($makes)) {
+                    $makes = [
+                        'Chery', 'Volkswagen', 'Audi', 'BMW', 'Ford', 'Mercedes-Benz',
+                        'Toyota', 'Nissan', 'Honda', 'Hyundai', 'Kia', 'Vauxhall',
+                        'Land Rover', 'Jaguar', 'Volvo', 'Peugeot', 'Renault', 'Skoda',
+                        'SEAT', 'Tesla', 'Other'
+                    ];
+                }
+
+                // 2. Years: dynamic range from current year + 1 down to 1980
+                $currentYear = (int) date('Y');
+                $years = [];
+                for ($y = $currentYear + 1; $y >= 1980; $y--) {
+                    $years[] = (string) $y;
+                }
+
+                // 3. Engine Sizes
+                $rawEngines = EngineSize::whereNotNull('eng_size')
+                    ->where('eng_size', '!=', '')
+                    ->pluck('eng_size')
+                    ->map(fn($v) => trim($v))
+                    ->unique()
+                    ->values()
+                    ->all();
+
+                if (!empty($rawEngines)) {
+                    if (!in_array('Electric', $rawEngines, true)) {
+                        $rawEngines[] = 'Electric';
+                    }
+                    $engineSizes = $rawEngines;
+                } else {
+                    $engineSizes = [
+                        '1.0 l', '1.2 l', '1.4 l', '1.5 l', '1.6 l', '1.8 l',
+                        '2.0 l', '2.2 l', '2.5 l', '3.0 l', '3.5 l', '4.0 l', 'Electric'
+                    ];
+                }
+
+                // 4. Transmission Types
+                $rawTrans = TransmissionType::whereNotNull('transmission_types')
+                    ->where('transmission_types', '!=', '')
+                    ->pluck('transmission_types')
+                    ->map(fn($v) => trim($v))
+                    ->unique()
+                    ->values()
+                    ->all();
+
+                if (!empty($rawTrans)) {
+                    $priority = ['Automatic', 'Manual', 'Semi Automatic', 'CVT'];
+                    $transmissionTypes = array_values(array_unique(array_merge(
+                        array_intersect($priority, $rawTrans),
+                        $rawTrans
+                    )));
+                } else {
+                    $transmissionTypes = ['Automatic', 'Manual', 'Semi-Automatic'];
+                }
+
+                // 5. Fuel Types
+                $rawFuels = FuelType::whereNotNull('name')
+                    ->where('name', '!=', '')
+                    ->pluck('name')
+                    ->map(fn($v) => trim($v))
+                    ->unique()
+                    ->values()
+                    ->all();
+
+                if (!empty($rawFuels)) {
+                    $fuelPriority = ['Petrol', 'Diesel', 'Hybrid', 'Petrol / Hybrid', 'Diesel / Hybrid', 'Electric', 'Plug-in Hybrid'];
+                    $fuelTypes = array_values(array_unique(array_merge(
+                        array_intersect($fuelPriority, $rawFuels),
+                        $rawFuels
+                    )));
+                } else {
+                    $fuelTypes = ['Petrol', 'Diesel', 'Hybrid / Petrol', 'Hybrid / Diesel', 'Electric', 'Plug-in Hybrid'];
+                }
+
+                // 6. Colours: Common automotive colours first, followed by all DB colors
+                $primaryColours = [
+                    'Black', 'White', 'Silver', 'Grey', 'Blue', 'Red', 'Green',
+                    'Yellow', 'Orange', 'Brown', 'Beige', 'Gold', 'Bronze',
+                    'Purple', 'Pink', 'Burgundy', 'Navy'
+                ];
+                $dbColours = VehicleColor::whereNotNull('color')
+                    ->where('color', '!=', '')
+                    ->orderBy('color', 'ASC')
+                    ->pluck('color')
+                    ->map(fn($c) => ucwords(strtolower(trim($c))))
+                    ->unique()
+                    ->values()
+                    ->all();
+
+                $allColours = array_values(array_unique(array_merge($primaryColours, $dbColours)));
+
+                return [
+                    'makes'             => $makes,
+                    'years'             => $years,
+                    'engineSizes'       => $engineSizes,
+                    'transmissionTypes' => $transmissionTypes,
+                    'fuelTypes'         => $fuelTypes,
+                    'colours'           => $allColours,
+                ];
+            });
+
+            return response()->json([
+                'status'  => true,
+                'data'    => $data,
+                'message' => 'Vehicle reference data retrieved successfully.',
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Failed to retrieve vehicle reference data: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Get models for a specific vehicle make dynamically.
+     */
+    public function getModelsByMake(Request $request)
+    {
+        try {
+            $makeName = trim((string) $request->input('make', $request->query('make', '')));
+            $makeId = $request->input('vehicle_make_id', $request->query('vehicle_make_id'));
+
+            if (empty($makeName) && empty($makeId)) {
+                return response()->json([
+                    'status' => true,
+                    'make'   => '',
+                    'models' => [],
+                ]);
+            }
+
+            $cacheKey = 'client_vehicle_models_' . md5(strtolower($makeName) . '_' . (string)$makeId);
+            $models = Cache::remember($cacheKey, 86400, function () use ($makeName, $makeId) {
+                $makerQuery = CarMaker::query();
+                if (!empty($makeId)) {
+                    $makerQuery->where('id', $makeId);
+                } else {
+                    $makerQuery->where('name', 'like', $makeName);
+                }
+                $maker = $makerQuery->first();
+
+                if (!$maker) {
+                    return [];
+                }
+
+                return CarModel::where('parent_id', $maker->id)
+                    ->whereNotNull('name')
+                    ->where('name', '!=', '')
+                    ->orderBy('name', 'ASC')
+                    ->pluck('name')
+                    ->unique()
+                    ->values()
+                    ->all();
+            });
+
+            return response()->json([
+                'status' => true,
+                'make'   => $makeName,
+                'models' => $models,
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Failed to retrieve models: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 }
 

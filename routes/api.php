@@ -24,6 +24,10 @@ Route::match(['get', 'post'], 'vehicle/lookup', [VehicleController::class, 'look
 Route::get('vehicle/lookup/{vrm}', [VehicleController::class, 'lookupVehicle']);
 Route::match(['get', 'post'], 'vehicles/lookup', [VehicleController::class, 'lookupVehicle']);
 Route::get('vehicles/lookup/{vrm}', [VehicleController::class, 'lookupVehicle']);
+Route::match(['get', 'post'], 'vehicle/reference-data', [VehicleController::class, 'getReferenceData']);
+Route::match(['get', 'post'], 'vehicles/reference-data', [VehicleController::class, 'getReferenceData']);
+Route::match(['get', 'post'], 'vehicle/models', [VehicleController::class, 'getModelsByMake']);
+Route::match(['get', 'post'], 'vehicles/models', [VehicleController::class, 'getModelsByMake']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('vehicles', [VehicleController::class, 'getVehicleDetail']);
