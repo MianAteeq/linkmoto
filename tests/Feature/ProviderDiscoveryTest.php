@@ -81,13 +81,52 @@ class ProviderDiscoveryTest extends TestCase
     public function test_search_and_filters_apply_before_pagination_and_include_product_names(): void
     {
         $this->provider(2, 'Mobile Garage');
-        DB::table('trading_units')->where('id', 2)->update(['operation_type' => 'Mobile', 'radius' => 15, 'city' => 'London']);
+        DB::table('trading_units')->where('id', 2)->update(['operation_type' => 'Mobile', 'radius' => 15, 'city' => 'London', 'postcode' => 'E2 9HD']);
         DB::table('quick_products')->insert(['trading_id' => 2, 'product_name' => 'Battery replacement']);
         foreach ([['search' => 'Battery'], ['categories' => ['Mobile']], ['providerNames' => ['Mobile Garage']]] as $filter) {
-            $this->postJson('/api/client/providers/search', $filter)->assertOk()->assertJsonCount(1, 'providers')->assertJsonPath('providers.0.id', '2');
+            $this->postJson('/api/client/providers/search', $filter + ['postcode' => 'E2 9HD'])->assertOk()->assertJsonCount(1, 'providers')->assertJsonPath('providers.0.id', '2');
         }
         $this->postJson('/api/client/providers/search', ['categories' => ['MOT']])->assertJsonCount(1, 'providers')->assertJsonPath('providers.0.id', '1');
         $this->postJson('/api/client/providers/search', ['jobTerms' => ['unknown']])->assertJsonCount(0, 'providers');
+    }
+
+    public function test_mobile_coverage_matches_the_complete_postcode_ignoring_spaces_and_case(): void
+    {
+        $this->provider(2, 'Matching Mobile');
+        $this->provider(3, 'Different Inward Code');
+        DB::table('trading_units')->where('id', 2)->update(['operation_type' => 'Mobile', 'postcode' => ' e2  9hD ', 'radius' => 10, 'city' => 'London']);
+        DB::table('trading_units')->where('id', 3)->update(['operation_type' => 'Mobile', 'postcode' => 'E2 9HE', 'radius' => 100]);
+        $this->postJson('/api/client/providers/search', ['postcode' => 'e29hd', 'categories' => ['Mobile']])
+            ->assertOk()->assertJsonCount(1, 'providers')->assertJsonPath('providers.0.id', '2')
+            ->assertJsonPath('providers.0.distanceOrCoverage', 'Serves your area')
+            ->assertJsonPath('providers.0.isCoverageItalic', true);
+        $this->postJson('/api/client/providers/search', ['postcode' => ' E2 9HD '])
+            ->assertJsonCount(2, 'providers')->assertJsonPath('providers.1.id', '1')
+            ->assertJsonPath('providers.1.distanceOrCoverage', '0.0 miles away')
+            ->assertJsonPath('providers.1.isCoverageItalic', false);
+    }
+
+    public function test_missing_or_different_postcodes_hide_mobile_providers_but_keep_onsite_results(): void
+    {
+        $this->provider(2, 'Mobile');
+        DB::table('trading_units')->where('id', 2)->update(['operation_type' => 'Mobile', 'postcode' => 'E2 9HD', 'radius' => 100]);
+        foreach ([[], ['postcode' => ''], ['postcode' => 'E2 9HE']] as $input) {
+            $this->postJson('/api/client/providers/search', $input)->assertOk()->assertJsonCount(1, 'providers')
+                ->assertJsonPath('providers.0.id', '1');
+        }
+        DB::table('trading_units')->where('id', 2)->update(['postcode' => null]);
+        $this->postJson('/api/client/providers/search', ['postcode' => 'E2 9HD', 'categories' => ['Mobile']])
+            ->assertOk()->assertJsonCount(0, 'providers');
+    }
+
+    public function test_mobile_postcode_matching_happens_before_pagination(): void
+    {
+        for ($id = 2; $id <= 23; $id++) {
+            $this->provider($id, "Mobile $id");
+            DB::table('trading_units')->where('id', $id)->update(['operation_type' => 'Mobile', 'postcode' => $id === 2 ? 'E2 9HD' : 'N1 5PA']);
+        }
+        $this->postJson('/api/client/providers/search', ['postcode' => 'E2 9HD', 'categories' => ['Mobile']])
+            ->assertOk()->assertJsonCount(1, 'providers')->assertJsonPath('providers.0.id', '2')->assertJsonPath('nextPage', null);
     }
 
     public function test_distance_ordering_missing_coordinates_and_pagination_are_real(): void

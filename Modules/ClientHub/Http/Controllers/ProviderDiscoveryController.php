@@ -33,6 +33,7 @@ class ProviderDiscoveryController extends Controller
         $input = $request->validate([
             'lat' => 'nullable|required_with:lng|numeric|between:-90,90',
             'lng' => 'nullable|required_with:lat|numeric|between:-180,180',
+            'postcode' => 'nullable|string|max:16',
             'page' => 'sometimes|integer|min:1', 'search' => 'nullable|string|max:150',
             'providerNames' => 'sometimes|array|max:20', 'providerNames.*' => 'string|max:150',
             'providerIds' => 'sometimes|array|max:20', 'providerIds.*' => 'integer|min:1',
@@ -40,6 +41,14 @@ class ProviderDiscoveryController extends Controller
             'categories' => 'sometimes|array|max:30', 'categories.*' => 'string|max:150',
         ]);
         $query = $this->approved()->select('trading_units.*');
+        $postcode = strtoupper(str_replace(' ', '', trim($input['postcode'] ?? '')));
+        // Mobile coverage requires an exact selected-postcode match; radius is not used.
+        $query->where(function (Builder $coverage) use ($postcode) {
+            $coverage->whereRaw("LOWER(COALESCE(trading_units.operation_type, '')) NOT LIKE ?", ['%mobile%']);
+            if ($postcode !== '') {
+                $coverage->orWhereRaw("UPPER(REPLACE(TRIM(COALESCE(trading_units.postcode, '')), ' ', '')) = ?", [$postcode]);
+            }
+        });
         if (!empty($input['providerIds'])) $query->whereIn('trading_units.id', $input['providerIds']);
         if (!empty($input['search'])) {
             $query->where(function (Builder $match) use ($input) {
@@ -110,8 +119,8 @@ class ProviderDiscoveryController extends Controller
         $mobile = stripos($unit->operation_type ?? '', 'Mobile') !== false;
         $onsite = stripos($unit->operation_type ?? '', 'On-site') !== false;
         $distance = $unit->discovery_distance;
-        $coverage = $mobile && !$onsite
-            ? ($unit->radius ? "Up to {$unit->radius} miles from " . trim("{$unit->city} {$unit->postcode}") : 'Coverage available on enquiry')
+        $coverage = $mobile
+            ? 'Serves your area'
             : ($distance !== null ? number_format((float) $distance, 1) . ' miles away' : '0.0 miles away');
         $site = $unit->site;
         $address = $onsite && $site ? implode(', ', array_filter([
@@ -124,7 +133,7 @@ class ProviderDiscoveryController extends Controller
             'truId' => $unit->tru_id ?: 'TRU' . str_pad((string) $unit->id, 6, '0', STR_PAD_LEFT),
             'isFavorite' => false, 'isLinked' => in_array($unit->id, $linked) || in_array($unit->vender_id, $linked),
             'serviceType' => $unit->operation_type ?: '', 'distanceOrCoverage' => trim($coverage),
-            'isCoverageItalic' => $mobile && !$onsite, 'address' => $address,
+            'isCoverageItalic' => $mobile, 'address' => $address,
             'ratings' => [], 'services' => implode(' • ', array_slice($services, 0, 2)),
             'additionalServices' => count($services) > 2 ? $services[2] . (count($services) > 3 ? '… and more' : '') : null,
         ];
