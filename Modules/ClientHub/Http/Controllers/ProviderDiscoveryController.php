@@ -2,6 +2,7 @@
 
 namespace Modules\ClientHub\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -34,10 +35,12 @@ class ProviderDiscoveryController extends Controller
             'lng' => 'nullable|required_with:lat|numeric|between:-180,180',
             'page' => 'sometimes|integer|min:1', 'search' => 'nullable|string|max:150',
             'providerNames' => 'sometimes|array|max:20', 'providerNames.*' => 'string|max:150',
+            'providerIds' => 'sometimes|array|max:20', 'providerIds.*' => 'integer|min:1',
             'jobTerms' => 'sometimes|array|max:30', 'jobTerms.*' => 'string|max:150',
             'categories' => 'sometimes|array|max:30', 'categories.*' => 'string|max:150',
         ]);
         $query = $this->approved()->select('trading_units.*');
+        if (!empty($input['providerIds'])) $query->whereIn('trading_units.id', $input['providerIds']);
         if (!empty($input['search'])) {
             $query->where(function (Builder $match) use ($input) {
                 $term = '%' . $input['search'] . '%';
@@ -123,5 +126,58 @@ class ProviderDiscoveryController extends Controller
             'isCoverageItalic' => $mobile && !$onsite, 'address' => $address,
             'ratings' => [], 'services' => implode(' • ', $services),
         ];
+    }
+
+    public function show(Request $request, int $id)
+    {
+        $unit = $this->approved()->with(['hub_setting', 'product_offers.job_type', 'payment_methods.payment_method',
+            'warranty_jobs.warranty_job', 'vehicle_specialists.vehicle_specialist', 'accreditations.accreditation'])->findOrFail($id);
+        $card = $this->card($unit, []);
+        $schedule = [];
+        $open = false;
+        $todayHours = '';
+        $now = Carbon::now('Europe/London');
+        if ($unit->hub_setting) {
+            foreach (['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] as $day) {
+                $key = strtolower($day);
+                $closed = !(bool) $unit->hub_setting->{'is_' . $key};
+                $hours = $closed ? 'Closed' : $unit->hub_setting->{$key . '_start_time'} . ' – ' . $unit->hub_setting->{$key . '_end_time'};
+                $schedule[] = ['day' => $day, 'hours' => $hours, 'isClosed' => $closed];
+                if ($now->format('l') === $day) {
+                    $todayHours = $hours;
+                    if (!$closed) {
+                        try {
+                            $start = Carbon::parse($unit->hub_setting->{$key . '_start_time'}, 'Europe/London');
+                            $end = Carbon::parse($unit->hub_setting->{$key . '_end_time'}, 'Europe/London');
+                            if ($end->lessThan($start)) $end->addDay();
+                            $open = $now->between($start, $end);
+                        } catch (\Exception $e) { $todayHours = ''; }
+                    }
+                }
+            }
+        }
+        $names = fn ($collection, $relation) => $collection->map(fn ($item) => $item->{$relation}->name ?? null)->filter()->unique()->values()->all();
+        $profile = [
+            'id' => $card['id'], 'name' => $card['name'], 'truId' => $card['truId'], 'isFavorite' => false,
+            'location' => ['serviceType' => $card['serviceType'], 'distanceDisplay' => '', 'address' => $card['address'] ?? trim("{$unit->city} {$unit->postcode}"),
+                'latitude' => is_numeric($unit->lat ?? $unit->site->lat ?? null) ? (float) ($unit->lat ?? $unit->site->lat) : null,
+                'longitude' => is_numeric($unit->long ?? $unit->site->long ?? null) ? (float) ($unit->long ?? $unit->site->long) : null],
+            'ratings' => [], 'openingHours' => ['isOpenNow' => $open, 'todayHoursDisplay' => $todayHours, 'schedule' => $schedule],
+            'contact' => ['businessName' => $card['name'], 'phoneNumbers' => array_values(array_filter([$unit->landline, $unit->mobile])),
+                'website' => $unit->website ?: ($unit->hub_setting->website ?? ''), 'email' => $unit->email ?: ''],
+            'serviceCategories' => $unit->job_types->filter(fn ($item) => $item->job_type)->map(fn ($item) => [
+                'id' => (string) $item->job_type_id, 'title' => $item->job_type->name,
+                'services' => [['id' => (string) $item->job_type_id, 'name' => $item->job_type->name]],
+            ])->values(),
+            'products' => $unit->product_offers->map(fn ($product) => ['id' => (string) $product->id, 'name' => $product->product_name,
+                'jobType' => $product->job_type->name ?? '', 'description' => $product->description ?: '', 'jobCoverage' => '',
+                'priceDisplay' => is_numeric($product->price) ? (($product->price_type === 'STARTING_FROM' ? 'from ' : '') . '£' . number_format($product->price, 2)) : 'Price on enquiry',
+            ])->values(),
+            'warranty' => ['warrantyWork' => [], 'selectedWarrantyProviders' => $names($unit->warranty_jobs, 'warranty_job')],
+            'vehicleSpecialist' => ['manufacturerSpecialists' => $names($unit->vehicle_specialists, 'vehicle_specialist'), 'otherSpecialisms' => []],
+            'accreditations' => ['accreditations' => $names($unit->accreditations, 'accreditation')],
+            'paymentMethods' => ['methods' => $names($unit->payment_methods, 'payment_method')],
+        ];
+        return response()->json(['status' => true, 'profile' => $profile])->header('Cache-Control', 'private, no-store');
     }
 }

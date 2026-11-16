@@ -37,6 +37,7 @@ Route::group(['middleware' => ['cors']], function () {
 
         Route::post('login', [LoginController::class, 'login']);
         Route::post('providers/search', [ProviderDiscoveryController::class, 'index']);
+        Route::get('providers/{id}', [ProviderDiscoveryController::class, 'show'])->whereNumber('id');
         Route::post('user/delete', [LoginController::class, 'inActive']);
 
         Route::post('register', [LoginController::class, 'register']);

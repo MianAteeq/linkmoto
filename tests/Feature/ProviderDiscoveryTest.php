@@ -33,7 +33,16 @@ class ProviderDiscoveryTest extends TestCase
             'vender_addresses' => ['address_line_1', 'address_line_2', 'address_line_3', 'address_line_4', 'city', 'postcode', 'lat', 'long', 'proof'],
             'trading_unit_job_types' => ['trading_id', 'job_type_id'],
             'job_types' => ['name'],
-            'quick_products' => ['trading_id', 'product_name'],
+            'quick_products' => ['trading_id', 'product_name', 'job_type_id', 'description', 'price', 'price_type'],
+            'trading_unit_hub_profiles' => ['trading_id', 'website'],
+            'trading_unit_payment_methods' => ['trading_id', 'payment_method_id'],
+            'payment_methods' => ['name'],
+            'trading_unit_warrenty_jobs' => ['trading_id', 'warranty_job_id'],
+            'warranty_jobs' => ['name'],
+            'trading_unit_vehicle_specialists' => ['trading_id', 'vehicle_specialist_id'],
+            'vehicle_specialists' => ['name'],
+            'trading_unit_accreditation_schemes' => ['trading_id', 'accreditation_id'],
+            'accreditation_schemes' => ['name'],
             'link_venders' => ['vender_id', 'hub_id'],
         ] as $name => $columns) {
             Schema::create($name, function (Blueprint $table) use ($columns) {
@@ -105,5 +114,17 @@ class ProviderDiscoveryTest extends TestCase
         foreach ([['lat' => 99, 'lng' => 0], ['lat' => 1], ['page' => 0], ['categories' => array_fill(0, 31, 'MOT')]] as $input) {
             $this->postJson('/api/client/providers/search', $input)->assertUnprocessable();
         }
+    }
+
+    public function test_live_details_are_public_and_cannot_fall_back_to_a_different_or_pending_provider(): void
+    {
+        $this->getJson('/api/client/providers/1')->assertOk()->assertJsonPath('profile.id', '1')
+            ->assertJsonPath('profile.name', 'Real Garage')->assertJsonPath('profile.location.address', '10 Real Street, London E1 1AA')
+            ->assertJsonPath('profile.serviceCategories.0.title', 'MOT')->assertJsonCount(0, 'profile.products')
+            ->assertJsonPath('profile.openingHours.schedule', [])->assertJsonMissingPath('profile.vender')
+            ->assertJsonMissingPath('profile.bank_account_no');
+        $this->provider(2, 'Pending', null, null, 'PENDING');
+        $this->getJson('/api/client/providers/2')->assertNotFound();
+        $this->getJson('/api/client/providers/999')->assertNotFound();
     }
 }
