@@ -10,6 +10,7 @@ use Modules\ClientHub\Http\Controllers\ProfileController;
 use Modules\ClientHub\Http\Controllers\QuotationController;
 use Modules\ClientHub\Http\Controllers\QuotationItemController;
 use Modules\ClientHub\Http\Controllers\ServiceController;
+use Modules\ClientHub\Http\Controllers\ProviderDiscoveryController;
 use Modules\ClientHub\Http\Controllers\VehicleController;
 use Modules\ClientHub\Http\Controllers\VehicleDocumentController;
 use Modules\Vender\Http\Controllers\QueueController;
@@ -35,6 +36,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::prefix('client')->middleware('throttle:100,1,login')->group(function () {
 
         Route::post('login', [LoginController::class, 'login']);
+        Route::post('providers/search', [ProviderDiscoveryController::class, 'index']);
         Route::post('user/delete', [LoginController::class, 'inActive']);
 
         Route::post('register', [LoginController::class, 'register']);
