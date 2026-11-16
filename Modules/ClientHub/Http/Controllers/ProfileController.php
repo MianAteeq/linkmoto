@@ -184,8 +184,31 @@ class ProfileController extends Controller
 
             $locationString = is_string($rawLocation) ? trim($rawLocation) : '';
 
+            $validator = \Validator::make($request->all(), [
+                'postcode' => ['sometimes', 'nullable', 'string', 'max:16'],
+            ]);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Invalid postcode.',
+                    'fieldErrors' => $validator->errors(),
+                ], 422);
+            }
+
+            // Older clients send only address text; never retain a previous location's postcode.
+            $postcode = $request->input('postcode');
+            if (!$request->exists('postcode')) {
+                $address = implode(', ', array_filter([
+                    $locationString,
+                    is_string($request->input('cityAndPostcode')) ? $request->input('cityAndPostcode') : '',
+                ]));
+                preg_match('/\b(?:GIR\s*0AA|[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2})\b/i', $address, $matches);
+                $postcode = $matches[0] ?? '';
+            }
+
             $client->lat = (string) $lat;
             $client->long = (string) $long;
+            $client->postcode = strtoupper(preg_replace('/\s+/', '', $postcode ?? '')) ?: null;
             if (!empty($locationString)) {
                 $client->location = $locationString;
             }
@@ -202,6 +225,7 @@ class ProfileController extends Controller
                     'location'        => $client->location,
                     'address'         => $client->location,
                     'displayName'     => $client->location,
+                    'postcode'        => $client->postcode,
                     'cityAndPostcode' => (string) $request->input('cityAndPostcode', ''),
                     'street'          => (string) $request->input('street', ''),
                 ],
