@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Modules\Admin\Entities\JobType;
 use Modules\ClientHub\Entities\Client;
 use Modules\ClientHub\Entities\LinkVender;
@@ -127,15 +128,8 @@ class ProviderDiscoveryController extends Controller
                 });
             });
         }
-        if (isset($input['lat'], $input['lng']) && ((float) $input['lat'] !== 0.0 || (float) $input['lng'] !== 0.0)) {
-            $query->leftJoin('vender_addresses as discovery_site', 'discovery_site.id', '=', 'trading_units.site_id');
-            $unitCoordinates = "NULLIF(trading_units.lat, '') IS NOT NULL AND NULLIF(trading_units.long, '') IS NOT NULL AND NOT (trading_units.lat = 0 AND trading_units.long = 0)";
-            $lat = "CASE WHEN $unitCoordinates THEN trading_units.lat ELSE NULLIF(discovery_site.lat, '') END";
-            $lng = "CASE WHEN $unitCoordinates THEN trading_units.long ELSE NULLIF(discovery_site.long, '') END";
-            $cosine = "COS(RADIANS(?))*COS(RADIANS($lat))*COS(RADIANS($lng)-RADIANS(?))+SIN(RADIANS(?))*SIN(RADIANS($lat))";
-            $query->selectRaw("CASE WHEN ($lat) = 0 AND ($lng) = 0 THEN NULL ELSE 3958.7613 * ACOS(LEAST(1, GREATEST(-1, $cosine))) END AS discovery_distance",
-                [$input['lat'], $input['lng'], $input['lat']])
-                ->orderByRaw('discovery_distance IS NULL')->orderBy('discovery_distance');
+        if ($this->withDistance($query, $input)) {
+            $query->orderByRaw('discovery_distance IS NULL')->orderBy('discovery_distance');
         }
         $page = $query->orderByDesc('trading_units.id')->paginate(20, ['*'], 'page', $input['page'] ?? 1);
         $client = $request->user('sanctum');
@@ -143,6 +137,90 @@ class ProviderDiscoveryController extends Controller
         return response()->json(['status' => true,
             'providers' => $page->getCollection()->map(fn ($unit) => $this->card($unit, $linked))->values(),
             'nextPage' => $page->hasMorePages() ? $page->currentPage() + 1 : null,
+        ])->header('Cache-Control', 'private, no-store');
+    }
+
+    private function withDistance(Builder $query, array $input): bool
+    {
+        if (isset($input['lat'], $input['lng']) && ((float) $input['lat'] !== 0.0 || (float) $input['lng'] !== 0.0)) {
+            $query->leftJoin('vender_addresses as discovery_site', 'discovery_site.id', '=', 'trading_units.site_id');
+            $unitCoordinates = "NULLIF(trading_units.lat, '') IS NOT NULL AND NULLIF(trading_units.long, '') IS NOT NULL AND NOT (trading_units.lat = 0 AND trading_units.long = 0)";
+            $lat = "CASE WHEN $unitCoordinates THEN trading_units.lat ELSE NULLIF(discovery_site.lat, '') END";
+            $lng = "CASE WHEN $unitCoordinates THEN trading_units.long ELSE NULLIF(discovery_site.long, '') END";
+            $cosine = "COS(RADIANS(?))*COS(RADIANS($lat))*COS(RADIANS($lng)-RADIANS(?))+SIN(RADIANS(?))*SIN(RADIANS($lat))";
+            $query->selectRaw("CASE WHEN ($lat) = 0 AND ($lng) = 0 THEN NULL ELSE 3958.7613 * ACOS(LEAST(1, GREATEST(-1, $cosine))) END AS discovery_distance",
+                [$input['lat'], $input['lng'], $input['lat']]);
+            return true;
+        }
+        return false;
+    }
+
+    private function favoriteClient(Request $request): Client
+    {
+        abort_unless($request->user() instanceof Client, 403);
+        return $request->user();
+    }
+
+    public function favorites(Request $request)
+    {
+        $client = $this->favoriteClient($request);
+        $input = $request->validate([
+            'lat' => 'nullable|required_with:lng|numeric|between:-90,90',
+            'lng' => 'nullable|required_with:lat|numeric|between:-180,180',
+            'postcode' => 'nullable|string|max:16',
+        ]);
+        $query = $this->approved()->select('trading_units.*')
+            ->join('client_favorites as saved', 'saved.trading_unit_id', '=', 'trading_units.id')
+            ->where('saved.client_id', $client->id);
+        $this->withDistance($query, $input);
+        $linked = LinkVender::where('hub_id', $client->id)->pluck('vender_id')->all();
+        $postcode = strtoupper(preg_replace('/\s+/', '', $input['postcode'] ?? ''));
+        // A saved mobile provider remains saved when the client changes location.
+        $favorites = $query->orderByDesc('saved.created_at')->orderByDesc('saved.id')->get()
+            ->map(function ($unit) use ($linked, $postcode) {
+                $card = $this->card($unit, $linked);
+                $card['isFavorite'] = true;
+                if (stripos($unit->operation_type ?? '', 'Mobile') !== false &&
+                    ($postcode === '' || $postcode !== strtoupper(preg_replace('/\s+/', '', $unit->postcode ?? '')))) {
+                    $card['distanceOrCoverage'] = 'Mobile service';
+                    $card['isCoverageItalic'] = false;
+                }
+                return $card;
+            })->values();
+        return response()->json(['status' => true, 'favorites' => $favorites])->header('Cache-Control', 'private, no-store');
+    }
+
+    public function addFavorite(Request $request)
+    {
+        $client = $this->favoriteClient($request);
+        $input = $request->validate(['providerId' => 'required|integer|min:1']);
+        $unit = $this->approved()->findOrFail($input['providerId']);
+        DB::table('client_favorites')->insertOrIgnore([
+            'client_id' => $client->id, 'trading_unit_id' => $unit->id,
+            'created_at' => now(), 'updated_at' => now(),
+        ]);
+        return response()->json([
+            'status' => true, 'success' => true, 'isFavorite' => true,
+            'providerId' => (string) $unit->id, 'message' => 'Added to favourites',
+        ])->header('Cache-Control', 'private, no-store');
+    }
+
+    public function removeFavorite(Request $request, int $id)
+    {
+        $client = $this->favoriteClient($request);
+        DB::table('client_favorites')->where('client_id', $client->id)->where('trading_unit_id', $id)->delete();
+        return response()->json([
+            'status' => true, 'success' => true, 'isFavorite' => false,
+            'providerId' => (string) $id, 'message' => 'Removed from favourites',
+        ])->header('Cache-Control', 'private, no-store');
+    }
+
+    public function favoriteStatus(Request $request, int $id)
+    {
+        $client = $this->favoriteClient($request);
+        return response()->json([
+            'status' => true, 'isFavorite' => DB::table('client_favorites')
+                ->where('client_id', $client->id)->where('trading_unit_id', $id)->exists(),
         ])->header('Cache-Control', 'private, no-store');
     }
 

@@ -62,6 +62,11 @@ Route::group(['middleware' => ['cors']], function () {
 
         Route::middleware('auth:sanctum')->group(function () {
 
+            Route::get('favorites', [ProviderDiscoveryController::class, 'favorites']);
+            Route::post('favorites', [ProviderDiscoveryController::class, 'addFavorite']);
+            Route::delete('favorites/{id}', [ProviderDiscoveryController::class, 'removeFavorite'])->whereNumber('id');
+            Route::get('favorites/{id}/status', [ProviderDiscoveryController::class, 'favoriteStatus'])->whereNumber('id');
+
             Route::get('vehicles/{vehicle}/documents', [VehicleDocumentController::class, 'index']);
             Route::post('vehicles/{vehicle}/documents', [VehicleDocumentController::class, 'store']);
             Route::put('vehicles/{vehicle}/documents/{document}', [VehicleDocumentController::class, 'update']);
