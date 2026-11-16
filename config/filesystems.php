@@ -30,6 +30,13 @@ return [
 
     'disks' => [
 
+        'vehicle_documents' => [
+            'driver' => 'local',
+            'root' => storage_path('app/vehicle-documents'),
+            'visibility' => 'private',
+            'throw' => true,
+        ],
+
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

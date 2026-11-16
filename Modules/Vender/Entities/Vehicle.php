@@ -13,12 +13,27 @@ use Modules\Admin\Entities\EngineSize;
 use Modules\Admin\Entities\FuelType;
 use Modules\Admin\Entities\TransmissionType;
 use Modules\Admin\Entities\VehicleColor;
+use Modules\ClientHub\Entities\VehicleDocument;
 
 class Vehicle extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
+
+    protected static function booted(): void
+    {
+        static::deleting(function (self $vehicle) {
+            $vehicle->documents()->each(function (VehicleDocument $document) {
+                $document->delete();
+            });
+        });
+    }
+
+    public function documents(): HasMany
+    {
+        return $this->hasMany(VehicleDocument::class);
+    }
 
 
     /**

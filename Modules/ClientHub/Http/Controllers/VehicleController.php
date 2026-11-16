@@ -7,12 +7,14 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Modules\Admin\Entities\CarMaker;
 use Modules\Admin\Entities\CarModel;
 use Modules\Admin\Entities\EngineSize;
 use Modules\Admin\Entities\FuelType;
 use Modules\Admin\Entities\TransmissionType;
 use Modules\Admin\Entities\VehicleColor;
+use Modules\ClientHub\Entities\Client;
 use Modules\ClientHub\Services\DvsaMotHistoryService;
 use Modules\Vender\Entities\Vehicle;
 
@@ -23,6 +25,13 @@ class VehicleController extends Controller
     public function __construct(DvsaMotHistoryService $dvsaService)
     {
         $this->dvsaService = $dvsaService;
+        // Client and vendor tokens can have the same numeric owner ID.
+        // Vehicle responses now include private document metadata.
+        $this->middleware(function (Request $request, \Closure $next) {
+            abort_unless($request->user() instanceof Client, 403);
+            return $next($request);
+        })->only(['saveVehicleDetail', 'getVehicleDetail', 'getSingleVehicle', 'searchVehicleDetail',
+            'updateVehicleDetail', 'vehicleDelete', 'setDefaultVehicle', 'refreshVehicleChecks']);
     }
 
     /**
@@ -125,13 +134,8 @@ class VehicleController extends Controller
                 Cache::put("vehicle_checks_{$cleanVrm}", $request->input('checks'), 86400 * 30);
             }
 
-            $isFirstVehicle = Vehicle::where('vender_id', $clientId)->count() === 1;
-            if ($isFirstVehicle || !Cache::has("client_{$clientId}_default_vehicle")) {
-                Cache::forever("client_{$clientId}_default_vehicle", (int) $veh->id);
-            }
-
-            $defaultId = Cache::get("client_{$clientId}_default_vehicle");
-            $isDefault = $defaultId ? ($veh->id == $defaultId) : true;
+            $defaultId = $this->resolveDefaultVehicleId($clientId);
+            $isDefault = $veh->id == $defaultId;
             $formatted = $this->formatClientVehicle($vehicleWithRelations, $isDefault);
 
             return response()->json([
@@ -172,9 +176,9 @@ class VehicleController extends Controller
             ->latest()
             ->get();
 
-            $defaultId = Cache::get("client_{$clientId}_default_vehicle");
-            $formattedVehicles = $vehicles->map(function ($v, $idx) use ($defaultId) {
-                $isDefault = $defaultId ? ($v->id == $defaultId) : ($idx === 0);
+            $defaultId = $this->resolveDefaultVehicleId($clientId);
+            $formattedVehicles = $vehicles->map(function ($v) use ($defaultId) {
+                $isDefault = $v->id == $defaultId;
                 return $this->formatClientVehicle($v, $isDefault);
             })->values();
 
@@ -268,9 +272,9 @@ class VehicleController extends Controller
             })
             ->get();
 
-            $defaultId = Cache::get("client_{$clientId}_default_vehicle");
-            $formattedVehicles = $vehicles->map(function ($v, $idx) use ($defaultId) {
-                $isDefault = $defaultId ? ($v->id == $defaultId) : ($idx === 0);
+            $defaultId = $this->resolveDefaultVehicleId($clientId);
+            $formattedVehicles = $vehicles->map(function ($v) use ($defaultId) {
+                $isDefault = $v->id == $defaultId;
                 return $this->formatClientVehicle($v, $isDefault);
             })->values();
 
@@ -409,11 +413,43 @@ class VehicleController extends Controller
      */
     public function setDefaultVehicle(Request $request, $id = null)
     {
+        if (!$request->user() instanceof Client) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Only client accounts can set a default vehicle.',
+            ], 403);
+        }
+
+        $vehicleId = $id ?? $request->input('vehicle_id', $request->input('id'));
+        $validator = \Validator::make(['vehicle_id' => $vehicleId], [
+            'vehicle_id' => ['required', 'integer', 'min:1'],
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors()->first(),
+            ], 422);
+        }
+
         try {
-            $vehicleId = $id ?? $request->input('vehicle_id', $request->input('id'));
             $clientId = $request->user()->id;
 
-            $vehicle = Vehicle::where('vender_id', $clientId)->find($vehicleId);
+            $vehicle = DB::transaction(function () use ($clientId, $vehicleId) {
+                // A single preference on the locked client row prevents competing defaults.
+                $client = Client::whereKey($clientId)->lockForUpdate()->firstOrFail();
+                $vehicle = Vehicle::where('vender_id', $clientId)
+                    ->where(function ($query) {
+                        $query->where('type', 'Client')->orWhereNull('type');
+                    })
+                    ->whereKey($vehicleId)->first();
+
+                if ($vehicle) {
+                    $client->forceFill(['default_vehicle_id' => $vehicle->id])->save();
+                }
+
+                return $vehicle;
+            });
+
             if (!$vehicle) {
                 return response()->json([
                     'status'  => false,
@@ -421,11 +457,10 @@ class VehicleController extends Controller
                 ], 404);
             }
 
-            Cache::forever("client_{$clientId}_default_vehicle", (int) $vehicle->id);
-
             return response()->json([
                 'status'  => true,
                 'message' => 'Default vehicle updated.',
+                'defaultVehicleId' => (string) $vehicle->id,
                 'vehicle' => $this->formatClientVehicle($vehicle, true),
             ]);
         } catch (Exception $e) {
@@ -435,6 +470,34 @@ class VehicleController extends Controller
                 'message' => 'Error while setting default vehicle.',
             ], 500);
         }
+    }
+
+    /**
+     * Resolve one durable default, retaining valid preferences from the old cache.
+     * Deleted defaults fall back to the newest remaining client vehicle.
+     */
+    protected function resolveDefaultVehicleId(int $clientId): ?int
+    {
+        return DB::transaction(function () use ($clientId) {
+            $client = Client::whereKey($clientId)->lockForUpdate()->firstOrFail();
+            $vehicles = Vehicle::where('vender_id', $clientId)
+                ->where(function ($query) {
+                    $query->where('type', 'Client')->orWhereNull('type');
+                });
+
+            $defaultId = $client->default_vehicle_id
+                ?? Cache::get("client_{$clientId}_default_vehicle");
+
+            if (!$defaultId || !(clone $vehicles)->whereKey($defaultId)->exists()) {
+                $defaultId = (clone $vehicles)->latest()->orderByDesc('id')->value('id');
+            }
+
+            if ($client->default_vehicle_id != $defaultId) {
+                $client->forceFill(['default_vehicle_id' => $defaultId])->save();
+            }
+
+            return $defaultId === null ? null : (int) $defaultId;
+        });
     }
 
     /**
@@ -486,8 +549,8 @@ class VehicleController extends Controller
     {
         $clientId = $v->vender_id;
         if ($isDefault === null) {
-            $defaultId = Cache::get("client_{$clientId}_default_vehicle");
-            $isDefault = $defaultId ? ($v->id == $defaultId) : false;
+            $defaultId = $this->resolveDefaultVehicleId($clientId);
+            $isDefault = $v->id == $defaultId;
         }
 
         $make = $v->vehicle_make?->name ?? '';
@@ -524,7 +587,7 @@ class VehicleController extends Controller
                 'jobsCount'     => 0,
                 'jobs'          => [],
             ],
-            'documents'          => [],
+            'documents'          => $v->documents->map->toApiArray()->values(),
         ];
     }
 

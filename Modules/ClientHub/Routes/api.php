@@ -11,6 +11,7 @@ use Modules\ClientHub\Http\Controllers\QuotationController;
 use Modules\ClientHub\Http\Controllers\QuotationItemController;
 use Modules\ClientHub\Http\Controllers\ServiceController;
 use Modules\ClientHub\Http\Controllers\VehicleController;
+use Modules\ClientHub\Http\Controllers\VehicleDocumentController;
 use Modules\Vender\Http\Controllers\QueueController;
 
 /*
@@ -52,7 +53,16 @@ Route::group(['middleware' => ['cors']], function () {
         Route::match(['get', 'post'], 'vehicle/models', [VehicleController::class, 'getModelsByMake']);
         Route::match(['get', 'post'], 'vehicles/models', [VehicleController::class, 'getModelsByMake']);
 
+        Route::get('vehicles/{vehicle}/documents/{document}/file', [VehicleDocumentController::class, 'file'])
+            ->middleware('signed')->name('client.vehicle-documents.file');
+
         Route::middleware('auth:sanctum')->group(function () {
+
+            Route::get('vehicles/{vehicle}/documents', [VehicleDocumentController::class, 'index']);
+            Route::post('vehicles/{vehicle}/documents', [VehicleDocumentController::class, 'store']);
+            Route::put('vehicles/{vehicle}/documents/{document}', [VehicleDocumentController::class, 'update']);
+            Route::delete('vehicles/{vehicle}/documents/{document}', [VehicleDocumentController::class, 'destroy']);
+            Route::post('vehicles/{vehicle}/documents/{document}/access', [VehicleDocumentController::class, 'access']);
 
             Route::post('change/password', [LoginController::class, 'updatePassword']);
             Route::post('fetch/services', [ServiceController::class, 'fetchServices']);
