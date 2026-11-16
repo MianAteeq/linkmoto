@@ -65,6 +65,72 @@ class ProviderDiscoveryTest extends TestCase
         DB::table('trading_units')->insert(['id' => $id, 'vender_id' => $id, 'name' => $name, 'status' => $status, 'operation_type' => 'On-site', 'lat' => $lat, 'long' => $lng]);
     }
 
+    public function test_guest_filter_options_use_all_database_job_types_with_stable_ids(): void
+    {
+        DB::table('job_types')->insert([
+            ['id' => 2, 'name' => 'Custom EV Repairs'], ['id' => 3, 'name' => '  '],
+            ['id' => 4, 'name' => null],
+        ]);
+        $this->getJson('/api/client/providers/filters')->assertOk()->assertJsonCount(4, 'filters')
+            ->assertJsonPath('filters.0', ['id' => 'operation-onsite', 'name' => 'On-site', 'hasDropdown' => false])
+            ->assertJsonPath('filters.1.id', 'operation-mobile')
+            ->assertJsonPath('filters.2', ['id' => 'job-2', 'name' => 'Custom EV Repairs', 'hasDropdown' => true])
+            ->assertJsonPath('filters.3.id', 'job-1');
+        DB::table('job_types')->where('id', 2)->update(['name' => 'Renamed Job']);
+        $this->getJson('/api/client/providers/filters')->assertOk()->assertJsonPath('filters.3.id', 'job-2')
+            ->assertJsonPath('filters.3.name', 'Renamed Job');
+    }
+
+    public function test_api_filter_ids_combine_operation_and_exact_job_before_pagination(): void
+    {
+        // Only the older mobile MOT provider should survive both filters.
+        for ($id = 2; $id <= 23; $id++) {
+            $this->provider($id, "Mobile $id");
+            DB::table('trading_units')->where('id', $id)->update(['operation_type' => 'Mobile', 'postcode' => 'E2 9HD']);
+        }
+        DB::table('trading_unit_job_types')->insert(['trading_id' => 2, 'job_type_id' => 1]);
+        foreach ([['filterIds' => ['operation-mobile', 'job-1']], ['categories' => ['Mobile', 'MOT']]] as $filters) {
+            $this->postJson('/api/client/providers/search', $filters + ['postcode' => 'E2 9HD'])
+                ->assertOk()->assertJsonCount(1, 'providers')->assertJsonPath('providers.0.id', '2')
+                ->assertJsonPath('nextPage', null);
+        }
+        $this->postJson('/api/client/providers/search', ['filterIds' => ['operation-onsite', 'job-1']])
+            ->assertOk()->assertJsonCount(1, 'providers')->assertJsonPath('providers.0.id', '1');
+    }
+
+    public function test_multiple_jobs_match_any_selected_id_and_clearing_restores_all_providers(): void
+    {
+        $this->provider(2, 'Tyre Garage');
+        $this->provider(3, 'Other Garage');
+        DB::table('job_types')->insert(['id' => 2, 'name' => 'Tyres']);
+        DB::table('trading_unit_job_types')->insert(['trading_id' => 2, 'job_type_id' => 2]);
+        $this->postJson('/api/client/providers/search', ['filterIds' => ['job-1', 'job-2']])
+            ->assertOk()->assertJsonCount(2, 'providers');
+        $this->postJson('/api/client/providers/search', ['filterIds' => ['job-999']])
+            ->assertOk()->assertJsonCount(0, 'providers');
+        $this->postJson('/api/client/providers/search', ['filterIds' => []])
+            ->assertOk()->assertJsonCount(3, 'providers');
+    }
+
+    public function test_filter_ids_do_not_match_similar_job_names_and_keep_postcode_rules(): void
+    {
+        $this->provider(2, 'MOT Repairs');
+        DB::table('job_types')->insert(['id' => 2, 'name' => 'MOT Repairs']);
+        DB::table('trading_unit_job_types')->insert(['trading_id' => 2, 'job_type_id' => 2]);
+        $this->postJson('/api/client/providers/search', ['filterIds' => ['job-1']])
+            ->assertOk()->assertJsonCount(1, 'providers')->assertJsonPath('providers.0.id', '1');
+        DB::table('trading_units')->where('id', 1)->update(['operation_type' => 'Mobile', 'postcode' => 'E2 9HD']);
+        $this->postJson('/api/client/providers/search', ['filterIds' => ['operation-mobile', 'job-1'], 'postcode' => 'N1 5PA'])
+            ->assertOk()->assertJsonCount(0, 'providers');
+    }
+
+    public function test_malformed_filter_ids_are_rejected(): void
+    {
+        foreach ([['unknown'], ['job-0'], ['job-1 OR 1=1'], ['operation-air'], array_fill(0, 31, 'job-1')] as $filters) {
+            $this->postJson('/api/client/providers/search', ['filterIds' => $filters])->assertUnprocessable();
+        }
+    }
+
     public function test_guests_receive_real_public_fields_without_account_or_document_data(): void
     {
         $this->provider(2, 'Pending Garage', null, null, 'PENDING');

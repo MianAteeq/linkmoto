@@ -6,12 +6,28 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Admin\Entities\JobType;
 use Modules\ClientHub\Entities\Client;
 use Modules\ClientHub\Entities\LinkVender;
 use Modules\Vender\Entities\TradingUnit;
 
 class ProviderDiscoveryController extends Controller
 {
+    public function filters()
+    {
+        $jobs = JobType::query()->select(['id', 'name'])->whereNotNull('name')
+            ->whereRaw("TRIM(name) <> ''")->orderBy('name')->orderBy('id')->get();
+        $filters = [
+            ['id' => 'operation-onsite', 'name' => 'On-site', 'hasDropdown' => false],
+            ['id' => 'operation-mobile', 'name' => 'Mobile', 'hasDropdown' => false],
+        ];
+        foreach ($jobs as $job) {
+            $filters[] = ['id' => 'job-' . $job->id, 'name' => trim($job->name), 'hasDropdown' => true];
+        }
+
+        return response()->json(['status' => true, 'filters' => $filters])->header('Cache-Control', 'private, no-store');
+    }
+
     private function approved(): Builder
     {
         // Match the existing approved-vendor discovery rules, including one unit per vendor.
@@ -39,6 +55,8 @@ class ProviderDiscoveryController extends Controller
             'providerIds' => 'sometimes|array|max:20', 'providerIds.*' => 'integer|min:1',
             'jobTerms' => 'sometimes|array|max:30', 'jobTerms.*' => 'string|max:150',
             'categories' => 'sometimes|array|max:30', 'categories.*' => 'string|max:150',
+            'filterIds' => 'sometimes|array|max:30',
+            'filterIds.*' => ['string', 'max:64', 'regex:/^(operation-(onsite|mobile)|job-[1-9][0-9]*)$/'],
         ]);
         $query = $this->approved()->select('trading_units.*');
         $postcode = strtoupper(str_replace(' ', '', trim($input['postcode'] ?? '')));
@@ -78,16 +96,35 @@ class ProviderDiscoveryController extends Controller
                     ->orWhereHas('product_offers', fn (Builder $q) => $q->where('product_name', 'like', '%' . $term . '%'));
             });
         }
-        if (!empty($input['categories'])) {
-            $query->where(function (Builder $match) use ($input) {
-                foreach ($input['categories'] as $category) {
-                    if (in_array($category, ['On-site', 'Mobile'], true)) {
-                        $match->orWhere('trading_units.operation_type', 'like', '%' . $category . '%');
-                    } else {
-                        $term = $category === 'Service' ? 'servic' : $category;
-                        $match->orWhereHas('job_types.job_type', fn (Builder $q) => $q->where('name', 'like', '%' . $term . '%'));
-                    }
+        // Match any selected operation AND any selected job, before pagination.
+        $operationTypes = [];
+        $jobIds = [];
+        foreach ($input['filterIds'] ?? [] as $filterId) {
+            if ($filterId === 'operation-onsite') $operationTypes[] = 'On-site';
+            elseif ($filterId === 'operation-mobile') $operationTypes[] = 'Mobile';
+            else $jobIds[] = (int) substr($filterId, 4);
+        }
+        $jobNames = [];
+        foreach ($input['categories'] ?? [] as $category) {
+            if (in_array($category, ['On-site', 'Mobile'], true)) $operationTypes[] = $category;
+            else $jobNames[] = $category;
+        }
+        if ($operationTypes) {
+            $query->where(function (Builder $match) use ($operationTypes) {
+                foreach (array_unique($operationTypes) as $operation) {
+                    $match->orWhere('trading_units.operation_type', 'like', '%' . $operation . '%');
                 }
+            });
+        }
+        if ($jobIds || $jobNames) {
+            $query->whereHas('job_types', function (Builder $jobs) use ($jobIds, $jobNames) {
+                $jobs->where(function (Builder $match) use ($jobIds, $jobNames) {
+                    if ($jobIds) $match->whereIn('job_type_id', $jobIds);
+                    foreach ($jobNames as $name) {
+                        $term = $name === 'Service' ? 'servic' : $name;
+                        $match->orWhereHas('job_type', fn (Builder $q) => $q->where('name', 'like', '%' . $term . '%'));
+                    }
+                });
             });
         }
         if (isset($input['lat'], $input['lng']) && ((float) $input['lat'] !== 0.0 || (float) $input['lng'] !== 0.0)) {
