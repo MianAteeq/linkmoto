@@ -16,15 +16,18 @@ use Modules\Admin\Entities\TransmissionType;
 use Modules\Admin\Entities\VehicleColor;
 use Modules\ClientHub\Entities\Client;
 use Modules\ClientHub\Services\DvsaMotHistoryService;
+use Modules\ClientHub\Services\DvlaVehicleEnquiryService;
 use Modules\Vender\Entities\Vehicle;
 
 class VehicleController extends Controller
 {
     protected DvsaMotHistoryService $dvsaService;
+    protected DvlaVehicleEnquiryService $dvlaService;
 
-    public function __construct(DvsaMotHistoryService $dvsaService)
+    public function __construct(DvsaMotHistoryService $dvsaService, DvlaVehicleEnquiryService $dvlaService)
     {
         $this->dvsaService = $dvsaService;
+        $this->dvlaService = $dvlaService;
         // Client and vendor tokens can have the same numeric owner ID.
         // Vehicle responses now include private document metadata.
         $this->middleware(function (Request $request, \Closure $next) {
@@ -51,6 +54,11 @@ class VehicleController extends Controller
             }
 
             $result = $this->dvsaService->lookupVehicle($vrm);
+            if (!empty($result['found']) && isset($result['vehicle'])) {
+                $enquiry = $this->dvlaService->lookupChecks($vrm);
+                $result['vehicle']['checks'] = $enquiry['checks'] ?? DvlaVehicleEnquiryService::unavailableChecks();
+            }
+            $result['registrationNumber'] = strtoupper(preg_replace('/\s+/', '', $vrm));
             return response()->json($result);
         } catch (Exception $e) {
             return response()->json([
@@ -129,10 +137,7 @@ class VehicleController extends Controller
                 'color',
             ])->find($veh->id);
 
-            if ($request->has('checks') && is_array($request->input('checks'))) {
-                Cache::put("vehicle_checks_{$veh->id}", $request->input('checks'), 86400 * 30);
-                Cache::put("vehicle_checks_{$cleanVrm}", $request->input('checks'), 86400 * 30);
-            }
+            // Checks come only from the server's DVLA cache, never from form data.
 
             $defaultId = $this->resolveDefaultVehicleId($clientId);
             $isDefault = $veh->id == $defaultId;
@@ -501,7 +506,7 @@ class VehicleController extends Controller
     }
 
     /**
-     * Refresh vehicle MOT & tax checks from DVSA.
+     * Refresh official MOT & tax checks from DVLA VES.
      */
     public function refreshVehicleChecks(Request $request, $id = null)
     {
@@ -517,21 +522,14 @@ class VehicleController extends Controller
                 ], 404);
             }
 
-            Cache::forget("vehicle_checks_{$vehicle->id}");
-            Cache::forget("vehicle_checks_{$vehicle->vrm}");
-
-            $lookup = $this->dvsaService->lookupVehicle($vehicle->vrm);
-            $checks = !empty($lookup['vehicle']['checks'])
-                ? $lookup['vehicle']['checks']
-                : $this->dvsaService->computeDynamicChecksForVrm($vehicle->vrm, (string)$vehicle->year);
-
-            $checks['lastChecked'] = 'Just now';
-            Cache::put("vehicle_checks_{$vehicle->id}", $checks, 86400 * 30);
-            Cache::put("vehicle_checks_{$vehicle->vrm}", $checks, 86400 * 30);
+            $lookup = $this->dvlaService->lookupChecks($vehicle->vrm, true);
+            if (!$lookup['status']) {
+                return response()->json(['status' => false, 'message' => $lookup['message']], $lookup['httpStatus']);
+            }
 
             return response()->json([
                 'status' => true,
-                'checks' => $checks,
+                'checks' => $lookup['checks'],
             ]);
         } catch (Exception $e) {
             return response()->json([
@@ -560,9 +558,7 @@ class VehicleController extends Controller
         $engine = $v->engine_size?->eng_size ?? '';
         $trans = $v->transmission_type?->transmission_types ?? 'Automatic';
 
-        $checks = Cache::get("vehicle_checks_{$v->id}")
-            ?? Cache::get("vehicle_checks_{$v->vrm}")
-            ?? $this->dvsaService->computeDynamicChecksForVrm($v->vrm, (string)$v->year);
+        $checks = $this->dvlaService->cachedChecks($v->vrm);
 
         return [
             'id'                 => (string) $v->id,

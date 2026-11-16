@@ -8,9 +8,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Laravel\Sanctum\Sanctum;
-use Mockery\MockInterface;
 use Modules\ClientHub\Entities\Client;
-use Modules\ClientHub\Services\DvsaMotHistoryService;
 use Modules\Vender\Entities\Vehicle;
 use Tests\TestCase;
 
@@ -48,11 +46,7 @@ class DefaultVehicleTest extends TestCase
             });
         }
 
-        $this->mock(DvsaMotHistoryService::class, function (MockInterface $mock) {
-            $mock->shouldReceive('computeDynamicChecksForVrm')->andReturn([
-                'motStatus' => 'Valid', 'taxStatus' => 'Taxed',
-            ]);
-        });
+
     }
 
     private function defaultMigration(): \Illuminate\Database\Migrations\Migration

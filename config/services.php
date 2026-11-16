@@ -36,6 +36,11 @@ return [
         'secret' => env('Secret_key'),
     ],
 
+    'dvla' => [
+        'api_key' => env('DVLA_API_KEY'),
+        'url' => env('DVLA_VES_URL', 'https://driver-vehicle-licensing.api.gov.uk/vehicle-enquiry/v1/vehicles'),
+    ],
+
     'dvsa' => [
         'client_id'     => env('DVSA_CLIENT_ID'),
         'client_secret' => env('DVSA_CLIENT_SECRET'),

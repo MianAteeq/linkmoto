@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\Sanctum;
 use Modules\ClientHub\Entities\Client;
 use Modules\ClientHub\Entities\VehicleDocument;
-use Modules\ClientHub\Services\DvsaMotHistoryService;
 use Modules\Vender\Entities\Vehicle;
 use Tests\TestCase;
 
@@ -178,7 +177,6 @@ class VehicleDocumentsTest extends TestCase
         foreach (['car_makers', 'car_models', 'engine_sizes', 'transmission_types', 'fuel_types', 'vehicle_colors'] as $name) {
             Schema::create($name, function (Blueprint $table) { $table->id(); });
         }
-        $this->mock(DvsaMotHistoryService::class)->shouldReceive('computeDynamicChecksForVrm')->andReturn([]);
         $this->upload();
         $this->getJson("/api/client/vehicles/{$this->vehicle->id}")->assertOk()
             ->assertJsonPath('vehicle.documents.0.label', 'Insurance certificate')
