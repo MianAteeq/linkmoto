@@ -96,7 +96,7 @@ class ProviderDiscoveryTest extends TestCase
         $this->postJson('/api/client/providers/search', ['lat' => 51.5, 'lng' => -0.12])
             ->assertJsonCount(20, 'providers')->assertJsonPath('providers.0.id', '1')->assertJsonPath('nextPage', 2);
         $this->postJson('/api/client/providers/search', ['lat' => 51.5, 'lng' => -0.12, 'page' => 2])
-            ->assertJsonCount(3, 'providers')->assertJsonPath('providers.2.distanceOrCoverage', 'Distance unavailable')->assertJsonPath('nextPage', null);
+            ->assertJsonCount(3, 'providers')->assertJsonPath('providers.2.distanceOrCoverage', '0.0 miles away')->assertJsonPath('nextPage', null);
     }
 
     public function test_linked_status_is_scoped_to_the_signed_in_client(): void
@@ -114,6 +114,26 @@ class ProviderDiscoveryTest extends TestCase
         foreach ([['lat' => 99, 'lng' => 0], ['lat' => 1], ['page' => 0], ['categories' => array_fill(0, 31, 'MOT')]] as $input) {
             $this->postJson('/api/client/providers/search', $input)->assertUnprocessable();
         }
+    }
+
+    public function test_missing_coordinates_use_the_requested_zero_mile_display_fallback(): void
+    {
+        DB::table('trading_units')->where('id', 1)->update(['lat' => 0, 'long' => 0]);
+        $this->postJson('/api/client/providers/search', ['lat' => 51.5, 'lng' => -0.12])
+            ->assertOk()->assertJsonPath('providers.0.distanceOrCoverage', '0.0 miles away');
+        $this->postJson('/api/client/providers/search', ['lat' => 0, 'lng' => 0])
+            ->assertOk()->assertJsonPath('providers.0.distanceOrCoverage', '0.0 miles away');
+    }
+
+    public function test_cards_keep_services_compact_while_filters_search_all_services(): void
+    {
+        foreach ([2 => 'Tyres', 3 => 'Diagnostics', 4 => 'Electrical'] as $id => $name) {
+            DB::table('job_types')->insert(['id' => $id, 'name' => $name]);
+            DB::table('trading_unit_job_types')->insert(['trading_id' => 1, 'job_type_id' => $id]);
+        }
+        $this->postJson('/api/client/providers/search', ['categories' => ['Electrical'], 'providerIds' => ['1']])
+            ->assertOk()->assertJsonCount(1, 'providers')->assertJsonPath('providers.0.services', 'MOT • Tyres')
+            ->assertJsonPath('providers.0.additionalServices', 'Diagnostics… and more');
     }
 
     public function test_live_details_are_public_and_cannot_fall_back_to_a_different_or_pending_provider(): void

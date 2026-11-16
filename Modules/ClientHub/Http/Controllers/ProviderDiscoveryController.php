@@ -81,12 +81,13 @@ class ProviderDiscoveryController extends Controller
                 }
             });
         }
-        if (isset($input['lat'], $input['lng'])) {
+        if (isset($input['lat'], $input['lng']) && ((float) $input['lat'] !== 0.0 || (float) $input['lng'] !== 0.0)) {
             $query->leftJoin('vender_addresses as discovery_site', 'discovery_site.id', '=', 'trading_units.site_id');
-            $lat = "COALESCE(NULLIF(trading_units.lat, ''), NULLIF(discovery_site.lat, ''))";
-            $lng = "COALESCE(NULLIF(trading_units.long, ''), NULLIF(discovery_site.long, ''))";
+            $unitCoordinates = "NULLIF(trading_units.lat, '') IS NOT NULL AND NULLIF(trading_units.long, '') IS NOT NULL AND NOT (trading_units.lat = 0 AND trading_units.long = 0)";
+            $lat = "CASE WHEN $unitCoordinates THEN trading_units.lat ELSE NULLIF(discovery_site.lat, '') END";
+            $lng = "CASE WHEN $unitCoordinates THEN trading_units.long ELSE NULLIF(discovery_site.long, '') END";
             $cosine = "COS(RADIANS(?))*COS(RADIANS($lat))*COS(RADIANS($lng)-RADIANS(?))+SIN(RADIANS(?))*SIN(RADIANS($lat))";
-            $query->selectRaw("3958.7613 * ACOS(LEAST(1, GREATEST(-1, $cosine))) AS discovery_distance",
+            $query->selectRaw("CASE WHEN ($lat) = 0 AND ($lng) = 0 THEN NULL ELSE 3958.7613 * ACOS(LEAST(1, GREATEST(-1, $cosine))) END AS discovery_distance",
                 [$input['lat'], $input['lng'], $input['lat']])
                 ->orderByRaw('discovery_distance IS NULL')->orderBy('discovery_distance');
         }
@@ -111,7 +112,7 @@ class ProviderDiscoveryController extends Controller
         $distance = $unit->discovery_distance;
         $coverage = $mobile && !$onsite
             ? ($unit->radius ? "Up to {$unit->radius} miles from " . trim("{$unit->city} {$unit->postcode}") : 'Coverage available on enquiry')
-            : ($distance !== null ? number_format((float) $distance, 1) . ' miles away' : 'Distance unavailable');
+            : ($distance !== null ? number_format((float) $distance, 1) . ' miles away' : '0.0 miles away');
         $site = $unit->site;
         $address = $onsite && $site ? implode(', ', array_filter([
             $site->address_line_1, $site->address_line_2, $site->address_line_3, $site->address_line_4,
@@ -124,7 +125,8 @@ class ProviderDiscoveryController extends Controller
             'isFavorite' => false, 'isLinked' => in_array($unit->id, $linked) || in_array($unit->vender_id, $linked),
             'serviceType' => $unit->operation_type ?: '', 'distanceOrCoverage' => trim($coverage),
             'isCoverageItalic' => $mobile && !$onsite, 'address' => $address,
-            'ratings' => [], 'services' => implode(' • ', $services),
+            'ratings' => [], 'services' => implode(' • ', array_slice($services, 0, 2)),
+            'additionalServices' => count($services) > 2 ? $services[2] . (count($services) > 3 ? '… and more' : '') : null,
         ];
     }
 
@@ -178,6 +180,10 @@ class ProviderDiscoveryController extends Controller
             'accreditations' => ['accreditations' => $names($unit->accreditations, 'accreditation')],
             'paymentMethods' => ['methods' => $names($unit->payment_methods, 'payment_method')],
         ];
+        if ($profile['location']['latitude'] === 0.0 && $profile['location']['longitude'] === 0.0) {
+            $profile['location']['latitude'] = null;
+            $profile['location']['longitude'] = null;
+        }
         return response()->json(['status' => true, 'profile' => $profile])->header('Cache-Control', 'private, no-store');
     }
 }
