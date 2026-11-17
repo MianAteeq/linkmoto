@@ -13,6 +13,7 @@ use Modules\ClientHub\Http\Controllers\ServiceController;
 use Modules\ClientHub\Http\Controllers\ProviderDiscoveryController;
 use Modules\ClientHub\Http\Controllers\VehicleController;
 use Modules\ClientHub\Http\Controllers\VehicleDocumentController;
+use Modules\ClientHub\Http\Controllers\NotificationController;
 use Modules\Vender\Http\Controllers\QueueController;
 
 /*
@@ -154,6 +155,16 @@ Route::group(['middleware' => ['cors']], function () {
             Route::post('get/single/invoice', [InvoiceController::class, 'fetchSingleInvoice']);
             Route::post('get/single/invoice/pdf', [InvoiceController::class, 'fetchInvoicePdf']);
             Route::post('pay/invoice', [InvoiceController::class, 'payInvoice']);
+
+            /************  Notifications  ***************/
+            Route::get('notifications', [NotificationController::class, 'index']);
+            Route::get('notifications/unread-count', [NotificationController::class, 'unreadCount']);
+            Route::match(['patch', 'post'], 'notifications/{id}/read', [NotificationController::class, 'markAsRead']);
+            Route::match(['patch', 'post'], 'notifications/{id}/unread', [NotificationController::class, 'markAsUnread']);
+            Route::post('notifications/mark-all-read', [NotificationController::class, 'markAllAsRead']);
+            Route::match(['delete', 'post'], 'notifications/{id}', [NotificationController::class, 'destroy']);
+            Route::post('notifications/{id}/delete', [NotificationController::class, 'destroy']);
+            Route::post('notifications', [NotificationController::class, 'store']);
 
 
         });

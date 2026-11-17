@@ -26,6 +26,9 @@ class Client extends Authenticatable
         'email_verified_at' => 'datetime',
         'deleted_at'        => 'datetime',
     ];
-    
-  
+
+    public function notifications()
+    {
+        return $this->hasMany(ClientNotification::class, 'client_id');
+    }
 }

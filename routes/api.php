@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Modules\ClientHub\Http\Controllers\VehicleController;
+use Modules\ClientHub\Http\Controllers\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,4 +42,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('vehicles/delete', [VehicleController::class, 'vehicleDelete']);
     Route::post('vehicles/{id}/set-default', [VehicleController::class, 'setDefaultVehicle']);
     Route::post('vehicles/{id}/refresh-checks', [VehicleController::class, 'refreshVehicleChecks']);
+
+    // Direct notification route aliases for client convenience
+    Route::get('notifications', [NotificationController::class, 'index']);
+    Route::get('notifications/unread-count', [NotificationController::class, 'unreadCount']);
+    Route::match(['patch', 'post'], 'notifications/{id}/read', [NotificationController::class, 'markAsRead']);
+    Route::match(['patch', 'post'], 'notifications/{id}/unread', [NotificationController::class, 'markAsUnread']);
+    Route::post('notifications/mark-all-read', [NotificationController::class, 'markAllAsRead']);
+    Route::match(['delete', 'post'], 'notifications/{id}', [NotificationController::class, 'destroy']);
+    Route::post('notifications/{id}/delete', [NotificationController::class, 'destroy']);
+    Route::post('notifications', [NotificationController::class, 'store']);
 });
