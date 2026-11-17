@@ -284,6 +284,17 @@ class ProviderDiscoveryTest extends TestCase
             ->assertJsonPath('providers.0.additionalServices', 'Diagnostics… and more');
     }
 
+    public function test_profile_link_status_belongs_to_the_current_client(): void
+    {
+        $this->getJson('/api/client/providers/1')->assertOk()->assertJsonPath('profile.isLinked', false);
+        $client = Client::create(['name' => 'Linked client']);
+        DB::table('link_venders')->insert(['vender_id' => 1, 'hub_id' => $client->id]);
+        Sanctum::actingAs($client);
+        $this->getJson('/api/client/providers/1')->assertOk()->assertJsonPath('profile.isLinked', true);
+        Sanctum::actingAs(Client::create(['name' => 'Other client']));
+        $this->getJson('/api/client/providers/1')->assertOk()->assertJsonPath('profile.isLinked', false);
+    }
+
     public function test_live_details_are_public_and_cannot_fall_back_to_a_different_or_pending_provider(): void
     {
         $this->getJson('/api/client/providers/1')->assertOk()->assertJsonPath('profile.id', '1')

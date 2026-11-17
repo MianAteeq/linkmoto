@@ -280,7 +280,9 @@ class ProviderDiscoveryController extends Controller
     {
         $unit = $this->approved()->with(['hub_setting', 'product_offers.job_type', 'payment_methods.payment_method',
             'warranty_jobs.warranty_job', 'vehicle_specialists.vehicle_specialist', 'accreditations.accreditation'])->findOrFail($id);
-        $card = $this->card($unit, []);
+        $client = $request->user('sanctum');
+        $linked = $client instanceof Client ? LinkVender::where('hub_id', $client->id)->pluck('vender_id')->all() : [];
+        $card = $this->card($unit, $linked);
         $schedule = [];
         $open = false;
         $todayHours = '';
@@ -307,6 +309,7 @@ class ProviderDiscoveryController extends Controller
         $names = fn ($collection, $relation) => $collection->map(fn ($item) => $item->{$relation}->name ?? null)->filter()->unique()->values()->all();
         $profile = [
             'id' => $card['id'], 'name' => $card['name'], 'truId' => $card['truId'], 'isFavorite' => false,
+            'isLinked' => $card['isLinked'],
             'location' => ['serviceType' => $card['serviceType'], 'distanceDisplay' => '', 'address' => $card['address'] ?? trim("{$unit->city} {$unit->postcode}"),
                 'latitude' => is_numeric($unit->lat ?? $unit->site->lat ?? null) ? (float) ($unit->lat ?? $unit->site->lat) : null,
                 'longitude' => is_numeric($unit->long ?? $unit->site->long ?? null) ? (float) ($unit->long ?? $unit->site->long) : null],
