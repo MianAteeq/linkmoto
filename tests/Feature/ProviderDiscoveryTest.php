@@ -32,7 +32,7 @@ class ProviderDiscoveryTest extends TestCase
             'trading_units' => ['vender_id', 'name', 'status', 'site_id', 'trading_name_id', 'trading_template', 'operation_type', 'lat', 'long', 'city', 'postcode', 'radius'],
             'vender_addresses' => ['address_line_1', 'address_line_2', 'address_line_3', 'address_line_4', 'city', 'postcode', 'lat', 'long', 'proof'],
             'trading_unit_job_types' => ['trading_id', 'job_type_id'],
-            'job_types' => ['name'],
+            'job_types' => ['name', 'parent_id'],
             'quick_products' => ['trading_id', 'product_name', 'job_type_id', 'description', 'price', 'price_type'],
             'trading_unit_hub_profiles' => ['trading_id', 'website'],
             'trading_unit_payment_methods' => ['trading_id', 'payment_method_id'],
@@ -71,14 +71,57 @@ class ProviderDiscoveryTest extends TestCase
             ['id' => 2, 'name' => 'Custom EV Repairs'], ['id' => 3, 'name' => '  '],
             ['id' => 4, 'name' => null],
         ]);
-        $this->getJson('/api/client/providers/filters')->assertOk()->assertJsonCount(4, 'filters')
+        $this->getJson('/api/client/providers/filters')->assertOk()->assertJsonCount(5, 'filters')
             ->assertJsonPath('filters.0', ['id' => 'operation-onsite', 'name' => 'On-site', 'hasDropdown' => false])
             ->assertJsonPath('filters.1.id', 'operation-mobile')
-            ->assertJsonPath('filters.2', ['id' => 'job-2', 'name' => 'Custom EV Repairs', 'hasDropdown' => true])
-            ->assertJsonPath('filters.3.id', 'job-1');
+            ->assertJsonPath('filters.2', ['id' => 'hub-connect', 'name' => 'Hub Connect', 'hasDropdown' => false, 'parentId' => null])
+            ->assertJsonPath('filters.3', ['id' => 'job-2', 'name' => 'Custom EV Repairs', 'hasDropdown' => true, 'parentId' => null])
+            ->assertJsonPath('filters.4.id', 'job-1');
         DB::table('job_types')->where('id', 2)->update(['name' => 'Renamed Job']);
-        $this->getJson('/api/client/providers/filters')->assertOk()->assertJsonPath('filters.3.id', 'job-2')
-            ->assertJsonPath('filters.3.name', 'Renamed Job');
+        $this->getJson('/api/client/providers/filters')->assertOk()->assertJsonPath('filters.4.id', 'job-2')
+            ->assertJsonPath('filters.4.name', 'Renamed Job');
+    }
+
+    public function test_filter_metadata_identifies_categories_and_child_jobs(): void
+    {
+        DB::table('job_types')->insert(['id' => 2, 'name' => 'MOT - Class 4', 'parent_id' => 1]);
+        $this->getJson('/api/client/providers/filters')->assertOk()
+            ->assertJsonPath('filters.3.id', 'job-1')->assertJsonPath('filters.3.parentId', null)
+            ->assertJsonPath('filters.4.id', 'job-2')->assertJsonPath('filters.4.parentId', 'job-1');
+    }
+
+    public function test_category_filters_include_nested_child_jobs_without_matching_similar_names(): void
+    {
+        foreach ([2, 3, 4] as $id) $this->provider($id, "Garage $id");
+        DB::table('job_types')->insert([
+            ['id' => 2, 'name' => 'MOT - Class 4', 'parent_id' => 1],
+            ['id' => 3, 'name' => 'Class 4 Retest', 'parent_id' => 2],
+            ['id' => 4, 'name' => 'MOT Repairs', 'parent_id' => 0],
+        ]);
+        foreach ([2, 3, 4] as $id) DB::table('trading_unit_job_types')->insert(['trading_id' => $id, 'job_type_id' => $id]);
+        $result = $this->postJson('/api/client/providers/search', ['filterIds' => ['job-1']])
+            ->assertOk()->assertJsonCount(3, 'providers')->json('providers');
+        $this->assertEqualsCanonicalizing(['1', '2', '3'], array_column($result, 'id'));
+        $this->postJson('/api/client/providers/search', ['filterIds' => ['job-2']])
+            ->assertOk()->assertJsonCount(2, 'providers');
+    }
+
+    public function test_hub_connect_is_account_scoped_and_combines_with_other_filters_before_pagination(): void
+    {
+        for ($id = 2; $id <= 23; $id++) $this->provider($id, "Garage $id");
+        $this->postJson('/api/client/providers/search', ['filterIds' => ['hub-connect']])
+            ->assertOk()->assertJsonCount(0, 'providers');
+        $client = Client::create(['name' => 'Viewer']);
+        DB::table('link_venders')->insert(['vender_id' => 1, 'hub_id' => $client->id]);
+        Sanctum::actingAs($client);
+        $this->postJson('/api/client/providers/search', ['filterIds' => ['hub-connect', 'operation-onsite', 'job-1']])
+            ->assertOk()->assertJsonCount(1, 'providers')->assertJsonPath('providers.0.id', '1')
+            ->assertJsonPath('providers.0.isLinked', true)->assertJsonPath('nextPage', null);
+        Sanctum::actingAs(Client::create(['name' => 'Other']));
+        $this->postJson('/api/client/providers/search', ['filterIds' => ['hub-connect']])
+            ->assertOk()->assertJsonCount(0, 'providers');
+        $this->postJson('/api/client/providers/search', ['filterIds' => []])
+            ->assertOk()->assertJsonCount(20, 'providers')->assertJsonPath('nextPage', 2);
     }
 
     public function test_api_filter_ids_combine_operation_and_exact_job_before_pagination(): void

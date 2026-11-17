@@ -16,14 +16,16 @@ class ProviderDiscoveryController extends Controller
 {
     public function filters()
     {
-        $jobs = JobType::query()->select(['id', 'name'])->whereNotNull('name')
+        $jobs = JobType::query()->select(['id', 'name', 'parent_id'])->whereNotNull('name')
             ->whereRaw("TRIM(name) <> ''")->orderBy('name')->orderBy('id')->get();
         $filters = [
             ['id' => 'operation-onsite', 'name' => 'On-site', 'hasDropdown' => false],
             ['id' => 'operation-mobile', 'name' => 'Mobile', 'hasDropdown' => false],
+            ['id' => 'hub-connect', 'name' => 'Hub Connect', 'hasDropdown' => false, 'parentId' => null],
         ];
         foreach ($jobs as $job) {
-            $filters[] = ['id' => 'job-' . $job->id, 'name' => trim($job->name), 'hasDropdown' => true];
+            $filters[] = ['id' => 'job-' . $job->id, 'name' => trim($job->name), 'hasDropdown' => true,
+                'parentId' => $job->parent_id ? 'job-' . $job->parent_id : null];
         }
 
         return response()->json(['status' => true, 'filters' => $filters])->header('Cache-Control', 'private, no-store');
@@ -57,9 +59,17 @@ class ProviderDiscoveryController extends Controller
             'jobTerms' => 'sometimes|array|max:30', 'jobTerms.*' => 'string|max:150',
             'categories' => 'sometimes|array|max:30', 'categories.*' => 'string|max:150',
             'filterIds' => 'sometimes|array|max:30',
-            'filterIds.*' => ['string', 'max:64', 'regex:/^(operation-(onsite|mobile)|job-[1-9][0-9]*)$/'],
+            'filterIds.*' => ['string', 'max:64', 'regex:/^(operation-(onsite|mobile)|hub-connect|job-[1-9][0-9]*)$/'],
         ]);
         $query = $this->approved()->select('trading_units.*');
+        $client = $request->user('sanctum');
+        $linked = $client instanceof Client ? LinkVender::where('hub_id', $client->id)->pluck('vender_id')->all() : [];
+        if (in_array('hub-connect', $input['filterIds'] ?? [], true)) {
+            // Apply account-scoped links before pagination and the other filters.
+            $query->where(function (Builder $match) use ($linked) {
+                $match->whereIn('trading_units.id', $linked)->orWhereIn('trading_units.vender_id', $linked);
+            });
+        }
         $postcode = strtoupper(str_replace(' ', '', trim($input['postcode'] ?? '')));
         // Mobile coverage requires an exact selected-postcode match; radius is not used.
         $query->where(function (Builder $coverage) use ($postcode) {
@@ -103,7 +113,7 @@ class ProviderDiscoveryController extends Controller
         foreach ($input['filterIds'] ?? [] as $filterId) {
             if ($filterId === 'operation-onsite') $operationTypes[] = 'On-site';
             elseif ($filterId === 'operation-mobile') $operationTypes[] = 'Mobile';
-            else $jobIds[] = (int) substr($filterId, 4);
+            elseif (str_starts_with($filterId, 'job-')) $jobIds[] = (int) substr($filterId, 4);
         }
         $jobNames = [];
         foreach ($input['categories'] ?? [] as $category) {
@@ -118,6 +128,7 @@ class ProviderDiscoveryController extends Controller
             });
         }
         if ($jobIds || $jobNames) {
+            $jobIds = $this->includeChildJobs($jobIds);
             $query->whereHas('job_types', function (Builder $jobs) use ($jobIds, $jobNames) {
                 $jobs->where(function (Builder $match) use ($jobIds, $jobNames) {
                     if ($jobIds) $match->whereIn('job_type_id', $jobIds);
@@ -132,12 +143,23 @@ class ProviderDiscoveryController extends Controller
             $query->orderByRaw('discovery_distance IS NULL')->orderBy('discovery_distance');
         }
         $page = $query->orderByDesc('trading_units.id')->paginate(20, ['*'], 'page', $input['page'] ?? 1);
-        $client = $request->user('sanctum');
-        $linked = $client instanceof Client ? LinkVender::where('hub_id', $client->id)->pluck('vender_id')->all() : [];
         return response()->json(['status' => true,
             'providers' => $page->getCollection()->map(fn ($unit) => $this->card($unit, $linked))->values(),
             'nextPage' => $page->hasMorePages() ? $page->currentPage() + 1 : null,
         ])->header('Cache-Control', 'private, no-store');
+    }
+
+    private function includeChildJobs(array $jobIds): array
+    {
+        $allIds = array_values(array_unique($jobIds));
+        $pending = $allIds;
+        // Walk the actual hierarchy, including nested groups, with cycle protection.
+        while ($pending) {
+            $children = JobType::query()->whereIn('parent_id', $pending)->pluck('id')->all();
+            $pending = array_values(array_diff($children, $allIds));
+            $allIds = array_merge($allIds, $pending);
+        }
+        return $allIds;
     }
 
     private function withDistance(Builder $query, array $input): bool
