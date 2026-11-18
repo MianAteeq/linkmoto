@@ -15,9 +15,109 @@ use Modules\Vender\Entities\Quotation;
 use Kutia\Larafirebase\Facades\Larafirebase;
 use Modules\Vender\Entities\ContactDetail;
 use Modules\Vender\Entities\TradingUnit;
+use Modules\Vender\Entities\Vehicle;
+use Modules\Vender\Entities\JobRequest;
+use Illuminate\Support\Facades\DB;
 
 class QuotationController extends Controller
 {
+    public function requestQuotation(Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'provider_id' => ['required', 'integer', 'exists:trading_units,id'],
+            'vehicle_id' => ['required', 'integer'],
+            'service_type' => ['required', 'in:On-site,Mobile'],
+            'quotation_date' => ['nullable', 'date_format:Y-m-d'],
+            'note' => ['nullable', 'string', 'max:2000'],
+            'job_requests' => ['required', 'array', 'min:1'],
+            'job_requests.*.job_type_id' => ['nullable', 'integer'],
+            'job_requests.*.price_type_id' => ['nullable', 'integer'],
+            'job_requests.*.product_id' => ['nullable', 'integer'],
+            'job_requests.*.name' => ['required', 'string', 'max:500'],
+            'job_requests.*.description' => ['nullable', 'string', 'max:2000'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors()->first(),
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $client = $request->user();
+        $vehicle = Vehicle::where('vender_id', $client->id)->find($request->integer('vehicle_id'));
+        if (!$vehicle) {
+            return response()->json([
+                'status' => false,
+                'message' => 'The selected vehicle does not belong to this account.',
+            ], 422);
+        }
+
+        $tradingUnit = TradingUnit::findOrFail($request->integer('provider_id'));
+
+        try {
+            $quotation = DB::transaction(function () use ($request, $client, $vehicle, $tradingUnit) {
+                $contact = ContactDetail::firstOrCreate(
+                    ['hub_id' => $client->id, 'vender_id' => $tradingUnit->vender_id],
+                    [
+                        'contact_no' => 'CON-SVP' . str_pad((string) $tradingUnit->vender_id, 5, '0', STR_PAD_LEFT) . '-' . str_pad((string) (ContactDetail::max('id') + 1), 5, '0', STR_PAD_LEFT),
+                        'name' => $client->name,
+                        'mobile_no' => $client->phone_no,
+                        'email' => $client->email,
+                    ]
+                );
+
+                $requests = $request->input('job_requests', []);
+                $firstServiceId = collect($requests)->pluck('service_id')->filter()->first();
+                $quote = Quotation::create([
+                    'vender_id' => $tradingUnit->vender_id,
+                    'trading_id' => $tradingUnit->id,
+                    'contact_detail_id' => $contact->id,
+                    'vehicle_id' => $vehicle->id,
+                    'service_id' => $firstServiceId ?: 0,
+                    'is_hub' => 1,
+                    'quotation_no' => 'QTE-TRU' . str_pad((string) $tradingUnit->id, 5, '0', STR_PAD_LEFT) . '-' . str_pad((string) (Quotation::max('id') + 1), 5, '0', STR_PAD_LEFT),
+                    'service_type' => $request->input('service_type'),
+                    'status' => 'REQUEST_FOR_PRICE',
+                    'quotation_date' => $request->input('quotation_date'),
+                    'note' => $request->input('note'),
+                ]);
+
+                foreach ($requests as $job) {
+                    JobRequest::create([
+                        'vender_id' => $tradingUnit->vender_id,
+                        'quotation_id' => $quote->id,
+                        'job_type_id' => $job['job_type_id'] ?? $job['service_id'] ?? null,
+                        'price_type_id' => $job['price_type_id'] ?? null,
+                        'product_id' => $job['product_id'] ?? null,
+                        'name' => $job['name'],
+                        'job_description' => $job['description'] ?? $job['note'] ?? null,
+                    ]);
+                }
+
+                return $quote->load([
+                    'vehicle.vehicle_model', 'vehicle.vehicle_make', 'vehicle.engine_size',
+                    'vehicle.transmission_type', 'vehicle.fuel_type', 'vehicle.color',
+                    'contact_detail', 'service', 'job_requests', 'job_requests.job_type',
+                    'job_requests.price_type', 'vender', 'vender.profile',
+                ]);
+            });
+
+            return response()->json([
+                'status' => true,
+                'quotation' => $quotation,
+                'message' => 'Quote request sent successfully.',
+            ], 201);
+        } catch (Exception $e) {
+            \Log::error('Client quote request failed.', ['exception' => $e]);
+            return response()->json([
+                'status' => false,
+                'message' => 'Unable to send the quote request. Please try again.',
+            ], 500);
+        }
+    }
+
     public function saveQuotation(Request $request)
     {
 
@@ -111,7 +211,9 @@ class QuotationController extends Controller
                 'vehicle.vehicle_model', 'vehicle.vehicle_make', 'vehicle.engine_size', 'vehicle.transmission_type', 'vehicle.fuel_type', 'vehicle.color',
                 'contact_detail', 'service', 'job_requests', 'job_requests.job_type', 'job_requests.price_type', 'quotation_item', 'vender', 'vender.profile','job_requests.job_types','job_requests.job_types.job_type',
                 'quotation_item.job_types','quotation_item.job_types.job_type','quotation_item.price_type'
-            ])->find($request['id']);
+            ])->whereHas('contact_detail', function ($query) use ($vender_id) {
+                $query->where('hub_id', $vender_id);
+            })->find($request['id']);
 
             if ($quotations == null) {
                 return response()->json([
