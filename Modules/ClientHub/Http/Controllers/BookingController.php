@@ -104,11 +104,11 @@ class BookingController extends Controller
                     ]);
                 }
 
-                CustomNotification::create([
-                    'vender_id' => $tradingUnit->vender_id,
-                    'hub_id' => $client->id,
-                    'message' => 'You have a new booking request from a customer. Please view it.',
-                ]);
+                $notification = new CustomNotification();
+                $notification->vender_id = $tradingUnit->vender_id;
+                $notification->hub_id = $client->id;
+                $notification->message = 'You have a new booking request from a customer. Please view it.';
+                $notification->save();
 
                 return $booking->load([
                     'vehicle.vehicle_model',
@@ -125,7 +125,12 @@ class BookingController extends Controller
                 'message' => 'Booking request sent successfully.',
             ], 201);
         } catch (Exception $e) {
-            report($e);
+            \Log::error('Client booking request failed.', [
+                'client_id' => $client->id,
+                'provider_id' => $request->input('provider_id'),
+                'vehicle_id' => $request->input('vehicle_id'),
+                'exception' => $e,
+            ]);
             return response()->json([
                 'status' => false,
                 'message' => 'Unable to send the booking request. Please try again.',
