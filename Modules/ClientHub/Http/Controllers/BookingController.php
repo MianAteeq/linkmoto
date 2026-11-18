@@ -8,11 +8,15 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Modules\Admin\Entities\JobType;
+use Modules\Admin\Entities\PriceType;
 use Modules\Vender\Entities\Booking;
 use Modules\Vender\Entities\BookingJobRequest;
+use Modules\Vender\Entities\BookingJobRequestJobType;
 use Modules\Vender\Entities\CustomNotification;
 use Kutia\Larafirebase\Facades\Larafirebase;
 use Modules\Vender\Entities\ContactDetail;
+use Modules\Vender\Entities\QuickProduct;
 use Modules\Vender\Entities\TradingUnit;
 use Modules\Vender\Entities\Vehicle;
 
@@ -33,11 +37,13 @@ class BookingController extends Controller
             'longitude' => ['nullable', 'numeric', 'between:-180,180'],
             'job_requests' => ['required', 'array', 'min:1'],
             'job_requests.*.service_id' => ['nullable', 'integer'],
+            'job_requests.*.job_type_id' => ['nullable', 'integer'],
+            'job_requests.*.price_type_id' => ['nullable', 'integer'],
             'job_requests.*.product_id' => ['nullable', 'integer'],
             'job_requests.*.name' => ['required', 'string', 'max:500'],
             'job_requests.*.description' => ['nullable', 'string', 'max:2000'],
             'job_requests.*.note' => ['nullable', 'string', 'max:2000'],
-            'job_requests.*.coverage' => ['nullable', 'in:Labour only,Parts & Labour'],
+            'job_requests.*.coverage' => ['nullable', 'string', 'max:255'],
         ]);
 
         if ($validator->fails()) {
@@ -72,7 +78,81 @@ class BookingController extends Controller
                 );
 
                 $jobRequests = $request->input('job_requests', []);
-                $firstServiceId = collect($jobRequests)->pluck('service_id')->filter()->first();
+                $resolvedJobRequests = [];
+
+                foreach ($jobRequests as $jobRequest) {
+                    // 1. Resolve job_type_id:
+                    // Check direct job_type_id or service_id
+                    $jobTypeId = $jobRequest['job_type_id'] ?? $jobRequest['service_id'] ?? null;
+
+                    // If not present, try product_id
+                    if (!$jobTypeId && !empty($jobRequest['product_id'])) {
+                        $jobTypeId = QuickProduct::where('id', $jobRequest['product_id'])->value('job_type_id');
+                    }
+
+                    // If not present, try matching JobType by name
+                    if (!$jobTypeId && !empty($jobRequest['name'])) {
+                        $name = trim($jobRequest['name']);
+                        $jobTypeId = JobType::where('name', $name)->value('id')
+                            ?? JobType::whereRaw('LOWER(TRIM(name)) = ?', [strtolower($name)])->value('id');
+                    }
+
+                    // If not present, try matching JobType by description
+                    if (!$jobTypeId && !empty($jobRequest['description'])) {
+                        $desc = trim($jobRequest['description']);
+                        $jobTypeId = JobType::where('name', $desc)->value('id')
+                            ?? JobType::whereRaw('LOWER(TRIM(name)) = ?', [strtolower($desc)])->value('id');
+                    }
+
+                    // 2. Resolve price_type_id:
+                    // Check direct price_type_id
+                    $priceTypeId = $jobRequest['price_type_id'] ?? null;
+
+                    // If not present, resolve from coverage / price_type string
+                    $coverage = trim($jobRequest['coverage'] ?? $jobRequest['price_type'] ?? '');
+                    if (!$priceTypeId && $coverage !== '') {
+                        $normalized = strtolower($coverage);
+                        if (str_contains($normalized, 'labour') && str_contains($normalized, 'part')) {
+                            $priceTypeId = PriceType::whereRaw('LOWER(TRIM(name)) = ?', ['labour and parts'])->value('id')
+                                ?? PriceType::where('name', 'Labour and Parts')->value('id')
+                                ?? 1;
+                        } elseif (str_contains($normalized, 'labour')) {
+                            $priceTypeId = PriceType::whereRaw('LOWER(TRIM(name)) = ?', ['labour only'])->value('id')
+                                ?? PriceType::where('name', 'Labour only')->value('id')
+                                ?? 2;
+                        } elseif (str_contains($normalized, 'part')) {
+                            $priceTypeId = PriceType::whereRaw('LOWER(TRIM(name)) = ?', ['parts only'])->value('id')
+                                ?? PriceType::where('name', 'Parts only')->value('id')
+                                ?? 3;
+                        } else {
+                            $priceTypeId = PriceType::whereRaw('LOWER(TRIM(name)) = ?', [$normalized])->value('id')
+                                ?? PriceType::where('name', $coverage)->value('id');
+                        }
+                    }
+
+                    // If not present, try product_id job_coverage_id
+                    if (!$priceTypeId && !empty($jobRequest['product_id'])) {
+                        $priceTypeId = QuickProduct::where('id', $jobRequest['product_id'])->value('job_coverage_id');
+                    }
+
+                    // Ensure name is populated
+                    $itemName = $jobRequest['name'] ?? null;
+                    if (empty($itemName) && $jobTypeId) {
+                        $itemName = JobType::where('id', $jobTypeId)->value('name');
+                    }
+
+                    $resolvedJobRequests[] = [
+                        'job_type_id' => $jobTypeId ? (int) $jobTypeId : null,
+                        'price_type_id' => $priceTypeId ? (int) $priceTypeId : null,
+                        'product_id' => !empty($jobRequest['product_id']) ? (int) $jobRequest['product_id'] : null,
+                        'name' => $itemName ?? '',
+                        'job_description' => $jobRequest['description'] ?? $itemName ?? '',
+                        'note' => $jobRequest['note'] ?? null,
+                    ];
+                }
+
+                $firstServiceId = collect($resolvedJobRequests)->pluck('job_type_id')->filter()->first()
+                    ?? collect($jobRequests)->pluck('service_id')->filter()->first();
                 $nextBookingId = (int) Booking::max('id') + 1;
 
                 $booking = Booking::create([
@@ -92,16 +172,26 @@ class BookingController extends Controller
                     'city' => $request->input('city_and_postcode'),
                 ]);
 
-                foreach ($jobRequests as $jobRequest) {
-                    BookingJobRequest::create([
+                foreach ($resolvedJobRequests as $item) {
+                    $createdJobRequest = BookingJobRequest::create([
                         'vender_id' => $tradingUnit->vender_id,
+                        'trading_id' => $tradingUnit->id,
                         'booking_id' => $booking->id,
-                        'job_type_id' => $jobRequest['service_id'] ?? null,
-                        'product_id' => $jobRequest['product_id'] ?? null,
-                        'name' => $jobRequest['name'],
-                        'job_description' => $jobRequest['description'] ?? $jobRequest['name'],
-                        'note' => $jobRequest['note'] ?? null,
+                        'job_type_id' => $item['job_type_id'],
+                        'price_type_id' => $item['price_type_id'],
+                        'product_id' => $item['product_id'],
+                        'name' => $item['name'],
+                        'job_description' => $item['job_description'],
+                        'note' => $item['note'],
+                        'is_job' => 0,
                     ]);
+
+                    if ($item['job_type_id']) {
+                        BookingJobRequestJobType::create([
+                            'job_request_id' => $createdJobRequest->id,
+                            'job_type_id' => $item['job_type_id'],
+                        ]);
+                    }
                 }
 
                 $notification = new CustomNotification();
@@ -116,6 +206,8 @@ class BookingController extends Controller
                     'contact_detail',
                     'service',
                     'job_requests',
+                    'job_requests.job_type',
+                    'job_requests.price_type',
                 ]);
             });
 
