@@ -7,14 +7,132 @@ use Exception;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Modules\Vender\Entities\Booking;
+use Modules\Vender\Entities\BookingJobRequest;
 use Modules\Vender\Entities\CustomNotification;
 use Kutia\Larafirebase\Facades\Larafirebase;
 use Modules\Vender\Entities\ContactDetail;
 use Modules\Vender\Entities\TradingUnit;
+use Modules\Vender\Entities\Vehicle;
 
 class BookingController extends Controller
 {
+    public function requestBooking(Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'provider_id' => ['required', 'integer', 'exists:trading_units,id'],
+            'vehicle_id' => ['required', 'integer'],
+            'service_type' => ['required', 'in:On-site,Mobile'],
+            'booking_date' => ['required', 'date_format:Y-m-d', 'after_or_equal:today'],
+            'booking_time' => ['required', 'string', 'max:50'],
+            'note' => ['nullable', 'string', 'max:2000'],
+            'address_line_1' => ['nullable', 'string', 'max:1000'],
+            'city_and_postcode' => ['nullable', 'string', 'max:500'],
+            'latitude' => ['nullable', 'numeric', 'between:-90,90'],
+            'longitude' => ['nullable', 'numeric', 'between:-180,180'],
+            'job_requests' => ['required', 'array', 'min:1'],
+            'job_requests.*.service_id' => ['nullable', 'integer'],
+            'job_requests.*.product_id' => ['nullable', 'integer'],
+            'job_requests.*.name' => ['required', 'string', 'max:500'],
+            'job_requests.*.description' => ['nullable', 'string', 'max:2000'],
+            'job_requests.*.note' => ['nullable', 'string', 'max:2000'],
+            'job_requests.*.coverage' => ['nullable', 'in:Labour only,Parts & Labour'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors()->first(),
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $client = $request->user();
+        $vehicle = Vehicle::where('vender_id', $client->id)->find($request->integer('vehicle_id'));
+        if (!$vehicle) {
+            return response()->json([
+                'status' => false,
+                'message' => 'The selected vehicle does not belong to this account.',
+            ], 422);
+        }
+
+        $tradingUnit = TradingUnit::findOrFail($request->integer('provider_id'));
+
+        try {
+            $booking = DB::transaction(function () use ($request, $client, $vehicle, $tradingUnit) {
+                $contact = ContactDetail::firstOrCreate(
+                    ['hub_id' => $client->id, 'vender_id' => $tradingUnit->vender_id],
+                    [
+                        'contact_no' => 'CON-SVP' . str_pad((string) $tradingUnit->vender_id, 5, '0', STR_PAD_LEFT) . '-' . str_pad((string) (ContactDetail::max('id') + 1), 5, '0', STR_PAD_LEFT),
+                        'name' => $client->name,
+                        'mobile_no' => $client->phone_no,
+                        'email' => $client->email,
+                    ]
+                );
+
+                $jobRequests = $request->input('job_requests', []);
+                $firstServiceId = collect($jobRequests)->pluck('service_id')->filter()->first();
+                $nextBookingId = (int) Booking::max('id') + 1;
+
+                $booking = Booking::create([
+                    'vender_id' => $tradingUnit->vender_id,
+                    'trading_id' => $tradingUnit->id,
+                    'contact_detail_id' => $contact->id,
+                    'vehicle_id' => $vehicle->id,
+                    'service_id' => $firstServiceId ?: 0,
+                    'is_hub' => 1,
+                    'booking_no' => 'BKG-SVP' . str_pad((string) $tradingUnit->vender_id, 5, '0', STR_PAD_LEFT) . '-' . str_pad((string) $nextBookingId, 5, '0', STR_PAD_LEFT),
+                    'service_type' => $request->input('service_type'),
+                    'status' => 'BOOKING_REQUEST',
+                    'booking_date' => $request->input('booking_date'),
+                    'booking_time' => $request->input('booking_time'),
+                    'note' => $request->input('note'),
+                    'address_line_1' => $request->input('address_line_1'),
+                    'city' => $request->input('city_and_postcode'),
+                ]);
+
+                foreach ($jobRequests as $jobRequest) {
+                    BookingJobRequest::create([
+                        'vender_id' => $tradingUnit->vender_id,
+                        'booking_id' => $booking->id,
+                        'job_type_id' => $jobRequest['service_id'] ?? null,
+                        'product_id' => $jobRequest['product_id'] ?? null,
+                        'name' => $jobRequest['name'],
+                        'job_description' => $jobRequest['description'] ?? $jobRequest['name'],
+                        'note' => $jobRequest['note'] ?? null,
+                    ]);
+                }
+
+                CustomNotification::create([
+                    'vender_id' => $tradingUnit->vender_id,
+                    'hub_id' => $client->id,
+                    'message' => 'You have a new booking request from a customer. Please view it.',
+                ]);
+
+                return $booking->load([
+                    'vehicle.vehicle_model',
+                    'vehicle.vehicle_make',
+                    'contact_detail',
+                    'service',
+                    'job_requests',
+                ]);
+            });
+
+            return response()->json([
+                'status' => true,
+                'booking' => $booking,
+                'message' => 'Booking request sent successfully.',
+            ], 201);
+        } catch (Exception $e) {
+            report($e);
+            return response()->json([
+                'status' => false,
+                'message' => 'Unable to send the booking request. Please try again.',
+            ], 500);
+        }
+    }
+
     public function saveBooking(Request $request)
     {
 
