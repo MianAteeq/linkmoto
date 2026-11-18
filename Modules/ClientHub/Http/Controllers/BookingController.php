@@ -20,17 +20,57 @@ use Modules\Vender\Entities\QuickProduct;
 use Modules\Vender\Entities\TradingUnit;
 use Modules\Vender\Entities\Vehicle;
 use Carbon\Carbon;
+use Modules\Vender\Entities\Quotation;
 
 class BookingController extends Controller
 {
+    public function jobsOverview(Request $request)
+    {
+        $clientId = $request->user()->id;
+        $relations = [
+            'vehicle.vehicle_model', 'vehicle.vehicle_make', 'contact_detail', 'service',
+            'job_requests.job_type', 'booking_items.job_type', 'vender.profile',
+        ];
+
+        $bookings = Booking::with($relations)
+            ->whereHas('contact_detail', fn ($query) => $query->where('hub_id', $clientId))
+            ->latest('id')
+            ->limit(100)
+            ->get();
+
+        $quotes = Quotation::with([
+            'vehicle.vehicle_model', 'vehicle.vehicle_make', 'contact_detail', 'service',
+            'job_requests.job_type', 'vender.profile',
+        ])
+            ->whereHas('contact_detail', fn ($query) => $query->where('hub_id', $clientId))
+            ->latest('id')
+            ->limit(100)
+            ->get();
+
+        return response()->json([
+            'status' => true,
+            'quotes' => $quotes,
+            'bookings' => $bookings->filter(fn ($booking) => empty($booking->job_id))->values(),
+            'jobs' => $bookings->filter(fn ($booking) => !empty($booking->job_id))->values(),
+            'message' => 'Jobs overview fetched successfully.',
+        ]);
+    }
+
     private function slotsForProviderDate(int $providerId, string $date): array
     {
         $tradingUnit = TradingUnit::with('app_setting')->find($providerId);
         $setting = $tradingUnit?->app_setting;
-        $interval = (int) ($setting?->interval ?? 0);
+        // The provider settings form historically displays 10 minutes when an
+        // interval has not yet been persisted. Preserve that configured UI
+        // behavior for records that already have a booking window.
+        $interval = (int) ($setting?->interval ?: 10);
 
-        if (!$setting || !$setting->start_time || !$setting->end_time || $interval <= 0) {
+        if (!$setting || !$setting->start_time || !$setting->end_time) {
             return [];
+        }
+
+        if ($interval < 1) {
+            $interval = 10;
         }
 
         try {

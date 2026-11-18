@@ -146,6 +146,7 @@ Route::group(['middleware' => ['cors']], function () {
             Route::post('past/booking', [BookingController::class, 'getPastBooking']);
 
             Route::post('fetch/booking', [BookingController::class, 'getBookingDetail']);
+            Route::get('jobs/overview', [BookingController::class, 'jobsOverview']);
             Route::post('status/booking', [BookingController::class, 'statusBooking']);
 
 
