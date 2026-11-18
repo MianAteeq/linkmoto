@@ -19,9 +19,84 @@ use Modules\Vender\Entities\ContactDetail;
 use Modules\Vender\Entities\QuickProduct;
 use Modules\Vender\Entities\TradingUnit;
 use Modules\Vender\Entities\Vehicle;
+use Carbon\Carbon;
 
 class BookingController extends Controller
 {
+    private function slotsForProviderDate(int $providerId, string $date): array
+    {
+        $tradingUnit = TradingUnit::with('app_setting')->find($providerId);
+        $setting = $tradingUnit?->app_setting;
+        $interval = (int) ($setting?->interval ?? 0);
+
+        if (!$setting || !$setting->start_time || !$setting->end_time || $interval <= 0) {
+            return [];
+        }
+
+        try {
+            $day = Carbon::createFromFormat('Y-m-d', $date)->startOfDay();
+            $start = Carbon::parse($date . ' ' . $setting->start_time);
+            $end = $setting->end_time === '24:00'
+                ? $day->copy()->addDay()
+                : Carbon::parse($date . ' ' . $setting->end_time);
+        } catch (\Throwable $e) {
+            return [];
+        }
+
+        if ($end->lessThanOrEqualTo($start)) {
+            $end->addDay();
+        }
+
+        $reserved = Booking::where('trading_id', $providerId)
+            ->whereDate('booking_date', $date)
+            ->whereNotIn('status', ['CANCELLED', 'DECLINED'])
+            ->pluck('booking_time')
+            ->map(function ($time) {
+                try {
+                    return Carbon::parse($time)->format('H:i');
+                } catch (\Throwable $e) {
+                    return null;
+                }
+            })
+            ->filter()
+            ->all();
+
+        $slots = [];
+        for ($cursor = $start->copy(); $cursor->lessThan($end); $cursor->addMinutes($interval)) {
+            if ($cursor->isPast() || in_array($cursor->format('H:i'), $reserved, true)) {
+                continue;
+            }
+            $slots[] = $cursor->format('g:i A');
+        }
+
+        return $slots;
+    }
+
+    public function availableSlots(Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'provider_id' => ['required', 'integer', 'exists:trading_units,id'],
+            'date' => ['required', 'date_format:Y-m-d', 'after_or_equal:today'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors()->first(),
+                'slots' => [],
+            ], 422);
+        }
+
+        return response()->json([
+            'status' => true,
+            'date' => $request->input('date'),
+            'slots' => $this->slotsForProviderDate(
+                $request->integer('provider_id'),
+                $request->input('date')
+            ),
+        ]);
+    }
+
     public function requestBooking(Request $request)
     {
         $validator = \Validator::make($request->all(), [
@@ -51,6 +126,18 @@ class BookingController extends Controller
                 'status' => false,
                 'message' => $validator->errors()->first(),
                 'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $availableSlots = $this->slotsForProviderDate(
+            $request->integer('provider_id'),
+            $request->input('booking_date')
+        );
+        $requestedTime = Carbon::parse($request->input('booking_time'))->format('g:i A');
+        if (!in_array($requestedTime, $availableSlots, true)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'The selected booking time is no longer available.',
             ], 422);
         }
 
