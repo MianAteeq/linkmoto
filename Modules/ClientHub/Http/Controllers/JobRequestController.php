@@ -229,11 +229,27 @@ class JobRequestController extends Controller
 
     public function getSingleJobRequest(Request $request)
     {
-
         try {
+            $validator = \Validator::make($request->all(), [
+                'job_request_id' => ['required', 'integer'],
+                'booking_id' => ['nullable', 'integer'],
+            ]);
 
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => $validator->errors()->first(),
+                ], 422);
+            }
 
-            $job_request = BookingJobRequest::with(['job_request', 'job_type', 'price_type'])->find($request->job_request_id);
+            $job_request = BookingJobRequest::with(['booking', 'job_type', 'price_type', 'product'])
+                ->whereHas('booking.contact_detail', function ($query) use ($request) {
+                    $query->where('hub_id', $request->user()->id);
+                })
+                ->when($request->filled('booking_id'), function ($query) use ($request) {
+                    $query->where('booking_id', $request->integer('booking_id'));
+                })
+                ->find($request->integer('job_request_id'));
 
             if ($job_request) {
                 return response()->json([
@@ -246,7 +262,7 @@ class JobRequestController extends Controller
                     'status' => false,
                     'job_request' => $job_request,
                     'message' => "Job Request Not Found",
-                ]);
+                ], 404);
             }
         } catch (Exception $e) {
 

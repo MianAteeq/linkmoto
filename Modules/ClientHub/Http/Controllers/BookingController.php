@@ -444,9 +444,12 @@ class BookingController extends Controller
 
             $booking = Booking::with([
                 'vehicle.vehicle_model', 'vehicle.vehicle_make', 'vehicle.engine_size', 'vehicle.transmission_type', 'vehicle.fuel_type', 'vehicle.color',
-                'contact_detail', 'service', 'job_requests', 'job_requests.job_type', 'job_requests.price_type', 'booking_items','booking_items.job_type','booking_items.price_type', 'vender',
+                'contact_detail', 'service', 'job_requests', 'job_requests.job_type', 'job_requests.price_type', 'job_requests.product', 'booking_items','booking_items.job_type','booking_items.price_type', 'vender',
                  'vender.profile','job_requests.job_types','job_requests.job_types.job_type','booking_items', 'booking_items.price_type','booking_items.job_types','booking_items.job_types.job_type', 'job_requests.job_types',
-            ])->find((int)$request['id']);
+                'quotation', 'trading_name.site',
+            ])->whereHas('contact_detail', function ($query) use ($vender_id) {
+                $query->where('hub_id', $vender_id);
+            })->find((int)$request['id']);
 
             if ($booking == null) {
                 return response()->json([

@@ -117,6 +117,11 @@ class Booking extends Model
         return $this->belongsTo(TradingUnit::class, 'trading_id', 'id');
     }
 
+    public function quotation(): BelongsTo
+    {
+        return $this->belongsTo(Quotation::class, 'quotation_id', 'id');
+    }
+
 
     // protected function firstName(): Attribute
     // {
