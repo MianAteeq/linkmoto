@@ -33,6 +33,11 @@ class Quotation extends Model
         return $this->belongsTo(User::class, 'vender_id', 'id');
     }
 
+    public function trading_unit(): BelongsTo
+    {
+        return $this->belongsTo(TradingUnit::class, 'trading_id', 'id');
+    }
+
     /**************** vehicle ************************/
 
     public function vehicle(): BelongsTo

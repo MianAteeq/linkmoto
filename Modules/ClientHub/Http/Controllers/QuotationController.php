@@ -29,6 +29,10 @@ class QuotationController extends Controller
             'service_type' => ['required', 'in:On-site,Mobile'],
             'quotation_date' => ['nullable', 'date_format:Y-m-d'],
             'note' => ['nullable', 'string', 'max:2000'],
+            'address_line_1' => ['nullable', 'string', 'max:1000'],
+            'city_and_postcode' => ['nullable', 'string', 'max:500'],
+            'latitude' => ['nullable', 'numeric', 'between:-90,90'],
+            'longitude' => ['nullable', 'numeric', 'between:-180,180'],
             'job_requests' => ['required', 'array', 'min:1'],
             'job_requests.*.job_type_id' => ['nullable', 'integer'],
             'job_requests.*.price_type_id' => ['nullable', 'integer'],
@@ -67,6 +71,13 @@ class QuotationController extends Controller
                         'email' => $client->email,
                     ]
                 );
+
+                if ($request->filled('address_line_1') || $request->filled('city_and_postcode')) {
+                    $contact->update([
+                        'address' => $request->input('address_line_1'),
+                        'city' => $request->input('city_and_postcode'),
+                    ]);
+                }
 
                 $requests = $request->input('job_requests', []);
                 $firstServiceId = collect($requests)->pluck('service_id')->filter()->first();
@@ -211,7 +222,7 @@ class QuotationController extends Controller
                 'vehicle.vehicle_model', 'vehicle.vehicle_make', 'vehicle.engine_size', 'vehicle.transmission_type', 'vehicle.fuel_type', 'vehicle.color',
                 'contact_detail', 'service', 'job_requests', 'job_requests.job_type', 'job_requests.price_type', 'quotation_item', 'vender', 'vender.profile','job_requests.job_types','job_requests.job_types.job_type',
                 'quotation_item.job_types','quotation_item.job_types.job_type','quotation_item.price_type',
-                'booking'
+                'booking', 'trading_unit.site'
             ])->whereHas('contact_detail', function ($query) use ($vender_id) {
                 $query->where('hub_id', $vender_id);
             })->find($request['id']);
