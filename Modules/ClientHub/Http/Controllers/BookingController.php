@@ -30,6 +30,7 @@ class BookingController extends Controller
         $relations = [
             'vehicle.vehicle_model', 'vehicle.vehicle_make', 'contact_detail', 'service',
             'job_requests.job_type', 'booking_items.job_type', 'vender.profile',
+            'trading_name.trading_name',
         ];
 
         $bookings = Booking::with($relations)
@@ -40,7 +41,7 @@ class BookingController extends Controller
 
         $quotes = Quotation::with([
             'vehicle.vehicle_model', 'vehicle.vehicle_make', 'contact_detail', 'service',
-            'job_requests.job_type', 'vender.profile',
+            'job_requests.job_type', 'vender.profile', 'trading_unit.trading_name',
         ])
             ->whereHas('contact_detail', fn ($query) => $query->where('hub_id', $clientId))
             ->latest('id')
@@ -446,7 +447,7 @@ class BookingController extends Controller
                 'vehicle.vehicle_model', 'vehicle.vehicle_make', 'vehicle.engine_size', 'vehicle.transmission_type', 'vehicle.fuel_type', 'vehicle.color',
                 'contact_detail', 'service', 'job_requests', 'job_requests.job_type', 'job_requests.price_type', 'job_requests.product', 'booking_items','booking_items.job_type','booking_items.price_type', 'vender',
                  'vender.profile','job_requests.job_types','job_requests.job_types.job_type','booking_items', 'booking_items.price_type','booking_items.job_types','booking_items.job_types.job_type', 'job_requests.job_types',
-                'quotation', 'trading_name.site',
+                'quotation', 'trading_name.site', 'trading_name.trading_name',
             ])->whereHas('contact_detail', function ($query) use ($vender_id) {
                 $query->where('hub_id', $vender_id);
             })->find((int)$request['id']);
