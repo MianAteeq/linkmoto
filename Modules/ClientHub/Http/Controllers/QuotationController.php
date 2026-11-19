@@ -210,7 +210,8 @@ class QuotationController extends Controller
             $quotations = Quotation::with([
                 'vehicle.vehicle_model', 'vehicle.vehicle_make', 'vehicle.engine_size', 'vehicle.transmission_type', 'vehicle.fuel_type', 'vehicle.color',
                 'contact_detail', 'service', 'job_requests', 'job_requests.job_type', 'job_requests.price_type', 'quotation_item', 'vender', 'vender.profile','job_requests.job_types','job_requests.job_types.job_type',
-                'quotation_item.job_types','quotation_item.job_types.job_type','quotation_item.price_type'
+                'quotation_item.job_types','quotation_item.job_types.job_type','quotation_item.price_type',
+                'booking'
             ])->whereHas('contact_detail', function ($query) use ($vender_id) {
                 $query->where('hub_id', $vender_id);
             })->find($request['id']);

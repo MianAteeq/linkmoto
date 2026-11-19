@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Modules\Admin\Entities\Services;
 use Modules\ClientHub\Entities\Client;
 
@@ -79,6 +80,10 @@ class Quotation extends Model
     public function quotation_item(): HasMany
     {
         return $this->hasMany(QuotationItem::class, 'quotation_id', 'id');
+    }
+    public function booking(): HasOne
+    {
+        return $this->hasOne(Booking::class, 'quotation_id', 'id');
     }
     public function job_logs(): HasMany
     {
