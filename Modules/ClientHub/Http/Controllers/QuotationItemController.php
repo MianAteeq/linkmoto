@@ -225,11 +225,27 @@ class QuotationItemController extends Controller
 
     public function getSingleJobRequest(Request $request)
     {
-
         try {
+            $validator = \Validator::make($request->all(), [
+                'job_request_id' => ['required', 'integer'],
+                'quotation_id' => ['nullable', 'integer'],
+            ]);
 
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => $validator->errors()->first(),
+                ], 422);
+            }
 
-            $job_request = JobRequest::with(['job_request', 'job_type', 'price_type'])->find($request->job_request_id);
+            $job_request = JobRequest::with(['quotation', 'job_type', 'price_type', 'product'])
+                ->whereHas('quotation.contact_detail', function ($query) use ($request) {
+                    $query->where('hub_id', $request->user()->id);
+                })
+                ->when($request->filled('quotation_id'), function ($query) use ($request) {
+                    $query->where('quotation_id', $request->integer('quotation_id'));
+                })
+                ->find($request->integer('job_request_id'));
 
             if ($job_request) {
                 return response()->json([
@@ -242,7 +258,7 @@ class QuotationItemController extends Controller
                     'status' => false,
                     'job_request' => $job_request,
                     'message' => "Job Request Not Found",
-                ]);
+                ], 404);
             }
         } catch (Exception $e) {
 
