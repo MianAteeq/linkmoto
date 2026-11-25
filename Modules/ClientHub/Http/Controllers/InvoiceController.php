@@ -20,10 +20,24 @@ class InvoiceController extends Controller
 
 
 
-            $invoices = Invoice::with(['booking', 'booking.contact_detail', 'booking.service', 'booking.job_requests', 'booking.booking_items', 'booking.vehicle.vehicle_model', 'booking.vehicle.vehicle_make', 'booking.vehicle.engine_size', 'booking.vehicle.transmission_type', 'booking.vehicle.fuel_type', 'booking.vehicle.color', 'payment'])->
-            whereHas('contact', function($q) use($request){
+            $invoices = Invoice::with([
+                'booking',
+                'booking.contact_detail',
+                'booking.service',
+                'booking.job_requests',
+                'booking.booking_items',
+                'booking.vehicle.vehicle_model',
+                'booking.vehicle.vehicle_make',
+                'booking.vehicle.engine_size',
+                'booking.vehicle.transmission_type',
+                'booking.vehicle.fuel_type',
+                'booking.vehicle.color',
+                'booking.trading_name.trading_name',
+                'booking.vender.profile',
+                'payment',
+            ])->whereHas('contact', function ($q) use ($request) {
                 $q->where('hub_id', '=', $request->user()->id);
-            })->limit(20)->get();
+            })->latest('id')->limit(50)->get();
             return response()->json([
                 'status' => true,
                 'invoices' => $invoices,
@@ -56,10 +70,29 @@ class InvoiceController extends Controller
 
             // $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
 
-            $invoices = Invoice::with(['booking', 'booking.contact_detail', 'booking.service', 'booking.job_requests', 'booking.booking_items','booking.booking_items.job_types','booking.booking_items.job_types.job_type', 'booking.vehicle.vehicle_model', 'booking.vehicle.vehicle_make', 'booking.vehicle.engine_size', 'booking.vehicle.transmission_type', 'booking.vehicle.fuel_type', 'booking.vehicle.color', 'payment'
-            ,'booking.booking_items.price_type'])->find($request['invoice_id']);
+            $invoices = Invoice::with([
+                'booking',
+                'booking.contact_detail',
+                'booking.service',
+                'booking.job_requests',
+                'booking.booking_items',
+                'booking.booking_items.job_types',
+                'booking.booking_items.job_types.job_type',
+                'booking.vehicle.vehicle_model',
+                'booking.vehicle.vehicle_make',
+                'booking.vehicle.engine_size',
+                'booking.vehicle.transmission_type',
+                'booking.vehicle.fuel_type',
+                'booking.vehicle.color',
+                'booking.trading_name.trading_name',
+                'booking.vender.profile',
+                'payment',
+                'booking.booking_items.price_type',
+            ])->find($request['invoice_id']);
 
-            $invoices['invoice_item'] = $invoices['booking']['booking_items'];
+            if ($invoices && $invoices->booking) {
+                $invoices['invoice_item'] = $invoices['booking']['booking_items'];
+            }
             return response()->json([
                 'status' => true,
                 'invoice' => $invoices,
