@@ -28,7 +28,7 @@ class Booking extends Model
         });
 
         static::updated(function (Booking $booking) {
-            if ($booking->wasChanged('status')) {
+            if ($booking->wasChanged('status') || ($booking->wasChanged('job_id') && (int) $booking->job_id > 0)) {
                 \Modules\ClientHub\Services\ClientNotificationService::notifyForBooking($booking);
             }
         });

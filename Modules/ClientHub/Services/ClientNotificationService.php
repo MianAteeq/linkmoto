@@ -29,99 +29,108 @@ class ClientNotificationService
             $truId = $booking->vender?->profile?->tru_id ?: null;
 
             $rawStatus = strtoupper(trim((string) $booking->status));
+            $isJobStatus = in_array($rawStatus, [
+                'IN_PROGRESS',
+                'IN PROGRESS',
+                'WORKING',
+                'STARTED',
+                'FINAL_CHECKS',
+                'FINAL CHECKS',
+                'READY_FOR_COLLECTION',
+                'READY FOR COLLECTION',
+                'COMPLETED',
+                'DELIVERED',
+                'COLLECTED',
+            ], true);
+            $isJob = ((int) ($booking->job_id ?? 0) > 0) || $isJobStatus;
 
-            $mapping = match ($rawStatus) {
-                'BOOKING_REQUEST', 'PENDING' => [
-                    'title' => 'Booking request submitted',
-                    'statusWord' => 'Pending',
-                    'statusColor' => '#D97706',
-                    'message' => "Your booking request with {$providerName} is Pending.",
-                    'type' => 'booking_update',
-                    'entityType' => 'booking',
-                    'route' => 'ViewBooking',
-                    'params' => ['bookingId' => (string) $booking->id],
-                ],
-                'CONFIRMED', 'BOOKED', 'APPROVED' => [
-                    'title' => 'Booking update',
-                    'statusWord' => 'Booked',
-                    'statusColor' => '#1E40AF',
-                    'message' => "{$providerName} has changed your booking status to Booked.",
-                    'type' => 'booking_update',
-                    'entityType' => 'booking',
-                    'route' => 'ViewBooking',
-                    'params' => ['bookingId' => (string) $booking->id],
-                ],
-                'ARRIVED' => [
-                    'title' => 'Booking update',
-                    'statusWord' => 'Arrived',
-                    'statusColor' => '#111827',
-                    'message' => "{$providerName} has changed your booking status to Arrived.",
-                    'type' => 'booking_update',
-                    'entityType' => 'booking',
-                    'route' => 'ViewBooking',
-                    'params' => ['bookingId' => (string) $booking->id],
-                ],
-                'IN_PROGRESS', 'IN PROGRESS', 'WORKING', 'STARTED' => [
-                    'title' => 'Job update',
-                    'statusWord' => 'In progress',
-                    'statusColor' => '#111827',
-                    'message' => "{$providerName} has changed your job status to In progress.",
-                    'type' => 'job_update',
-                    'entityType' => 'job',
-                    'route' => 'ViewJob',
-                    'params' => ['jobId' => (string) $booking->id],
-                ],
-                'READY_FOR_COLLECTION', 'READY FOR COLLECTION', 'COMPLETED' => [
-                    'title' => 'Job update',
-                    'statusWord' => 'Ready for collection',
-                    'statusColor' => '#1E40AF',
-                    'message' => "{$providerName} has changed your job status to Ready for collection.",
-                    'type' => 'job_update',
-                    'entityType' => 'job',
-                    'route' => 'ViewJob',
-                    'params' => ['jobId' => (string) $booking->id],
-                ],
-                'DELIVERED', 'COLLECTED' => [
-                    'title' => 'Job update',
-                    'statusWord' => 'Collected',
-                    'statusColor' => '#111827',
-                    'message' => "{$providerName} has changed your job status to Collected.",
-                    'type' => 'job_update',
-                    'entityType' => 'job',
-                    'route' => 'ViewJob',
-                    'params' => ['jobId' => (string) $booking->id],
-                ],
-                'CANCELLED', 'CANCELED' => [
-                    'title' => 'Booking update',
-                    'statusWord' => 'Cancelled',
-                    'statusColor' => '#DC2626',
-                    'message' => "Your booking with {$providerName} has been Cancelled.",
-                    'type' => 'booking_update',
-                    'entityType' => 'booking',
-                    'route' => 'ViewBooking',
-                    'params' => ['bookingId' => (string) $booking->id],
-                ],
-                'DECLINED', 'REJECTED' => [
-                    'title' => 'Booking update',
-                    'statusWord' => 'Declined',
-                    'statusColor' => '#DC2626',
-                    'message' => "{$providerName} has changed your booking status to Declined.",
-                    'type' => 'booking_update',
-                    'entityType' => 'booking',
-                    'route' => 'ViewBooking',
-                    'params' => ['bookingId' => (string) $booking->id],
-                ],
-                default => [
-                    'title' => 'Booking update',
-                    'statusWord' => ucwords(strtolower(str_replace('_', ' ', $rawStatus))) ?: 'Updated',
-                    'statusColor' => '#111827',
-                    'message' => "{$providerName} has updated your booking status to " . (ucwords(strtolower(str_replace('_', ' ', $rawStatus))) ?: 'Updated') . '.',
-                    'type' => 'booking_update',
-                    'entityType' => 'booking',
-                    'route' => 'ViewBooking',
-                    'params' => ['bookingId' => (string) $booking->id],
-                ],
-            };
+            if ($isJob) {
+                $mapping = match ($rawStatus) {
+                    'IN_PROGRESS', 'IN PROGRESS', 'WORKING', 'STARTED' => [
+                        'title' => 'Job update',
+                        'statusWord' => 'In progress',
+                        'statusColor' => '#111827',
+                        'message' => "{$providerName} has changed your job status to In progress.",
+                    ],
+                    'FINAL_CHECKS', 'FINAL CHECKS' => [
+                        'title' => 'Job update',
+                        'statusWord' => 'Final checks',
+                        'statusColor' => '#1E40AF',
+                        'message' => "{$providerName} has changed your job status to Final checks.",
+                    ],
+                    'READY_FOR_COLLECTION', 'READY FOR COLLECTION', 'COMPLETED' => [
+                        'title' => 'Job update',
+                        'statusWord' => 'Ready for collection',
+                        'statusColor' => '#1E40AF',
+                        'message' => "{$providerName} has changed your job status to Ready for collection.",
+                    ],
+                    'DELIVERED', 'COLLECTED' => [
+                        'title' => 'Job update',
+                        'statusWord' => 'Collected',
+                        'statusColor' => '#111827',
+                        'message' => "{$providerName} has changed your job status to Collected.",
+                    ],
+                    'CANCELLED', 'CANCELED' => [
+                        'title' => 'Job update',
+                        'statusWord' => 'Cancelled',
+                        'statusColor' => '#DC2626',
+                        'message' => "Your job with {$providerName} has been Cancelled.",
+                    ],
+                    default => [
+                        'title' => 'Job update',
+                        'statusWord' => ucwords(strtolower(str_replace('_', ' ', $rawStatus))) ?: 'Updated',
+                        'statusColor' => '#111827',
+                        'message' => "{$providerName} has changed your job status to " . (ucwords(strtolower(str_replace('_', ' ', $rawStatus))) ?: 'Updated') . '.',
+                    ],
+                };
+                $mapping['type'] = 'job_update';
+                $mapping['entityType'] = 'job';
+                $mapping['route'] = 'ViewJob';
+                $mapping['params'] = ['jobId' => (string) $booking->id];
+            } else {
+                $mapping = match ($rawStatus) {
+                    'BOOKING_REQUEST', 'PENDING' => [
+                        'title' => 'Booking request submitted',
+                        'statusWord' => 'Pending',
+                        'statusColor' => '#D97706',
+                        'message' => "Your booking request with {$providerName} is Pending.",
+                    ],
+                    'CONFIRMED', 'BOOKED', 'APPROVED' => [
+                        'title' => 'Booking update',
+                        'statusWord' => 'Booked',
+                        'statusColor' => '#1E40AF',
+                        'message' => "{$providerName} has changed your booking status to Booked.",
+                    ],
+                    'ARRIVED' => [
+                        'title' => 'Booking update',
+                        'statusWord' => 'Arrived',
+                        'statusColor' => '#111827',
+                        'message' => "{$providerName} has changed your booking status to Arrived.",
+                    ],
+                    'CANCELLED', 'CANCELED' => [
+                        'title' => 'Booking update',
+                        'statusWord' => 'Cancelled',
+                        'statusColor' => '#DC2626',
+                        'message' => "Your booking with {$providerName} has been Cancelled.",
+                    ],
+                    'DECLINED', 'REJECTED' => [
+                        'title' => 'Booking update',
+                        'statusWord' => 'Declined',
+                        'statusColor' => '#DC2626',
+                        'message' => "{$providerName} has changed your booking status to Declined.",
+                    ],
+                    default => [
+                        'title' => 'Booking update',
+                        'statusWord' => ucwords(strtolower(str_replace('_', ' ', $rawStatus))) ?: 'Updated',
+                        'statusColor' => '#111827',
+                        'message' => "{$providerName} has updated your booking status to " . (ucwords(strtolower(str_replace('_', ' ', $rawStatus))) ?: 'Updated') . '.',
+                    ],
+                };
+                $mapping['type'] = 'booking_update';
+                $mapping['entityType'] = 'booking';
+                $mapping['route'] = 'ViewBooking';
+                $mapping['params'] = ['bookingId' => (string) $booking->id];
+            }
 
             ClientNotification::create([
                 'client_id' => $clientId,
