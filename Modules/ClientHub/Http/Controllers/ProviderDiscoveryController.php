@@ -278,7 +278,7 @@ class ProviderDiscoveryController extends Controller
 
     public function show(Request $request, int $id)
     {
-        $unit = $this->approved()->with(['hub_setting', 'product_offers.job_type', 'payment_methods.payment_method',
+        $unit = $this->approved()->with(['hub_setting', 'product_offers.job_type', 'product_offers.job_coverage', 'payment_methods.payment_method',
             'warranty_jobs.warranty_job', 'vehicle_specialists.vehicle_specialist', 'accreditations.accreditation'])->findOrFail($id);
         $client = $request->user('sanctum');
         $linked = $client instanceof Client ? LinkVender::where('hub_id', $client->id)->pluck('vender_id')->all() : [];
@@ -320,10 +320,24 @@ class ProviderDiscoveryController extends Controller
                 'id' => (string) $item->job_type_id, 'title' => $item->job_type->name,
                 'services' => [['id' => (string) $item->job_type_id, 'name' => $item->job_type->name]],
             ])->values(),
-            'products' => $unit->product_offers->map(fn ($product) => ['id' => (string) $product->id, 'name' => $product->product_name,
-                'jobType' => $product->job_type->name ?? '', 'description' => $product->description ?: '', 'jobCoverage' => '',
-                'priceDisplay' => is_numeric($product->price) ? (($product->price_type === 'STARTING_FROM' ? 'from ' : '') . '£' . number_format($product->price, 2)) : 'Price on enquiry',
-            ])->values(),
+            'products' => $unit->product_offers->map(function ($product) {
+                $coverage = $product->job_coverage->name ?? null;
+                if (!$coverage) {
+                    $coverage = stripos($product->product_name ?? '', 'mot') !== false ? 'Labour only' : 'Parts & Labour';
+                }
+                $priceDisplay = is_numeric($product->price) && (float) $product->price > 0
+                    ? (($product->price_type === 'STARTING_FROM' ? 'from ' : '') . '£' . number_format($product->price, 2))
+                    : '£ POA';
+
+                return [
+                    'id' => (string) $product->id,
+                    'name' => $product->product_name,
+                    'jobType' => $product->job_type->name ?? '',
+                    'description' => $product->description ?: '',
+                    'jobCoverage' => $coverage,
+                    'priceDisplay' => $priceDisplay,
+                ];
+            })->values(),
             'warranty' => ['warrantyWork' => [], 'selectedWarrantyProviders' => $names($unit->warranty_jobs, 'warranty_job')],
             'vehicleSpecialist' => ['manufacturerSpecialists' => $names($unit->vehicle_specialists, 'vehicle_specialist'), 'otherSpecialisms' => []],
             'accreditations' => ['accreditations' => $names($unit->accreditations, 'accreditation')],

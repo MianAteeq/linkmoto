@@ -113,9 +113,11 @@ class VehicleController extends Controller
             $year = $request->input('year', date('Y'));
             $vehicleNo = $request->input('vehicle_no', 'VEH-HUB' . str_pad((string)$clientId, 7, '0', STR_PAD_LEFT) . '-' . str_pad((string)rand(1, 999999), 6, '0', STR_PAD_LEFT));
 
+            $isOneTimeBooking = $request->boolean('one_time_booking');
+
             $veh = Vehicle::create([
                 'vender_id'            => $clientId,
-                'type'                 => 'Client',
+                'type'                 => $isOneTimeBooking ? 'BookingOnly' : 'Client',
                 'vrm'                  => $cleanVrm,
                 'vin_number'           => $vinNumber,
                 'vehicle_make_id'      => $makeId,
@@ -271,6 +273,9 @@ class VehicleController extends Controller
                 'color',
             ])
             ->where('vender_id', $clientId)
+            ->where(function ($q) {
+                $q->where('type', 'Client')->orWhereNull('type');
+            })
             ->where(function ($q) use ($term) {
                 $q->where('vrm', 'LIKE', "%{$term}%")
                   ->orWhere('vin_number', 'LIKE', "%{$term}%");
