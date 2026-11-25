@@ -21,6 +21,19 @@ class Booking extends Model
 
     protected $guarded = [];
 
+    protected static function booted(): void
+    {
+        static::created(function (Booking $booking) {
+            \Modules\ClientHub\Services\ClientNotificationService::notifyForBooking($booking);
+        });
+
+        static::updated(function (Booking $booking) {
+            if ($booking->wasChanged('status')) {
+                \Modules\ClientHub\Services\ClientNotificationService::notifyForBooking($booking);
+            }
+        });
+    }
+
 
     /**
      * Get the user that owns the Quotation

@@ -17,6 +17,19 @@ class Invoice extends Model
 
     protected $guarded = [];
 
+    protected static function booted(): void
+    {
+        static::created(function (Invoice $invoice) {
+            \Modules\ClientHub\Services\ClientNotificationService::notifyForInvoice($invoice, true);
+        });
+
+        static::updated(function (Invoice $invoice) {
+            if ($invoice->wasChanged('status')) {
+                \Modules\ClientHub\Services\ClientNotificationService::notifyForInvoice($invoice);
+            }
+        });
+    }
+
 
     /**
      * Get the booking that owns the Invoice
