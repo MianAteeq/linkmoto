@@ -139,6 +139,8 @@ Route::group(['middleware' => ['cors']], function () {
             //
 
             Route::post('booking/save', [BookingController::class, 'saveBooking']);
+            Route::post('booking/update', [BookingController::class, 'updateBooking']);
+            Route::post('booking/cancel', [BookingController::class, 'cancelBooking']);
             Route::post('booking/request', [BookingController::class, 'requestBooking']);
             Route::post('booking/available-slots', [BookingController::class, 'availableSlots']);
 

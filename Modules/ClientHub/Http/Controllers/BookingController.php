@@ -636,6 +636,113 @@ class BookingController extends Controller
         }
     }
 
+    public function updateBooking(Request $request)
+    {
+        try {
+            $validator = \Validator::make($request->all(), [
+                'booking_id' => ['required'],
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => $validator->errors()->first(),
+                ], 422);
+            }
+
+            $booking = Booking::find($request['booking_id']);
+            if (!$booking) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Booking not found',
+                ], 404);
+            }
+
+            $updateData = [];
+            if ($request->filled('booking_date')) {
+                $updateData['booking_date'] = $request['booking_date'];
+            }
+            if ($request->has('booking_time')) {
+                $updateData['booking_time'] = $request['booking_time'];
+            }
+            if ($request->has('note')) {
+                $updateData['note'] = $request['note'];
+            }
+            if ($request->filled('service_type')) {
+                $updateData['service_type'] = $request['service_type'];
+            }
+
+            $editableStatuses = ['RE_SCHEDULE', 'MISSED', 'REQUEST_FOR_INFO', 'CUSTOMER_PENDING', 'ACTION_NEEDED'];
+            if (in_array(strtoupper((string) $booking->status), $editableStatuses, true)) {
+                $updateData['status'] = 'BOOKING_REQUEST';
+            }
+
+            $booking->update($updateData);
+
+            $notification = new CustomNotification();
+            $notification->vender_id = $booking->vender_id;
+            $notification->hub_id = $request->user()->id;
+            $notification->message = "Customer Updated Booking " . $booking->booking_no . " Please View";
+            $notification->save();
+
+            return response()->json([
+                'status' => true,
+                'booking' => $booking->fresh(),
+                'message' => 'Booking Updated Successfully',
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => false,
+                'error' => $e->getMessage(),
+                'message' => 'Error while Updating Booking',
+            ]);
+        }
+    }
+
+    public function cancelBooking(Request $request)
+    {
+        try {
+            $validator = \Validator::make($request->all(), [
+                'booking_id' => ['required'],
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => $validator->errors()->first(),
+                ], 422);
+            }
+
+            $booking = Booking::find($request['booking_id']);
+            if (!$booking) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Booking not found',
+                ], 404);
+            }
+
+            $booking->update(['status' => 'CANCELLED']);
+
+            $notification = new CustomNotification();
+            $notification->vender_id = $booking->vender_id;
+            $notification->hub_id = $request->user()->id;
+            $notification->message = "Customer Cancelled Booking " . $booking->booking_no . " Please View";
+            $notification->save();
+
+            return response()->json([
+                'status' => true,
+                'booking' => $booking->fresh(),
+                'message' => 'Booking Cancelled Successfully',
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => false,
+                'error' => $e->getMessage(),
+                'message' => 'Error while Cancelling Booking',
+            ]);
+        }
+    }
+
     /***********  Get Past Booking    ***************/
 
     public function getPastBooking(Request $request)
