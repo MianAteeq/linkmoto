@@ -24,7 +24,9 @@ class Booking extends Model
     protected static function booted(): void
     {
         static::created(function (Booking $booking) {
-            \Modules\ClientHub\Services\ClientNotificationService::notifyForBooking($booking);
+            if (!(request()?->user() instanceof \Modules\ClientHub\Entities\Client)) {
+                \Modules\ClientHub\Services\ClientNotificationService::notifyForBooking($booking);
+            }
         });
 
         static::updated(function (Booking $booking) {

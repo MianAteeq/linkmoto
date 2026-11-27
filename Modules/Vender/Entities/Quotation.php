@@ -21,12 +21,8 @@ class Quotation extends Model
 
     protected static function booted(): void
     {
-        static::created(function (Quotation $quotation) {
-            \Modules\ClientHub\Services\ClientNotificationService::notifyForQuotation($quotation);
-        });
-
         static::updated(function (Quotation $quotation) {
-            if ($quotation->wasChanged('status')) {
+            if ($quotation->wasChanged('status') && !(request()?->user() instanceof Client)) {
                 \Modules\ClientHub\Services\ClientNotificationService::notifyForQuotation($quotation);
             }
         });

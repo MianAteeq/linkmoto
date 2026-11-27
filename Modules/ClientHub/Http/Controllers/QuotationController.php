@@ -12,6 +12,7 @@ use Modules\Vender\Entities\BookingJobItem;
 use Modules\Vender\Entities\BookingJobRequest;
 use Modules\Vender\Entities\CustomNotification;
 use Modules\Vender\Entities\Quotation;
+use Modules\Vender\Entities\QuotationJobRequestJobType;
 use Kutia\Larafirebase\Facades\Larafirebase;
 use Modules\Vender\Entities\ContactDetail;
 use Modules\Vender\Entities\TradingUnit;
@@ -96,21 +97,30 @@ class QuotationController extends Controller
                 ]);
 
                 foreach ($requests as $job) {
-                    JobRequest::create([
+                    $jobTypeId = $job['job_type_id'] ?? $job['service_id'] ?? null;
+                    $createdJobRequest = JobRequest::create([
                         'vender_id' => $tradingUnit->vender_id,
                         'quotation_id' => $quote->id,
-                        'job_type_id' => $job['job_type_id'] ?? $job['service_id'] ?? null,
+                        'job_type_id' => $jobTypeId,
                         'price_type_id' => $job['price_type_id'] ?? null,
                         'product_id' => $job['product_id'] ?? null,
                         'name' => $job['name'],
                         'job_description' => $job['description'] ?? $job['note'] ?? null,
                     ]);
+
+                    if (!empty($jobTypeId)) {
+                        QuotationJobRequestJobType::create([
+                            'job_request_id' => $createdJobRequest->id,
+                            'job_type_id' => $jobTypeId,
+                        ]);
+                    }
                 }
 
                 return $quote->load([
                     'vehicle.vehicle_model', 'vehicle.vehicle_make', 'vehicle.engine_size',
                     'vehicle.transmission_type', 'vehicle.fuel_type', 'vehicle.color',
                     'contact_detail', 'service', 'job_requests', 'job_requests.job_type',
+                    'job_requests.job_types', 'job_requests.job_types.job_type',
                     'job_requests.price_type', 'vender', 'vender.profile',
                 ]);
             });
