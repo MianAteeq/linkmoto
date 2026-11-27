@@ -589,4 +589,65 @@ class QuotationController extends Controller
             ]);
         }
     }
+
+    public function updateQuotation(Request $request)
+    {
+        try {
+            $validator = \Validator::make($request->all(), [
+                'quotation_id' => ['required'],
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => $validator->errors()->first(),
+                ], 422);
+            }
+
+            $quotation = Quotation::find($request['quotation_id']);
+            if (!$quotation) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Quotation not found',
+                ], 404);
+            }
+
+            $updateData = [];
+            if ($request->filled('quotation_date')) {
+                $updateData['quotation_date'] = $request['quotation_date'];
+            }
+            if ($request->has('quotation_time')) {
+                $updateData['quotation_time'] = $request['quotation_time'];
+            }
+            if ($request->has('note')) {
+                $updateData['note'] = $request['note'];
+            }
+            if ($request->filled('service_type')) {
+                $updateData['service_type'] = $request['service_type'];
+            }
+            if ($quotation->status === 'REQUEST_FOR_INFO') {
+                $updateData['status'] = 'REQUEST_FOR_PRICE';
+            }
+
+            $quotation->update($updateData);
+
+            $notification = new CustomNotification();
+            $notification->vender_id = $quotation->vender_id;
+            $notification->hub_id = $request->user()->id;
+            $notification->message = "Customer Updated Quotation " . $quotation->quotation_no . " Please View";
+            $notification->save();
+
+            return response()->json([
+                'status' => true,
+                'quotation' => $quotation->fresh(),
+                'message' => 'Quotation Updated Successfully',
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => false,
+                'error' => $e->getMessage(),
+                'message' => 'Error while Updating Quotation',
+            ]);
+        }
+    }
 }

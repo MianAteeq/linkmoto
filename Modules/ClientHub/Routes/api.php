@@ -112,6 +112,7 @@ Route::group(['middleware' => ['cors']], function () {
             Route::post('vehicle/{id}/refresh-checks', [VehicleController::class, 'refreshVehicleChecks']);
 
             Route::post('quotation/save', [QuotationController::class, 'saveQuotation']);
+            Route::post('quotation/update', [QuotationController::class, 'updateQuotation']);
             Route::post('quotation/request', [QuotationController::class, 'requestQuotation']);
             Route::post('quotation/confirm', [QuotationController::class, 'confirmQuotation']);
 

@@ -71,17 +71,26 @@ class QuotationItemController extends Controller
 
             ]);
 
-            // if (isset($request['job_type_id'])) {
-            //     foreach ($request['job_types'] as $key => $job_type) {
-            //         QuotationJobRequestJobType::create([
-            //             "job_request_id" => $obj['id'],
-            //             "job_type_id" => $job_type['id'],
+            $jobTypeIds = [];
+            if (is_array($request->job_types) && count($request->job_types) > 0) {
+                foreach ($request->job_types as $job_type) {
+                    $id = is_array($job_type) ? ($job_type['id'] ?? null) : $job_type;
+                    if ($id) {
+                        $jobTypeIds[] = (int) $id;
+                    }
+                }
+            } elseif ($request->filled('job_type_id')) {
+                $jobTypeIds[] = (int) $request->job_type_id;
+            }
 
-            //         ]);
-            //     }
-            // }
+            foreach (array_unique($jobTypeIds) as $jobTypeId) {
+                QuotationJobRequestJobType::create([
+                    "job_request_id" => $obj['id'],
+                    "job_type_id" => $jobTypeId,
+                ]);
+            }
 
-            $job_request = JobRequest::with(['quotation', 'job_type', 'price_type'])->find($obj->id);
+            $job_request = JobRequest::with(['quotation', 'job_type', 'job_types.job_type', 'price_type'])->find($obj->id);
 
             return response()->json([
                 'status' => true,
