@@ -30,6 +30,7 @@ class QuotationController extends Controller
             'vehicle_id' => ['required', 'integer'],
             'service_type' => ['required', 'in:On-site,Mobile'],
             'quotation_date' => ['nullable', 'date_format:Y-m-d'],
+            'quotation_time' => ['nullable', 'string', 'max:50'],
             'note' => ['nullable', 'string', 'max:2000'],
             'address_line_1' => ['nullable', 'string', 'max:1000'],
             'city_and_postcode' => ['nullable', 'string', 'max:500'],
@@ -94,6 +95,7 @@ class QuotationController extends Controller
                     'service_type' => $request->input('service_type'),
                     'status' => 'REQUEST_FOR_PRICE',
                     'quotation_date' => $request->input('quotation_date'),
+                    'quotation_time' => $request->input('quotation_time'),
                     'note' => $request->input('note'),
                 ]);
 
