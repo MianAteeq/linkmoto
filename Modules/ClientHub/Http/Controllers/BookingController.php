@@ -301,12 +301,26 @@ class BookingController extends Controller
                 ]);
 
                 foreach ($resolvedJobRequests as $item) {
+                    $product = !empty($item['product_id'])
+                        ? \Modules\Vender\Entities\QuickProduct::with('job_types')->find($item['product_id'])
+                        : null;
+
+                    $jobTypeIds = collect([$item['job_type_id'] ?? null])
+                        ->merge($product ? $product->job_types->pluck('job_type_id') : [])
+                        ->push($product?->job_type_id)
+                        ->filter(fn ($id) => !empty($id))
+                        ->map(fn ($id) => (int) $id)
+                        ->unique()
+                        ->values();
+
+                    $primaryJobTypeId = $jobTypeIds->first();
+
                     $createdJobRequest = BookingJobRequest::create([
                         'vender_id' => $tradingUnit->vender_id,
                         'trading_id' => $tradingUnit->id,
                         'booking_id' => $booking->id,
-                        'job_type_id' => $item['job_type_id'],
-                        'price_type_id' => $item['price_type_id'],
+                        'job_type_id' => $primaryJobTypeId,
+                        'price_type_id' => $item['price_type_id'] ?? $product?->job_coverage_id ?? null,
                         'product_id' => $item['product_id'],
                         'name' => $item['name'],
                         'job_description' => $item['job_description'],
@@ -314,10 +328,10 @@ class BookingController extends Controller
                         'is_job' => 0,
                     ]);
 
-                    if ($item['job_type_id']) {
+                    foreach ($jobTypeIds as $jtId) {
                         BookingJobRequestJobType::create([
                             'job_request_id' => $createdJobRequest->id,
-                            'job_type_id' => $item['job_type_id'],
+                            'job_type_id' => $jtId,
                         ]);
                     }
                 }

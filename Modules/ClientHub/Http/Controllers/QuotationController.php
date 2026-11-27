@@ -18,6 +18,7 @@ use Modules\Vender\Entities\ContactDetail;
 use Modules\Vender\Entities\TradingUnit;
 use Modules\Vender\Entities\Vehicle;
 use Modules\Vender\Entities\JobRequest;
+use Modules\Vender\Entities\QuickProduct;
 use Illuminate\Support\Facades\DB;
 
 class QuotationController extends Controller
@@ -97,21 +98,36 @@ class QuotationController extends Controller
                 ]);
 
                 foreach ($requests as $job) {
-                    $jobTypeId = $job['job_type_id'] ?? $job['service_id'] ?? null;
+                    $explicitJobTypeId = $job['job_type_id'] ?? $job['service_id'] ?? null;
+                    $productId = $job['product_id'] ?? null;
+                    $product = !empty($productId)
+                        ? QuickProduct::with('job_types')->find($productId)
+                        : null;
+
+                    $jobTypeIds = collect([$explicitJobTypeId])
+                        ->merge($product ? $product->job_types->pluck('job_type_id') : [])
+                        ->push($product?->job_type_id)
+                        ->filter(fn ($id) => !empty($id))
+                        ->map(fn ($id) => (int) $id)
+                        ->unique()
+                        ->values();
+
+                    $primaryJobTypeId = $jobTypeIds->first();
+
                     $createdJobRequest = JobRequest::create([
                         'vender_id' => $tradingUnit->vender_id,
                         'quotation_id' => $quote->id,
-                        'job_type_id' => $jobTypeId,
-                        'price_type_id' => $job['price_type_id'] ?? null,
-                        'product_id' => $job['product_id'] ?? null,
+                        'job_type_id' => $primaryJobTypeId,
+                        'price_type_id' => $job['price_type_id'] ?? $product?->job_coverage_id ?? null,
+                        'product_id' => $productId,
                         'name' => $job['name'],
                         'job_description' => $job['description'] ?? $job['note'] ?? null,
                     ]);
 
-                    if (!empty($jobTypeId)) {
+                    foreach ($jobTypeIds as $jtId) {
                         QuotationJobRequestJobType::create([
                             'job_request_id' => $createdJobRequest->id,
-                            'job_type_id' => $jobTypeId,
+                            'job_type_id' => $jtId,
                         ]);
                     }
                 }
