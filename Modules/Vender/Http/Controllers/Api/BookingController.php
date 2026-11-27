@@ -1009,12 +1009,20 @@ class BookingController extends Controller
                 'job_requests',
                 'booking_items'
             ])->where('vender_id', $vender_id)->find($request['booking_id']);
+
+            if ($booking == null) {
+                return response()->json([
+                    'status' => false,
+                    'booking' => $booking,
+                    'message' => "Booking Not Exist",
+                ]);
+            }
+
+            $previousStatus = $booking->status;
             $booking->booking_date = $request['booking_date'];
             $booking->booking_time = $request['booking_time'];
             $booking->workstream_id = $request['workstream_id'];
-            $booking->status = 'BOOKED';
-
-
+            $booking->status = 'RE_SCHEDULE';
 
             $booking->update();
 
@@ -1024,7 +1032,7 @@ class BookingController extends Controller
             $data->user_id = $request->user()->id;
             $data->type = "Book";
             $data->event = "Booking Status Change ";
-            $data->event_detail = "Booking Status Change " . str_replace('_', ' ', strtoupper($booking['status'])) . " to  Re Schedule";
+            $data->event_detail = "Booking Status Change " . str_replace('_', ' ', strtoupper($previousStatus)) . " to  Re Schedule";
             $data->type_id = $request['booking_id'];
             Log::saveLog($data);
 
@@ -1032,17 +1040,6 @@ class BookingController extends Controller
 
             $vender_id = $request->user()->vender_id == 0 ? $request->user()->id : $request->user()->vender_id;
             $latestOrder = Invoice::orderBy('created_at', 'DESC')->first();
-
-
-
-            if ($booking == null) {
-                return response()->json([
-                    'status' => false,
-                    'booking' => $booking,
-
-                    'message' => "Booking Not Exist",
-                ]);
-            }
             $notification = new CustomNotification();
             $notification->vender_id = Booking::find($request['booking_id'])->vender_id;
             $notification->hub_id = Booking::find($request['booking_id'])->contact_detail_id;
