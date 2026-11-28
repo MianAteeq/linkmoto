@@ -52,7 +52,7 @@ class BookingController extends Controller
             'status' => true,
             'quotes' => $quotes,
             'bookings' => $bookings->filter(fn ($booking) => empty($booking->job_id) || strtoupper((string) $booking->status) === 'ARRIVED')->values(),
-            'jobs' => $bookings->filter(fn ($booking) => !empty($booking->job_id) || !empty($booking->job_no))->values(),
+            'jobs' => $bookings->filter(fn ($booking) => !empty($booking->job_id) || !empty($booking->job_no) || strtoupper((string) $booking->status) === 'ARRIVED')->values(),
             'message' => 'Jobs overview fetched successfully.',
         ]);
     }
